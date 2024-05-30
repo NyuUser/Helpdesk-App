@@ -199,7 +199,7 @@ class Main extends CI_Controller {
 
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/tickets_list', $data);
+				$this->load->view('admin/tickets_msrf', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -279,6 +279,25 @@ class Main extends CI_Controller {
 				$this->session->set_flashdata('error', $process[0]);
 				redirect(base_url()."sys/admin/users");
 			}
+		}
+	}
+
+	public function admin_approval_list($id) {
+		if ($this->session->userdata('login_data')) {
+			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_details = $this->Main_model->user_details();
+
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				echo $id;
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Error fetching user information');
+            redirect(base_url()."admin/login");
 		}
 	}
 

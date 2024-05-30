@@ -187,9 +187,9 @@ class DataTables extends CI_Controller {
         exit();
 	}
 
-    public function all_tickets() {
+
+    public function all_tickets_msrf() {
         $user_id = $this->session->userdata('login_data')['user_id'];
-        
         $draw = intval($this->input->post("draw"));
         $start = intval($this->input->post("start"));
         $length = intval($this->input->post("length"));
@@ -227,15 +227,11 @@ class DataTables extends CI_Controller {
             $search_query = "";
         }
 
-        $count_array = $this->db->query("SELECT * FROM msrf ".$search_query." ORDER BY recid");
+        $count_array = $this->db->query("SELECT * FROM service_request_msrf ".$search_query." ORDER BY recid");
         $length_count = $count_array->num_rows();
 
-        // Select dept_id in users table
-        $dept_id = "(SELECT dept_id FROM users WHERE recid = '". $user_id ."')";
-        $recid = "(SELECT recid FROM users WHERE recid = '".$user_id."')";
-
         $data = array();
-        $strQry = $this->db->query("SELECT * FROM msrf " .$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
+        $strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE sup_id = ".$user_id." OR it_sup_id = ".$user_id." " .$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
         if ($strQry->num_rows() > 0) {
         	foreach ($strQry->result() as $rows) { 
                 $bid[] = $rows->recid;
@@ -281,7 +277,7 @@ class DataTables extends CI_Controller {
 
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
 
-                $tickets[] = "<a href='".base_url()."'>". $rows->ticket_id ."</a>";
+                $tickets[] = "<a href='".base_url()."sys/admin/approved/".$rows->ticket_id."'>". $rows->ticket_id ."</a>";
             }
 
             for ($i = 0; $i < count($bid); $i++) {

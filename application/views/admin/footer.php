@@ -108,7 +108,7 @@
                 "serverSide": true,
                 "processing": true,
                 "ajax": {
-                    "url": "<?= base_url(); ?>DataTables/all_tickets",
+                    "url": "<?= base_url(); ?>DataTables/all_tickets_msrf",
                     "type": "POST"
                 },
                 "responsive": true,
