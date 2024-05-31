@@ -282,15 +282,33 @@ class Main extends CI_Controller {
 		}
 	}
 
-	public function admin_approval_list($id) {
+	public function admin_approval_list($subject, $id) {
 		if ($this->session->userdata('login_data')) {
 			$user_id = $this->session->userdata('login_data')['user_id'];
 			$user_details = $this->Main_model->user_details();
+			$msrf_tickets = $this->Main_model->getTicketsMSRF($id);
 
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
-				echo $id;
+
+				$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
+				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';
+
+				$data['active_menu'] = $active_menu;
+
+				if ($subject == "MSRF") {
+					$this->load->view('admin/header', $data);
+					$this->load->view('admin/tickets_approval_msrf', $data);
+					$this->load->view('admin/sidebar', $data);
+					$this->load->view('admin/footer');
+
+				} else if ($subject == "TRACC") {
+					$this->load->view('admin/header', $data);
+					$this->load->view('admin/sidebar', $data);
+					$this->load->view('admin/footer');
+				}
+
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");

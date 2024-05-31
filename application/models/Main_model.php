@@ -389,12 +389,18 @@ class Main_model extends CI_Model {
 		}
 	}
 
-	public function getListofTicketsMSRF() {
-		$query = $this->db->query("SELECT subject FROM msrf");
-	}
-
-	public function getListofTicketsTRACC() {
-
+	public function getTicketsMSRF($id) {
+		$strQry = "'.$id.'";
+		if ($query = $this->db->query("SELECT * FROM service_request_msrf WHERE ticket_id = ". $strQry ."")) {
+			if ($query->num_rows() > 0) {
+				$t = $query->row_array();
+				return array("ok", $t);
+			} else {
+				return array("error", "No data was fetched.");
+			}
+		} else {
+			return array("error", "Internal error. Please try again.");
+		}
 	}
 }
 ?>

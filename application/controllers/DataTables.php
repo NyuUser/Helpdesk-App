@@ -277,7 +277,7 @@ class DataTables extends CI_Controller {
 
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
 
-                $tickets[] = "<a href='".base_url()."sys/admin/approved/".$rows->ticket_id."'>". $rows->ticket_id ."</a>";
+                $tickets[] = "<a href='".base_url()."sys/admin/approved/".$rows->subject."/".$rows->ticket_id."'>". $rows->ticket_id ."</a>";
             }
 
             for ($i = 0; $i < count($bid); $i++) {
