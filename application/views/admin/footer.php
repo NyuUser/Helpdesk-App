@@ -84,6 +84,16 @@
                 $('#errorModal').modal('show');
             <?php endif; ?>
 
+            $('#approval_stat').on('change', function() {
+                if (this.value == "Approved") {
+                    $('#ictassign').show();
+                    $('#reason').hide();
+                } else if (this.value == "Rejected") {
+                    $('#ictassign').hide();
+                    $('#reason').show();
+                }
+            });
+
             $(document).on('click', '.lock_btn', function() {
                 var emp_id = $(this).data('empid');
                 var emp_no = $(this).closest('tr').find('td:eq(0)').text();

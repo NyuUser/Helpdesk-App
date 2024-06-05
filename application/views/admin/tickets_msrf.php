@@ -22,7 +22,8 @@
 									<th>Subject</th>
 									<th>Priority</th>
 								    <th>Status</th>
-									<th>Approval Status</th>
+									<th>Department Approval Status</th>
+									<th>ICT Approval Status</th>
 								</tr>
 							</thead>
                             <tfoot>
@@ -32,7 +33,8 @@
 									<th>Subject</th>
 									<th>Priority</th>
 								    <th>Status</th>
-									<th>Approval Status</th>
+									<th>Department Approval Status</th>
+									<th>ICT Approval Status</th>
 								</tr>
                             </tfoot>
                         </table>

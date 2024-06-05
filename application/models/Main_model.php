@@ -138,7 +138,9 @@ class Main_model extends CI_Model {
 				'priority' => $categ,
 				'requester_id' => $user_id,
 				'sup_id' => $sup_id,
-				'it_sup_id' => 1,
+				'it_dept_id' => 1,
+				'it_sup_id' => 23-0001,
+				'it_approval_status' => 'Pending',
 				'created_at' => date("Y-m-d H:i:s")
 			);
 			

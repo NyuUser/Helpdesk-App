@@ -79,7 +79,7 @@
 			                                <div class="form-group">
 			                                    <label>Details Concern</label>
 			                                    <div class="box-body pad">
-												<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" readonly><?php echo $msrf['details_concern']; ?></textarea>
+													<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" readonly><?php echo $msrf['details_concern']; ?></textarea>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -87,6 +87,7 @@
 			                                <div class="form-group">
 			                                    <label>Approval Status</label>
 												<select class="form-control select2" name="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?>>
+													<option value=""></option>
 													<option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
 													<option value="Pending"<?php if ($msrf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
 													<option value="Rejected"<?php if ($msrf['approval_status'] == 'Rejected') echo ' selected'; ?>>Rejected</option>
@@ -98,14 +99,14 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>ICT Approval Status</label>
-													<select class="form-control select2" name="approval_stat" style="width: 100%;">
-														<option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
-														<option value="Pending"<?php if ($msrf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
-														<option value="Rejected"<?php if ($msrf['approval_status'] == 'Rejected') echo ' selected'; ?>>Rejected</option>
+													<select class="form-control select2" name="approval_stat" id="approval_stat" style="width: 100%;">
+														<option value=""></option>
+														<option value="Approved">Approved</option>
+														<option value="Rejected">Rejected</option>
 													</select>
 												</div>
 											</div>
-											<div class="col-md-12">
+											<div class="col-md-12" id="ictassign" style="display: none;">
 												<div class="form-group">
 													<label>ICT Assign To</label>
 													<select name="assign_to" class="form-control select2">
@@ -113,13 +114,19 @@
 														<?php if (isset($getTeam) && is_array($getTeam)) : ?>
 															<?php foreach($getTeam as $team) : ?>
 																<?php if (is_array($team)) : // Ensure $team is an array ?>
-																	<option value="<?php echo $team['recid']; ?>">
+																	<option value="<?php echo $team['emp_id']; ?>">
 																		<?php echo $team['fname'] . ' ' . $team['lname']; ?>
 																	</option>
 																<?php endif; ?>
 															<?php endforeach; ?>
 														<?php endif; ?>
 													</select>
+												</div>
+											</div>
+											<div class="col-md-12" id="reason" style="display: none;">
+												<div class="form-group">
+													<label>Reason for Reject Tickets</label>
+													<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
 												</div>
 											</div>
 										<?php } ?>
