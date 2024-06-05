@@ -6,6 +6,46 @@
 		</footer>
 		<div id="sidebar-overlay"></div>
 	</div>
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">ICT Helpdesk Information Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php echo ($this->session->flashdata('success')); ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">ICT Helpdesk Information Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php echo $this->session->flashdata('error'); ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 	<script src="<?php echo base_url();?>/assets/bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="<?php echo base_url();?>/assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="<?= base_url(); ?>/assets/plugins/iCheck/icheck.min.js"></script>
@@ -35,12 +75,15 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
-    
-    <?php if ($this->session->flashdata('success')): ?>
-        
-    <?php endif; ?>
     <script type="text/javascript">
         $(document).ready(function() {
+            <?php if($this->session->flashdata('success')): ?>
+                $('#successModal').modal('show');
+            <?php endif; ?>
+            <?php if($this->session->flashdata('error')): ?>
+                $('#errorModal').modal('show');
+            <?php endif; ?>
+
             $(document).on('click', '.lock_btn', function() {
                 var emp_id = $(this).data('empid');
                 var emp_no = $(this).closest('tr').find('td:eq(0)').text();

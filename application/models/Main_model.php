@@ -390,11 +390,54 @@ class Main_model extends CI_Model {
 	}
 
 	public function getTicketsMSRF($id) {
-		$strQry = "'.$id.'";
+		$strQry = "'$id'";
 		if ($query = $this->db->query("SELECT * FROM service_request_msrf WHERE ticket_id = ". $strQry ."")) {
 			if ($query->num_rows() > 0) {
 				$t = $query->row_array();
 				return array("ok", $t);
+			} else {
+				return array("error", "No data was fetched.");
+			}
+		} else {
+			return array("error", "Internal error. Please try again.");
+		}
+	}
+
+	public function status_approval_msrf() {
+		$ticket_id = $this->input->post('msrf_number', true);
+		$approval_stat = $this->input->post('approval_stat', true);
+
+		$this->db->set('approval_status', $approval_stat);
+		$this->db->where('ticket_id', $ticket_id);
+		$this->db->update('service_request_msrf');
+
+		if ($this->db->affected_rows() > 0) {
+			$this->db->trans_commit();
+			return array(1, "Successfully Update Tickets's: ". $ticket_id);
+		} else {
+			$this->db->trans_rollback();
+			return array(0, "Error updating Keywords's status. Please try again.");
+		}
+	}
+
+	public function GetICTSupervisor() {
+		$user_id = $this->session->userdata('login_data')['user_id'];
+		if ($query = $this->db->query("SELECT a.emp_id FROM users a JOIN departments b ON a.emp_id = b.sup_id WHERE a.recid = ". $user_id ."")) {
+			if ($query->num_rows() > 0) {
+				$t = $query->row_array();
+				return array("ok", $t);
+			} else {
+				return array("error", "No data was fetched.");
+			}
+		} else {
+			return array("error", "Internal error. Please try again.");
+		}
+	}
+
+	public function GetTeam($dept_id) {
+		if ($query = $this->db->query("SELECT * FROM users WHERE dept_id = ". $dept_id ." AND role = 'L1'")) {
+			if ($query->num_rows() > 0) {
+				return array("ok", $query->result_array());
 			} else {
 				return array("error", "No data was fetched.");
 			}

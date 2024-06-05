@@ -231,7 +231,7 @@ class DataTables extends CI_Controller {
         $length_count = $count_array->num_rows();
 
         $data = array();
-        $strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE sup_id = ".$user_id." OR it_sup_id = ".$user_id." " .$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
+        $strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE sup_id = ".$user_id." OR it_sup_id = '23-0001' " .$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
         if ($strQry->num_rows() > 0) {
         	foreach ($strQry->result() as $rows) { 
                 $bid[] = $rows->recid;
@@ -249,7 +249,7 @@ class DataTables extends CI_Controller {
                     $label_class = 'label-warning';
                 } else if ($rows->status == 'Resolved') {
                     $label_class = 'label-success';
-                } else if ($rows->status == 'Closed') { 
+                } else if ($rows->status == 'Closed') {
                     $label_class = 'label-danger';
                 }
 

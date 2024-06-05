@@ -285,17 +285,29 @@ class Main extends CI_Controller {
 	public function admin_approval_list($subject, $id) {
 		if ($this->session->userdata('login_data')) {
 			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_role = $this->session->userdata('login_data')['role'];
+			$user_dept = $this->session->userdata('login_data')['sup_id'];
+			$dept_id = $this->session->userdata('login_data')['dept_id'];
 			$user_details = $this->Main_model->user_details();
 			$msrf_tickets = $this->Main_model->getTicketsMSRF($id);
+			$ict = $this->Main_model->GetICTSupervisor();
 
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
+				$data['msrf'] = $msrf_tickets[1];
+				$data['ict'] = $ict;
+				$emp_id = $user_details[1]["emp_id"];
+				$getTeam = $this->Main_model->GetTeam($dept_id);
 
 				$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
 				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';
 
 				$data['active_menu'] = $active_menu;
+
+				if ($user_role == "L2") {
+					$data['getTeam'] = $getTeam[1];
+				}
 
 				if ($subject == "MSRF") {
 					$this->load->view('admin/header', $data);
@@ -312,6 +324,36 @@ class Main extends CI_Controller {
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Error fetching user information');
+            redirect("sys/authentication");
+		}
+	}
+
+	public function dept_supervisor_approval() {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		if ($this->session->userdata('login_data')) {
+			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_details = $this->Main_model->user_details();
+			if ($user_details[0] == "ok") {
+
+				$allowed_menus = ['dashboard', 'system_tickets_list', 'open_tickets', 'other_menu'];
+				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_tickets_list';
+
+				$process = $this->Main_model->status_approval_msrf();
+				if ($process[0] == 1) {
+					$this->session->set_flashdata('success', 'Tickets Approved');
+					redirect(base_url()."sys/admin/list/ticket");
+				} else {
+					$this->session->set_flashdata('error', 'Update failed.');
+					redirect(base_url()."sys/admin/list/ticket");
+				}
+				
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect(base_url()."admin/login");
 			}
 		} else {
 			$this->session->set_flashdata('error', 'Error fetching user information');
