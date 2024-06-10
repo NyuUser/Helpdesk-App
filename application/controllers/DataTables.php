@@ -84,6 +84,8 @@ class DataTables extends CI_Controller {
     }
 
 	public function get_msrf_ticket() {
+        $emp_id = $this->session->userdata('login_data')['emp_id'];
+        $string_emp = "'$emp_id'";
 		$draw = intval($this->input->post("draw"));
         $start = intval($this->input->post("start"));
         $length = intval($this->input->post("length"));
@@ -121,11 +123,11 @@ class DataTables extends CI_Controller {
             $search_query = "";
         }
 
-        $count_array = $this->db->query("SELECT * FROM msrf ".$search_query." ORDER BY recid");
+        $count_array = $this->db->query("SELECT * FROM service_request_msrf WHERE assigned_it_staff = ".$string_emp." ".$search_query." ORDER BY recid");
         $length_count = $count_array->num_rows();
 
         $data = array();
-        $strQry = $this->db->query("SELECT * FROM msrf ".$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
+        $strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE assigned_it_staff = ".$string_emp." ".$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
         if ($strQry->num_rows() > 0) {
         	foreach ($strQry->result() as $rows) { 
                 $bid[] = $rows->recid;
@@ -190,6 +192,7 @@ class DataTables extends CI_Controller {
 
     public function all_tickets_msrf() {
         $user_id = $this->session->userdata('login_data')['user_id'];
+        $emp_id = $this->session->userdata('login_data')['emp_id'];
         $draw = intval($this->input->post("draw"));
         $start = intval($this->input->post("start"));
         $length = intval($this->input->post("length"));
@@ -231,7 +234,7 @@ class DataTables extends CI_Controller {
         $length_count = $count_array->num_rows();
 
         $data = array();
-        $strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE sup_id = ".$user_id." OR it_sup_id = '23-0001' " .$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
+        $strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE sup_id = ".$user_id." OR it_sup_id = '23-0001' OR assigned_it_staff = ".$emp_id." " .$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
         if ($strQry->num_rows() > 0) {
         	foreach ($strQry->result() as $rows) { 
                 $bid[] = $rows->recid;

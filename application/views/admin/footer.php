@@ -84,7 +84,7 @@
                 $('#errorModal').modal('show');
             <?php endif; ?>
 
-            $('#approval_stat').on('change', function() {
+            $('#it_approval_stat').on('change', function() {
                 if (this.value == "Approved") {
                     $('#ictassign').show();
                     $('#reason').hide();

@@ -16,6 +16,7 @@ class Main_model extends CI_Model {
 	    if ($res->num_rows() > 0) {
 	        $t = $res->row_array();
 	        $user_id = $t['recid'];
+			$emp_id = $t['emp_id'];
 	        $session_id = $t['api_password'];
 	        $stored_pw = $t['password'];
 	        $role = $t['role'];
@@ -27,7 +28,7 @@ class Main_model extends CI_Model {
 	            $this->db->set('failed_attempts', 1);
 	            $this->db->where('username', $username);
 	            $this->db->update('users');
-	            return array(1, array('user_id' => $user_id, 'role' => $role, 'status' => 1, 'dept_id' => $dept_id, 'sup_id' => $sup_id));
+	            return array(1, array('emp_id' => $emp_id, 'user_id' => $user_id, 'role' => $role, 'status' => 1, 'dept_id' => $dept_id, 'sup_id' => $sup_id));
 	        } else {
 	            $query = $this->db->where('username', $username)->get('users');
 
@@ -407,20 +408,70 @@ class Main_model extends CI_Model {
 
 	public function status_approval_msrf() {
 		$ticket_id = $this->input->post('msrf_number', true);
+		$it_approval_stat = $this->input->post('it_approval_stat', true);
+		$assign_staff = $this->input->post('assign_to', true);
 		$approval_stat = $this->input->post('approval_stat', true);
+	
+		$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE ticket_id = ?', array($ticket_id));
+	
+		if ($qry->num_rows() > 0) {
+			$row = $qry->row();
 
-		$this->db->set('approval_status', $approval_stat);
-		$this->db->where('ticket_id', $ticket_id);
-		$this->db->update('service_request_msrf');
-
-		if ($this->db->affected_rows() > 0) {
-			$this->db->trans_commit();
-			return array(1, "Successfully Update Tickets's: ". $ticket_id);
+			if ($row->approval_status == "Approved") {
+				$this->db->set('it_approval_status', $it_approval_stat);
+				$this->db->set('assigned_it_staff', $assign_staff);
+				$this->db->set('status', 'In Progress');
+			} else {
+				$this->db->set('approval_status', $approval_stat);
+			}
+			
+			$this->db->where('ticket_id', $ticket_id);
+			$this->db->update('service_request_msrf');
+	
+			if ($this->db->affected_rows() > 0) {
+				$this->db->trans_commit();
+				return array(1, "Successfully updated ticket: " . $ticket_id);
+			} else {
+				$this->db->trans_rollback();
+				return array(0, "Error updating ticket, please try again.");
+			}
 		} else {
-			$this->db->trans_rollback();
-			return array(0, "Error updating Keywords's status. Please try again.");
+			return array(0, "Service request not found for ticket: " . $ticket_id);
 		}
 	}
+
+	// public function status_approval_msrf() {
+	// 	$ticket_id = $this->input->post('msrf_number', true);
+	// 	$approval_stat = $this->input->post('approval_stat', true);
+
+	// 	$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE ticket_id = '. $ticket_id .'');
+		
+	// 	if ($approval_status == "Approved") {
+	// 		$this->db->set('it_approval_status', $approval_stat);
+	// 		$this->db->where('ticket_id', $ticket_id);
+	// 		$this->db->update('service_request_msrf');
+
+	// 		if ($this->db->affected_rows() > 0) {
+	// 			$this->db->trans_commit();
+	// 			return array(1, "Successfully Update Tickets's: ". $ticket_id);
+	// 		} else {
+	// 			$this->db->trans_rollback();
+	// 			return array(0, "Error updating Tickets's, Please try again.");
+	// 		}
+	// 	} else {
+	// 		$this->db->set('approval_status', $approval_stat);
+	// 		$this->db->where('ticket_id', $ticket_id);
+	// 		$this->db->update('service_request_msrf');
+
+	// 		if ($this->db->affected_rows() > 0) {
+	// 			$this->db->trans_commit();
+	// 			return array(1, "Successfully Update Tickets's: ". $ticket_id);
+	// 		} else {
+	// 			$this->db->trans_rollback();
+	// 			return array(0, "Error updating Tickets's, Please try again.");
+	// 		}
+	// 	}
+	// }
 
 	public function GetICTSupervisor() {
 		$user_id = $this->session->userdata('login_data')['user_id'];

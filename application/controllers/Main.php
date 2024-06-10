@@ -467,7 +467,10 @@ class Main extends CI_Controller {
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
+
+				$this->load->view('users/header', $data);
 				$this->load->view('users/dashboard', $data);
+				$this->load->view('users/footer');
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");

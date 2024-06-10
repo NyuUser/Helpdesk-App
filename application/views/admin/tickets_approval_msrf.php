@@ -79,7 +79,7 @@
 			                                <div class="form-group">
 			                                    <label>Details Concern</label>
 			                                    <div class="box-body pad">
-													<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" readonly><?php echo $msrf['details_concern']; ?></textarea>
+													<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" disabled><?php echo $msrf['details_concern']; ?></textarea>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -99,7 +99,7 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>ICT Approval Status</label>
-													<select class="form-control select2" name="approval_stat" id="approval_stat" style="width: 100%;">
+													<select class="form-control select2" name="it_approval_stat" id="it_approval_stat" style="width: 100%;">
 														<option value=""></option>
 														<option value="Approved">Approved</option>
 														<option value="Rejected">Rejected</option>
