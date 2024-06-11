@@ -95,40 +95,50 @@
 			                            </div>
 			                        </div>
 
-									<?php if ($user_details['emp_id'] == '23-0001') { ?>
-											<div class="col-md-12">
-												<div class="form-group">
-													<label>ICT Approval Status</label>
-													<select class="form-control select2" name="it_approval_stat" id="it_approval_stat" style="width: 100%;">
-														<option value=""></option>
-														<option value="Approved">Approved</option>
-														<option value="Rejected">Rejected</option>
-													</select>
-												</div>
+									<?php if ($user_details['dept_id'] == 1) { ?>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label>ICT Approval Status</label>
+												<select class="form-control select2" name="it_approval_stat" id="it_approval_stat" style="width: 100%;">
+													<option value=""></option>
+													<option value="Approved">Approved</option>
+													<option value="Rejected">Rejected</option>
+												</select>
 											</div>
-											<div class="col-md-12" id="ictassign" style="display: none;">
-												<div class="form-group">
-													<label>ICT Assign To</label>
-													<select name="assign_to" class="form-control select2">
-														<option value=""></option>
-														<?php if (isset($getTeam) && is_array($getTeam)) : ?>
-															<?php foreach($getTeam as $team) : ?>
-																<?php if (is_array($team)) : // Ensure $team is an array ?>
-																	<option value="<?php echo $team['emp_id']; ?>">
-																		<?php echo $team['fname'] . ' ' . $team['lname']; ?>
-																	</option>
-																<?php endif; ?>
-															<?php endforeach; ?>
-														<?php endif; ?>
-													</select>
-												</div>
+										</div>
+										<div class="col-md-12" id="ictassign" style="display: none;">
+											<div class="form-group">
+												<label>ICT Assign To</label>
+												<select name="assign_to" class="form-control select2">
+													<option value=""></option>
+													<?php if (isset($getTeam) && is_array($getTeam)) : ?>
+														<?php foreach($getTeam as $team) : ?>
+															<?php if (is_array($team)) : // Ensure $team is an array ?>
+																<option value="<?php echo $team['emp_id']; ?>">
+																	<?php echo $team['fname'] . ' ' . $team['lname']; ?>
+																</option>
+															<?php endif; ?>
+														<?php endforeach; ?>
+													<?php endif; ?>
+												</select>
 											</div>
-											<div class="col-md-12" id="reason" style="display: none;">
-												<div class="form-group">
-													<label>Reason for Reject Tickets</label>
-													<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-												</div>
+										</div>
+										<div class="col-md-12" id="reason" style="display: none;">
+											<div class="form-group">
+												<label>Reason for Reject Tickets</label>
+												<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
 											</div>
+										</div>
+									<?php } else { ?>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label>Status</label>
+												<select name="status" class="form-control select2" <?php if ($msrf['status'] == 'Closed') echo 'disabled'; ?>>
+													<option value="">Please select status for reference</option>
+													<option value="Closed" <?php if ($msrf['status'] == 'Closed') echo 'selected'; ?>>Closed</option>
+												</select>
+											</div>
+										</div>
 									<?php } ?>
 										
 			                            <div class="col-md-12">

@@ -512,8 +512,38 @@ class Main_model extends CI_Model {
 		}
 	}
 
-	public function UpdateMSRFAssign() {
+	public function UpdateMSRFAssign($ticket_id) {
+		$user_id = $this->session->userdata('login_data')['user_id'];
+		$status = $this->input->post('it_status', true);
+		$status_users = $this->input->post('status_users', true);
 		
+		$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE status = "In Progress" OR status = "On going"');
+
+		if ($qry->num_rows() > 0) {
+			$row = $qry->row();
+
+			// Check if status is 'On going'
+			if ($row->status == 'In Progress') {
+				$this->db->set('status', $status);
+			} else {
+				$this->db->set('status', $status_users);
+			}
+		
+			// Update only status in the database
+			$this->db->where('ticket_id', $ticket_id);
+			$this->db->update('service_request_msrf');
+		
+			if ($this->db->affected_rows() > 0) {
+				$this->db->trans_commit();
+				return array(1, "Successfully Updating Tickets: ". $ticket_id);
+			} else {
+				$this->db->trans_rollback();
+				return array(0, "Error updating Keywords's status. Please try again.");
+			}
+
+		} else {
+			return array(0, "Service request not found for ticket: " . $status);
+		}
 	}
 }
 ?>

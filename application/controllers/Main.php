@@ -472,7 +472,7 @@ class Main extends CI_Controller {
 
 				$this->load->view('users/header', $data);
 				$this->load->view('users/dashboard', $data);
-				$this->load->view('users/footer');
+				$this->load->view('users/footer', $data);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");
@@ -644,10 +644,12 @@ class Main extends CI_Controller {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
 
-				$process = $this->Main_model->UpdateMSRFAssign();
+				$process = $this->Main_model->UpdateMSRFAssign($ticket_id);
 				if ($process[0] == 1) {
+					$this->session->set_flashdata('success', $process[1]);
 					redirect(base_url()."sys/users/create/tickets/msrf");
 				} else {
+					$this->session->set_flashdata('error', $process[0]);
 					redirect(base_url()."sys/users/create/tickets/msrf");
 				}
 			} else {

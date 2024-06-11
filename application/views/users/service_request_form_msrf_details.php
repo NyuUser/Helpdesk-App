@@ -81,15 +81,44 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>Ticket Status</label>
-                                                    <select name="it_status" id="it_status" class="form-control select2">
-                                                        <option value="">Please select status for reference</option>
-                                                        <option value="On going">On going</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+
+                                            <?php if ($user_details['dept_id'] == 1) { ?>
+                                                <?php if ($msrf['status'] == 'Resolved') {?>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Ticket Status</label>
+                                                            <select name="it_status" id="it_status" class="form-control select2" <?php if ($msrf['status'] == 'On going' || $msrf['status'] == 'Resolved') echo 'disabled'; ?>>
+                                                                <option value="">Please select status for reference</option>
+                                                                <option value="On going" <?php if ($msrf['status'] == 'On going') echo 'selected'; ?>>On going</option>
+                                                                <option value="Resolved" <?php if ($msrf['status'] == 'Resolved') echo 'selected'; ?>>Resolved</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <?php if ($msrf['status'] == 'On going') { ?>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Ticket Status for Requestor</label>
+                                                            <select name="status_users" id="status_users" class="form-control select2" <?php if ($msrf['status'] == 'Resolved') echo 'disabled'; ?>>
+                                                                <option value="">Please select status for reference</option>
+                                                                <option value="Resolved" <?php if ($msrf['status'] == 'Resolved') echo 'selected'; ?>>Resolved</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                <?php } else if ($msrf['status'] == 'Resolved') { ?>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Ticket Status for Requestor</label>
+                                                            <select name="status_users" id="status_users" class="form-control select2" <?php if ($msrf['status'] == 'Resolved') echo 'disabled'; ?>>
+                                                                <option value="">Please select status for reference</option>
+                                                                <option value="Resolved" <?php if ($msrf['status'] == 'Resolved') echo 'selected'; ?>>Resolved</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                            <?php } ?>
+
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">

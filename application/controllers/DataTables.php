@@ -84,6 +84,7 @@ class DataTables extends CI_Controller {
     }
 
 	public function get_msrf_ticket() {
+        $user_id = $this->session->userdata('login_data')['user_id'];
         $emp_id = $this->session->userdata('login_data')['emp_id'];
         $string_emp = "'$emp_id'";
 		$draw = intval($this->input->post("draw"));
@@ -123,11 +124,11 @@ class DataTables extends CI_Controller {
             $search_query = "";
         }
 
-        $count_array = $this->db->query("SELECT * FROM service_request_msrf WHERE assigned_it_staff = ".$string_emp." ".$search_query." ORDER BY recid");
+        $count_array = $this->db->query("SELECT * FROM service_request_msrf WHERE assigned_it_staff = ".$string_emp." OR requester_id = ".$user_id." ".$search_query." ORDER BY recid");
         $length_count = $count_array->num_rows();
 
         $data = array();
-        $strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE assigned_it_staff = ".$string_emp." ".$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
+        $strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE assigned_it_staff = ".$string_emp." OR requester_id = ".$user_id." ".$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
         if ($strQry->num_rows() > 0) {
         	foreach ($strQry->result() as $rows) { 
                 $bid[] = $rows->recid;

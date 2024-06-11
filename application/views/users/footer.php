@@ -1,3 +1,12 @@
+		<footer class="main-footer">
+    		<div class="container">
+      			<div class="pull-right hidden-xs">
+        			<b>Version</b> 1.0.0
+      			</div>
+      			<strong>Copyright &copy; 2024-2025 <a href="https://adminlte.io">ICT Helpdesk</a>.</strong> All rights
+      			reserved.
+    		</div>
+  		</footer>
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   			<div class="modal-dialog" role="document">
     			<div class="modal-content">
@@ -23,16 +32,45 @@
     			</div>
   			</div>
 		</div>
-		
-		<footer class="main-footer">
-    		<div class="container">
-      			<div class="pull-right hidden-xs">
-        			<b>Version</b> 1.0.0
-      			</div>
-      			<strong>Copyright &copy; 2024-2025 <a href="https://adminlte.io">ICT Helpdesk</a>.</strong> All rights
-      			reserved.
-    		</div>
-  		</footer>
+
+		<!-- Success Modal -->
+		<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">ICT Helpdesk Information Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php echo ($this->session->flashdata('success')); ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">ICT Helpdesk Information Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php echo $this->session->flashdata('error'); ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
 	</div>
 	<!-- Modal for Success -->
 	<?php if ($this->input->get('success')): ?>
@@ -91,12 +129,28 @@
         });
 
 		$(document).ready(function() {
+			<?php if($this->session->flashdata('success')): ?>
+                $('#successModal').modal('show');
+            <?php endif; ?>
+            <?php if($this->session->flashdata('error')): ?>
+                $('#errorModal').modal('show');
+            <?php endif; ?>
+
 			console.log("JavaScript is running");
 			$(".close").click(function(){
 				$("#modal-success-users, #modal-error-users").modal("hide");
 			});
 			
 			$('#it_status').on('change', function() {
+				var val = $(this).val();
+				if(val === "") {
+					$('#form-add-submit-button').prop("disabled", true);
+				} else {
+					$('#form-add-submit-button').prop("disabled", false);
+				}
+			});
+
+			$('#status_users').on('change', function() {
 				var val = $(this).val();
 				if(val === "") {
 					$('#form-add-submit-button').prop("disabled", true);
