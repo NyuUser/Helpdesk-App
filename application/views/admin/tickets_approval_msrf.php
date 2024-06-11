@@ -38,64 +38,64 @@
 												<input type="text" name="department_description" id="department_description" value="<?php echo $msrf['department']; ?>" class="form-control select2" style="width: 100%;" readonly/>
 												<input type="hidden" name="dept_id" value="">
 												<input type="hidden" name="sup_id" value="">
+			                            </div>
+			                        </div>
+			                        <div class="col-md-6">
+			                            <div class="form-group">
+			                                <label>Date Requested</label>
+			                                <input type="text" name="date_req" id="date_req" class="form-control select2" value="<?php echo $msrf['date_requested']; ?>" style="width: 100%;" readonly>
+			                            </div>
+			                            <div class="form-group">
+			                                <label>Date Needed</label>
+			                                <input type="text" name="date_need" class="form-control select2" value="<?php echo $msrf['date_needed']; ?>" style="width: 100%;" readonly>
+			                            </div>
+			                        </div>
+			                        <div class="col-md-12">
+			                            <div class="form-group">
+			                                <label>Asset Code</label>
+			                                <input type="text" name="asset_code" class="form-control select2" value="<?php echo $msrf['asset_code']; ?>" style="width: 100%;" placeholder="Asset Code" readonly>
+			                            </div>
+			                        </div>
+			                        <div class="col-md-12">
+			                            <div class="form-group">
+			                                <label>Request Category</label>
+			                                <select class="form-control select2" name="category" id="category" style="width: 100%;" disabled>
+												<option value="">Select Category</option>
+												<option value="computer"<?php if ($msrf['category'] == 'computer') echo ' selected'; ?>>Computer (Laptop or Desktop)</option>
+												<option value="printer"<?php if ($msrf['category'] == 'printer') echo ' selected'; ?>>Printer Concerns</option>
+												<option value="network"<?php if ($msrf['category'] == 'network') echo ' selected'; ?>>Network or Internet connection</option>
+												<option value="projector"<?php if ($msrf['category'] == 'projector') echo ' selected'; ?>>Projector / TV Set-up</option>
+												<option value="others"<?php if ($msrf['category'] == 'others') echo ' selected'; ?>>Others</option>
+			                                </select>
+			                            </div>
+			                        </div>
+			                        <div class="col-md-12" name="specify" id="specify" style="margin:0 auto; display:none;">
+			                            <div class="form-group" >
+			                                <label>Please Specify</label>
+			                                <input type="text" name="specify" class="form-control select2" style="width: 100%;">
+			                            </div>
+			                        </div>
+			                        <div class="col-md-12">
+			                            <div class="form-group">
+			                                <label>Details Concern</label>
+			                                <div class="box-body pad">
+												<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" disabled><?php echo $msrf['details_concern']; ?></textarea>
 			                                </div>
 			                            </div>
-			                            <div class="col-md-6">
-			                                <div class="form-group">
-			                                    <label>Date Requested</label>
-			                                    <input type="text" name="date_req" id="date_req" class="form-control select2" value="<?php echo $msrf['date_requested']; ?>" style="width: 100%;" readonly>
-			                                </div>
-			                                <div class="form-group">
-			                                    <label>Date Needed</label>
-			                                    <input type="text" name="date_need" class="form-control select2" value="<?php echo $msrf['date_needed']; ?>" style="width: 100%;" readonly>
-			                                </div>
+			                        </div>
+									<div class="col-md-12">
+			                            <div class="form-group">
+			                                <label>Approval Status</label>
+											<select class="form-control select2" name="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?>>
+												<option value=""></option>
+												<option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
+												<option value="Pending"<?php if ($msrf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
+												<option value="Rejected"<?php if ($msrf['approval_status'] == 'Rejected') echo ' selected'; ?>>Rejected</option>
+											</select>
 			                            </div>
-			                            <div class="col-md-12">
-			                                <div class="form-group">
-			                                    <label>Asset Code</label>
-			                                    <input type="text" name="asset_code" class="form-control select2" value="<?php echo $msrf['asset_code']; ?>" style="width: 100%;" placeholder="Asset Code" readonly>
-			                                </div>
-			                            </div>
-			                            <div class="col-md-12">
-			                                <div class="form-group">
-			                                    <label>Request Category</label>
-			                                    <select class="form-control select2" name="category" id="category" style="width: 100%;" disabled>
-													<option value="">Select Category</option>
-													<option value="computer"<?php if ($msrf['category'] == 'computer') echo ' selected'; ?>>Computer (Laptop or Desktop)</option>
-													<option value="printer"<?php if ($msrf['category'] == 'printer') echo ' selected'; ?>>Printer Concerns</option>
-													<option value="network"<?php if ($msrf['category'] == 'network') echo ' selected'; ?>>Network or Internet connection</option>
-													<option value="projector"<?php if ($msrf['category'] == 'projector') echo ' selected'; ?>>Projector / TV Set-up</option>
-													<option value="others"<?php if ($msrf['category'] == 'others') echo ' selected'; ?>>Others</option>
-			                                    </select>
-			                                </div>
-			                            </div>
-			                            <div class="col-md-12" name="specify" id="specify" style="margin:0 auto; display:none;">
-			                                <div class="form-group" >
-			                                    <label>Please Specify</label>
-			                                    <input type="text" name="specify" class="form-control select2" style="width: 100%;">
-			                                </div>
-			                            </div>
-			                            <div class="col-md-12">
-			                                <div class="form-group">
-			                                    <label>Details Concern</label>
-			                                    <div class="box-body pad">
-													<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" disabled><?php echo $msrf['details_concern']; ?></textarea>
-			                                    </div>
-			                                </div>
-			                            </div>
-										<div class="col-md-12">
-			                                <div class="form-group">
-			                                    <label>Approval Status</label>
-												<select class="form-control select2" name="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?>>
-													<option value=""></option>
-													<option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
-													<option value="Pending"<?php if ($msrf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
-													<option value="Rejected"<?php if ($msrf['approval_status'] == 'Rejected') echo ' selected'; ?>>Rejected</option>
-												</select>
-			                                </div>
-			                            </div>
+			                        </div>
 
-										<?php if ($user_details['emp_id'] == '23-0001') { ?>
+									<?php if ($user_details['emp_id'] == '23-0001') { ?>
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>ICT Approval Status</label>
@@ -129,7 +129,7 @@
 													<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
 												</div>
 											</div>
-										<?php } ?>
+									<?php } ?>
 										
 			                            <div class="col-md-12">
 			                                <div class="form-group">

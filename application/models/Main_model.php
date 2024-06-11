@@ -498,5 +498,22 @@ class Main_model extends CI_Model {
 			return array("error", "Internal error. Please try again.");
 		}
 	}
+
+	public function GetDepartmentID() {
+		$user_id = $this->session->userdata('login_data')['user_id'];
+		if ($query = $this->db->query("SELECT * FROM users WHERE recid = ".$user_id."")) {
+			if ($query->num_rows() > 0) {
+				return array("ok", $query->result_array());
+			} else {
+				return array("error", "No data was fetched.");
+			}
+		} else {
+			return array("error", "Internal error. Please try again.");
+		}
+	}
+
+	public function UpdateMSRFAssign() {
+		
+	}
 }
 ?>

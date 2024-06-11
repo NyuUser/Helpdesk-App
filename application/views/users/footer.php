@@ -75,6 +75,7 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 	<script>
+
 		$(function() {
             CKEDITOR.replace('editor1')
             $('.textarea').wysihtml5();
@@ -89,12 +90,19 @@
             });
         });
 
-        $(document).ready(function() {
-        	
-
+		$(document).ready(function() {
 			console.log("JavaScript is running");
 			$(".close").click(function(){
 				$("#modal-success-users, #modal-error-users").modal("hide");
+			});
+			
+			$('#it_status').on('change', function() {
+				var val = $(this).val();
+				if(val === "") {
+					$('#form-add-submit-button').prop("disabled", true);
+				} else {
+					$('#form-add-submit-button').prop("disabled", false);
+				}
 			});
 
 			$('#concern_btn').click(function() {
@@ -109,7 +117,7 @@
 				}
 			});
 			
-			$('#tblTickets').DataTable({
+			$('#tblMsrfConcern').DataTable({
 				"serverSide": true,
                 "processing": true,
                 "ajax": {
@@ -119,15 +127,6 @@
                 "responsive": true,
                 "autoWidth": false,
                 "lengthChange": false,
-                'dom': "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
-                "buttons": [{
-                    text: 'Create Tickets',
-                    className: 'btn btn-success',
-                    action: function (e, dt, node, config) {
-                    	// window.location.href = "<?= base_url(); ?>sys/users/create/tickets";
-						$('#myModal').modal("show");
-                    }
-                }],
                 "columnDefs": [{
                     'target': 4,
 					"render": function(data, type, row, meta) {
@@ -140,6 +139,10 @@
 			});
 			getDate();
         });
+
+		
+
+        
 
         function getDate() {
 			var today = new Date();

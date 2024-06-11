@@ -9,16 +9,22 @@
 
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
         	<ul class="nav navbar-nav">
-        		<li class="active">
-                    <a href="<?= base_url(); ?>sys/users/dashboard">Tickets<span class="sr-only">(current)</span></a>
-                </li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Concerns <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">MSRF List Concern</a></li>
-                        <li><a href="#">TRACC List Concern</a></li>
-                    </ul>
+				<li class="active">
+					<a href="#">Dashboard</a>
 				</li>
+				<?php if ($getdept[0]['dept_id'] == 1): ?>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Tickets Concerns <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="<?= base_url(); ?>sys/users/create/tickets/msrf">MSRF List Concern</a></li>
+							<li><a href="#">TRACC List Concern</a></li>
+						</ul>
+					</li>
+				<?php else: ?>
+					<li>
+                    	<a href="<?= base_url(); ?>sys/users/dashboard">Creation Tickets<span class="sr-only">(current)</span></a>
+                	</li>
+				<?php endif; ?>
         	</ul>
         </div>
         <div class="navbar-custom-menu">

@@ -137,11 +137,14 @@ class DataTables extends CI_Controller {
                 $status[] = $rows->status;
                 $prio[] = $rows->priority;
                 $app_stat[] = $rows->approval_status;
+                $it_status[] = $rows->it_approval_status;
 
                 $label_class = '';
                 if ($rows->status == 'Open') {
                     $label_class = 'label-primary';
                 } else if ($rows->status == 'In Progress') {
+                    $label_class = 'label-warning';
+                } else if ($rows->status == 'On going') {
                     $label_class = 'label-warning';
                 } else if ($rows->status == 'Resolved') {
                     $label_class = 'label-success';
@@ -172,10 +175,23 @@ class DataTables extends CI_Controller {
                 }
 
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
+
+                $it_stat_class = '';
+                if ($rows->it_approval_status == 'Approved') {
+                    $it_stat_class = 'label-success';
+                } else if ($rows->it_approval_status == 'Pending') {
+                    $it_stat_class = 'label-warning';
+                } else if ($rows->it_approval_status == 'Rejected') {
+                    $it_stat_class = 'label-danger';
+                }
+
+                $it_stat_label[] = '<span class="label ' . $it_stat_class . '">' . $rows->it_approval_status . '</span>';
+
+                $tickets[] = "<a href='".base_url()."sys/users/details/concern/msrf/".$rows->ticket_id."'>". $rows->ticket_id ."</a>";
             }
 
             for ($i = 0; $i < count($bid); $i++) {
-            	$data[] = array($ticket[$i],$name[$i],$subject[$i],$prio_label[$i], $status_label[$i],$app_stat_label[$i]);
+            	$data[] = array($tickets[$i],$name[$i],$subject[$i],$prio_label[$i], $status_label[$i],$app_stat_label[$i],$it_stat_label[$i]);
             }
         }
 

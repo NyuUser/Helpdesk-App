@@ -463,10 +463,12 @@ class Main extends CI_Controller {
 	public function users_dashboard() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
 
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
 
 				$this->load->view('users/header', $data);
 				$this->load->view('users/dashboard', $data);
@@ -482,7 +484,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	public function users_creation_tickets_msfr() {
+	public function service_form_msrf_list() {
 		$id = $this->session->userdata('login_data')['user_id'];
 		$this->load->helper('form');
         $this->load->library('session');
@@ -490,6 +492,7 @@ class Main extends CI_Controller {
         $user_details = $this->Main_model->user_details();
         $department_data = $this->Main_model->getDepartment();
 		$users_det = $this->Main_model->users_details_put($id);
+		$getdepartment = $this->Main_model->GetDepartmentID();
 
         if ($this->form_validation->run() == FALSE) {
         	$msrfNumber = $this->GenerateMSRFNo();
@@ -503,18 +506,19 @@ class Main extends CI_Controller {
 				$data['departments'] = array();
 				echo "No departments found.";
 			}
+			$data['getdept'] = $getdepartment[1];
         	$data['msrfNumber'] = $msrfNumber;
-        	$this->load->view('users/create_tickets', $data);
+			$this->load->view('users/header', $data);
+        	$this->load->view('users/service_request_form_msrf_list', $data);
+			$this->load->view('users/footer');
         } else {
 			$process = $this->Main_model->msrf_add_ticket();
 			if ($process[0] == 1) {
-				$success_script = '<script>$(document).ready(function(){ $("#modal-success-users").modal("show"); });</script>';
 				$this->session->set_flashdata('success', $process[1]);
-				redirect(base_url()."sys/users/dashboard?success=".urlencode($success_script));
+				redirect(base_url().'sys/users/dashboard');
 			} else {
-				$error_script = '<script>$(document).ready(function(){ $("#modal-error-users").modal("show"); });</script>';
 				$this->session->set_flashdata('error', $process[1]);
-				redirect(base_url()."sys/users/dashboard?error=".urlencode($error_script));
+				redirect(base_url().'sys/users/dashboard');
 			}
         }
 	}
@@ -599,6 +603,60 @@ class Main extends CI_Controller {
 			);
 
 			var_dump($data);
+		}
+	}
+
+	public function service_form_msrf_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$getMsrf = $this->Main_model->getTicketsMSRF($id);
+
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['msrf'] = $getMsrf[1];
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/service_request_form_msrf_details', $data);
+				$this->load->view('users/footer');
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+        	$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	public function update_status_msrf_assign() {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		$ticket_id = $this->input->post('msrf_number', true);
+		if ($this->session->userdata('login_data')) {
+			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_details = $this->Main_model->user_details();
+
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+
+				$process = $this->Main_model->UpdateMSRFAssign();
+				if ($process[0] == 1) {
+					redirect(base_url()."sys/users/create/tickets/msrf");
+				} else {
+					redirect(base_url()."sys/users/create/tickets/msrf");
+				}
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Error fetching user information');
+            redirect(base_url()."admin/login");
 		}
 	}
 
