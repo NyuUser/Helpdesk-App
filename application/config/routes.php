@@ -12,7 +12,7 @@ $route['sys/admin/users'] = 'main/admin_users';
 $route['sys/admin/add/employee'] = 'main/admin_list_employee';
 $route['sys/admin/update/employee/(:any)'] = 'main/list_update_employee/$1';
 $route['sys/admin/team'] = 'main/admin_team';
-$route['sys/admin/list/ticket'] = 'main/admin_list_tickets';
+$route['sys/admin/list/ticket/msrf'] = 'main/admin_list_tickets';
 $route['sys/admin/approved/(:any)/(:any)'] = 'main/admin_approval_list/$1/$2';
 $route['sys/logout'] = 'main/logout';
 

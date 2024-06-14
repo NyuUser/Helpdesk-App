@@ -299,6 +299,7 @@ class Main extends CI_Controller {
 				$data['ict'] = $ict;
 				$emp_id = $user_details[1]["emp_id"];
 				$getTeam = $this->Main_model->GetTeam($dept_id);
+				$data['pages'] = 'tickets';
 
 				$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
 				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';

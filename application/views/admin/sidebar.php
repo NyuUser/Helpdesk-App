@@ -15,7 +15,21 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="<?= ($active_menu == 'open_tickets') ? 'active' : 'active'; ?>"><a href="<?= base_url(); ?>sys/admin/list/ticket"><i class="fa fa-folder-open-o"></i> Open Ticket</a></li>
+                    <li class="treeview <?= ($active_menu == 'open_tickets') ? 'active' : ''; ?>">
+                        <a href="#"><i class="fa fa-folder-open-o"></i> Open Tickets
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="<?= ($active_menu == 'open_tickets' && $this->uri->segment(5) == 'list' && $this->uri->segment(6) == 'ticket') ? 'active' : ''; ?>">
+                                <a href="<?= base_url(); ?>sys/admin/list/ticket/msrf"><i class="fa fa-circle-o"></i> MSRF Form List</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url(); ?>sys/admin/list/ticket/tracc"><i class="fa fa-circle-o"></i> TRACC Form List</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
             <li class="treeview <?= ($active_menu == 'system_administration' || $active_menu == 'users' || $active_menu == 'team') ? 'active' : ''; ?>">

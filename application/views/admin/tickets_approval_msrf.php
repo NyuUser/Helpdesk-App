@@ -99,10 +99,10 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<label>ICT Approval Status</label>
-												<select class="form-control select2" name="it_approval_stat" id="it_approval_stat" style="width: 100%;">
+												<select class="form-control select2" name="it_approval_stat" id="it_approval_stat" style="width: 100%;" <?php if ($msrf['it_approval_status'] == 'Approved') echo 'disabled'; ?>>
 													<option value=""></option>
-													<option value="Approved">Approved</option>
-													<option value="Rejected">Rejected</option>
+													<option value="Approved" <?php if ($msrf['it_approval_status'] == 'Approved') echo 'selected'; ?>>Approved</option>
+													<option value="Rejected" <?php if ($msrf['it_approval_status'] == 'Rejected') echo 'selected'; ?>>Rejected</option>
 												</select>
 											</div>
 										</div>
