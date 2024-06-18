@@ -2,7 +2,7 @@
     <div class="container">
         <section class="content-header">
 			<h1>
-				MSRF Deatils
+				MSRF Details
 				<small>Ticket</small>
 			</h1>
 			<ol class="breadcrumb">
@@ -109,10 +109,19 @@
                                                 <?php } else if ($msrf['status'] == 'Resolved') { ?>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label>Ticket Status for Requestor</label>
+                                                            <label>ICT Status Tickets</label>
                                                             <select name="status_users" id="status_users" class="form-control select2" <?php if ($msrf['status'] == 'Resolved') echo 'disabled'; ?>>
                                                                 <option value="">Please select status for reference</option>
                                                                 <option value="Resolved" <?php if ($msrf['status'] == 'Resolved') echo 'selected'; ?>>Resolved</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Ticket Status for Requestor</label>
+                                                            <select name="status_requestor" id="status_requestor" class="form-control select2">
+                                                                <option value="">Please select status for reference</option>
+                                                                <option value="Closed">Closed</option>
                                                             </select>
                                                         </div>
                                                     </div>

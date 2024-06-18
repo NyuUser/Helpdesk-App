@@ -16,7 +16,7 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Tickets Concerns <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="<?= base_url(); ?>sys/users/create/tickets/msrf">MSRF List Concern</a></li>
+							<li><a href="<?= base_url(); ?>sys/users/list/tickets/msrf">MSRF List Concern</a></li>
 							<li><a href="#">TRACC List Concern</a></li>
 						</ul>
 					</li>
@@ -24,7 +24,7 @@
 					<li class="dropdown">
                     	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Creation Tickets<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="<?= base_url(); ?>sys/users/create/tickets/msrf">MSRF List Creation</a></li>
+							<li><a href="<?= base_url(); ?>sys/users/list/tickets/msrf">MSRF List Creation</a></li>
 							<li><a href="#">TRACC List Creation</a></li>
 						</ul>
                 	</li>

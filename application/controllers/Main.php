@@ -485,8 +485,43 @@ class Main extends CI_Controller {
 		}
 	}
 
+	public function users_creation_tickets_msrf() {
+		$id = $this->session->userdata('login_data')['user_id'];
+		$this->load->helper('form');
+        $this->load->library('session');
+		$this->form_validation->set_rules('trn_number', 'Ticket ID', 'trim|required');
+		$user_details = $this->Main_model->user_details();
+		$department_data = $this->Main_model->getDepartment();
+		$getdepartment = $this->Main_model->GetDepartmentID();
+		$users_det = $this->Main_model->users_details_put($id);
+		
+		if ($this->form_validation->run() == FALSE) {
+			$data['user_details'] = $user_details[1];
+			$msrf = $this->GenerateMSRFNo();
+
+			$data['getdept'] = $getdepartment[1];
+			$data['msrf'] = $msrf;
+			$data['department_data'] = $department_data;
+			$data['users_det'] = $users_det[1];
+
+			if ($department_data[0] == "ok") {
+				$data['departments'] = $department_data[1];
+			} else {
+				$data['departments'] = array();
+				echo "No departments found.";
+			}
+
+			$this->load->view('users/header', $data);
+			$this->load->view('users/service_request_form_msrf_creation', $data);
+			$this->load->view('users/footer');
+		} else {
+
+		}
+	}
+
 	public function service_form_msrf_list() {
 		$id = $this->session->userdata('login_data')['user_id'];
+		$dept_id = $this->session->userdata('login_data')['dept_id'];
 		$this->load->helper('form');
         $this->load->library('session');
         $this->form_validation->set_rules('msrf_number', 'Ticket ID', 'trim|required');
@@ -500,6 +535,7 @@ class Main extends CI_Controller {
         	$data['user_details'] = $user_details[1];
         	$data['department_data'] = $department_data;
 			$data['users_det'] = $users_det[1];
+			$data['dept_id'] = $dept_id;
 
 			if ($department_data[0] == "ok") {
 				$data['departments'] = $department_data[1];
@@ -511,7 +547,7 @@ class Main extends CI_Controller {
         	$data['msrfNumber'] = $msrfNumber;
 			$this->load->view('users/header', $data);
         	$this->load->view('users/service_request_form_msrf_list', $data);
-			$this->load->view('users/footer');
+			$this->load->view('users/footer', $data);
         } else {
 			$process = $this->Main_model->msrf_add_ticket();
 			if ($process[0] == 1) {
@@ -621,7 +657,7 @@ class Main extends CI_Controller {
 
 				$this->load->view('users/header', $data);
 				$this->load->view('users/service_request_form_msrf_details', $data);
-				$this->load->view('users/footer');
+				$this->load->view('users/footer', $data);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");

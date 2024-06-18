@@ -113,6 +113,10 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 	<script>
+		var dept_id = <?php echo json_encode($dept_id); ?>;
+		console.log(dept_id);
+	</script>
+	<script>
 
 		$(function() {
             CKEDITOR.replace('editor1')
@@ -150,6 +154,15 @@
 				}
 			});
 
+			$('#status_requestor').on('change', function() {
+				var val = $(this).val();
+				if(val === "") {
+					$('#form-add-submit-button').prop("disabled", true);
+				} else {
+					$('#form-add-submit-button').prop("disabled", false);
+				}
+			});
+
 			$('#status_users').on('change', function() {
 				var val = $(this).val();
 				if(val === "") {
@@ -170,7 +183,20 @@
 					alert("Please Selected for creation of tickets");
 				}
 			});
-			
+
+			var buttonsConfig = [];
+			if (dept_id == 1) {
+                console.log(dept_id);
+            } else {
+				buttonsConfig.push({
+                    text: 'Create Tickets',
+                    className: 'btn btn-info',
+                    action: function (e, dt, node, config) {
+                        window.location.href = '<?= base_url(); ?>' + 'sys/users/create/tickets/msrf';
+                    }
+                });
+			}
+
 			$('#tblMsrfConcern').DataTable({
 				"serverSide": true,
                 "processing": true,
@@ -181,22 +207,17 @@
                 "responsive": true,
                 "autoWidth": false,
                 "lengthChange": false,
+				'dom': "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
+				"buttons": buttonsConfig,
                 "columnDefs": [{
                     'target': 4,
-					"render": function(data, type, row, meta) {
-						console.log(data);
-						return '<span class="label label-primary">hi</span>';
-					},
                     'orderable': false,
+					"data": "btn_action",
                     "className": "text-center"
                 }]
 			});
 			getDate();
         });
-
-		
-
-        
 
         function getDate() {
 			var today = new Date();

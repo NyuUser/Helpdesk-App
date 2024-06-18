@@ -516,8 +516,9 @@ class Main_model extends CI_Model {
 		$user_id = $this->session->userdata('login_data')['user_id'];
 		$status = $this->input->post('it_status', true);
 		$status_users = $this->input->post('status_users', true);
+		$status_requestor = $this->input->post('status_requestor', true);
 		
-		$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE status = "In Progress" OR status = "On going"');
+		$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE status = "In Progress" OR status = "On going" OR status = "Resolved"');
 
 		if ($qry->num_rows() > 0) {
 			$row = $qry->row();
@@ -525,6 +526,8 @@ class Main_model extends CI_Model {
 			// Check if status is 'On going'
 			if ($row->status == 'In Progress') {
 				$this->db->set('status', $status);
+			} else if ($row->status == 'Resolved') {
+				$this->db->set('status', $status_requestor);
 			} else {
 				$this->db->set('status', $status_users);
 			}

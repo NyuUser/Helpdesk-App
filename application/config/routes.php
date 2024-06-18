@@ -5,8 +5,9 @@ $route['sys/authentication'] = 'main/login';
 $route['sys/admin/dashboard'] = 'main/admin_dashboard';
 $route['sys/users/dashboard'] = 'main/users_dashboard';
 $route['sys/users/details/concern/msrf/(:any)'] = 'main/service_form_msrf_details/$1';
-$route['sys/users/create/tickets/msrf'] = 'main/service_form_msrf_list';
+$route['sys/users/list/tickets/msrf'] = 'main/service_form_msrf_list';
 $route['sys/users/create/tickets/tracc'] = 'main/users_creation_tickets_tracc';
+$route['sys/users/create/tickets/msrf'] = 'main/users_creation_tickets_msrf';
 
 $route['sys/admin/users'] = 'main/admin_users';
 $route['sys/admin/add/employee'] = 'main/admin_list_employee';
