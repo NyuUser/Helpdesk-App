@@ -223,6 +223,10 @@
 			var today = new Date();
 			document.getElementById("date_req").value = ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2) + '-' + today.getFullYear();
 		}
+
+		window.onload = function() {
+            getDate();
+        };
 	</script>
 </body>
 </html>

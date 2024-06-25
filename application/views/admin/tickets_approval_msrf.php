@@ -130,15 +130,17 @@
 											</div>
 										</div>
 									<?php } else { ?>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label>Status</label>
-												<select name="status" class="form-control select2" <?php if ($msrf['status'] == 'Closed') echo 'disabled'; ?>>
-													<option value="">Please select status for reference</option>
-													<option value="Closed" <?php if ($msrf['status'] == 'Closed') echo 'selected'; ?>>Closed</option>
-												</select>
+										<?php if ($msrf['it_approval_status'] == "Resolved") { ?>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Status</label>
+													<select name="status" class="form-control select2" <?php if ($msrf['status'] == 'Closed') echo 'disabled'; ?>>
+														<option value="">Please select status for reference</option>
+														<option value="Closed" <?php if ($msrf['status'] == 'Closed') echo 'selected'; ?>>Closed</option>
+													</select>
+												</div>
 											</div>
-										</div>
+										<?php } ?>
 									<?php } ?>
 										
 			                            <div class="col-md-12">

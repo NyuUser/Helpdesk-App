@@ -102,7 +102,7 @@ class Main_model extends CI_Model {
 
 		$query = $this->db->select('ticket_id')
 					->where('ticket_id', $msrf_number)
-					->get('msrf');
+					->get('service_request_msrf');
 		if ($query->num_rows() > 0) {
 			return array("error", "Data is Existing");
 		} else {
@@ -122,12 +122,13 @@ class Main_model extends CI_Model {
 				$spec = $specify;
 				$categ = "Low";
 			}
-	
+		
 			$data = array(
 				'ticket_id' => $msrf_number,
 				'subject' => 'MSRF',
 				'requestor_name' => $fullname,
 				'department' => $department_description,
+				'dept_id' => $department_id,
 				'date_requested' => $date_req,
 				'date_needed' => $date_need,
 				'asset_code' => $asset_code,
@@ -140,13 +141,13 @@ class Main_model extends CI_Model {
 				'requester_id' => $user_id,
 				'sup_id' => $sup_id,
 				'it_dept_id' => 1,
-				'it_sup_id' => 23-0001,
+				'it_sup_id' => '23-0001',
 				'it_approval_status' => 'Pending',
 				'created_at' => date("Y-m-d H:i:s")
 			);
 			
 			$this->db->trans_start();
-			$query = $this->db->insert('msrf', $data);
+			$query = $this->db->insert('service_request_msrf', $data);
 			if ($this->db->affected_rows() > 0) {
 				$this->db->trans_commit();
 				return array(1, "Successfully Created Ticket: ".$msrf_number."");
@@ -201,6 +202,19 @@ class Main_model extends CI_Model {
 	public function getDepartmentUsers() {
 		$user_id = $this->session->userdata('login_data')['user_id'];
 		if ($query = $this->db->query("SELECT * FROM department WHERE recid = ". $user_id ."")) {
+			if ($query->num_rows() > 0) {
+				$t = $query->row_array();
+				return array("ok", $t);
+			} else {
+				return array("error", "No data was fetched.");
+			}
+		} else {
+			return array("error", "Internal error. Please try again.");
+		}
+	}
+
+	public function UsersDepartment($id) {
+		if ($query = $this->db->query("SELECT * FROM departments WHERE recid = ". $id ."")) {
 			if ($query->num_rows() > 0) {
 				$t = $query->row_array();
 				return array("ok", $t);
