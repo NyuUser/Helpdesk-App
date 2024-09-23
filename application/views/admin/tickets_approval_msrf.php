@@ -1,7 +1,7 @@
 <div class="content-wrapper">
     <section class="content-header">
 		<h1>
-			Approval Tickets
+			MSRF Approval Tickets
 			<small>Ticket</small>
 		</h1>
 		<ol class="breadcrumb">
@@ -21,10 +21,10 @@
                     <div class="tab-pane active" id="msrf">
 			            <section id="new">
 			                <div class="row">
-			                    <form action="<?= site_url('Main/dept_supervisor_approval'); ?>" method="POST">
+			                    <form action="<?= site_url('Main/admin_list_tickets'); ?>" method="POST">
 			                    	<div class="col-md-12">
 			                    		<div class="form-group">
-			                    			<label>MSR#</label>
+			                    			<label>MSRF#</label>
 			                    			<input type="text" name="msrf_number" id="msrf_number" value="<?php echo $msrf['ticket_id']; ?>" class="form-control" readonly>
 			                    		</div>
 			                    	</div>
@@ -69,25 +69,25 @@
 			                                </select>
 			                            </div>
 			                        </div>
-			                        <div class="col-md-12" name="specify" id="specify" style="margin:0 auto; display:none;">
-			                            <div class="form-group" >
-			                                <label>Please Specify</label>
-			                                <input type="text" name="specify" class="form-control select2" style="width: 100%;">
-			                            </div>
-			                        </div>
+			                        <!-- SPECIFY START -->
+									<div class="col-md-12" id="specify-container" style="<?php echo ($msrf['category'] == 'Others') ? '' : 'display: none;'; ?>">
+                                        <div class="form-group">
+                                            <label>Specify</label>
+                                            <input type="text" name="msrf_specify" id="msrf_specify" class="form-control" value="<?= $msrf['specify']; ?>" readonly>
+                                        </div>
+                                    </div>            
+                                    <!-- SPECIFY END -->
 			                        <div class="col-md-12">
 			                            <div class="form-group">
 			                                <label>Details Concern</label>
-			                                <div class="box-body pad">
-												<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" disabled><?php echo $msrf['details_concern']; ?></textarea>
-			                                </div>
+												<textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" disabled><?php echo $msrf['details_concern']; ?></textarea>
 			                            </div>
 			                        </div>
 									<div class="col-md-12">
 			                            <div class="form-group">
-			                                <label>Approval Status</label>
+			                                <label>Approval Status</label>											
 											<select class="form-control select2" name="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?>>
-												<option value=""></option>
+												<option value="" disabled selected>Select Approval</option>
 												<option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
 												<option value="Pending"<?php if ($msrf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
 												<option value="Rejected"<?php if ($msrf['approval_status'] == 'Rejected') echo ' selected'; ?>>Rejected</option>
@@ -99,10 +99,11 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<label>ICT Approval Status</label>
-												<select class="form-control select2" name="it_approval_stat" id="it_approval_stat" style="width: 100%;" <?php if ($msrf['it_approval_status'] == 'Approved') echo 'disabled'; ?>>
-													<option value=""></option>
+												<select class="form-control select2" name="it_approval_stat" id="it_approval_stat" style="width: 100%;" <?php if ($msrf['it_approval_status'] == 'Approved'); ?>>
+													<option value="" disabled selected>Select ICT Approval</option>
 													<option value="Approved" <?php if ($msrf['it_approval_status'] == 'Approved') echo 'selected'; ?>>Approved</option>
 													<option value="Rejected" <?php if ($msrf['it_approval_status'] == 'Rejected') echo 'selected'; ?>>Rejected</option>
+													<option value="Resolved" <?php if ($msrf['it_approval_status'] == 'Resolved') echo 'selected'; ?>>Resolved</option>
 												</select>
 											</div>
 										</div>
@@ -110,11 +111,12 @@
 											<div class="form-group">
 												<label>ICT Assign To</label>
 												<select name="assign_to" class="form-control select2">
-													<option value=""></option>
+													<option value="" disabled selected>Select ICT</option>
 													<?php if (isset($getTeam) && is_array($getTeam)) : ?>
 														<?php foreach($getTeam as $team) : ?>
 															<?php if (is_array($team)) : // Ensure $team is an array ?>
 																<option value="<?php echo $team['emp_id']; ?>">
+																	<!-- eto yung gagalawin -->
 																	<?php echo $team['fname'] . ' ' . $team['lname']; ?>
 																</option>
 															<?php endif; ?>
@@ -123,14 +125,8 @@
 												</select>
 											</div>
 										</div>
-										<div class="col-md-12" id="reason" style="display: none;">
-											<div class="form-group">
-												<label>Reason for Reject Tickets</label>
-												<textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-											</div>
-										</div>
 									<?php } else { ?>
-										<?php if ($msrf['it_approval_status'] == "Resolved") { ?>
+										<?php if ($msrf['it_approval_status'] == "Resolveded") { ?>
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>Status</label>
@@ -142,11 +138,22 @@
 											</div>
 										<?php } ?>
 									<?php } ?>
+									
+										<!-- REJECTED TIX -->
+										<div class="col-md-12" id="reason" style="">
+											<div class="form-group">
+												<label>Reason for Reject Tickets</label>
+												<textarea class="form-control" name="rejecttix" id="rejecttix" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; text-align: left; resize: vertical;">
+													<?= isset($msrf['remarks_ict']) ? htmlspecialchars($msrf['remarks_ict']) : ''; ?>
+												</textarea>
+											</div>
+										</div>
+										<!-- REJECTED TIX -->
 										
 			                            <div class="col-md-12">
 			                                <div class="form-group">
 			                                    <div class="box-body pad">
-			                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary">Approved Tickets</button>
+			                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary">Validate Ticket</button>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -160,3 +167,57 @@
         </div>
     </section>
 </div>
+
+<!-- jQuery -->
+<script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $("#reason").hide();
+
+    $('#it_approval_stat').on('change', function() {
+        var approvalStatus = $(this).val();
+        if (approvalStatus === 'Rejected') {
+            $("#reason").show();  // Show the reason textarea
+        } else {
+            $("#reason").hide();  // Hide the reason textarea
+        }
+    });
+
+    // Trigger the change event to handle the case where the page is loaded with "Rejected" already selected
+    $('#it_approval_stat').trigger('change');
+});
+
+$(document).ready(function() {
+    // Temporarily enable the disabled dropdown
+    $('#category').prop('disabled', false);
+    $('#category').change(function() {
+        var status = $(this).val();
+        
+        if (status === 'others') {  
+            $('#specify-container').show();
+        } else {
+            $('#specify-container').hide();
+        }
+    });
+
+    $('#category').trigger('change');
+    $('#category').prop('disabled', true);
+});
+
+/*$(document).ready(function() {
+    $('#it_approval_stat').change(function() {
+        var statusapp = $(this).val();
+
+        if (statusapp === 'Approved') {
+            $('#ictassign').show();
+            $(this).prop('disabled', true);
+        } else {
+            $('#ictassign').hide();
+        }
+    });
+
+    $('#it_approval_stat').trigger('change');
+});*/
+
+</script>

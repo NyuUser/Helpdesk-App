@@ -17,7 +17,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?php echo ($this->session->flashdata('success')); ?>
+                    <!-- Need array kase sa Main.php, naka array ang message -->
+                    <?php if (isset($process)) : ?>
+                        <?php echo $this->session->set_flashdata('success', $process[1]); ?>
+                    <?php endif; ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -45,6 +48,52 @@
             </div>
         </div>
     </div>
+
+    <!-- Print Modal -->
+    <div id="printMsrfModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="printModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="printModalLabel">Print Filtered Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Use the filters below to narrow down the data you want to print:</p>
+
+                    <!-- Form for Filters -->
+                    <form id="printFilterForm">
+                        <!-- Date Range Filter -->
+                        <div class="form-group">
+                            <label for="startDate">Start Date:</label>
+                            <input type="date" class="form-control" id="startDate" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">End Date:</label>
+                            <input type="date" class="form-control" id="endDate" name="endDate" required>
+                        </div>
+
+                        <!-- Status Filter -->
+                        <div class="form-group">
+                            <label for="statusFilter">Status:</label>
+                            <select class="form-control" id="statusFilter" name="statusFilter" required>
+                                <option value="" disabled selected>Statuses</option>
+                                <option value="Open">Open</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmPrint">Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 	<script src="<?php echo base_url();?>/assets/bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="<?php echo base_url();?>/assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
@@ -91,6 +140,9 @@
                 } else if (this.value == "Rejected") {
                     $('#ictassign').hide();
                     $('#reason').show();
+                }else if (this.value == "Resolved") {
+                    $('#ictassign').hide(); 
+                    $('#reason').hide(); 
                 }
             });
 
@@ -125,7 +177,7 @@
                     $('#password').attr('type', 'text');
                     $('#cpassword').attr('type', 'text');
                 } else {
-                    $('#password').attr('type', 'password');
+                    $('#password').attr('type', 'password');    
                     $('#cpassword').attr('type', 'password');
                 }
             });
@@ -157,17 +209,98 @@
                 }]
             });
 
-            $('#tblTickets').DataTable({
+            let table = $('#tblTickets').DataTable({
                 "serverSide": true,
                 "processing": true,
                 "ajax": {
                     "url": "<?= base_url(); ?>DataTables/all_tickets_msrf",
+                    "type": "POST",
+                    "data": function(d) {
+                        // Add additional filter parameters to the DataTables request
+                        d.startDate = $('#startDate').val();
+                        d.endDate = $('#endDate').val();
+                        d.statusFilter = $('#statusFilter').val();
+                    }
+                },
+                "responsive": true,
+                "autoWidth": false,
+                "lengthChange": false,
+                "dom": "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
+                "buttons": [
+                    {
+                        text: 'Print Data',
+                        className: 'btn btn-primary',
+                        action: function (e, dt, node, config) {
+                            // Open the modal when the button is clicked
+                            $('#printMsrfModal').modal('show');
+                        }
+                    }
+                ]
+            });
+
+            // Handle the confirm print action inside the modal
+            $('#confirmPrint').on('click', function() {
+                // Prevent the modal from closing if the form is not valid
+                var form = $('#printFilterForm')[0];
+                
+                // Check form validity
+                if (!form.checkValidity()) {
+                    form.reportValidity(); // Show validation errors
+                    return; // Exit function if form is invalid
+                }
+
+                // Close the modal
+                $('#printMsrfModal').modal('hide');
+
+                // Redraw the table with new filter parameters
+                table.ajax.reload(function() {
+                    // After table is reloaded, trigger the print functionality
+                    table.button('.buttons-print').trigger();
+                }, false); // false to avoid resetting the page number
+            });
+
+
+            $('#tblTicketsTraccConcern').DataTable({
+                "serverSide": true,
+                "processing": true,
+                "ajax": {
+                    "url": "<?= base_url(); ?>DataTables/all_tickets_tracc_concern", 
                     "type": "POST"
                 },
                 "responsive": true,
                 "autoWidth": false,
                 "lengthChange": false
             });
+            
+
+            $('#tblDepartment').DataTable({
+                "serverSide": true,
+                "processing": true,
+                "ajax": {
+                    "url": "<?= base_url(); ?>DataTables/all_departments",
+                    "type": "POST"
+                },
+                "responsive": true,
+                "autoWidth": false,
+                "lengthChange": false,
+                'dom': "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
+                "buttons": [{
+                    text: 'Add Department',
+                    className: 'btn btn-info',
+                    action: function (e, dt, node, config) {
+                        // $("#modal-add-users").modal("show"); 
+                        window.location.href = '<?= base_url(); ?>' + 'sys/admin/add/department';
+                    }
+                }],
+                "columnDefs": [{
+                    'target': 2,
+                    "data": "btn_action",
+                    'orderable': false,
+                    "className": "text-center"
+                }]
+            });
+
+
         });
     </script>
 </body>

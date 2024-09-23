@@ -3,7 +3,7 @@
       			<div class="pull-right hidden-xs">
         			<b>Version</b> 1.0.0
       			</div>
-      			<strong>Copyright &copy; 2024-2025 <a href="https://adminlte.io">ICT Helpdesk</a>.</strong> All rights
+      			<strong>Copyright &copy; 2024-2025 <a href="#">ICT Helpdesk</a>.</strong> All rights
       			reserved.
     		</div>
   		</footer>
@@ -44,7 +44,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?php echo ($this->session->flashdata('success')); ?>
+					<?php 
+					$successMessage = $this->session->flashdata('success');
+					
+					if (is_array($successMessage)) {
+						echo implode(', ', $successMessage);
+					} else {
+						echo $successMessage;
+					}
+					?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -178,13 +186,13 @@
 				if (selectedValue == "MSRF") {
 					window.location.href = "<?= base_url(); ?>sys/users/create/tickets/msrf";
 				} else if (selectedValue == "TRACC") {
-					window.location.href = "<?= base_url(); ?>sys/users/create/tickets/tracc";
+					window.location.href = "<?= base_url(); ?>sys/users/create/tickets/tracc_concern";
 				} else {
 					alert("Please Selected for creation of tickets");
 				}
 			});
 
-			var buttonsConfig = [];
+			/*var buttonsConfig = [];
 			if (dept_id == 1) {
                 console.log(dept_id);
             } else {
@@ -192,29 +200,89 @@
                     text: 'Create Tickets',
                     className: 'btn btn-info',
                     action: function (e, dt, node, config) {
-                        window.location.href = '<?= base_url(); ?>' + 'sys/users/create/tickets/msrf';
+                        //window.location.href = '<?= base_url(); ?>' + 'sys/users/create/tickets/msrf';
                     }
                 });
-			}
+			}*/
 
 			$('#tblMsrfConcern').DataTable({
 				"serverSide": true,
-                "processing": true,
-                "ajax": {
-                	"url": "<?= base_url(); ?>DataTables/get_msrf_ticket",
-                	"type": "POST"
-                },
-                "responsive": true,
-                "autoWidth": false,
-                "lengthChange": false,
+				"processing": true,
+				"ajax": {
+					"url": "<?= base_url(); ?>DataTables/get_msrf_ticket",
+					"type": "POST"
+				},
+				"responsive": true,
+				"autoWidth": false,
+				"lengthChange": false,
 				'dom': "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
-				"buttons": buttonsConfig,
-                "columnDefs": [{
-                    'target': 4,
-                    'orderable': false,
+				
+				// Define buttonsConfig and apply conditional logic for dept_id
+				"buttons": (function() {
+					var buttonsConfig = [];
+					if (dept_id == 1) {
+						console.log(dept_id);
+					} else {
+						buttonsConfig.push({
+							text: 'Create Tickets',
+							className: 'btn btn-info',
+							action: function (e, dt, node, config) {
+								window.location.href = '<?= base_url(); ?>' + 'sys/users/create/tickets/msrf';
+							}
+						});
+					}
+					return buttonsConfig; // Return the final buttons configuration
+				})(), // Immediately invoked function to execute the conditional logic
+
+				"columnDefs": [{
+					'target': 4,
+					'orderable': false,
 					"data": "btn_action",
-                    "className": "text-center"
-                }]
+					"className": "text-center"
+				}]
+			});
+			
+
+			$('#tblTraccConcern').DataTable({
+				"serverSide": true,
+				"processing": true,
+				"ajax": {
+					"url": "<?= base_url(); ?>DataTables/get_tracc_concern_ticket",
+					"type": "POST"
+				},
+				"responsive": true,
+				"autoWidth": false,
+				"lengthChange": false,
+				'dom': "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
+				
+				"buttons": (function(){
+					var buttonsConfig = [];
+					if (dept_id == 1){
+						console.log(dept_id);
+					}else{
+						buttonsConfig.push({
+							text: 'Create Tickets',
+							className: 'btn btn-primary',
+							action: function (e, dt, node, config){
+								window.location.href = '<?= base_url(); ?>sys/users/create/tickets/tracc_concern';
+							}
+						});
+					}
+					return buttonsConfig;
+				})(),
+				//"buttons": [{
+					//text: 'Create Tickets',  
+					//className: 'btn btn-info',  
+					//action: function (e, dt, node, config) {
+						//window.location.href = '<?= base_url(); ?>sys/user/create/tickets/tracc_concern';  
+					//}
+				//}],
+				"columnDefs": [{
+					'target': 4,
+					'orderable': false,
+					"data": "btn_action",
+					"className": "text-center"
+				}]
 			});
 			getDate();
         });

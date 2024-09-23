@@ -50,26 +50,26 @@
 			                                    </div> -->
 			                                </div>
                                             <div class="col-md-6">
-			                                    <div class="form-group">
-			                                        <label>Date Requested</label>
-			                                        <input type="text" name="date_req" id="date_req" class="form-control select2" value="" style="width: 100%;" readonly>
-			                                    </div>
+                                                <div class="form-group">
+                                                    <label>Date Requested</label>
+                                                    <input type="text" name="date_req" id="date_req" class="form-control select2" value="" style="width: 100%;" readonly>
+                                                </div>
 			                                    <div class="form-group">
 			                                        <label>Date Needed</label>
-			                                        <input type="date" name="date_need" class="form-control select2" style="width: 100%;">
+			                                        <input type="date" name="date_need" class="form-control select2" style="width: 100%;" required>
 			                                    </div>
 			                                </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Asset Code</label>
-                                                    <input type="text" name="asset_code" class="form-control select2" style="width: 100%;">
+                                                    <input type="text" name="asset_code" class="form-control select2" style="width: 100%;" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Request Category</label>
-                                                    <select class="form-control select2" name="category" style="width: 100%;">
-                                                        <option value=""></option>
+                                                    <select class="form-control select2" id="categorySelect" name="category" style="width: 100%;" required>
+                                                        <option value=""disabled selected>Request Category</option>
                                                         <option value="computer">Computer (Laptop or Desktop)</option>
                                                         <option value="printer">Printer Concerns</option>
                                                         <option value="network">Network or Internet connection</option>
@@ -78,12 +78,21 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <!-- SPECIFY START -->
+                                            <div class="col-md-12" id="specifyDiv" style="display: none;">
+                                                <div class="form-group">
+                                                    <label>Specify</label>
+                                                    <input type="text" name="specify" class="form-control" style="width: 100%;">
+                                                </div>
+                                            </div>
+                                            <!-- SPECIFY END -->
+                                            
+
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Details Concern</label>
-                                                    <div class="box-body pad">
-                                                        <textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                                                    </div>
+                                                        <textarea class="form-control" name="concern" placeholder="Place the details concern here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -104,3 +113,27 @@
         </section>
     </div>
 </div>
+
+<script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#categorySelect').change(function() {
+            var selectedValue = $(this).val();
+            console.log("Selected value: " + selectedValue);
+
+            if (selectedValue === 'others') {
+                $('#specifyDiv').show();
+                console.log("Showing Specify");
+            } else {
+                $('#specifyDiv').hide();
+                console.log("Hiding Specify");
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        // Set the current date in YYYY-MM-DD format
+        var today = new Date().toISOString().split('T')[0];
+        $('#date_req').val(today);
+    });
+</script>

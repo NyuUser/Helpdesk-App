@@ -25,7 +25,7 @@
                                         <form action="<?= site_url('Main/update_status_msrf_assign'); ?>" method="POST">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
-			                    					<label>MSR#</label>
+			                    					<label>MSRF#</label>
 			                    					<input type="text" name="msrf_number" id="msrf_number" class="form-control" value="<?= $msrf['ticket_id']; ?>" readonly>
 			                    				</div>
 			                    			</div>
@@ -51,19 +51,52 @@
 			                                        <input type="text" name="date_need" class="form-control select2" value="<?= $msrf['date_needed']; ?>" style="width: 100%;" readonly>
 			                                    </div>
 			                                </div>
+
+                                            <!-- ASSET CODE START -->
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label>Details Concern</label>
-                                                    <div class="box-body pad">
-                                                        <textarea class="textarea" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" disabled><?= $msrf['details_concern']; ?></textarea>
-                                                    </div>
+                                                    <label>Asset Code</label>
+                                                    <input type="text" name="asset_code" class="form-control select2" value="<?php echo $msrf['asset_code']; ?>" style="width: 100%;" placeholder="Asset Code" readonly>
+                                                </div>
+                                            </div>
+                                            <!-- ASSET CODE END -->
+
+                                            <!-- REQUEST CATEGORY START -->
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Request Category</label>
+                                                    <select class="form-control select2" name="category" id="category" style="width: 100%;" disabled>
+                                                        <option value="">Select Category</option>
+                                                        <option value="computer"<?php if ($msrf['category'] == 'computer') echo ' selected'; ?>>Computer (Laptop or Desktop)</option>
+                                                        <option value="printer"<?php if ($msrf['category'] == 'printer') echo ' selected'; ?>>Printer Concerns</option>
+                                                        <option value="network"<?php if ($msrf['category'] == 'network') echo ' selected'; ?>>Network or Internet connection</option>
+                                                        <option value="projector"<?php if ($msrf['category'] == 'projector') echo ' selected'; ?>>Projector / TV Set-up</option>
+                                                        <option value="others"<?php if ($msrf['category'] == 'others') echo ' selected'; ?>>Others</option>
+                                                    </select>
+                                                </div>
+                                            </div>                                          
+                                            <!-- REQUEST CATEGORY END -->
+
+                                            <!-- SPECIFY START -->
+                                            <div class="col-md-12" id="specify-container" style="<?php echo ($msrf['category'] == 'Others') ? '' : 'display: none;'; ?>">
+                                                <div class="form-group">
+                                                    <label>Specify</label>
+                                                    <input type="text" name="msrf_specify" id="msrf_specify" class="form-control" value="<?= $msrf['specify']; ?>" readonly>
+                                                </div>
+                                            </div>
+                                            <!-- SPECIFY END -->
+
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Details Concern</label>                                            
+                                                    <textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" disabled><?= $msrf['details_concern']; ?></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Approval Status</label>
                                                     <select class="form-control select2" name="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?>>
-                                                        <option value=""></option>
+                                                        <option value=""disabled selected></option>
                                                         <option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($msrf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
                                                         <option value="Rejected"<?php if ($msrf['approval_status'] == 'Rejected') echo ' selected'; ?>>Rejected</option>
@@ -72,9 +105,9 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label>ICT Supervisor Status</label>
+                                                    <label>ICT Approval Status</label>
                                                     <select name="it_approval_stat" class="form-control select2" <?php if ($msrf['it_approval_status'] == 'Approved' || $msrf['it_approval_status'] == 'Rejected') echo 'disabled'; ?>>
-                                                        <option value=""></option>
+                                                        <option value=""disabled selected></option>
                                                         <option value="Approved"<?php if ($msrf['it_approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($msrf['it_approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
                                                         <option value="Rejected"<?php if ($msrf['it_approval_status'] == 'Rejected') echo ' selected'; ?>>Rejected</option>
@@ -128,6 +161,15 @@
                                                 <?php } ?>
                                             <?php } ?>
 
+                                            <!-- REASON WHY REJECTED in db remarks_ict -->
+                                            <div class="col-md-12" id="reason" style="<?php echo ($msrf['it_approval_status'] == 'Rejected') ? '' : 'display: none;'; ?>">
+                                                <div class="form-group">
+                                                    <label>Reason for Reject Tickets</label>
+                                                    <textarea class="form-control" name="rejecttix" id="rejecttix" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" disabled><?= $msrf['remarks_ict']; ?></textarea>
+                                                </div>
+                                            </div>
+                                            <!-- REASON WHY REJECTED in db remarks_ict -->
+
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">
@@ -146,3 +188,55 @@
         </section>
     </div>
 </div>
+
+<!-- jQuery -->
+<script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#it_approval_stat').change(function() {
+        var status = $(this).val();
+        if (status === 'Rejected') {
+            $('#reason').show();
+            $('#rejecttix').prop('disabled', false);
+        } else {
+            $('#reason').hide();
+            $('#rejecttix').prop('disabled', true);
+        }
+    });
+    
+    $('#it_approval_stat').trigger('change');
+});
+
+/*$(document).ready(function() {
+    $('#it_approval_stat').change(function() {
+        var status = $(this).val();
+        if (status === 'Approved') {
+            $('#assigned-it-container').show();
+        }else{
+            $('#assigned-it-container').hide();
+        }
+    });
+
+    $('#it_approval_stat').trigger('change');
+});*/
+
+$(document).ready(function() {
+    // Temporarily enable the disabled dropdown
+    $('#category').prop('disabled', false);
+    $('#category').change(function() {
+        var status = $(this).val();
+        
+        if (status === 'others') {  
+            $('#specify-container').show();
+        } else {
+            $('#specify-container').hide();
+        }
+    });
+
+    $('#category').trigger('change');
+    $('#category').prop('disabled', true);
+});
+
+
+</script>

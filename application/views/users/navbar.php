@@ -9,7 +9,7 @@
 
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
         	<ul class="nav navbar-nav">
-				<li class="active">
+				<li class="">
 					<a href="<?= base_url(); ?>sys/users/dashboard">Dashboard</a>
 				</li>
 				<?php if ($getdept[0]['dept_id'] == 1): ?>
@@ -17,7 +17,7 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Tickets Concerns <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="<?= base_url(); ?>sys/users/list/tickets/msrf">MSRF List Concern</a></li>
-							<li><a href="#">TRACC List Concern</a></li>
+							<li><a href= "<?= base_url(); ?>sys/users/list/tickets/tracc_concern">TRACC List Concern</a></li>
 						</ul>
 					</li>
 				<?php else: ?>
@@ -25,7 +25,7 @@
                     	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Creation Tickets<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="<?= base_url(); ?>sys/users/list/tickets/msrf">MSRF List Creation</a></li>
-							<li><a href="#">TRACC List Creation</a></li>
+							<li><a href="<?= base_url(); ?>sys/users/list/tickets/tracc_concern">TRACC Concern Creation</a></li>
 						</ul>
                 	</li>
 				<?php endif; ?>

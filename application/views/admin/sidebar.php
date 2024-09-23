@@ -26,7 +26,10 @@
                                 <a href="<?= base_url(); ?>sys/admin/list/ticket/msrf"><i class="fa fa-circle-o"></i> MSRF Form List</a>
                             </li>
                             <li>
-                                <a href="<?= base_url(); ?>sys/admin/list/ticket/tracc"><i class="fa fa-circle-o"></i> TRACC Form List</a>
+                                <a href="<?= base_url(); ?>sys/admin/list/ticket/tracc_concern"><i class="fa fa-circle-o"></i> TRACC Concern List</a>
+                            </li>
+                            <li>
+                               <!--<a href=""><i class="fa fa-circle-o"></i> TRACC Request List</a>-->
                             </li>
                         </ul>
                     </li>
@@ -41,7 +44,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="<?= ($active_menu == 'users') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/users"><i class="fa fa-users"></i> Users</a></li>
-                    <li class="<?= ($active_menu == 'team') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/team"><i class="fa fa-user-plus"></i> Department Team</a></li>
+                    <li class="<?= ($active_menu == 'team') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/team"><i class="fa solid fa-user-plus"></i> Departments</a></li>
                 </ul>
             </li>
         </ul>

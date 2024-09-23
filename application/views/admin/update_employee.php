@@ -2,7 +2,7 @@
 	<section class="content-header">
 		<h1>
 			Form Update Employee
-			<small>Add Details employee</small>
+			<small>Update Details employee</small>
 		</h1>
 		<ol class="breadcrumb">
 			<li><a href=""><i class="fa fa-dashboard"></i> Home</a></li>
@@ -17,7 +17,7 @@
             		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           		</div>
 			</div>
-			<form action="<?= site_url('Main/employee_update'); ?>" method="POST">
+			<form id="employeeUpdateForm" action="<?= site_url('Main/employee_update'); ?>" method="POST">
 				<input type="hidden" name="id" value="<?php echo $users_det['recid']; ?>">
 				<div class="box-body">
 					<div class="row">
@@ -64,6 +64,14 @@
 								<input type="text" name="position" id="position" value="<?php echo $users_det['position']; ?>" class="form-control">
 							</div>
 							<div class="form-group">
+								<label>Role</label>
+								<select name="role" id="role" class="form-control" required>
+									<option value="" disabled <?php echo ($users_det['role'] == '') ? 'selected' : ''; ?>>Please choose the designated role</option>
+									<option value="L1" <?php echo ($users_det['role'] == 'L1') ? 'selected' : ''; ?>>L1 (Regular Employees)</option>
+									<option value="L2" <?php echo ($users_det['role'] == 'L2') ? 'selected' : ''; ?>>L2 (Supervisor/Admin)</option>
+								</select>
+							</div>
+							<div class="form-group">
 								<label>Username</label>
 								<input type="text" name="username" id="username" value="<?php echo $users_det['username']; ?>" class="form-control">
 							</div>
@@ -92,3 +100,117 @@
 		</div>
 	</section>
 </div>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+	/* Popup: Overall container */
+.swal-custom-popup {
+    padding: 20px; /* Adjust padding */
+}
+
+/* Title: Customize font size and weight */
+.swal-custom-title {
+    font-size: 3em; /* Larger title */
+    font-weight: bold; /* Make the title bold */
+}
+
+/* Content: Customize font size and line spacing */
+.swal-custom-content {
+    font-size: 5.5em; /* Larger content text */
+    line-height: 1.6; /* Adjust line spacing */
+}
+
+/* Confirm Button: Customize size and padding */
+.swal-custom-confirm-btn {
+    font-size: 1.6em; /* Larger button text */
+    padding: 10px 20px; /* Adjust padding for the button */
+}
+
+/* Optional: Increase button border radius and background color */
+.swal-custom-confirm-btn, .swal-custom-cancel-btn {
+    border-radius: 8px; /* Make the buttons more rounded */
+    background-color: #007bff; /* Change button color */
+    color: #fff; /* Ensure text is white */
+}
+
+.swal-custom-confirm-btn:hover, .swal-custom-cancel-btn:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}
+
+.swal-custom-text {
+    font-size: 2em; /* Adjust the size as needed */
+}
+
+/* Optional: To ensure the custom styles are applied correctly */
+.swal2-html-container {
+    font-size: 2em !important; /* Use !important if necessary to override defaults */
+}
+</style>
+
+<script>
+$(document).ready(function() {
+    $('#employeeUpdateForm').on('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+        $.ajax({
+            url: $(this).attr('action'), // Form action URL
+            type: 'POST',
+            data: $(this).serialize(), // Serialize form data
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    // Success alert
+                    Swal.fire({
+                        title: 'Successfully Updated!',
+                        text: response.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        width: '30%',
+                        heightAuto: false,
+                        timer: 2000,
+						customClass: {
+                            popup: 'swal-custom-popup',
+                            title: 'swal-custom-title',
+							text: 'swal-custom-text',
+                            content: 'swal-custom-content',
+                            confirmButton: 'swal-custom-confirm-btn'
+                        }
+                    }).then(() => {
+                        window.location.href = '<?= base_url("sys/admin/users"); ?>';
+                    });
+                } else {
+                    // Error alert
+                    Swal.fire({
+                        title: 'Update Failed!',
+                        text:  response.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        width: '30%',
+                        heightAuto: false,
+                        timer: 2000,
+						customClass: {
+							popup: 'swal-custom-popup',
+							title: 'swal-custom-title',
+							htmlContainer: 'swal-custom-text',
+							content: 'swal-custom-content',
+							confirmButton: 'swal-custom-confirm-btn'
+						}
+                    });
+                }
+            },
+            error: function() {
+                // Handle unexpected errors
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An unexpected error occurred.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    width: '30%',
+                    heightAuto: false
+                });
+            }
+        });
+    });
+});
+</script>

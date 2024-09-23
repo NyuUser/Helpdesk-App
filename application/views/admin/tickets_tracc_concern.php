@@ -1,7 +1,7 @@
 <div class="content-wrapper">
     <section class="content-header">
 		<h1>
-			List of Tickets (MSRF)
+			List of Tickets (TRACC CONCERN)
 			<small>Control Panel</small>
 		</h1>
 		<ol class="breadcrumb">
@@ -14,13 +14,13 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-body">
-                        <table id="tblTickets" class="table table-bordered table-striped">
+                        <table id="tblTicketsTraccConcern" class="table table-bordered table-striped">
                             <thead>
 								<tr>
-									<th>Ticket ID</th>
-									<th>Requestor Name</th>
+									<th>Control Number</th>
+									<th>Reported By</th>
 									<th>Subject</th>
-									<th>Priority</th>
+                                    <th>Company</th>
 								    <th>Status</th>
 									<th>Department Approval Status</th>
 									<th>ICT Approval Status</th>
@@ -28,10 +28,10 @@
 							</thead>
                             <tfoot>
                                 <tr>
-									<th>Ticket ID</th>
-									<th>Requestor Name</th>
+									<th>Control Number</th>
+									<th>Reported By</th>
 									<th>Subject</th>
-									<th>Priority</th>
+                                    <th>Company</th>
 								    <th>Status</th>
 									<th>Department Approval Status</th>
 									<th>ICT Approval Status</th>

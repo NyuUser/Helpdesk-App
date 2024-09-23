@@ -1,40 +1,36 @@
 <div class="content-wrapper">
-	<section class="content-header">
+    <section class="content-header">
 		<h1>
-			Employee
-			<small>List of employee</small>
+			Department Setup
+			<small>Setting up Department</small>
 		</h1>
 		<ol class="breadcrumb">
 			<li><a href=""><i class="fa fa-dashboard"></i> Home</a></li>
-			<li class="active">List of Employee</li>
+			<li class="active">Departments</li>
 		</ol>
 	</section>
-	<section class="content">
+    <section class="content">
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="box">
 					<div class="box-body">
-						<table id="tblUsers" class="table table-bordered table-striped">
+						<table id="tblDepartment" class="table table-bordered table-striped">
 							<thead>
 								<tr>
-									<th>Employee ID</th>
-                                    <th>Employee Name</th>
-                                    <th>Email</th>
-                                    <th>Position</th>
-                                    <th>Username</th>
-									<th>Role</th>
-                                    <th>Action</th>
+									<th>Department ID</th>
+									<th>Department</th>
+									<th>Manager ID</th>
+									<th>Support ID</th>
+									<th>Action</th>
 								</tr>
 							</thead>
 							<tfoot>
-								<tr>
-									<th>Employee ID</th>
-                                    <th>Employee Name</th>
-                                    <th>Email</th>
-                                    <th>Position</th>
-                                    <th>Username</th>
-									<th>Role</th>
-                                    <th>Action</th>
+								<tr>	
+									<th>Department ID</th>
+									<th>Department</th>
+									<th>Manager ID</th>
+									<th>Support ID</th>
+									<th>Action</th>
 								</tr>
 							</tfoot>
 						</table>
@@ -44,55 +40,9 @@
 		</div>
 	</section>
 </div>
-<!-- Modal Show Lock Account -->
-<div class="modal fade" id="modalLock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Helpdesk Notification</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          			<span aria-hidden="true">&times;</span>
-        		</button>
-			</div>
-			<form action="<?= site_url('Main/lock_users');?>" method="POST">
-				<input type="hidden" name="id" id="id">
-				<div class="modal-body">
-					<p>Do you want to Lock this Employee ID: <span id="employee_id"></span></p>
-				</div>
-				<div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        <button type="submit" class="btn btn-success float-right">Submit</button>
-			    </div>
-			</form>
-		</div>
-	</div>
-</div>
-<!-- Modal Show Unlock Account -->
-<div class="modal fade" id="modalUnlock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Helpdesk Notification</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          			<span aria-hidden="true">&times;</span>
-        		</button>
-			</div>
-			<form action="<?= site_url('Main/unlock_users');?>" method="POST">
-				<input type="hidden" name="id" id="recid">
-				<div class="modal-body">
-					<p>Do you want to Unlock this Employee ID: <span id="employee_id"></span></p>
-				</div>
-				<div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        <button type="submit" class="btn btn-success float-right">Submit</button>
-			    </div>
-			</form>
-		</div>
-	</div>
-</div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="UsersDeleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document" style="
     display: flex; 
     align-items: center; 
@@ -108,7 +58,7 @@
         </button>
       </div>
       <div class="modal-body">
-        Are you sure you want to delete this Employee?
+        Are you sure you want to delete this department?
       </div>
       <div class="modal-footer">      
         <a href="#" id="confirmDeleteBtn" class="btn btn-danger">Delete</a>
@@ -154,6 +104,15 @@
 .swal-custom-confirm-btn:hover, .swal-custom-cancel-btn:hover {
     background-color: #0056b3; /* Darker color on hover */
 }
+
+.swal-custom-text {
+    font-size: 2em; /* Adjust the size as needed */
+}
+
+/* Optional: To ensure the custom styles are applied correctly */
+.swal2-html-container {
+    font-size: 2em !important; /* Use !important if necessary to override defaults */
+}
 </style>
 
 <!-- jQuery -->
@@ -161,10 +120,10 @@
 
 <script>
 $(document).ready(function() {
-    $('#UsersDeleteModal').on('show.bs.modal', function (event) {
+    $('#deleteModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var recid = button.data('id');
-        var deleteUrl = "<?= base_url('main/employee_delete/'); ?>" + recid;
+        var deleteUrl = "<?= base_url('main/department_delete/'); ?>" + recid;
 
         var confirmBtn = $(this).find('#confirmDeleteBtn');
         confirmBtn.off('click').on('click', function(e) {
@@ -178,17 +137,18 @@ $(document).ready(function() {
 
                     if (response.status === 'success') {
                         Swal.fire({
-                            title: "EMPLOYEE'S BEEN SUCCESSFULLY DELETED!",
+                            title: "DEPARTMENT'S BEEN SUCCESSFULLY DELETED!",
 							icon: "success",
 							width: '30%', // Set the width if needed
 							heightAuto: false, // Disable auto height
 							timer: 2000,
-							customClass: {
-								popup: 'swal-custom-popup', // Custom class for the popup
-								title: 'swal-custom-title',  // Custom class for the title
-								content: 'swal-custom-content', // Custom class for the content	
-								confirmButton: 'swal-custom-confirm-btn' // Custom class for the confirm button
-							}
+                            customClass: {
+                                popup: 'swal-custom-popup',
+                                title: 'swal-custom-title',
+                                text: 'swal-custom-text',
+                                content: 'swal-custom-content',
+                                confirmButton: 'swal-custom-confirm-btn'
+                            }
                         }).then(() => {
                             window.location.reload(); // Reload the page or redirect as needed
                         });
@@ -213,3 +173,4 @@ $(document).ready(function() {
 });
 
 </script>
+
