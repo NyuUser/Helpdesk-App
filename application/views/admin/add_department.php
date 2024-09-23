@@ -95,6 +95,8 @@
 .swal2-html-container {
     font-size: 2em !important; /* Use !important if necessary to override defaults */
 }
+
+/* mema lagay */
 </style>
 
 <script>
