@@ -83,33 +83,10 @@
 												<textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" disabled><?php echo $msrf['details_concern']; ?></textarea>
 			                            </div>
 			                        </div>
-
-									<!-- New Section for File Display -->
-									<div class="col-md-12">
-										<div class="form-group">
-                                            <label>View File</label><br>
-                                                <?php if (!empty($msrf['file'])): ?>
-                                                    <a href="<?= site_url('uploads/msrf/' . $msrf['file']); ?>" target="_blank" class="btn btn-primary">
-                                                        <i class="fa fa-eye"></i> View Uploaded File
-                                                    </a>
-                                                <?php else: ?>
-												<div class="alert alert-light" role="alert">
-													<i class="fa fa-exclamation-circle"></i> No file uploaded.
-												</div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>                          
-
-									<?php
-										$user_role = $this->session->userdata('user_role'); // Fetch user role from session
-										$is_disabled = ($user_role == 'L3') ? 'disabled' : ''; // Set disabled attribute if role is l3
-										$is_disable = ($user_role == 'L2') ? 'disabled' : '';
-									?>   
-
 									<div class="col-md-12">
 			                            <div class="form-group">
 			                                <label>Approval Status</label>											
-											<select class="form-control select2" name="approval_stat" id="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?> <?= $is_disable ?>>
+											<select class="form-control select2" name="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?>>
 												<option value="" disabled selected>Select Approval</option>
 												<option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
 												<option value="Pending"<?php if ($msrf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -117,51 +94,67 @@
 											</select>
 			                            </div>
 			                        </div>
-									<!-- Add a hidden input field to store the current approval status -->
-									<input type="hidden" name="approval_stat" value="<?php echo $msrf['approval_status']; ?>">
- 
 
-									<div class="col-md-12">
-										<div class="form-group">
-											<label>ICT Approval Status</label>
-											<select class="form-control select2" name="it_approval_stat" id="it_approval_stat" style="width: 100%;" <?php if ($msrf['it_approval_status'] == 'Approved'); ?> <?= $is_disabled ?>>
-												<option value="" disabled selected>Select ICT Approval</option>
-												<option value="Approved" <?php if ($msrf['it_approval_status'] == 'Approved') echo 'selected'; ?>>Approved</option>
-												<option value="Rejected" <?php if ($msrf['it_approval_status'] == 'Rejected') echo 'selected'; ?>>Rejected</option>
-												<option value="Resolved" <?php if ($msrf['it_approval_status'] == 'Resolved') echo 'selected'; ?>>Resolved</option>
-											</select>
+									<?php if ($user_details['dept_id'] == 1) { ?>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label>ICT Approval Status</label>
+												<select class="form-control select2" name="it_approval_stat" id="it_approval_stat" style="width: 100%;" <?php if ($msrf['it_approval_status'] == 'Approved'); ?>>
+													<option value="" disabled selected>Select ICT Approval</option>
+													<option value="Approved" <?php if ($msrf['it_approval_status'] == 'Approved') echo 'selected'; ?>>Approved</option>
+													<option value="Rejected" <?php if ($msrf['it_approval_status'] == 'Rejected') echo 'selected'; ?>>Rejected</option>
+													<option value="Resolved" <?php if ($msrf['it_approval_status'] == 'Resolved') echo 'selected'; ?>>Resolved</option>
+												</select>
+											</div>
 										</div>
-									</div>		   
-
-									<div class="col-md-12" id="ictassign" style="display:none;">
-										<div class="form-group">
-											<label>ICT Assign To</label>
-											<select name="assign_to" class="form-control select2" <?= $is_disabled ?>>
-												<option value="" disabled selected>Select ICT</option>
-												<option value="ChristianJ" <?php if ($msrf['assigned_it_staff'] == 'ChristianJ') echo ' selected'; ?>>Sir Chinchan</option>
-												<option value="Michael" <?php if ($msrf['assigned_it_staff'] == 'Michael') echo ' selected'; ?>>Sir Michael</option>
-												<option value="Louise" <?php if ($msrf['assigned_it_staff'] == 'Louise') echo ' selected'; ?>>Sir Louise</option>
-												<option value="ChristanA" <?php if ($msrf['assigned_it_staff'] == 'Louise') echo ' selected'; ?>>Sir Bok</option>
-											</select>
+										<div class="col-md-12" id="ictassign" style="display: none;">
+											<div class="form-group">
+												<label>ICT Assign To</label>
+												<select name="assign_to" class="form-control select2">
+													<option value="" disabled selected>Select ICT</option>
+													<?php if (isset($getTeam) && is_array($getTeam)) : ?>
+														<?php foreach($getTeam as $team) : ?>
+															<?php if (is_array($team)) : // Ensure $team is an array ?>
+																<option value="<?php echo $team['emp_id']; ?>">
+																	<!-- eto yung gagalawin -->
+																	<?php echo $team['fname'] . ' ' . $team['lname']; ?>
+																</option>
+															<?php endif; ?>
+														<?php endforeach; ?>
+													<?php endif; ?>
+												</select>
+											</div>
 										</div>
-									</div>	
+									<?php } else { ?>
+										<?php if ($msrf['it_approval_status'] == "Resolveded") { ?>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Status</label>
+													<select name="status" class="form-control select2" <?php if ($msrf['status'] == 'Closed') echo 'disabled'; ?>>
+														<option value="">Please select status for reference</option>
+														<option value="Closed" <?php if ($msrf['status'] == 'Closed') echo 'selected'; ?>>Closed</option>
+													</select>
+												</div>
+											</div>
+										<?php } ?>
+									<?php } ?>
 									
-									<!-- REJECTED TIX -->
-									<div class="col-md-12" id="reason" style="display: none;">
-										<div class="form-group">
-											<label>Reason for Reject Tickets</label>
-											<textarea class="form-control" name="rejecttix" id="rejecttix" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; text-align: left; resize: vertical;"><?= isset($msrf['remarks_ict']) ? htmlspecialchars($msrf['remarks_ict']) : ''; ?></textarea>
+										<!-- REJECTED TIX -->
+										<div class="col-md-12" id="reason" style="">
+											<div class="form-group">
+												<label>Reason for Reject Tickets</label>
+												<textarea class="form-control" name="rejecttix" id="rejecttix" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; text-align: left; resize: vertical;"><?= isset($msrf['remarks_ict']) ? htmlspecialchars($msrf['remarks_ict']) : ''; ?></textarea>
+											</div>
 										</div>
-									</div>
-									<!-- REJECTED TIX -->	
+										<!-- REJECTED TIX -->
 										
-			                        <div class="col-md-12">
-			                            <div class="form-group">
-			                                <div class="box-body pad">
-			                                    <button id="form-add-submit-button" type="submit" class="btn btn-primary">Validate Ticket</button>
+			                            <div class="col-md-12">
+			                                <div class="form-group">
+			                                    <div class="box-body pad">
+			                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary">Validate Ticket</button>
+			                                    </div>
 			                                </div>
 			                            </div>
-			                        </div>
 			                    	</form>
 			                    </div>
 			                </section>
@@ -177,7 +170,7 @@
 <script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
 
 <script>
-	/*$(document).ready(function() {
+	$(document).ready(function() {
 		$("#reason").hide();
 
 		$('#it_approval_stat').on('change', function() {
@@ -191,31 +184,7 @@
 
 		// Trigger the change event to handle the case where the page is loaded with "Rejected" already selected
 		$('#it_approval_stat').trigger('change');
-	});*/
-
-	$(document).ready(function() {
-		$("#reason").hide();
-
-		function toggleReasonField() {
-			var itApprovalStatus = $('#it_approval_stat').val();
-			var approvalStatus = $('#approval_stat').val();
-
-			if (itApprovalStatus === 'Rejected' || approvalStatus === 'Rejected') {
-				$("#reason").show();  // Show the reason textarea
-			} else {
-				$("#reason").hide();  // Hide the reason textarea
-			}
-		}
-
-		// Trigger the change event to handle the case where the page is loaded with "Rejected" already selected
-		$('#it_approval_stat, #approval_stat').on('change', function() {
-			toggleReasonField();
-		});
-
-		// Call the function on page load to check the initial state
-		toggleReasonField();
 	});
-
 
 	$(document).ready(function() {
 		// Temporarily enable the disabled dropdown
@@ -234,36 +203,19 @@
 		$('#category').prop('disabled', true);
 	});
 
-	$(document).ready(function() {
-		if ($('#it_approval_stat').val() == 'Approved') {
-			$('#ictassign').show();
-		}
+	/*$(document).ready(function() {
+		$('#it_approval_stat').change(function() {
+			var statusapp = $(this).val();
 
-		// When ICT Approval changes
-		$('#it_approval_stat').on('change', function() {
-			var selectedValue = $(this).val();
-
-			if (selectedValue == 'Approved') {
-				$('#ictassign').show();  // Show ICT Assign section if Approved
+			if (statusapp === 'Approved') {
+				$('#ictassign').show();
+				$(this).prop('disabled', true);
 			} else {
-				$('#ictassign').hide();  // Hide it otherwise
+				$('#ictassign').hide();
 			}
 		});
-	});
 
-	$(document).ready(function() {
-        function autoResizeTextarea() {
-            $(this).css('height', 'auto'); // Reset the height to auto to calculate new height
-            $(this).height(this.scrollHeight); // Set height based on content
-        }
-        
-        // Apply the resize function to the textarea on input
-        $('#rejecttix').on('input', autoResizeTextarea);
-        $('#concern').on('input', autoResizeTextarea);
-
-        // Trigger the resize on page load if there's existing content in the textarea
-        $('#rejecttix').each(autoResizeTextarea);
-        $('#concern').each(autoResizeTextarea);
-    });
+		$('#it_approval_stat').trigger('change');
+	});*/
 
 </script>

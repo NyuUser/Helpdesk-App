@@ -38,23 +38,23 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="employee_id" class="form-label">Employee ID</label>
-                                    <input type="text" class="form-control" id="employee_id" name="employee_id" placeholder="Employee ID" required>
+                                    <input type="text" class="form-control" id="employee_id" name="employee_id" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="firstname" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" required>
+                                    <input type="text" class="form-control" id="firstname" name="firstname" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="middlename" class="form-label">Middle Name</label>
-                                    <input type="text" class="form-control" id="middlename" name="middlename" placeholder="Middle Name">
+                                    <input type="text" class="form-control" id="middlename" name="middlename">
                                 </div>
                                 <div class="mb-3">
                                     <label for="lastname" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" required>
+                                    <input type="text" class="form-control" id="lastname" name="lastname" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Company Email" required>
+                                    <input type="email" class="form-control" id="email" name="email">
                                 </div>
                             </div>
                             <!-- Right Column -->
@@ -77,19 +77,19 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="position" class="form-label">Position</label>
-                                    <input type="text" class="form-control" id="position" name="position" placeholder="Position" required>
+                                    <input type="text" class="form-control" id="position" name="position" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                                    <input type="text" class="form-control" id="username" name="username" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                                    <input type="password" class="form-control" id="password" name="password" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="confirm-password" class="form-label">Confirm Password</label>
-                                    <input type="password" class="form-control" id="conpassword" name="conpassword"  placeholder="Confirm Password" required>
+                                    <input type="password" class="form-control" id="conpassword" name="conpassword" required>
                                 </div>
                                 
                             </div>
@@ -104,7 +104,7 @@
                         <div class="row">
                             <div class="col-12 text-center">
                                 <div class="col-md-8 mx-auto">
-                                <button class="btn btn-outline-primary btn-block mt-1" onclick="window.location.href='<?= base_url(); ?>'">Cancel</button>
+                                <button class="btn btn-outline-primary btn-block mt-1" onclick="window.location.href='<?= base_url(); ?>'">Back</button>
                                 </div>
                             </div>
                         </div>

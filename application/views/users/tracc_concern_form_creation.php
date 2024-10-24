@@ -22,11 +22,11 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/user_creation_tickets_tracc_concern'); ?>" method="POST">
+                                        <form action="<?= site_url('Main/user_creation_tickets_tracc_concern'); ?>" method="POST" enctype="multipart/form-data">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>Control Number</label>
-                                                    <input type="text" name="control_number" id="control_number" class="form-control" value="" required pattern=".*-.*" title="Control number must contain a hyphen (-)">
+                                                    <input type="text" name="control_number" id="control_number" class="form-control" value="" required pattern=".*-.*" title="Control number must contain a hyphen (-)" oninput="this.value = this.value.toUpperCase();">
 			                    				</div>                                               
 			                    			</div>
                                             <div class="col-md-6">
@@ -51,7 +51,14 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Details Concern</label>
-                                                        <textarea class="form-control" name="concern" placeholder="Place the details concern here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;"></textarea>
+                                                        <textarea class="form-control" name="details_concern" placeholder="Place the details concern here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Upload File</label>
+                                                    <input type="file" name="uploaded_photo" id="uploaded_photo" class="form-control" accept="image/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                                                 </div>
                                             </div>
 
@@ -65,7 +72,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Date Reported</label>
-                                                    <input type="text" name="date_rep" id="date_rep" class="form-control select2" value="" style="width: 100%;" readonly>
+                                                    <input type="date" name="date_rep" id="date_rep" class="form-control select2" value="" style="width: 100%;" readonly>
                                                 </div>
                                             </div>
                                             
@@ -95,6 +102,21 @@
         // Set the current date in YYYY-MM-DD format
         var today = new Date().toISOString().split('T')[0];
         $('#date_rep').val(today);
+    });
+
+
+    $(document).ready(function() {
+        function autoResizeTextarea() {
+            $(this).css('height', 'auto'); // Reset the height to auto to calculate new height
+            $(this).height(this.scrollHeight); // Set height based on content
+        }
+        
+        // Apply the resize function to the textarea on input
+        $('#details_concern').on('input', autoResizeTextarea);
+        
+        // Trigger the resize on page load if there's existing content in the textarea
+        $('#details_concern').each(autoResizeTextarea);
+        
     });
 
 </script>

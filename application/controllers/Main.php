@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Main extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
+		$this->load->library('upload'); // Load the upload library
+    	$this->load->helper('form'); // Load form helper
 		$this->load->library('session');
 		$this->load->model('Main_model');
 	}
@@ -71,8 +73,14 @@ class Main extends CI_Controller {
 					$this->session->set_userdata(array('login_data' => $process[1]));
 	
 					// Set redirect URL based on role
-					$redirect_url = ($role == "L2") ? base_url().'sys/admin/dashboard' : base_url().'sys/users/dashboard';
-	
+					//$redirect_url = ($role == "L2") ? base_url().'sys/admin/dashboard' : base_url().'sys/users/dashboard';
+					if ($role == "L2"){
+						$redirect_url = base_url().'sys/admin/dashboard';
+					} else if ($role == "L3"){
+						$redirect_url = base_url().'sys/admin/dashboard';
+					} else {
+						$redirect_url = base_url().'sys/users/dashboard';
+					}
 					// Return success response with redirect URL
 					$response = array(
 						'status' => 'success',
@@ -143,29 +151,6 @@ class Main extends CI_Controller {
 				echo json_encode($response);
 			}
 		}
-	}*/
-	
-	/*public function login() {
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-		$this->load->library('session');
-	
-		// Simplified validation rules
-		$this->form_validation->set_rules('username', 'Username', 'required');
-		$this->form_validation->set_rules('password', 'Password', 'required');
-	
-		if ($this->form_validation->run() == FALSE) {
-			echo '<pre>';
-			print_r($this->form_validation->error_array()); // Display validation errors
-			echo '</pre>';
-			exit;
-		} else {
-			echo 'Validation passed!';
-		}
-	}*/
-
-	/*public function login (){
-		$this->load->view('login');
 	}*/
 	
 	/*public function registration() {
@@ -250,7 +235,8 @@ class Main extends CI_Controller {
 		    	}
 
 				$data['active_menu'] = $active_menu;
-									
+
+				$this->check_upload_size();
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
 				$this->load->view('admin/dashboard', $data);
@@ -397,8 +383,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//kay maam hannah na dashboard
-	//wala pang process
+	//Tracc Concern Admin dashboard
 	public function admin_list_tracc_concern(){
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -415,30 +400,44 @@ class Main extends CI_Controller {
 	
 				$data['active_menu'] = $active_menu;
 				
+				$data['checkboxes'] = [
+					'for_mis_concern' => 0,
+					'for_lst_concern' => 0,
+					'system_error' => 0,
+					'user_error' => 0
+					];
 
-				//iibahin yung logic for tracc_concern
-				//di pa tapos
 				if ($this->input->post()) {
-					// Capture form data
 					$control_number = $this->input->post('control_number');
+					$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
 					$received_by = $this->input->post('received_by');
 					$noted_by = $this->input->post('noted_by');
 					$approval_stat = $this->input->post('app_stat');
+					$reject_ticket = $this->input->post('reason_rejected');
 					$solution = $this->input->post('solution');
 					$resolved_by = $this->input->post('resolved_by');
 					$resolved_date = $this->input->post('res_date');
-					
-					print_r($_POST); // Add this line to debug POST data
-					// Pass data to the model for processing
-					$process = $this->Main_model->status_approval_tracc_concern($control_number, $received_by, $noted_by, $approval_stat, $solution, $resolved_by, $resolved_date);  // Update this line in the model
+					$others = $this->input->post('others');
+					$received_by_lst = $this->input->post('received_by_lst');
+					$date_lst = $this->input->post('date_lst');
+
+					$checkbox_data = [
+						'control_number' => $control_number,
+						'for_mis_concern' => $this->input->post('checkbox_mis') ? 1 : 0,
+						'for_lst_concern' => $this->input->post('checkbox_lst') ? 1 : 0,
+						'system_error' => $this->input->post('checkbox_system_error') ? 1 : 0,
+						'user_error' => $this->input->post('checkbox_user_error') ? 1 : 0,
+					];
+
+					$process = $this->Main_model->status_approval_tracc_concern($control_number, $received_by, $noted_by, $approval_stat, $reject_ticket, $solution, $resolved_by, $resolved_date, $others, $received_by_lst, $date_lst);
+					$process_checkbox = $this->Main_model->insert_checkbox_data($checkbox_data);
 	
-					if ($process[0] == 1) {
+					if ($process[0] == 1 && $process_checkbox[0] == 1) {
 						$this->session->set_flashdata('success', 'Tickets Approved');
 					} else {
-						$this->session->set_flashdata('error', 'Update failed.');
+						$this->session->set_flashdata('error', 'Updated.');
 					}
 	
-					// Redirect after form processing
 					redirect(base_url()."sys/admin/list/ticket/tracc_concern");
 				}
 
@@ -481,12 +480,21 @@ class Main extends CI_Controller {
 					$approval_stat = $this->input->post('approval_stat');
 					$rejecttix = $this->input->post('rejecttix');
 					
-					print_r($_POST); // Add this line to debug POST data
+					
+					//print_r($_POST); // Add this line to debug POST data
 					// Pass data to the model for processing
 					$process = $this->Main_model->status_approval_msrf($msrf_number, $approval_stat, $rejecttix);  // Update this line in the model
-	
-					if ($process[0] == 1) {
+					print_r($process);
+					
+					/*if ($process[0] == 1) {
 						$this->session->set_flashdata('success', 'Tickets Approved');
+					} else {
+						$this->session->set_flashdata('error', 'Update failed.');
+					}*/
+
+					if (isset($process[0]) && $process[0] == 1) {
+						//Tickets Approved
+						$this->session->set_flashdata('success', "Ticket's been Updated");
 					} else {
 						$this->session->set_flashdata('error', 'Update failed.');
 					}
@@ -649,6 +657,7 @@ class Main extends CI_Controller {
 		echo json_encode($response);
 	}
 	
+	//gawa bago rito for checkbox
 	public function admin_approval_list($subject, $id) {
 		if ($this->session->userdata('login_data')) {
 			$user_id = $this->session->userdata('login_data')['user_id'];
@@ -675,21 +684,37 @@ class Main extends CI_Controller {
 
 				$data['active_menu'] = $active_menu;
 
-				if ($user_role == "L2") {
-					$data['getTeam'] = $getTeam[1];
-				}
 
-				if ($subject == "MSRF") {
-					$this->load->view('admin/header', $data);
-					$this->load->view('admin/tickets_approval_msrf', $data);
-					$this->load->view('admin/sidebar', $data);
-					$this->load->view('admin/footer');
-
-				} else if ($subject == "TRACC_CONCERN") {
+				// Handle TRACC Concern data
+				if ($subject == "TRACC_CONCERN") {
+					if ($getTraccCon[0] == "ok") {
+						// Access control_number safely
+						$control_number = $getTraccCon[1]['control_number'];
+						$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
+						$data['tracc_con'] = $getTraccCon[1]; // Store TRACC concern data
+					} else {
+						// Handle the case where no TRACC Concern data was found
+						$data['checkboxes'] = []; // Set to empty array if no data
+						$data['tracc_con'] = []; // Set to empty array if no data
+						$this->session->set_flashdata('error', $getTraccCon[1]); // Use the error message returned
+					}
+	
+					// Load TRACC Concern views
 					$this->load->view('admin/header', $data);
 					$this->load->view('admin/tickets_approval_tracc_concern', $data);
 					$this->load->view('admin/sidebar', $data);
 					$this->load->view('admin/footer');
+	
+				} else if ($subject == "MSRF") {
+					$this->load->view('admin/header', $data);
+					$this->load->view('admin/tickets_approval_msrf', $data);
+					$this->load->view('admin/sidebar', $data);
+					$this->load->view('admin/footer');
+				}
+
+
+				if ($user_role == "L2") {
+					$data['getTeam'] = $getTeam[1];
 				}
 
 			} else {
@@ -701,6 +726,74 @@ class Main extends CI_Controller {
             redirect("sys/authentication");
 		}
 	}
+
+	/*public function admin_approval_list($subject, $id) {
+		if ($this->session->userdata('login_data')) {
+			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_role = $this->session->userdata('login_data')['role'];
+			$user_dept = $this->session->userdata('login_data')['sup_id'];
+			$dept_id = $this->session->userdata('login_data')['dept_id'];
+			$user_details = $this->Main_model->user_details();
+			$msrf_tickets = $this->Main_model->getTicketsMSRF($id);
+			$getTraccCon = $this->Main_model->getTraccConcernByID($id);
+			$ict = $this->Main_model->GetICTSupervisor();
+	
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['msrf'] = $msrf_tickets[1];
+				$data['ict'] = $ict;
+				$emp_id = $user_details[1]["emp_id"];
+				$getTeam = $this->Main_model->GetTeam($dept_id);
+				$data['pages'] = 'tickets';
+	
+				// Handle the active menu logic
+				$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
+				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';
+				$data['active_menu'] = $active_menu;
+	
+				// Handle TRACC Concern data
+				if ($subject == "TRACC_CONCERN") {
+					if ($getTraccCon[0] == "ok") {
+						// Access control_number safely
+						$control_number = $getTraccCon[1]['control_number'];
+						$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
+						$data['tracc_con'] = $getTraccCon[1]; // Store TRACC concern data
+					} else {
+						// Handle the case where no TRACC Concern data was found
+						$data['checkboxes'] = []; // Set to empty array if no data
+						$data['tracc_con'] = []; // Set to empty array if no data
+						$this->session->set_flashdata('error', $getTraccCon[1]); // Use the error message returned
+					}
+	
+					// Load TRACC Concern views
+					$this->load->view('admin/header', $data);
+					$this->load->view('admin/tickets_approval_tracc_concern', $data);
+					$this->load->view('admin/sidebar', $data);
+					$this->load->view('admin/footer');
+	
+				} else if ($subject == "MSRF") {
+					$this->load->view('admin/header', $data);
+					$this->load->view('admin/tickets_approval_msrf', $data);
+					$this->load->view('admin/sidebar', $data);
+					$this->load->view('admin/footer');
+				}
+	
+				// Other logic for L2 user role if applicable
+				if ($user_role == "L2") {
+					$data['getTeam'] = $getTeam[1];
+				}
+	
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Error fetching user information');
+			redirect("sys/authentication");
+		}
+	}*/
+
 
 	public function dept_supervisor_approval() {
 		$this->load->helper('form');
@@ -926,7 +1019,7 @@ class Main extends CI_Controller {
 				if ($process[0] == 1) {
 					echo json_encode(array('status' => 'success', 'message' => 'Employee is been updated successfully.'));
 				} else {
-					echo json_encode(array('status' => 'error', 'message' => 'Failed to update employee.'));
+					echo json_encode(array('status' => 'error', 'message' =>  $process[1]));
 				}
 				return; // Prevent loading the view when using AJAX
 			} else {
@@ -1081,7 +1174,7 @@ class Main extends CI_Controller {
 	 	}
 	 }*/
 
-	public function user_creation_tickets_tracc_concern() {
+	/*public function user_creation_tickets_tracc_concern() {
 		// Get the logged-in user's ID from session data
 		$id = $this->session->userdata('login_data')['user_id'];
 	
@@ -1132,6 +1225,82 @@ class Main extends CI_Controller {
 				redirect(base_url().'sys/users/create/tickets/tracc_concern');  // Redirect back to form in case of error
 			}
 		}
+	}*/
+
+	public function user_creation_tickets_tracc_concern() {
+		// Get the logged-in user's ID from session data
+		$id = $this->session->userdata('login_data')['user_id'];
+	
+		// Load necessary helpers and libraries
+		$this->load->helper('form');
+		$this->load->library('session');
+		$this->load->library('upload'); 
+	
+		// Set form validation rules
+		$this->form_validation->set_rules('control_number', 'Control Number', 'trim|required');
+	
+		// Retrieve user details and department information
+		$user_details = $this->Main_model->user_details();              
+		$getdepartment = $this->Main_model->GetDepartmentID();          
+		$users_det = $this->Main_model->users_details_put($id);         
+	
+		// Check if form validation failed
+		if ($this->form_validation->run() == FALSE) {
+			// Prepare data for the view
+			$data['user_details'] = $user_details[1];                   
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();  
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();  
+			
+			// Get department information based on the user's department ID
+			$users_department = $users_det[1]['dept_id'];
+			$get_department = $this->Main_model->UsersDepartment($users_department);   
+			$data['get_department'] = $get_department;  
+	
+			// Load the form view
+			$this->load->view('users/header', $data);  
+			$this->load->view('users/tracc_concern_form_creation', $data);  
+			$this->load->view('users/footer');  
+		} else {
+			// Check if file is uploaded
+			$file_path = null; // Initialize file path
+			if (!empty($_FILES['uploaded_photo']['name'])) {
+				// File upload configuration
+				$config['upload_path'] = FCPATH . 'uploads/tracc_concern/';
+				$config['allowed_types'] = 'pdf|jpg|png|doc|docx'; 
+				$config['max_size'] = 5048; 
+				$config['file_name'] = time() . '_' . $_FILES['uploaded_photo']['name']; 
+	
+				// Load the upload library with configuration
+				$this->upload->initialize($config);
+	
+				if (!$this->upload->do_upload('uploaded_photo')) {
+					// Log the error and redirect back to the form
+					$this->session->set_flashdata('error', $this->upload->display_errors());
+					redirect(base_url().'sys/users/create/tickets/tracc_concern');  
+				} else {
+					// Get file data and store the file name
+					$file_data = $this->upload->data();
+					$file_path = $file_data['file_name']; 
+					//echo 'Uploaded file path: ' . $file_path; // Debugging output
+				}
+			}
+	
+			// Process the form and insert into the database using model function
+			$process = $this->Main_model->tracc_concern_add_ticket($file_path);  
+	
+			// Debugging output for the returned process
+			//var_dump($process); 
+			//exit;
+	
+			// Check if the process was successful
+			if ($process[0] == 1) {
+				$this->session->set_flashdata('success', $process[1]);
+				redirect(base_url().'sys/users/list/tickets/tracc_concern');  
+			} else {
+				$this->session->set_flashdata('error', $process[1]);
+				redirect(base_url().'sys/users/create/tickets/tracc_concern');  
+			}
+		}
 	}
 	
 
@@ -1142,6 +1311,7 @@ class Main extends CI_Controller {
 		// Load the form helper and session library
 		$this->load->helper('form');
 		$this->load->library('session');
+		$this->load->library('upload');
 	
 		// Set form validation rule for 'msrf_number' (must not be empty)
 		$this->form_validation->set_rules('msrf_number', 'Ticket ID', 'trim|required');
@@ -1175,10 +1345,33 @@ class Main extends CI_Controller {
 			$this->load->view('users/footer');
 	
 		} else {
+			$file_path = null; // Initialize file path
+			if (!empty($_FILES['uploaded_file']['name'])) {
+				// File upload configuration
+				$config['upload_path'] = FCPATH . 'uploads/msrf/';
+				$config['allowed_types'] = 'pdf|jpg|png|doc|docx'; 
+				$config['max_size'] = 5048; 
+				$config['file_name'] = time() . '_' . $_FILES['uploaded_file']['name']; 
+	
+				// Load the upload library with configuration
+				$this->upload->initialize($config);
+	
+				if (!$this->upload->do_upload('uploaded_file')) {
+					// Log the error and redirect back to the form
+					$this->session->set_flashdata('error', $this->upload->display_errors());
+					redirect(base_url().'sys/users/create/tickets/msrf');  
+				} else {
+					// Get file data and store the file name
+					$file_data = $this->upload->data();
+					$file_path = $file_data['file_name']; 
+					echo 'Uploaded file path: ' . $file_path; // Debugging output
+				}
+			}
+
 			// If form validation succeeds, process the form submission (add the MSRF ticket)
 	
 			// Call the model function to add the new MSRF ticket to the database
-			$process = $this->Main_model->msrf_add_ticket();
+			$process = $this->Main_model->msrf_add_ticket($file_path);
 	
 			// Check if the process was successful
 			if ($process[0] == 1) {
@@ -1256,6 +1449,63 @@ class Main extends CI_Controller {
 
 	}
 
+	/*public function service_form_tracc_concern_list() {
+		$id = $this->session->userdata('login_data')['user_id']; // Logged-in user ID
+		$dept_id = $this->session->userdata('login_data')['dept_id']; // Logged-in user dept ID
+		
+		// Load form and session libraries/helpers for validation
+		$this->load->helper('form');
+		$this->load->library('session');
+	
+		// Set validation rule for 'control_number'
+		$this->form_validation->set_rules('control_number', 'Control Number', 'trim|required');
+	
+		// Fetch user and department details
+		$user_details = $this->Main_model->user_details();
+		$department_data = $this->Main_model->getDepartment();
+		$users_det = $this->Main_model->users_details_put($id);
+		$getdepartment = $this->Main_model->GetDepartmentID();
+	
+		// Check if form validation failed
+		if ($this->form_validation->run() == FALSE) {
+			
+			// Populate data array
+			$data['user_details'] = $user_details[1]; 
+			$data['department_data'] = $department_data;
+			$data['users_det'] = $users_det[1];
+			$data['dept_id'] = $dept_id;
+	
+			// Fetch the control numbers created by this specific user
+			$control_number = $this->session->userdata('control_number');
+			$user_tickets = $this->Main_model->get_tickets_by_user($id); // Add this logic in the model
+	
+			// Only show tickets if they belong to the logged-in user
+			if ($user_tickets) {
+				$data['tickets'] = $user_tickets;
+			} else {
+				$data['tickets'] = array(); // No tickets found
+				echo "No tickets found for this user.";
+			}
+	
+			// Load views
+			$this->load->view('users/header', $data);
+			$this->load->view('users/tracc_concern_form_list', $data);
+			$this->load->view('users/footer', $data);
+	
+		} else {
+			$process = $this->Main_model->tracc_concern_add_ticket();
+	
+			if ($process[0] == 1) {
+				$this->session->set_flashdata('success', $process[1]);
+				redirect(base_url().'sys/users/dashboard');
+			} else {
+				$this->session->set_flashdata('error', $process[1]);
+				redirect(base_url().'sys/users/dashboard');
+			}
+		}
+	}*/
+	
+	
 	//datatable na nakikita ni user MSRF
 	public function service_form_msrf_list() {
 		// Get session data for the logged-in user
@@ -1444,6 +1694,7 @@ class Main extends CI_Controller {
 		}
 	}*/
 
+	//galaw rito for variable checkboxes
 	public function tracc_concern_form_details($id) {
 		if ($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -1456,15 +1707,15 @@ class Main extends CI_Controller {
 				$data['getdept'] = $getdepartment[1];
 				$data['tracc_con'] = $getTraccCon[1];
 
-				// Check if the TRACC concern data was successfully fetched
-				/*if ($getTraccCon[0] == "ok" && is_array($getTraccCon[1])) {
+				if (isset($getTraccCon[1])) {
+					$control_number = $getTraccCon[1]['control_number'];
+					$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);  
 					$data['tracc_con'] = $getTraccCon[1];
 				} else {
-					// If no TRACC data or an error occurred, assign an empty array to avoid errors
-					$data['tracc_con'] = array();
+					$data['checkboxes'] = [];
+					$data['tracc_con'] = [];
 					$this->session->set_flashdata('error', 'TRACC concern data not found.');
-				}*/
-	
+				}
 				// Load the views and pass the data
 				$this->load->view('users/header', $data);
 				$this->load->view('users/tracc_concern_form_details', $data);
@@ -1507,7 +1758,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	public function update_status_msrf_assign() {
+	/*public function update_status_msrf_assign() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$ticket_id = $this->input->post('msrf_number', true);
@@ -1519,7 +1770,7 @@ class Main extends CI_Controller {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
 
-				$process = $this->Main_model->UpdateMSRFAssign($ticket_id);
+				$process = $this->Main_model->UpdateMSRFAssign($ticket_id, $date_needed, $asset_code, $request_category, $specify, $details_concern);
 				if ($process[0] == 1) {
 					$this->session->set_flashdata('success', $process[1]);
 					redirect(base_url()."sys/users/create/tickets/msrf");
@@ -1535,9 +1786,45 @@ class Main extends CI_Controller {
 			$this->session->set_flashdata('error', 'Error fetching user information');
             redirect(base_url()."admin/login");
 		}
+	}*/
+
+	public function update_status_msrf_assign() {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		$ticket_id = $this->input->post('msrf_number', true);
+		$date_needed = $this->input->post('date_need', true);
+		$asset_code = $this->input->post('asset_code', true);
+		$request_category = $this->input->post('category', true);
+		$specify = $this->input->post('msrf_specify', true);
+		$details_concern = $this->input->post('concern', true);
+
+		if ($this->session->userdata('login_data')) {
+			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_details = $this->Main_model->user_details();
+
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+
+				$process = $this->Main_model->UpdateMSRFAssign($ticket_id, $date_needed, $asset_code, $request_category, $specify, $details_concern);
+				if ($process[0] == 1) {
+					$this->session->set_flashdata('success', $process[1]);
+					redirect(base_url()."sys/users/list/tickets/msrf");
+				} else {
+					$this->session->set_flashdata('error', $process[0]);
+					redirect(base_url()."sys/users/list/tickets/msrf");
+				}
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Error fetching user information');
+            redirect(base_url()."admin/login");
+		}
 	}
 
-	//di pa tapos
+
 	public function acknowledge_as_resolved() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -1568,6 +1855,63 @@ class Main extends CI_Controller {
 		}
 	}
 
+	/*public function acknowledge_as_resolved() {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+	
+		// Get the posted data
+		$control_number = $this->input->post('control_number', true);
+		$module_affected = $this->input->post('module_affected', true);
+		$company = $this->input->post('company', true);
+		$concern = $this->input->post('concern', true);
+		$app_stat = $this->input->post('app_stat', true); // Current approval status
+	
+		if ($this->session->userdata('login_data')) {
+			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_details = $this->Main_model->user_details();
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				
+				// Check if the app_stat is 'Pending'
+				if ($app_stat == 'Pending' ) {
+					// Update editable fields
+					$update_process = $this->Main_model->update_tracc_concern($control_number, $module_affected, $company, $concern);
+					
+					if (!$update_process) {
+						// Handle update error
+						$this->session->set_flashdata('error', 'Error updating the ticket.');
+						redirect(base_url() . "sys/users/list/tickets/tracc_concern");
+					}
+				}
+
+				$ack_as_res_by = $this->input->post('ack_as_res_by', true); // Missing variable added
+				$ack_as_res_date = $this->input->post('ack_as_res_date', true); // Missing variable added
+	
+				// If ack_as_res_by and ack_as_res_date are filled, update the status to 'Resolved'
+				if (!empty($ack_as_res_by) && !empty($ack_as_res_date)) {
+					$resolve_process = $this->Main_model->AcknolwedgeAsResolved($control_number);
+	
+					if ($resolve_process[0] == 1) {
+						$this->session->set_flashdata('success', $resolve_process[1]);
+					} else {
+						$this->session->set_flashdata('error', $resolve_process[0]);
+					}
+				}
+	
+				// Redirect after processing
+				redirect(base_url() . "sys/users/list/tickets/tracc_concern");
+	
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}*/
 
 	public function SendEmail() {
 		// function email
@@ -1582,6 +1926,76 @@ class Main extends CI_Controller {
 			redirect(base_url()."");
 		}
 	}
+
+	public function download_file($file_name) {
+		// Path to the file
+		$file_path = FCPATH . 'uploads/tracc_con/' . $file_name;
+	
+		// Check if file exists
+		if (file_exists($file_path)) {
+			// Load the download helper
+			$this->load->helper('download');
+	
+			// Get the file's original name
+			$file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
+	
+			// Set the correct content type based on file extension
+			switch ($file_extension) {
+				case 'pdf':
+					$mime_type = 'application/pdf';
+					break;
+				case 'jpg':
+				case 'jpeg':
+					$mime_type = 'image/jpeg';
+					break;
+				case 'png':
+					$mime_type = 'image/png';
+					break;
+				case 'doc':
+					$mime_type = 'application/msword';
+					break;
+				case 'docx':
+					$mime_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+					break;
+				default:
+					$mime_type = 'application/octet-stream'; // Fallback for unknown types
+					break;
+			}
+	
+			// Force download
+			force_download($file_path, NULL, $mime_type);
+		} else {
+			// Show error if file does not exist
+			show_404();
+		}
+	}
+
+	public function check_upload_size(){
+		$dirs = ['uploads/tracc_concern', 'uploads/msrf']; // Directories to check
+		$total_size = 0;
+
+		foreach ($dirs as $dir) {
+			$full_path = FCPATH . $dir;
+			// Check if the directory exists
+			if (is_dir($full_path)) {
+				// Iterate through files in the directory
+				$files = scandir($full_path);
+				foreach ($files as $file) {
+					if ($file !== '.' && $file !== '..') {
+						$total_size += filesize($full_path . '/' . $file);
+					}
+				}
+			}
+		}
+
+		// 1GB
+		if ($total_size > 1 * 1024 * 1024 * 1024) {
+			// Set a session variable for alert
+			$this->session->set_flashdata('upload_alert', 'The total upload size exceeds the limit!');
+		}
+	}
+
+	
 
 	
 }

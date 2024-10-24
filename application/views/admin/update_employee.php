@@ -24,7 +24,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Employee No.</label>
-								<input type="text" name="emp_id" id="emp_id" value="<?php echo $users_det['emp_id']; ?>" class="form-control">
+								<input type="text" name="emp_id" id="emp_id" value="<?php echo $users_det['emp_id']; ?>" class="form-control" readonly>
 							</div>
 							<div class="form-group">
 								<label>Firstname</label>
@@ -69,6 +69,7 @@
 									<option value="" disabled <?php echo ($users_det['role'] == '') ? 'selected' : ''; ?>>Please choose the designated role</option>
 									<option value="L1" <?php echo ($users_det['role'] == 'L1') ? 'selected' : ''; ?>>L1 (Regular Employees)</option>
 									<option value="L2" <?php echo ($users_det['role'] == 'L2') ? 'selected' : ''; ?>>L2 (Supervisor/Admin)</option>
+									<option value="L3" <?php echo ($users_det['role'] == 'L3') ? 'selected' : ''; ?>>L3 (Department Head)</option>
 								</select>
 							</div>
 							<div class="form-group">
@@ -76,12 +77,12 @@
 								<input type="text" name="username" id="username" value="<?php echo $users_det['username']; ?>" class="form-control">
 							</div>
 							<div class="form-group">
-								<label>Password</label>
-								<input type="password" name="password" id="password" value="<?php echo $users_det['s_password']; ?>" class="form-control">
+								<label>Password</label> <span style="font-size: 12px;">(Leave blank if you don't need to update your password)</span>
+								<input type="password" name="password" id="password" class="form-control">
 							</div>
 							<div class="form-group">
-								<label>Confirm Password</label>
-								<input type="password" name="cpassword" id="cpassword" value="<?php echo $users_det['s_api_password']; ?>" class="form-control">
+								<label>Confirm Password</label> <span style="font-size: 12px;">(Leave blank if you don't need to update your password)</span>
+								<input type="password" name="cpassword" id="cpassword" class="form-control">
 							</div>
 							<div class="form-group">
 								<label>

@@ -22,7 +22,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/users_creation_tickets_msrf'); ?>" method="POST">
+                                        <form action="<?= site_url('Main/users_creation_tickets_msrf'); ?>" method="POST" enctype="multipart/form-data">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>MSR#</label>
@@ -56,19 +56,19 @@
                                                 </div>
 			                                    <div class="form-group">
 			                                        <label>Date Needed</label>
-			                                        <input type="date" name="date_need" class="form-control select2" style="width: 100%;" required>
+			                                        <input type="date" name="date_need" id="date_need" class="form-control select2" style="width: 100%;" required>
 			                                    </div>
 			                                </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Asset Code</label>
-                                                    <input type="text" name="asset_code" class="form-control select2" style="width: 100%;" required>
+                                                    <input type="text" name="asset_code" id="asset_code" class="form-control select2" style="width: 100%;">
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Request Category</label>
-                                                    <select class="form-control select2" id="categorySelect" name="category" style="width: 100%;" required>
+                                                    <select class="form-control select2" name="category" id="category" style="width: 100%;" required>
                                                         <option value=""disabled selected>Request Category</option>
                                                         <option value="computer">Computer (Laptop or Desktop)</option>
                                                         <option value="printer">Printer Concerns</option>
@@ -80,10 +80,10 @@
                                             </div>
 
                                             <!-- SPECIFY START -->
-                                            <div class="col-md-12" id="specifyDiv" style="display: none;">
+                                            <div class="col-md-12" id="specifyDiv" name="specifyDiv" style="display: none;">
                                                 <div class="form-group">
                                                     <label>Specify</label>
-                                                    <input type="text" name="specify" class="form-control" style="width: 100%;">
+                                                    <input type="text" name="specify" id="specify" class="form-control" style="width: 100%;">
                                                 </div>
                                             </div>
                                             <!-- SPECIFY END -->
@@ -92,9 +92,17 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Details Concern</label>
-                                                        <textarea class="form-control" name="concern" placeholder="Place the details concern here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;"></textarea>
+                                                        <textarea class="form-control" name="msrf_concern" id="msrf_concern" placeholder="Place the details concern here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;"></textarea>
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Upload File</label>
+                                                    <input type="file" name="uploaded_file" id="uploaded_file" class="form-control" accept="image/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                                                </div>
+                                            </div>                                         
+
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">
@@ -135,5 +143,19 @@
         // Set the current date in YYYY-MM-DD format
         var today = new Date().toISOString().split('T')[0];
         $('#date_req').val(today);
+    });
+
+    $(document).ready(function() {
+        function autoResizeTextarea() {
+            $(this).css('height', 'auto'); // Reset the height to auto to calculate new height
+            $(this).height(this.scrollHeight); // Set height based on content
+        }
+        
+        // Apply the resize function to the textarea on input
+        $('#msrf_concerns').on('input', autoResizeTextarea);
+        
+        // Trigger the resize on page load if there's existing content in the textarea
+        $('#msrf_concerns').each(autoResizeTextarea);
+        
     });
 </script>

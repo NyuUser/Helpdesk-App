@@ -17,9 +17,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- Need array kase sa Main.php, naka array ang message -->
-                    <?php if (isset($process)) : ?>
-                        <?php echo $this->session->set_flashdata('success', $process[1]); ?>
+                    <?php if ($this->session->flashdata('success')): ?>
+                        <p><?php echo $this->session->flashdata('success'); ?></p>
+                    <?php elseif ($this->session->flashdata('error')): ?>
+                        <p><?php echo $this->session->flashdata('error'); ?></p>
+                    <?php else: ?>
+                        <p>No message available.</p>
                     <?php endif; ?>
                 </div>
                 <div class="modal-footer">
@@ -225,7 +228,7 @@
                 "responsive": true,
                 "autoWidth": false,
                 "lengthChange": false,
-                "dom": "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
+                /*"dom": "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
                 "buttons": [
                     {
                         text: 'Print Data',
@@ -235,7 +238,7 @@
                             $('#printMsrfModal').modal('show');
                         }
                     }
-                ]
+                ]*/
             });
 
             // Handle the confirm print action inside the modal

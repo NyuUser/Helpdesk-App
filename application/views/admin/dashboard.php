@@ -65,4 +65,13 @@
             </div>
         </div>
     </section>
+
+
+    <!-- Alert for upload size -->
+    <?php if ($this->session->flashdata('upload_alert')): ?>
+        <div class="alert alert-warning" role="alert">
+            <i class="fa fa-exclamation-circle"></i> <?= $this->session->flashdata('upload_alert'); ?>
+        </div>
+    <?php endif; ?> 
+           
 </div>

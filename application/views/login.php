@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ICT Helpdesk Application</title>
 
+    <link rel="icon" href="<?= base_url(); ?>assets/images/lifestrong-logo.png" type="image/png">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -111,7 +112,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Login Failed',
-                            text: errorMessage
+                            text: 'Username and Password is required.'
                         });
                     }
                 },

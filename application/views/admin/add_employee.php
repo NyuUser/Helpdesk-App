@@ -63,7 +63,8 @@
 								<select name="role" id="role" class="form-control" required>
                                     <option value="" disabled selected>Please choose the designated role</option>
 									<option value="L1">L1 (Regular Employees)</option>
-									<option value="L2">L2 (Supervisor/Admin)</option>
+									<option value="L2">L2 (Supervisor/Admin)</option>	
+									<option value="L3">L3 (Head)</option>
                                 </select>
 							</div>
 							<div class="form-group">
