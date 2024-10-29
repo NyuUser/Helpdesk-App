@@ -117,7 +117,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-12" id="reason_rejected_ticket">
+                                            <div class="col-md-12" id="reason_rejected_ticket" style="display: none;">
                                                 <div class="form-group">
                                                     <label>Reason for Rejected Ticket</label>
                                                     <textarea class="form-control" id="reason_rejected" name="reason_rejected" placeholder="Place the reason here" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;"><?= isset($tracc_con['reason_reject_tickets']) ? htmlspecialchars($tracc_con['reason_reject_tickets']) : ''; ?></textarea>
@@ -340,7 +340,7 @@
         }
     });
 
-
+    //checking of checkbox if it has a value
     function toggleLstFields() {
         var lstCheckbox = $('#checkbox_lst');
         var receivedBySection = $('#received_by_lst_section');
@@ -361,6 +361,8 @@
         $('#checkbox_lst').change(toggleLstFields);
     });
 
+
+    // showing of rejected ticket
     $(document).ready(function() {
         $("#reason_rejected_ticket").hide();
         
@@ -380,8 +382,25 @@
         checkApprovalStatus();
         
     });
-    
+
+    //dynamic rezising of the tcr_solution
     $(document).ready(function() {
+        function autoResizeTextarea() {
+            $(this).css('height', 'auto'); // Reset the height to auto to calculate new height
+            $(this).height(this.scrollHeight); // Set height based on content
+        }
+        
+        // Apply the resize function to the textarea on input
+        //$('#reason_rejected').on('input', autoResizeTextarea);
+        $('#tcr_solution').on('input', autoResizeTextarea);
+
+        // Trigger the resize on page load if there's existing content in the textarea
+        //$('#reason_rejected').each(autoResizeTextarea);
+        $('#tcr_solution').each(autoResizeTextarea);
+    });
+
+     
+    $(document).ready(function() { 
         function ICTApproval() {
             var ictApprovalStatus = $('#it_app_stat').val(); // Get the value of the ICT Approval Status dropdown
             
@@ -419,40 +438,4 @@
         });
     });
 
-
-    $(document).ready(function() {
-        function ApprovalStatus() {
-            var approvalStat = $('#app_stat').val();
-
-            // Check if approvalStat is either 'Approved' or 'Rejected'
-            if (approvalStat === 'Approved' || approvalStat === 'Rejected') {
-                $('#it_app_stat').prop('disabled', false); // Enable ICT Approval Status dropdown
-            } else {
-                $('#it_app_stat').prop('disabled', true);  // Disable ICT Approval Status dropdown
-            }
-        }
-
-        // Call the function on page load to check the initial state
-        ApprovalStatus();
-
-        // Bind the change event to the Approval Status dropdown
-        $('#app_stat').on('change', function() {
-            ApprovalStatus(); // Re-evaluate when the Approval Status changes
-        });
-    });
-
-    $(document).ready(function() {
-        function autoResizeTextarea() {
-            $(this).css('height', 'auto'); // Reset the height to auto to calculate new height
-            $(this).height(this.scrollHeight); // Set height based on content
-        }
-        
-        // Apply the resize function to the textarea on input
-        $('#reason_rejected').on('input', autoResizeTextarea);
-        $('#tcr_solution').on('input', autoResizeTextarea);
-
-        // Trigger the resize on page load if there's existing content in the textarea
-        $('#reason_rejected').each(autoResizeTextarea);
-        $('#tcr_solution').each(autoResizeTextarea);
-    });
 </script>
