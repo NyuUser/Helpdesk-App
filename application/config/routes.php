@@ -19,6 +19,9 @@ $route['sys/users/details/concern/msrf/(:any)'] = 'main/service_form_msrf_detail
 //clickable link to the details page, tracc concern
 $route['sys/users/details/concern/tracc_concern/(:any)'] = 'main/tracc_concern_form_details/$1';
 
+//clickable link to the details page, tracc request
+$route['sys/users/details/concern/tracc_request/(:any)'] = 'main/tracc_request_form_details/$1';
+
 
 //--- DATATABLE of USER in TRACC CONCERN
 $route['sys/users/list/tickets/tracc_concern'] = 'main/service_form_tracc_concern_list';
@@ -31,6 +34,13 @@ $route['sys/users/create/tickets/msrf'] = 'main/users_creation_tickets_msrf';
 //$route['sys/users/create/tickets/tracc'] = 'main/users_creation_tickets_tracc';
 
 
+
+//--- DATATABLE of USER in TRACC REQUEST FORM
+$route['sys/users/list/tickets/tracc_request'] = 'main/service_form_tracc_request_list';
+//--- TICKET CREATION of USER for TRACC REQUEST
+$route['sys/users/create/tickets/tracc_request'] = 'main/user_creation_tickets_tracc_request';
+
+
 //--- ADMIN ROUTES ---//
 //--- DATATABLE of ADMIN TRACC CONCERN
 $route['sys/admin/list/ticket/tracc_concern'] = 'main/admin_list_tracc_concern';
@@ -41,8 +51,11 @@ $route['sys/admin/list/ticket/msrf'] = 'main/admin_list_tickets';
 //--- DATATABLE of ADMIN for DEPARTMENTS
 $route['sys/admin/team'] = 'main/admin_team';
 
+//--- DATATABLE of ADMIN for TRACC REQUEST
+$route['sys/admin/list/ticket/tracc_request'] = 'main/admin_list_tracc_request';
 
-//--- TICKET APPROVAL for MSRF and TRACC CONCERN
+
+//--- TICKET APPROVAL for MSRF and TRACC CONCERN and TRACC REQUEST
 $route['sys/admin/approved/(:any)/(:any)'] = 'main/admin_approval_list/$1/$2';
 
 

@@ -16,8 +16,9 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Tickets Concerns <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="<?= base_url(); ?>sys/users/list/tickets/msrf">MSRF List Concern</a></li>
-							<li><a href= "<?= base_url(); ?>sys/users/list/tickets/tracc_concern">TRACC List Concern</a></li>
+							<li><a href="<?= base_url(); ?>sys/users/list/tickets/msrf">MSRF Concern List</a></li>
+							<li><a href= "<?= base_url(); ?>sys/users/list/tickets/tracc_concern">TRACC Concern List</a></li>
+							<li><a href="<?= base_url(); ?>sys/users/list/tickets/tracc_request">TRACC Request List</a></li>
 						</ul>
 					</li>
 				<?php else: ?>
@@ -26,6 +27,7 @@
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="<?= base_url(); ?>sys/users/list/tickets/msrf">MSRF List Creation</a></li>
 							<li><a href="<?= base_url(); ?>sys/users/list/tickets/tracc_concern">TRACC Concern Creation</a></li>
+							<li><a href="<?= base_url(); ?>sys/users/list/tickets/tracc_request">TRACC Request Creation</a></li>
 						</ul>
                 	</li>
 				<?php endif; ?>

@@ -16,14 +16,13 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-body">
-                            <table id="tblTraccConcern" class="table table-bordered table-striped">
+                            <table id="tblTraccRequest" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Control Number</th>
-                                        <th>Reported By</th>
+                                        <th>Ticket Number</th>
+                                        <th>Requested By</th>
                                         <th>Subject</th>
                                         <th>Priority</th>
-                                        <th>Company</th>
                                         <th>Status</th>
                                         <th>Department Approval Status</th>
                                         <th>ICT Approval Status</th>
@@ -31,11 +30,10 @@
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>Control Number</th>
-                                        <th>Reported By</th>
+                                        <th>Ticket Number</th>
+                                        <th>Requested By</th>
                                         <th>Subject</th>
                                         <th>Priority</th>
-                                        <th>Company</th>
                                         <th>Status</th>
                                         <th>Department Approval Status</th>
                                         <th>ICT Approval Status</th>

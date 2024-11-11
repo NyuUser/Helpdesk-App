@@ -71,10 +71,22 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-md-12" style="display: none;">
+                                                <div class="form-group">
+			                    					<label>Priority</label>
+                                                    <select class="form-control select2" name="priority" id="priority">
+                                                        <option value=""disabled selected>Priority</option>
+                                                        <option value="Low"<?php if ($tracc_con['priority'] == 'Low') echo ' selected'; ?>>Low</option>
+                                                        <option value="Medium"<?php if ($tracc_con['priority'] == 'Medium') echo ' selected'; ?>>Medium</option>
+                                                        <option value="High"<?php if ($tracc_con['priority'] == 'High') echo ' selected'; ?>>High</option>
+                                                    </select>                    
+			                    				</div>                                             
+			                                </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Reported by</label>
-                                                    <input type="text" name="name" value="<?php echo htmlspecialchars($user_details['fname']. " " . $user_details['mname']. " ". $user_details['lname']); ?>" class="form-control select2" readonly>
+                                                    <input type="text" name="name" value="<?= $tracc_con['reported_by']; ?>" class="form-control select2" readonly>
                                                 </div>
                                             </div>
 
@@ -158,7 +170,7 @@
                                                     <label>Resolved by <span style = "color:red;">*</span></label>
                                                     <select class="form-control select2" name="resolved_by" id="resolved_by" disabled>
                                                         <option value=""disabled selected>Resolved By</option>
-                                                        <option value="HANNA" <?php if ($tracc_con['resolved_by'] == 'HANNAH') echo ' selected'; ?>>Ms. Hanna</option>
+                                                        <option value="HANNA" <?php if ($tracc_con['resolved_by'] == 'HANNA') echo ' selected'; ?>>Ms. Hanna</option>
                                                         <option value="DAN" <?php if ($tracc_con['resolved_by'] == 'DAN') echo ' selected'; ?>>Sir. Dan</option>
                                                         <option value="CK" <?php if ($tracc_con['resolved_by'] == 'CK') echo ' selected'; ?>>Sir. CK</option>
                                                         <option value="ERIC" <?php if ($tracc_con['resolved_by'] == 'ERIC') echo ' selected'; ?>>Sir. Eric</option>

@@ -314,16 +314,16 @@ class Main_model extends CI_Model {
 		}
 	}
 
-	public function getLastTRACCNumber() {
+	public function getLastTRFNumber() {
 		$this->db->select('ticket_id');
 		$this->db->order_by('recid', 'DESC');
 		$this->db->limit(1);
-		$query = $this->db->get('service_request_tracc');
+		$query = $this->db->get('service_request_tracc_request');
 		if ($query->num_rows() > 0) {
 			$row = $query->row();
 			return $row->ticket_id;
 		} else {
-			return 'TRN-000';
+			return 'TRN-0000';
 		}
 	}
 
@@ -666,7 +666,6 @@ class Main_model extends CI_Model {
 		}
 	}
 	
-	//galaw rito
 	public function update_employee() {
 		$id = $this->input->post('id', true);
 		$emp_id = $this->input->post('emp_id', true);
@@ -783,6 +782,20 @@ class Main_model extends CI_Model {
 		}
 	}
 
+	public function getTicketsTRF($id){
+		$strQry = "'$id'";
+		if ($query = $this->db->query("SELECT * FROM service_request_tracc_request WHERE ticket_id = ". $strQry ."")){
+			if ($query->num_rows() > 0) {
+				$t = $query->row_array();
+				return array("ok", $t);
+			} else {
+				return array("error", "No data was fetched.");
+			}
+		} else {
+			return array("error", "Internal error. Please try again.");
+		}
+	}
+
 	/*public function status_approval_tracc_concern() {
 		$control_number = $this->input->post('control_number', true);
 		$received_by = $this->input->post('received_by', true);
@@ -853,6 +866,7 @@ class Main_model extends CI_Model {
 		$control_number = $this->input->post('control_number', true);
 		$received_by = $this->input->post('received_by', true);
 		$noted_by = $this->input->post('noted_by', true);
+		$priority = $this->input->post('priority', true);
 		$approval_stat = $this->input->post('app_stat', true);
 		$it_approval_stat = $this->input->post('it_app_stat', true);
 		$reject_ticket_traccCon = $this->input->post('reason_rejected', true);
@@ -886,7 +900,7 @@ class Main_model extends CI_Model {
 			// Handle the IT-specific approval status independently
 			if ($it_approval_stat == 'Resolved') {
 				$this->db->set('it_approval_status', 'Resolved');
-				$this->db->set('status', 'Resolved');  // Set status to Resolved for IT
+				$this->db->set('status', 'Done');  // Set status to Resolved for IT
 			} else if ($it_approval_stat == 'Closed') {
 				$this->db->set('it_approval_status', 'Closed');
 				$this->db->set('status', 'Closed');
@@ -895,6 +909,14 @@ class Main_model extends CI_Model {
 			} else if ($it_approval_stat == 'Approved') {
 				$this->db->set('it_approval_status', 'Approved');
 				$this->db->set('status', 'In Progress');
+			}
+
+			if ($priority == 'Low') {
+				$this->db->set('priority', 'Low');
+			} else if ($priority == 'Medium') {
+				$this->db->set('priority', 'Medium');
+			} else if ($priority == 'High') {
+				$this->db->set('priority', 'High');
 			}
 	
 			// Set other fields from the form
@@ -955,46 +977,113 @@ class Main_model extends CI_Model {
 		}
 	}
 
-	/*public function status_approval_msrf() {
-		$ticket_id = $this->input->post('msrf_number', true);
-		$it_approval_stat = $this->input->post('it_approval_stat', true);
-		$assign_staff = $this->input->post('assign_to', true);
-		$approval_stat = $this->input->post('approval_stat', true);
-		$reject_reason = $this->input->post('rejecttix', true);  // Get rejection reason
+	// public function status_approval_msrf() {
+	// 	$ticket_id = $this->input->post('msrf_number', true);
+	// 	$it_approval_stat = $this->input->post('it_approval_stat', true);
+	// 	$assign_staff = $this->input->post('assign_to', true);
+	// 	$approval_stat = $this->input->post('approval_stat', true);
+	// 	$reject_reason = $this->input->post('rejecttix', true);  // Get rejection reason
 		
-		// Start transaction
-		$this->db->trans_start();
+	// 	// Start transaction
+	// 	$this->db->trans_start();
 		
-		// Retrieve ticket details
-		$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE ticket_id = ?', array($ticket_id));
+	// 	// Retrieve ticket details
+	// 	$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE ticket_id = ?', array($ticket_id));
 
-		if ($qry->num_rows() > 0) {
+	// 	if ($qry->num_rows() > 0) {
+	// 		$row = $qry->row();
+
+	// 		// If the ticket is approved
+	// 		if ($row->approval_status == "Approved") {
+	// 			// Set default status for approved tickets
+	// 			$this->db->set('status', 'In Progress');
+
+	// 			// Update status based on IT approval status
+	// 			if ($it_approval_stat == 'Resolved') {
+	// 				$this->db->set('status', 'Closed'); // Change status to 'Closed' if resolved
+	// 			} else if ($it_approval_stat == 'Rejected') {
+	// 				$this->db->set('remarks_ict', $reject_reason); // Add rejection reason if rejected
+	// 			}
+
+	// 			$this->db->set('it_approval_status', $it_approval_stat);
+	// 			$this->db->set('assigned_it_staff', $assign_staff);
+	// 		} else {
+	// 			// Update approval status if the ticket is not approved
+	// 			$this->db->set('approval_status', $approval_stat);
+	// 		}
+			
+	// 		// Update the ticket
+	// 		$this->db->where('ticket_id', $ticket_id);
+	// 		$this->db->update('service_request_msrf'); 
+
+	// 		// Complete transaction
+	// 		$this->db->trans_complete();
+
+	// 		if ($this->db->trans_status() === FALSE) {
+	// 			return array(0, "Error updating ticket, please try again.");
+	// 		} else {
+	// 			return array(1, "Successfully updated ticket: " . $ticket_id);
+	// 		}
+	// 	} else {
+	// 		return array(0, "Service request not found for ticket: " . $ticket_id);
+	// 	}
+	// }
+
+	public function status_approval_trf() {
+		$ticket_id = $this->input->post('trf_number', true);
+		$accomplished_by = $this->input->post('accomplished_by', true);
+		$accomplished_by_date = $this->input->post('accomplished_by_date', true);
+		$acknowledge_by = $this->input->post('acknowledge_by', true);
+		$acknowledge_by_date =$this->input->post('ack_by_date', true);
+		$it_approval_stat = $this->input->post('it_app_stat', true);
+		$approval_stat = $this->input->post('app_stat', true);
+		$reject_reason = $this->input->post('reason_rejected', true);
+		$priority = $this->input->post('priority', true);
+
+		$this->db->trans_start();
+
+		$qry = $this->db->query('SELECT * FROM service_request_tracc_request WHERE ticket_id = ?', array ($ticket_id));
+
+		if ($qry->num_rows() > 0){
 			$row = $qry->row();
 
-			// If the ticket is approved
-			if ($row->approval_status == "Approved") {
-				// Set default status for approved tickets
+			if ($approval_stat == 'Rejected'){
+				$this->db->set('approval_status', 'Rejected');
+				$this->db->set('status', 'Rejected');
+			} else if ($approval_stat == 'Approved') {
+				$this->db->set('approval_status', 'Approved');
 				$this->db->set('status', 'In Progress');
-
-				// Update status based on IT approval status
-				if ($it_approval_stat == 'Resolved') {
-					$this->db->set('status', 'Closed'); // Change status to 'Closed' if resolved
-				} else if ($it_approval_stat == 'Rejected') {
-					$this->db->set('remarks_ict', $reject_reason); // Add rejection reason if rejected
-				}
-
-				$this->db->set('it_approval_status', $it_approval_stat);
-				$this->db->set('assigned_it_staff', $assign_staff);
-			} else {
-				// Update approval status if the ticket is not approved
-				$this->db->set('approval_status', $approval_stat);
 			}
-			
-			// Update the ticket
-			$this->db->where('ticket_id', $ticket_id);
-			$this->db->update('service_request_msrf'); 
 
-			// Complete transaction
+			if ($it_approval_stat == 'Resolved'){
+				$this->db->set('it_approval_status', 'Resolved');
+				$this->db->set('status', 'Closed');
+			} else if ($it_approval_stat == 'Rejected'){
+				$this->db->set('it_approval_status', 'Rejected');
+				$this->db->set('status', 'Rejected');
+				$this->db->set('reason_reject_ticket', $reject_reason);
+			} else if ($it_approval_stat == 'Approved'){
+				$this->db->set('it_approval_status', 'Approved');
+				$this->db->set('status', 'In Progress');
+			}
+
+			if ($priority == 'Low') {
+				$this->db->set('priority', 'Low');
+			} else if ($priority == 'Medium') {
+				$this->db->set('priority', 'Medium');
+			} else if ($priority == 'High') {
+				$this->db->set('priority', 'High');
+			}
+
+			$this->db->set('accomplished_by', $accomplished_by);
+			$this->db->set('accomplished_by_date', $accomplished_by_date);
+			$this->db->set('acknowledge_by', $acknowledge_by);
+			$this->db->set('acknowledge_by_date', $acknowledge_by_date);
+			$this->db->set('reason_reject_ticket', $reject_reason);
+
+			$this->db->where('ticket_id', $ticket_id);
+			$this->db->update('service_request_tracc_request');
+
 			$this->db->trans_complete();
 
 			if ($this->db->trans_status() === FALSE) {
@@ -1005,8 +1094,8 @@ class Main_model extends CI_Model {
 		} else {
 			return array(0, "Service request not found for ticket: " . $ticket_id);
 		}
-	}*/
-
+	}
+	
 	public function status_approval_msrf() {
 		$ticket_id = $this->input->post('msrf_number', true);
 		$it_approval_stat = $this->input->post('it_approval_stat', true);
@@ -1029,7 +1118,7 @@ class Main_model extends CI_Model {
 				$this->db->set('status', 'Rejected'); 
 			} else if ($approval_stat == 'Approved') {
 				$this->db->set('approval_status', 'Approved');
-				$this->db->set('status', 'In Progress'); 
+				$this->db->set('status', 'On Going'); 
 			}
 	
 			
@@ -1264,7 +1353,7 @@ class Main_model extends CI_Model {
 		$control_number = $this->input->post('control_number');
 		$module_affected = $this->input->post('module_affected');
 		$company = $this->input->post('company');
-		$concern = $this->input->post('concern');
+		$concern = $this->input->post('details_concern');
 		$reported_by = $this->input->post('name');
 		$date_rep = $this->input->post('date_rep');
 
@@ -1330,6 +1419,133 @@ class Main_model extends CI_Model {
 	// 		return array(0, "Error updating Keywords's status. Please try again.");
 	// 	}
 	// }
+
+	public function trf_add_ticket($file_path = null, $comp_checkbox_values = null, $checkbox_data_newadd, $checkbox_data_update, $checkbox_data_account) {
+		$user_id = $this->session->userdata('login_data')['user_id'];
+		$trf_number = $this->input->post('trf_number', true);
+		$fullname = $this->input->post('name', true);
+		$department_description = $this->input->post('department_description', true);
+		$department_id = $this->input->post('dept_id', true);
+		$date_requested = $this->input->post('date_req', true);
+		$date_needed = $this->input->post('date_needed', true);
+		$complete_details = $this->input->post('complete_details', true);
+	
+		$query = $this->db->select('ticket_id')
+					->where('ticket_id', $trf_number)
+					->get('service_request_tracc_request');
+		if($query->num_rows() > 0) {
+			return array(0, "Data is Existing");
+		} else {
+			$data = array(
+				'ticket_id' => $trf_number,
+				'subject' => 'TRACC_REQUEST',
+				'requested_by' => $fullname,
+				'department' => $department_description,
+				'department_id' => $department_id,
+				'date_requested' => $date_requested,
+				'date_needed' => $date_needed,
+				'requested_by_id' => $user_id,
+				'complete_details' => $complete_details,
+				'status' => 'Open',
+				'approval_status' => 'Pending',
+				'it_approval_status' => 'Pending',
+				'created_at' => date("Y-m-d H:i:s")
+			);
+	
+			if ($file_path !== null) {
+				$data['file'] = $file_path;
+			}
+	
+			// Add checkbox values if available
+			if ($comp_checkbox_values !== null) {
+				$data['company'] = $comp_checkbox_values;
+			}
+	
+			$this->db->trans_start();
+			$query = $this->db->insert('service_request_tracc_request', $data);
+	
+			if ($this->db->affected_rows() > 0) {
+				$checkbox_entry_newadd = [
+					'ticket_id' => $trf_number,
+					'item' => isset($checkbox_data_newadd['checkbox_item']) ? $checkbox_data_newadd['checkbox_item'] : 0,
+					'customer' => isset($checkbox_data_newadd['checkbox_customer']) ? $checkbox_data_newadd['checkbox_customer'] : 0,
+					'supplier' =>  isset($checkbox_data_newadd['checkbox_supplier']) ? $checkbox_data_newadd['checkbox_supplier'] : 0,
+					'warehouse' => isset($checkbox_data_newadd['checkbox_whs']) ? $checkbox_data_newadd['checkbox_whs'] : 0,
+					'bin_number' => isset($checkbox_data_newadd['checkbox_bin']) ? $checkbox_data_newadd['checkbox_bin'] : 0,
+					'customer_shipping_setup' => isset($checkbox_data_newadd['checkbox_cus_ship_setup']) ? $checkbox_data_newadd['checkbox_cus_ship_setup'] : 0,
+					'item_request_form' => isset($checkbox_data_newadd['checkbox_item_req_form']) ? $checkbox_data_newadd['checkbox_item_req_form'] : 0,
+					'others' => isset($checkbox_data_newadd['checkbox_others_newadd']) ? $checkbox_data_newadd['checkbox_others_newadd'] : 0,
+					'others_description' => isset($checkbox_data_newadd['others_text_newadd']) ? $checkbox_data_newadd['others_text_newadd'] : ""
+				];
+				$this->db->insert('tracc_req_mf_new_add', $checkbox_entry_newadd);
+
+				$checkbox_entry_update = [
+					'ticket_id' => $trf_number,
+					'system_date_lock' => isset($checkbox_data_update['checkbox_system_date_lock']) ? $checkbox_data_update['checkbox_system_date_lock'] : 0,
+					'user_file_access' => isset($checkbox_data_update['checkbox_user_file_access']) ? $checkbox_data_update['checkbox_user_file_access'] : 0,
+					'item_details' => isset($checkbox_data_update['checkbox_item_dets']) ? $checkbox_data_update['checkbox_item_dets'] : 0,
+					'customer_details' => isset($checkbox_data_update['checkbox_customer_dets']) ? $checkbox_data_update['checkbox_customer_dets'] : 0,
+					'supplier_details' => isset($checkbox_data_update['checkbox_supplier_dets']) ? $checkbox_data_update['checkbox_supplier_dets'] : 0,
+					'others' => isset($checkbox_data_update['checkbox_others_update']) ? $checkbox_data_update['checkbox_others_update'] : 0,
+					'others_description' => isset($checkbox_data_update['others_text_update']) ? $checkbox_data_update['others_text_update'] : ""
+				];
+				$this->db->insert('tracc_req_mf_update', $checkbox_entry_update);
+
+				$checkbox_entry_account = [
+					'ticket_id' => $trf_number,
+					'tracc_orientation' => isset($checkbox_data_account['checkbox_tracc_orien']) ? $checkbox_data_account['checkbox_tracc_orien'] : 0,
+					'lmi' => isset($checkbox_data_account['checkbox_create_lmi']) ? $checkbox_data_account['checkbox_create_lmi'] : 0,
+					'rgdi' => isset($checkbox_data_account['checkbox_create_rgdi']) ? $checkbox_data_account['checkbox_create_rgdi'] : 0,
+					'lpi' => isset($checkbox_data_account['checkbox_create_lpi']) ? $checkbox_data_account['checkbox_create_lpi'] : 0,
+					'sv' => isset($checkbox_data_account['checkbox_create_sv']) ? $checkbox_data_account['checkbox_create_sv'] : 0,
+					'gps_account' => isset($checkbox_data_account['checkbox_gps_account']) ? $checkbox_data_account['checkbox_gps_account'] : 0,
+					'others' => isset($checkbox_data_account['checkbox_others_account']) ? $checkbox_data_account['checkbox_others_account'] : 0,
+					'others_description' => isset($checkbox_data_account['others_text_account']) ? $checkbox_data_account['others_text_account'] : ""
+				];
+				$this->db->insert('tracc_req_mf_account', $checkbox_entry_account);
+
+				$this->db->trans_commit();
+				return array(1, "Successfully Created Ticket: ".$trf_number);
+			} else {
+				$this->db->trans_rollback();
+				return array(0, "There seems to be a problem when inserting new user. Please try again.");
+			}
+		}
+	}
+
+	public function getCheckboxDataNewAdd($ticket_id) {
+		$this->db->where('ticket_id', $ticket_id);
+		$query = $this->db->get('tracc_req_mf_new_add'); 
+	
+		if ($query->num_rows() > 0) {
+			return $query->row_array(); 
+		}
+	
+		return [];
+	}
+
+	public function getCheckboxDataUpdate($ticket_id) {
+		$this->db->where('ticket_id', $ticket_id);
+		$query = $this->db->get('tracc_req_mf_update');
+
+		if ($query->num_rows() > 0){
+			return $query->row_array();
+		}
+
+		return[];
+	}
+
+	public function getCheckboxDataAccount($ticket_id) {
+		$this->db->where('ticket_id', $ticket_id);
+		$query = $this->db->get('tracc_req_mf_account');
+
+		if ($query->num_rows() > 0){
+			return $query->row_array();
+		}
+
+		return[];
+	}
+	
 
 }
 ?>

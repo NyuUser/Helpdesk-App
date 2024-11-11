@@ -35,14 +35,27 @@
         }
 
         .login-box {
-            position: relative;
+            position: fixed;
+            top: 200px;
             z-index: 1;                  /* Ensure it stays above background */
+        }
+
+        #username:focus {
+            outline: none; 
+            border-color: #ffc107; 
+            box-shadow: 0 0 5px #ffc107; 
+        }
+
+        #password:focus {
+            outline: none; 
+            border-color: #ffc107; 
+            box-shadow: 0 0 5px #ffc107; 
         }
     </style>
 </head>
 <body class="hold-transition login-page">
     <div class="login-box">
-        <div class="card card-outline card-primary">
+        <div class="card card-outline card-warning">
             <div class="card-header text-center">
                 <b class="h1">ICT Helpdesk</b>
             </div>
@@ -53,7 +66,7 @@
                         <input type="text" class="form-control" id="username" name="username" placeholder="Username">
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-user"></span>
+                                <span class="fas fa-user" style="color: #9a1a1f;"></span>
                             </div>
                         </div>
                     </div>
@@ -61,19 +74,19 @@
                         <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
+                                <span class="fas fa-lock" style="color: #9a1a1f;"></span>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <button type="submit" class="btn btn-outline-primary btn-block">Sign In</button>
+                            <button type="submit" class="btn btn-outline-warning btn-block"><span style="color: #000000">Sign In</span></button>
                         </div>
                     </div>
                 </form>
                 <div class="row">
                     <div class="col-12">
-                        <a href="sys/registration" class="btn btn-outline-primary btn-block mt-1">Register</a>
+                        <a href="sys/registration" class="btn btn-outline-warning btn-block mt-1"><span style="color: #000000">Register</span></a>
                     </div>
                 </div>
             </div>
@@ -120,7 +133,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'Something went wrong. Please try again.'
+                        text: 'Username or password is incorrect'
                     });
                 }
             });

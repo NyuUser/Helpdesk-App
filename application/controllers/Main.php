@@ -41,7 +41,7 @@ class Main extends CI_Controller {
 		}
 	}*/
 	
-	// code na may sweetalert
+	// LOGIN 
 	public function login() {
 		// Load helpers and libraries
 		$this->load->helper('form');
@@ -177,6 +177,7 @@ class Main extends CI_Controller {
 		$this->load->view('registration', $page_data);
 	}*/
 
+	//Registration 
 	public function registration() {
 		$this->load->helper('form');
 		$this->load->library('session');
@@ -211,7 +212,7 @@ class Main extends CI_Controller {
 	}
 	
 	
-	// Admin Dashboard
+	// Admin Dashboard, Viewing of Admin Dashboard
 	public function admin_dashboard($active_menu = 'dashboard') {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -228,6 +229,8 @@ class Main extends CI_Controller {
 				$data['total_departments'] = $this->Main_model->get_total_departments();
 				// Fetch total tracc concern count
 				$data['total_tracc_concern_tickets'] = $this->Main_model->get_total_tracc_concern_ticket();
+				// Fetch total tracc request count
+				// $data['total_tracc_request_tickets'] = $this->Main_model->get_total_tracc_request_ticket();
 
 				$allowed_menus = ['dashboard', 'system_administration', 'other_menu'];
 				if (!in_array($active_menu, $allowed_menus)) {
@@ -254,6 +257,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	//Viewing of users/employees for Admin Datatable
 	public function admin_users() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -282,6 +286,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	//Viewing of Department for Admin Datatable
 	public function admin_team() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -310,6 +315,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	//NOT WORKING, locking of users
 	public function lock_users() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -340,6 +346,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	//NOT WORKING, unlocking of users
 	public function unlock_users() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -370,20 +377,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	public function employee_delete($id){
-		if (is_numeric($id)){
-			$status = $this->Main_model->delete_employee($id);
-				if($status){
-					echo json_encode(['status' => 'success', 'message' => 'Succesfully Deleted']);
-				} else {
-					echo json_encode(['status' => 'error', 'message' => 'Failed to delete the Employee.']);
-				}
-		}else{
-			echo json_encode(['status' => 'error', 'message' => 'Invalid Employee ID.']);
-		}
-	}
-
-	//Tracc Concern Admin dashboard
+	//TRACC CONCERN List of Ticket for Admin
 	public function admin_list_tracc_concern(){
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -412,6 +406,7 @@ class Main extends CI_Controller {
 					$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
 					$received_by = $this->input->post('received_by');
 					$noted_by = $this->input->post('noted_by');
+					$priority = $this->input->post('priority');
 					$approval_stat = $this->input->post('app_stat');
 					$reject_ticket = $this->input->post('reason_rejected');
 					$solution = $this->input->post('solution');
@@ -429,7 +424,7 @@ class Main extends CI_Controller {
 						'user_error' => $this->input->post('checkbox_user_error') ? 1 : 0,
 					];
 
-					$process = $this->Main_model->status_approval_tracc_concern($control_number, $received_by, $noted_by, $approval_stat, $reject_ticket, $solution, $resolved_by, $resolved_date, $others, $received_by_lst, $date_lst);
+					$process = $this->Main_model->status_approval_tracc_concern($control_number, $received_by, $noted_by, $priority, $approval_stat, $reject_ticket, $solution, $resolved_by, $resolved_date, $others, $received_by_lst, $date_lst);
 					$process_checkbox = $this->Main_model->insert_checkbox_data($checkbox_data);
 	
 					if ($process[0] == 1 && $process_checkbox[0] == 1) {
@@ -457,6 +452,51 @@ class Main extends CI_Controller {
 		}
 	}
 
+	//TRACC REQUEST List of Ticket for Admin
+	public function admin_list_tracc_request(){
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		if ($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+
+			if ($user_details[0] == "ok"){
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+
+				$allowed_menus = ['dashboard', 'system_tickets_list', 'open_tickets', 'other_menu'];
+				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_tickets_list';
+
+				$data['active_menu'] = $active_menu;
+
+				if ($this->input->post()) {
+					$trf_number = $this->input->post('trf_number');
+					$approval_stat = $this->input->post('app_stat');
+
+					$process = $this->Main_model->status_approval_trf($trf_number, $app_stat);
+					print_r($process);
+					
+					if (isset($process[0]) && $process[0] == 1) {
+						$this->session->set_flashdata('success', "Ticket's been Updated");
+					} else {
+						$this->session->set_flashdata('error', 'Update failed.');
+					}
+
+					redirect(base_url()."sys/admin/list/ticket/tracc_request");
+				}
+				$this->load->view('admin/header', $data);
+				$this->load->view('admin/sidebar', $data);
+				$this->load->view('admin/tickets_tracc_request', $data);
+				$this->load->view('admin/footer');
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	//MSRF List of Ticket for Admin
 	public function admin_list_tickets() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -484,7 +524,7 @@ class Main extends CI_Controller {
 					//print_r($_POST); // Add this line to debug POST data
 					// Pass data to the model for processing
 					$process = $this->Main_model->status_approval_msrf($msrf_number, $approval_stat, $rejecttix);  // Update this line in the model
-					print_r($process);
+					//var_dump($process);
 					
 					/*if ($process[0] == 1) {
 						$this->session->set_flashdata('success', 'Tickets Approved');
@@ -518,8 +558,51 @@ class Main extends CI_Controller {
 			redirect("sys/authentication");
 		}
 	}
+
+	// public function admin_list_tickets() {
+	// 	$this->load->helper('form');
+	// 	$this->load->library('form_validation');
+
+	// 	if ($this->session->userdata('login_data')) {
+	// 		$user_details = $this->Main_model->user_details();
+
+	// 		if ($user_details[0] == "ok"){
+	// 			$sid = $this->session->session_id;
+	// 			$data['user_details'] = $user_details[1];
+
+	// 			$allowed_menus = ['dashboard', 'system_tickets_list', 'open_tickets', 'other_menu'];
+	// 			$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_tickets_list';
+
+	// 			$data['active_menu'] = $active_menu;
+
+	// 			if($this->input->post()) {
+	// 				$msrf_number = $this->input->post('msrf_number');
+	// 				$app_stat = $this->input->post('approval_stat');
+
+	// 				$process = $this->Main_model->status_approval_msrf($msrf_number, $app_stat);
+	// 				print_r($process);
+
+	// 				if (isset($process[0]) && $process[0] == 1) {
+	// 					$this->session->set_flashdata('success', "Tickets been updated");
+	// 				} else {
+	// 					$this->session->set_flashdata('error', "Update Failed");
+	// 				}
+
+	// 				//redirect(base_url()."sys/admin/list/ticket/msrf");
+	// 			}
+	// 			$this->load->view('admin/header', $data);
+	// 			$this->load->view('admin/sidebar', $data);
+	// 			$this->load->view('admin/tickets_msrf', $data);
+	// 			$this->load->view('admin/footer');
+	// 		}
+	// 	} else {
+	// 		$this->session->sess_destroy();
+	// 		$this->session->set_flashdata('error', 'Session expired. Please login again.');
+	// 		redirect("sys/authentication");
+	// 	}
+	// }	
 	
-	
+	//Adding FORM of department for ADMIN
 	public function admin_list_department() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -560,6 +643,7 @@ class Main extends CI_Controller {
 	}
 
 
+	//Adding FORM Employee in ADMIN
 	public function admin_list_employee() {
 		// Check if the user is logged in by verifying session data
 		if($this->session->userdata('login_data')) {
@@ -614,7 +698,7 @@ class Main extends CI_Controller {
 		}
 	}
 	
-
+	// Adding employee ADMIN
 	public function employee_add() {
 		// Load the form helper and session library
 		$this->load->helper('form');
@@ -656,8 +740,233 @@ class Main extends CI_Controller {
 		// Return the JSON response
 		echo json_encode($response);
 	}
+
+	//Updating Employee for ADMIN
+	public function employee_update() {
+		// Load the form helper and form validation library
+		$this->load->helper('form');
+		$this->load->library('form_validation');
 	
-	//gawa bago rito for checkbox
+		// Retrieve the employee ID from the submitted form data, with XSS filtering
+		$id = $this->input->post('id', true);
+	
+		// Check if the user is logged in by verifying the session data
+		if ($this->session->userdata('login_data')) {
+			// Retrieve the logged-in user's ID from session data
+			$user_id = $this->session->userdata('login_data')['user_id'];
+	
+			// Fetch detailed information about the user from the model
+			$user_details = $this->Main_model->user_details();
+	
+			// Fetch department data from the model
+			$department_data = $this->Main_model->getDepartment();
+	
+			// Check if the user details were retrieved successfully
+			if ($user_details[0] == "ok") {
+				// Call the model method to update the employee's data
+				$process = $this->Main_model->update_employee();
+	
+				// Return JSON response
+				if ($process[0] == 1) {
+					echo json_encode(array('status' => 'success', 'message' => 'Employee is been updated successfully.'));
+				} else {
+					echo json_encode(array('status' => 'error', 'message' =>  $process[1]));
+				}
+				return; // Prevent loading the view when using AJAX
+			} else {
+				echo json_encode(array('status' => 'error', 'message' => 'Error fetching user information.'));
+				return;
+			}
+		} else {
+			echo json_encode(array('status' => 'error', 'message' => 'Session expired. Please login again.'));
+			return;
+		}
+	}
+
+	//Deleting Employee for Admin
+	public function employee_delete($id){
+		if (is_numeric($id)){
+			$status = $this->Main_model->delete_employee($id);
+				if($status){
+					echo json_encode(['status' => 'success', 'message' => 'Succesfully Deleted']);
+				} else {
+					echo json_encode(['status' => 'error', 'message' => 'Failed to delete the Employee.']);
+				}
+		}else{
+			echo json_encode(['status' => 'error', 'message' => 'Invalid Employee ID.']);
+		}
+	}
+
+	public function list_update_employee($id) {
+		// Check if the user is logged in by verifying session data
+		if ($this->session->userdata('login_data')) {
+	
+			// Fetch detailed information about the logged-in user from the model
+			$user_details = $this->Main_model->user_details();
+	
+			// Fetch department data from the model
+			$department_data = $this->Main_model->getDepartment();
+	
+			// Fetch details of the specific user to be updated based on the provided ID
+			$users_det = $this->Main_model->users_details_put($id);
+	
+			// Check if the user details were retrieved successfully
+			if ($user_details[0] == "ok") {
+	
+				// Get the session ID (though it's not used further in this code)
+				$sid = $this->session->session_id;
+	
+				// Store the user details, department data, and the details of the user to be updated in the $data array
+				$data['user_details'] = $user_details[1];
+				$data['department_data'] = $department_data;
+				$data['users_det'] = $users_det[1];
+	
+				// Define allowed menus for navigation and determine the active menu based on the URI segment
+				$allowed_menus = ['dashboard', 'system_administration', 'users', 'other_menu'];
+				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_administration';
+				$data['active_menu'] = $active_menu;
+	
+				// Check if department data was successfully retrieved
+				if ($department_data[0] == "ok") {
+					// If successful, store the department list in the $data array
+					$data['departments'] = $department_data[1];
+				} else {
+					// If not, initialize an empty array and display an error message
+					$data['departments'] = array();
+					echo "No departments found.";
+				}
+	
+				// Load the views for the admin page, passing the $data array to the views
+				$this->load->view('admin/header', $data);
+				$this->load->view('admin/sidebar', $data);
+				$this->load->view('admin/update_employee', $data);
+				$this->load->view('admin/footer');
+	
+			} else {
+				// If user details retrieval failed, set an error message and redirect to the authentication page
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			// If the user is not logged in (session data is missing), destroy the session, set an error message, and redirect to the authentication page
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+	
+	// else if
+	// public function admin_approval_list($subject, $id) {
+	// 	if ($this->session->userdata('login_data')) {
+	// 		$user_id = $this->session->userdata('login_data')['user_id'];
+	// 		$user_role = $this->session->userdata('login_data')['role'];
+	// 		$user_dept = $this->session->userdata('login_data')['sup_id'];
+	// 		$dept_id = $this->session->userdata('login_data')['dept_id'];
+	// 		$user_details = $this->Main_model->user_details();
+	// 		$msrf_tickets = $this->Main_model->getTicketsMSRF($id);
+	// 		$getTraccCon = $this->Main_model->getTraccConcernByID($id);
+	// 		$trf_tickets = $this->Main_model->getTicketsTRF($id);
+	// 		$checkbox_newadd = $this->Main_model->getCheckboxDataNewAdd($id);
+	// 		$checkbox_update = $this->Main_model->getCheckboxDataUpdate($id);
+	// 		$checkbox_account = $this->Main_model->getCheckboxDataAccount($id);
+
+	// 		$ict = $this->Main_model->GetICTSupervisor();
+
+	// 		if ($user_details[0] == "ok") {
+	// 			$sid = $this->session->session_id;
+	// 			$data['user_details'] = $user_details[1];
+	// 			$data['msrf'] = $msrf_tickets[1];
+	// 			$data['tracc_con'] = $getTraccCon[1];
+	// 			$data['trf'] = $trf_tickets[1];
+	// 			$data['ict'] = $ict;
+	// 			$data['checkbox_newadd'] = $checkbox_newadd;
+	// 			$data['checkbox_update'] = $checkbox_update;
+	// 			$data['checkbox_account'] = $checkbox_account;
+	// 			$emp_id = $user_details[1]["emp_id"];
+	// 			$getTeam = $this->Main_model->GetTeam($dept_id);
+	// 			$data['pages'] = 'tickets';
+
+	// 			$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
+	// 			$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';
+
+	// 			$data['active_menu'] = $active_menu;
+
+	// 			// Handle TRACC Concern data
+	// 			if ($subject == "TRACC_CONCERN") {
+	// 				if ($getTraccCon[0] == "ok") {
+	// 					// Access control_number safely
+	// 					$control_number = $getTraccCon[1]['control_number'];
+	// 					$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
+	// 					$data['tracc_con'] = $getTraccCon[1]; // Store TRACC concern data
+	// 				} else {
+	// 					// Handle the case where no TRACC Concern data was found
+	// 					$data['checkboxes'] = []; // Set to empty array if no data
+	// 					$data['tracc_con'] = []; // Set to empty array if no data
+	// 					$this->session->set_flashdata('error', $getTraccCon[1]); // Use the error message returned
+	// 				}
+	
+	// 				// Load TRACC Concern views
+	// 				$this->load->view('admin/header', $data);
+	// 				$this->load->view('admin/tickets_approval_tracc_concern', $data);
+	// 				$this->load->view('admin/sidebar', $data);
+	// 				$this->load->view('admin/footer');
+	
+	// 			} else if ($subject == "MSRF") {
+	// 				$this->load->view('admin/header', $data);
+	// 				$this->load->view('admin/tickets_approval_msrf', $data);
+	// 				$this->load->view('admin/sidebar', $data);
+	// 				$this->load->view('admin/footer');
+
+	// 			} else if ($subject == "TRACC_REQUEST"){
+	// 				$checkbox_lmi = 0;
+	// 				$checkbox_rgdi = 0;
+	// 				$checkbox_lpi = 0;
+	// 				$checkbox_sv = 0;
+
+	// 				if (isset($trf_tickets[1]['company'])) {
+	// 					// Check if 'company' is a string and explode it into an array
+	// 					$company_values = (is_string($trf_tickets[1]['company'])) ? explode(',', $trf_tickets[1]['company']) : $trf_tickets[1]['company'];
+			
+	// 					// Ensure that $company_values is an array
+	// 					if (is_array($company_values)) {
+	// 						$checkbox_lmi = in_array('LMI', $company_values) ? 1 : 0;
+	// 						$checkbox_rgdi = in_array('RGDI', $company_values) ? 1 : 0;
+	// 						$checkbox_lpi = in_array('LPI', $company_values) ? 1 : 0;
+	// 						$checkbox_sv = in_array('SV', $company_values) ? 1 : 0;
+	// 					}
+	// 				}
+	// 				// Passing data to view
+	// 				$data['checkbox_lmi'] = $checkbox_lmi;
+	// 				$data['checkbox_rgdi'] = $checkbox_rgdi;
+	// 				$data['checkbox_lpi'] = $checkbox_lpi;
+	// 				$data['checkbox_sv'] = $checkbox_sv;
+
+	// 				$data['checkbox_newadd'] = $checkbox_newadd;
+	// 				$data['checkbox_update'] = $checkbox_update;
+	// 				$data['checkbox_account'] = $checkbox_account;
+
+	// 				$this->load->view('admin/header', $data);
+	// 				$this->load->view('admin/tickets_approval_tracc_request', $data);
+	// 				$this->load->view('admin/sidebar', $data);
+	// 				$this->load->view('admin/footer');
+	// 			}
+
+
+	// 			if ($user_role == "L2") {
+	// 				$data['getTeam'] = $getTeam[1];
+	// 			}
+
+	// 		} else {
+	// 			$this->session->set_flashdata('error', 'Error fetching user information.');
+	// 			redirect("sys/authentication");
+	// 		}
+	// 	} else {
+	// 		$this->session->set_flashdata('error', 'Error fetching user information');
+    //         redirect("sys/authentication");
+	// 	}
+	// }
+	
+	//ADMIN APPROVAL for all tickets
 	public function admin_approval_list($subject, $id) {
 		if ($this->session->userdata('login_data')) {
 			$user_id = $this->session->userdata('login_data')['user_id'];
@@ -667,65 +976,106 @@ class Main extends CI_Controller {
 			$user_details = $this->Main_model->user_details();
 			$msrf_tickets = $this->Main_model->getTicketsMSRF($id);
 			$getTraccCon = $this->Main_model->getTraccConcernByID($id);
+			$trf_tickets = $this->Main_model->getTicketsTRF($id);
+			$checkbox_newadd = $this->Main_model->getCheckboxDataNewAdd($id);
+			$checkbox_update = $this->Main_model->getCheckboxDataUpdate($id);
+			$checkbox_account = $this->Main_model->getCheckboxDataAccount($id);
+	
 			$ict = $this->Main_model->GetICTSupervisor();
-
+	
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
 				$data['msrf'] = $msrf_tickets[1];
-				$data['tracc_con'] = $getTraccCon[1]; 
+				$data['tracc_con'] = $getTraccCon[1];
+				$data['trf'] = $trf_tickets[1];
 				$data['ict'] = $ict;
+				$data['checkbox_newadd'] = $checkbox_newadd;
+				$data['checkbox_update'] = $checkbox_update;
+				$data['checkbox_account'] = $checkbox_account;
 				$emp_id = $user_details[1]["emp_id"];
 				$getTeam = $this->Main_model->GetTeam($dept_id);
 				$data['pages'] = 'tickets';
-
+	
 				$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
 				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';
-
+	
 				$data['active_menu'] = $active_menu;
-
-
-				// Handle TRACC Concern data
-				if ($subject == "TRACC_CONCERN") {
-					if ($getTraccCon[0] == "ok") {
-						// Access control_number safely
-						$control_number = $getTraccCon[1]['control_number'];
-						$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
-						$data['tracc_con'] = $getTraccCon[1]; // Store TRACC concern data
-					} else {
-						// Handle the case where no TRACC Concern data was found
-						$data['checkboxes'] = []; // Set to empty array if no data
-						$data['tracc_con'] = []; // Set to empty array if no data
-						$this->session->set_flashdata('error', $getTraccCon[1]); // Use the error message returned
+	
+				// Handling TRF tickets company checkboxes
+				$checkbox_lmi = $checkbox_rgdi = $checkbox_lpi = $checkbox_sv = 0;
+				if (isset($trf_tickets[1]['company'])) {
+					// Check if 'company' is a string and explode it into an array
+					$company_values = (is_string($trf_tickets[1]['company'])) ? explode(',', $trf_tickets[1]['company']) : $trf_tickets[1]['company'];
+					if (is_array($company_values)) {
+						$checkbox_lmi = in_array('LMI', $company_values) ? 1 : 0;
+						$checkbox_rgdi = in_array('RGDI', $company_values) ? 1 : 0;
+						$checkbox_lpi = in_array('LPI', $company_values) ? 1 : 0;
+						$checkbox_sv = in_array('SV', $company_values) ? 1 : 0;
 					}
-	
-					// Load TRACC Concern views
-					$this->load->view('admin/header', $data);
-					$this->load->view('admin/tickets_approval_tracc_concern', $data);
-					$this->load->view('admin/sidebar', $data);
-					$this->load->view('admin/footer');
-	
-				} else if ($subject == "MSRF") {
-					$this->load->view('admin/header', $data);
-					$this->load->view('admin/tickets_approval_msrf', $data);
-					$this->load->view('admin/sidebar', $data);
-					$this->load->view('admin/footer');
 				}
-
-
+	
+				$data['checkbox_lmi'] = $checkbox_lmi;
+				$data['checkbox_rgdi'] = $checkbox_rgdi;
+				$data['checkbox_lpi'] = $checkbox_lpi;
+				$data['checkbox_sv'] = $checkbox_sv;
+	
+				// Switch case to handle different subjects
+				switch ($subject) {
+					case "TRACC_CONCERN":
+						if ($getTraccCon[0] == "ok") {
+							$control_number = $getTraccCon[1]['control_number'];
+							$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
+							$data['tracc_con'] = $getTraccCon[1];
+						} else {
+							$data['checkboxes'] = [];
+							$data['tracc_con'] = [];
+							$this->session->set_flashdata('error', $getTraccCon[1]);
+						}
+						$this->load->view('admin/header', $data);
+						$this->load->view('admin/tickets_approval_tracc_concern', $data);
+						$this->load->view('admin/sidebar', $data);
+						$this->load->view('admin/footer');
+						break;
+	
+					case "MSRF":
+						$this->load->view('admin/header', $data);
+						$this->load->view('admin/tickets_approval_msrf', $data);
+						$this->load->view('admin/sidebar', $data);
+						$this->load->view('admin/footer');
+						break;
+	
+					case "TRACC_REQUEST":
+						// No need to repeat checkbox data
+						$data['checkbox_newadd'] = $checkbox_newadd;
+						$data['checkbox_update'] = $checkbox_update;
+						$data['checkbox_account'] = $checkbox_account;
+	
+						$this->load->view('admin/header', $data);
+						$this->load->view('admin/tickets_approval_tracc_request', $data);
+						$this->load->view('admin/sidebar', $data);
+						$this->load->view('admin/footer');
+						break;
+	
+					default:
+						$this->session->set_flashdata('error', 'Invalid subject provided.');
+						redirect("sys/authentication");
+				}
+	
 				if ($user_role == "L2") {
 					$data['getTeam'] = $getTeam[1];
 				}
-
+	
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");
 			}
 		} else {
 			$this->session->set_flashdata('error', 'Error fetching user information');
-            redirect("sys/authentication");
+			redirect("sys/authentication");
 		}
 	}
+	
 
 	/*public function admin_approval_list($subject, $id) {
 		if ($this->session->userdata('login_data')) {
@@ -870,7 +1220,7 @@ class Main extends CI_Controller {
 		}
 	}
 	
-
+	//Updating department
 	public function department_update($id) {
 		// Ensure $id is an integer for security
 		$id = (int) $id;
@@ -917,7 +1267,7 @@ class Main extends CI_Controller {
 		$this->load->view('admin/update_department', $data);
 	}
 	
-	
+	//Deleting department
 	public function department_delete($id) {
 		if (is_numeric($id)) {
 			$status = $this->Main_model->delete_department($id);
@@ -931,7 +1281,7 @@ class Main extends CI_Controller {
 			}
 	}
 
-
+	//Edit Form for department
 	public function list_update_department($id) {
 		// Check if the user is logged in by verifying session data
 		if ($this->session->userdata('login_data')) {
@@ -991,104 +1341,6 @@ class Main extends CI_Controller {
 		}
 	}
 
-	public function employee_update() {
-		// Load the form helper and form validation library
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-	
-		// Retrieve the employee ID from the submitted form data, with XSS filtering
-		$id = $this->input->post('id', true);
-	
-		// Check if the user is logged in by verifying the session data
-		if ($this->session->userdata('login_data')) {
-			// Retrieve the logged-in user's ID from session data
-			$user_id = $this->session->userdata('login_data')['user_id'];
-	
-			// Fetch detailed information about the user from the model
-			$user_details = $this->Main_model->user_details();
-	
-			// Fetch department data from the model
-			$department_data = $this->Main_model->getDepartment();
-	
-			// Check if the user details were retrieved successfully
-			if ($user_details[0] == "ok") {
-				// Call the model method to update the employee's data
-				$process = $this->Main_model->update_employee();
-	
-				// Return JSON response
-				if ($process[0] == 1) {
-					echo json_encode(array('status' => 'success', 'message' => 'Employee is been updated successfully.'));
-				} else {
-					echo json_encode(array('status' => 'error', 'message' =>  $process[1]));
-				}
-				return; // Prevent loading the view when using AJAX
-			} else {
-				echo json_encode(array('status' => 'error', 'message' => 'Error fetching user information.'));
-				return;
-			}
-		} else {
-			echo json_encode(array('status' => 'error', 'message' => 'Session expired. Please login again.'));
-			return;
-		}
-	}
-	
-	public function list_update_employee($id) {
-		// Check if the user is logged in by verifying session data
-		if ($this->session->userdata('login_data')) {
-	
-			// Fetch detailed information about the logged-in user from the model
-			$user_details = $this->Main_model->user_details();
-	
-			// Fetch department data from the model
-			$department_data = $this->Main_model->getDepartment();
-	
-			// Fetch details of the specific user to be updated based on the provided ID
-			$users_det = $this->Main_model->users_details_put($id);
-	
-			// Check if the user details were retrieved successfully
-			if ($user_details[0] == "ok") {
-	
-				// Get the session ID (though it's not used further in this code)
-				$sid = $this->session->session_id;
-	
-				// Store the user details, department data, and the details of the user to be updated in the $data array
-				$data['user_details'] = $user_details[1];
-				$data['department_data'] = $department_data;
-				$data['users_det'] = $users_det[1];
-	
-				// Define allowed menus for navigation and determine the active menu based on the URI segment
-				$allowed_menus = ['dashboard', 'system_administration', 'users', 'other_menu'];
-				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_administration';
-				$data['active_menu'] = $active_menu;
-	
-				// Check if department data was successfully retrieved
-				if ($department_data[0] == "ok") {
-					// If successful, store the department list in the $data array
-					$data['departments'] = $department_data[1];
-				} else {
-					// If not, initialize an empty array and display an error message
-					$data['departments'] = array();
-					echo "No departments found.";
-				}
-	
-				// Load the views for the admin page, passing the $data array to the views
-				$this->load->view('admin/header', $data);
-				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/update_employee', $data);
-				$this->load->view('admin/footer');
-	
-			} else {
-				// If user details retrieval failed, set an error message and redirect to the authentication page
-				$this->session->set_flashdata('error', 'Error fetching user information.');
-				redirect("sys/authentication");
-			}
-		} else {
-			// If the user is not logged in (session data is missing), destroy the session, set an error message, and redirect to the authentication page
-			$this->session->sess_destroy();
-			$this->session->set_flashdata('error', 'Session expired. Please login again.');
-			redirect("sys/authentication");
-		}
-	}
 
 	public function details_tickets_list() {
 		if($this->session->userdata('login_data')) {
@@ -1227,6 +1479,7 @@ class Main extends CI_Controller {
 		}
 	}*/
 
+	//creation of ticket for tracc concern
 	public function user_creation_tickets_tracc_concern() {
 		// Get the logged-in user's ID from session data
 		$id = $this->session->userdata('login_data')['user_id'];
@@ -1266,7 +1519,7 @@ class Main extends CI_Controller {
 			if (!empty($_FILES['uploaded_photo']['name'])) {
 				// File upload configuration
 				$config['upload_path'] = FCPATH . 'uploads/tracc_concern/';
-				$config['allowed_types'] = 'pdf|jpg|png|doc|docx'; 
+				$config['allowed_types'] = 'pdf|jpg|png|doc|docx|jpeg'; 
 				$config['max_size'] = 5048; 
 				$config['file_name'] = time() . '_' . $_FILES['uploaded_photo']['name']; 
 	
@@ -1303,7 +1556,7 @@ class Main extends CI_Controller {
 		}
 	}
 	
-
+	//creation of ticket for msrf
 	public function users_creation_tickets_msrf() {
 		// Get the currently logged-in user's ID from session data
 		$id = $this->session->userdata('login_data')['user_id'];
@@ -1349,7 +1602,7 @@ class Main extends CI_Controller {
 			if (!empty($_FILES['uploaded_file']['name'])) {
 				// File upload configuration
 				$config['upload_path'] = FCPATH . 'uploads/msrf/';
-				$config['allowed_types'] = 'pdf|jpg|png|doc|docx'; 
+				$config['allowed_types'] = 'pdf|jpg|png|doc|docx|jpeg'; 
 				$config['max_size'] = 5048; 
 				$config['file_name'] = time() . '_' . $_FILES['uploaded_file']['name']; 
 	
@@ -1386,7 +1639,72 @@ class Main extends CI_Controller {
 		}
 	}
 	
+	//datatable na nakikita ni user MSRF
+	public function service_form_msrf_list() {
+		// Get session data for the logged-in user
+		$id = $this->session->userdata('login_data')['user_id']; // Fetches the user ID from the session
+		$dept_id = $this->session->userdata('login_data')['dept_id']; // Fetches the department ID from the session
 	
+		// Load form and session libraries/helpers for validation
+		$this->load->helper('form'); // Loads form helper for handling form elements
+		$this->load->library('session'); // Loads session library to access session data
+	
+		// Set validation rule for the form input 'msrf_number'
+		$this->form_validation->set_rules('msrf_number', 'Ticket ID', 'trim|required'); 
+		// 'msrf_number' is required; it will trigger an error if it's not present.
+	
+		// Fetch user and department details from the model
+		$user_details = $this->Main_model->user_details(); // Gets the current user details
+		$department_data = $this->Main_model->getDepartment(); // Gets the department data
+		$users_det = $this->Main_model->users_details_put($id); // Gets user details based on the session user ID
+		$getdepartment = $this->Main_model->GetDepartmentID(); // Fetches department data based on the session department ID
+	
+		// Check if the form validation has failed
+		if ($this->form_validation->run() == FALSE) { 
+			// If validation fails, it will proceed to generate the MSRF number
+			$msrfNumber = $this->GenerateMSRFNo(); // Calls a function to generate a new MSRF number
+	
+			// Populate data array to pass to views
+			$data['user_details'] = $user_details[1]; // Stores the user details in the data array for view
+			$data['department_data'] = $department_data; // Stores department data
+			$data['users_det'] = $users_det[1]; // User details (fetched using user ID)
+			$data['dept_id'] = $dept_id; // Stores department ID from session
+	
+			// Check if department data is retrieved successfully
+			if ($department_data[0] == "ok") { 
+				$data['departments'] = $department_data[1]; // Stores departments if the data was fetched successfully
+			} else {
+				$data['departments'] = array(); // If no departments were found, set to an empty array
+				echo "No departments found."; // Output an error message
+			}
+	
+			$data['getdept'] = $getdepartment[1]; // Stores department information
+			
+			// Add a form type to differentiate between MSRF and TRACC
+			$data['form_type'] = 'msrf';
+			
+			// Prepare the MSRF number and load views
+			$data['msrfNumber'] = $msrfNumber; // Stores the generated MSRF number
+			$this->load->view('users/header', $data); // Loads the header view, passing the data array
+			$this->load->view('users/service_request_form_msrf_list', $data); // Loads the main view for the service request form
+			$this->load->view('users/footer', $data); // Loads the footer view
+	
+		} else { // If form validation passes, proceed to process the form data
+	
+			// Add ticket (submit the MSRF form)
+			$process = $this->Main_model->msrf_add_ticket(); // Calls model function to add a new MSRF ticket
+	
+			// Check if ticket was added successfully
+			if ($process[0] == 1) { 
+				$this->session->set_flashdata('success', $process[1]); // Sets a success message in session data
+				redirect(base_url().'sys/users/dashboard'); // Redirect to the user's dashboard
+			} else {
+				$this->session->set_flashdata('error', $process[1]); // Sets an error message in session data
+				redirect(base_url().'sys/users/dashboard'); // Redirect to the dashboard on error as well
+			}
+		}
+	}
+
 	//datatable na makikita ni user tracc concern
 	public function service_form_tracc_concern_list() {
 		$id = $this->session->userdata('login_data')['user_id']; // Fetches the user ID from the session
@@ -1396,9 +1714,9 @@ class Main extends CI_Controller {
 		$this->load->helper('form'); // Loads form helper for handling form elements
 		$this->load->library('session'); // Loads session library to access session data
 	
-		// Set validation rule for the form input 'msrf_number'
+		// Set validation rule for the form input 'Control Number'
 		$this->form_validation->set_rules('control_number', 'Control Number', 'trim|required'); 
-		// 'msrf_number' is required; it will trigger an error if it's not present.
+		// 'Control Number' is required; it will trigger an error if it's not present.
 	
 		// Fetch user and department details from the model
 		$user_details = $this->Main_model->user_details(); // Gets the current user details
@@ -1504,74 +1822,8 @@ class Main extends CI_Controller {
 			}
 		}
 	}*/
-	
-	
-	//datatable na nakikita ni user MSRF
-	public function service_form_msrf_list() {
-		// Get session data for the logged-in user
-		$id = $this->session->userdata('login_data')['user_id']; // Fetches the user ID from the session
-		$dept_id = $this->session->userdata('login_data')['dept_id']; // Fetches the department ID from the session
-	
-		// Load form and session libraries/helpers for validation
-		$this->load->helper('form'); // Loads form helper for handling form elements
-		$this->load->library('session'); // Loads session library to access session data
-	
-		// Set validation rule for the form input 'msrf_number'
-		$this->form_validation->set_rules('msrf_number', 'Ticket ID', 'trim|required'); 
-		// 'msrf_number' is required; it will trigger an error if it's not present.
-	
-		// Fetch user and department details from the model
-		$user_details = $this->Main_model->user_details(); // Gets the current user details
-		$department_data = $this->Main_model->getDepartment(); // Gets the department data
-		$users_det = $this->Main_model->users_details_put($id); // Gets user details based on the session user ID
-		$getdepartment = $this->Main_model->GetDepartmentID(); // Fetches department data based on the session department ID
-	
-		// Check if the form validation has failed
-		if ($this->form_validation->run() == FALSE) { 
-			// If validation fails, it will proceed to generate the MSRF number
-			$msrfNumber = $this->GenerateMSRFNo(); // Calls a function to generate a new MSRF number
-	
-			// Populate data array to pass to views
-			$data['user_details'] = $user_details[1]; // Stores the user details in the data array for view
-			$data['department_data'] = $department_data; // Stores department data
-			$data['users_det'] = $users_det[1]; // User details (fetched using user ID)
-			$data['dept_id'] = $dept_id; // Stores department ID from session
-	
-			// Check if department data is retrieved successfully
-			if ($department_data[0] == "ok") { 
-				$data['departments'] = $department_data[1]; // Stores departments if the data was fetched successfully
-			} else {
-				$data['departments'] = array(); // If no departments were found, set to an empty array
-				echo "No departments found."; // Output an error message
-			}
-	
-			$data['getdept'] = $getdepartment[1]; // Stores department information
-			
-			// Add a form type to differentiate between MSRF and TRACC
-			$data['form_type'] = 'msrf';
-			
-			// Prepare the MSRF number and load views
-			$data['msrfNumber'] = $msrfNumber; // Stores the generated MSRF number
-			$this->load->view('users/header', $data); // Loads the header view, passing the data array
-			$this->load->view('users/service_request_form_msrf_list', $data); // Loads the main view for the service request form
-			$this->load->view('users/footer', $data); // Loads the footer view
-	
-		} else { // If form validation passes, proceed to process the form data
-	
-			// Add ticket (submit the MSRF form)
-			$process = $this->Main_model->msrf_add_ticket(); // Calls model function to add a new MSRF ticket
-	
-			// Check if ticket was added successfully
-			if ($process[0] == 1) { 
-				$this->session->set_flashdata('success', $process[1]); // Sets a success message in session data
-				redirect(base_url().'sys/users/dashboard'); // Redirect to the user's dashboard
-			} else {
-				$this->session->set_flashdata('error', $process[1]); // Sets an error message in session data
-				redirect(base_url().'sys/users/dashboard'); // Redirect to the dashboard on error as well
-			}
-		}
-	}
 
+	//Generate MSRF Number
 	public function GenerateMSRFNo() {
 		$lastMSRF = $this->Main_model->getLastMSRFNumber();
 
@@ -1585,18 +1837,18 @@ class Main extends CI_Controller {
         return $newMSRFNumber;
 	}
 	
-
-	public function GenerateTRACCNo() {
-		$lastMSRF = $this->Main_model->getLastTRACCNumber();
+	//Generate TRF Number
+	public function GenerateTRFNo() {
+		$lastTRF = $this->Main_model->getLastTRFNumber();
 
         // Increment the last MSRF number
-        $lastNumber = (int) substr($lastMSRF, -3);
+        $lastNumber = (int) substr($lastTRF, -4);
         $newNumber = $lastNumber + 1;
 
         // Format the new MSRF number
-        $newMSRFNumber = 'TRN-' . sprintf('%03d', $newNumber);
+        $newTRFNumber = 'TRF-' . sprintf('%04d', $newNumber);
 
-        return $newMSRFNumber;
+        return $newTRFNumber;
 	}
 
 	public function users_creation_tickets_tracc() {
@@ -1694,7 +1946,34 @@ class Main extends CI_Controller {
 		}
 	}*/
 
-	//galaw rito for variable checkboxes
+	//MSRF details
+	public function service_form_msrf_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$getMsrf = $this->Main_model->getTicketsMSRF($id);
+
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['msrf'] = $getMsrf[1];
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/service_request_form_msrf_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+        	$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	//Tracc concern details
 	public function tracc_concern_form_details($id) {
 		if ($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -1730,22 +2009,36 @@ class Main extends CI_Controller {
 			redirect("sys/authentication");
 		}
 	}
-	
 
-	public function service_form_msrf_details($id) {
+	//Tracc Request details
+	public function tracc_request_form_details($id) {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 			$getdepartment = $this->Main_model->GetDepartmentID();
-			$getMsrf = $this->Main_model->getTicketsMSRF($id);
+			$getTRF = $this->Main_model->getTicketsTRF($id);
+			$getCheckboxDataNewAdd = $this->Main_model->getCheckboxDataNewAdd($id);
+			$getCheckeboxDataUpdate = $this->Main_model->getCheckboxDataUpdate($id);
+			$getCheckboxDataAccount = $this->Main_model->getCheckboxDataAccount($id);
+
+			// echo '<pre>'; 
+			// print_r($getCheckboxDataNewAdd); 
+			// echo '</pre>'; 
+			// exit;
 
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
 				$data['getdept'] = $getdepartment[1];
-				$data['msrf'] = $getMsrf[1];
+				$data['trf'] = $getTRF[1];
+				$data['checkbox_data_newadd'] = $getCheckboxDataNewAdd;
+				$data['checkbox_data_update'] = $getCheckeboxDataUpdate;
+				$data['checkbox_data_account'] = $getCheckboxDataAccount;
+
+				$selected_companies = isset($data['trf']['company']) ? explode(',', $data['trf']['company']) : [];
+				$data['selected_companies'] = $selected_companies; // Add to data
 
 				$this->load->view('users/header', $data);
-				$this->load->view('users/service_request_form_msrf_details', $data);
+				$this->load->view('users/tracc_request_form_details', $data);
 				$this->load->view('users/footer', $data);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -1753,7 +2046,7 @@ class Main extends CI_Controller {
 			}
 		} else {
 			$this->session->sess_destroy();
-        	$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
 	}
@@ -1824,7 +2117,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-
+	//Acknowledging the form as resolved
 	public function acknowledge_as_resolved() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -1917,6 +2210,7 @@ class Main extends CI_Controller {
 		// function email
 	}
 
+	//logout
 	public function logout() {
 		if ($this->session->userdata('login_data')) {
 			$this->session->unset_userdata('login_data');
@@ -1927,6 +2221,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	//download file 
 	public function download_file($file_name) {
 		// Path to the file
 		$file_path = FCPATH . 'uploads/tracc_con/' . $file_name;
@@ -1970,8 +2265,9 @@ class Main extends CI_Controller {
 		}
 	}
 
+	//checking the size of storage for upload files
 	public function check_upload_size(){
-		$dirs = ['uploads/tracc_concern', 'uploads/msrf']; // Directories to check
+		$dirs = ['uploads/tracc_concern', 'uploads/msrf', 'uploads/tracc_request']; // Directories to check
 		$total_size = 0;
 
 		foreach ($dirs as $dir) {
@@ -1995,6 +2291,159 @@ class Main extends CI_Controller {
 		}
 	}
 
+	//datatable na makikita ng user sa get_tracc_request_form
+	public function service_form_tracc_request_list(){
+		$id = $this->session->userdata('login_data')['user_id'];
+		$dept_id = $this->session->userdata('login_data')['dept_id'];
+
+		$this->load->helper('form');
+		$this->load->library('session');
+
+		$this->form_validation->set_rules('trf_number', 'Ticket Number', 'trim|required');
+
+		$user_details = $this->Main_model->user_details();
+		$department_data = $this->Main_model->getDepartment();
+		$users_det = $this->Main_model->users_details_put($id);
+		$getdepartment = $this->Main_model->GetDepartmentID();
+
+		if ($this->form_validation->run() == FALSE){
+			$trfNumber = $this->GenerateTRFNo();
+
+			$data['user_details'] = $user_details[1];
+			$data['department_data'] = $department_data;
+			$data['users_det'] = $users_det[1];
+			$data['dept_id'] = $dept_id;
+
+			if($department_data[0] == "ok"){
+				$data['departments'] = $department_data[1];
+			} else {
+				$data['departments'] = array();
+				echo "No departments found.";
+			}
+
+			$data['getdept'] = $getdepartment[1];
+
+			$data['trfNumber'] = $trfNumber; 
+			$this->load->view('users/header', $data); 
+			$this->load->view('users/tracc_request_form_list', $data); 
+			$this->load->view('users/footer', $data); 
+	
+		} else {
+			$process = $this->Main_model->trf_add_ticket();
+
+			if ($process[0] == 1){
+				$this->session->set_flashdata('success', $process[1]);
+				redirect(base_url().'sys/users/dashboard');
+			} else {
+				$this->session->set_flashdata('error', $process[1]);
+				redirect(base_url().'sys/users/dashboard');
+			}
+
+		}
+	}
+
+	//user creation of ticket
+	public function user_creation_tickets_tracc_request() {
+		$id = $this->session->userdata('login_data')['user_id'];
+		$this->load->helper('form');
+		$this->load->library('session');
+		$this->load->library('upload');
+	
+		$this->form_validation->set_rules('trf_number', 'Ticket Number', 'trim|required');
+	
+		$user_details = $this->Main_model->user_details();
+		$getdepartment = $this->Main_model->GetDepartmentID();
+		$users_det = $this->Main_model->users_details_put($id);
+	
+		if ($this->form_validation->run() == FALSE) {
+			$trf = $this->GenerateTRFNo();
+	
+			$data['trf'] = $trf;
+			$data['user_details'] = $user_details[1];
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
+	
+			$users_department = $users_det[1]['dept_id'];
+			$get_department = $this->Main_model->UsersDepartment($users_department);
+			$data['get_department'] = $get_department;
+	
+			$this->load->view('users/header', $data);
+			$this->load->view('users/tracc_request_form_creation', $data);
+			$this->load->view('users/footer');
+		} else {
+			$file_path = null;
+			if (!empty($_FILES['uploaded_files']['name'])) {
+				$config['upload_path'] = FCPATH . 'uploads/tracc_request/';
+				$config['allowed_types'] = 'pdf|jpg|png|doc|docx|jpeg';
+				$config['max_size'] = 5048;
+				$config['file_name'] = time() . '_' . $_FILES['uploaded_files']['name'];
+	
+				$this->upload->initialize($config);
+	
+				if (!$this->upload->do_upload('uploaded_files')) {
+					$this->session->set_flashdata('error', $this->upload->display_errors());
+					redirect(base_url() . 'sys/users/create/tickets/tracc_request');
+				} else {
+					$file_data = $this->upload->data();
+					$file_path = $file_data['file_name'];
+				}
+			}
+	
+			$checkbox_data_newadd = [
+				'checkbox_item' => $this->input->post('checkbox_item') ? 1 : 0,
+				'checkbox_customer' => $this->input->post('checkbox_customer') ? 1 : 0,
+				'checkbox_supplier' => $this->input->post('checkbox_supplier') ? 1 : 0,
+				'checkbox_whs' => $this->input->post('checkbox_whs') ? 1 : 0,
+				'checkbox_bin' => $this->input->post('checkbox_bin') ? 1 : 0,
+				'checkbox_cus_ship_setup' => $this->input->post('checkbox_cus_ship_setup') ? 1 : 0,
+				'checkbox_item_req_form' => $this->input->post('checkbox_item_req_form') ? 1 : 0,
+				'checkbox_others_newadd' => $this->input->post('checkbox_others_newadd') ? 1 : 0, 
+				'others_text_newadd' => $this->input->post('others_text_newadd')
+			];
+
+			$checkbox_data_update = [
+				'checkbox_system_date_lock' => $this->input->post('checkbox_system_date_lock') ? 1 : 0,
+				'checkbox_user_file_access' => $this->input->post('checkbox_user_file_access') ? 1 : 0,
+				'checkbox_item_dets' => $this->input->post('checkbox_item_dets') ? 1 : 0,
+				'checkbox_customer_dets' => $this->input->post('checkbox_customer_dets') ? 1 : 0,
+				'checkbox_supplier_dets' => $this->input->post('checkbox_supplier_dets') ? 1 : 0,
+				'checkbox_others_update' => $this->input->post('checkbox_others_update') ? 1 : 0,
+				'others_text_update' => $this->input->post('others_text_update')
+			]; 
+
+			$checkbox_data_account = [
+				'checkbox_tracc_orien' => $this->input->post('checkbox_tracc_orien') ? 1 : 0,
+				'checkbox_create_lmi' => $this->input->post('checkbox_create_lmi') ? 1 : 0,
+				'checkbox_create_lpi' => $this->input->post('checkbox_create_lpi') ? 1 : 0,
+				'checkbox_create_rgdi' => $this->input->post('checkbox_create_rgdi') ? 1 : 0,
+				'checkbox_create_sv' => $this->input->post('checkbox_create_sv') ? 1 : 0,
+				'checkbox_gps_account' => $this->input->post('checkbox_gps_account') ? 1 : 0,
+				'checkbox_others_account' => $this->input->post('checkbox_others_account') ? 1 : 0,
+				'others_text_account' => $this->input->post('others_text_account')
+			];
+
+
+			// echo '<pre>';
+			// print_r($checkbox_data_update);
+			// echo '</pre>';
+			// exit;
+	
+			$comp_checkbox_values = isset($_POST['comp_checkbox_value']) ? $_POST['comp_checkbox_value'] : [];
+			$imploded_values = implode(',', $comp_checkbox_values);
+	
+			$process = $this->Main_model->trf_add_ticket($file_path, $imploded_values, $checkbox_data_newadd, $checkbox_data_update, $checkbox_data_account);
+	
+			if ($process[0] == 1) {
+				$this->session->set_flashdata('success', $process[1]);
+				redirect(base_url() . 'sys/users/list/tickets/tracc_request');
+			} else {
+				$this->session->set_flashdata('error', $process[1]);
+				redirect(base_url() . 'sys/users/create/tickets/tracc_request');
+			}
+		}
+	}
+	
+	
 	
 
 	

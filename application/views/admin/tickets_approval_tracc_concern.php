@@ -71,6 +71,18 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+			                    					<label>Priority</label>
+                                                    <select class="form-control select2" name="priority" id="priority">
+                                                        <option value=""disabled selected>Priority</option>
+                                                        <option value="Low"<?php if ($tracc_con['priority'] == 'Low') echo ' selected'; ?>>Low</option>
+                                                        <option value="Medium"<?php if ($tracc_con['priority'] == 'Medium') echo ' selected'; ?>>Medium</option>
+                                                        <option value="High"<?php if ($tracc_con['priority'] == 'High') echo ' selected'; ?>>High</option>
+                                                    </select>                    
+			                    				</div>                                             
+			                                </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Reported by</label>
@@ -164,7 +176,7 @@
                                                         <option value=""disabled selected>Resolved By</option>
                                                         <option value="ERIC" <?php if ($tracc_con['resolved_by'] == 'ERIC') echo ' selected'; ?>>Sir. Eric</option>
                                                         <option value="CK" <?php if ($tracc_con['resolved_by'] == 'CK') echo ' selected'; ?>>Sir. CK</option>
-                                                        <option value="HANNA" <?php if ($tracc_con['resolved_by'] == 'HANNAH') echo ' selected'; ?>>Ms. Hanna</option>
+                                                        <option value="HANNA" <?php if ($tracc_con['resolved_by'] == 'HANNA') echo ' selected'; ?>>Ms. Hanna</option>
                                                         <option value="DAN" <?php if ($tracc_con['resolved_by'] == 'DAN') echo ' selected'; ?>>Sir. Dan</option>
                                                     </select>  
                                                 </div>

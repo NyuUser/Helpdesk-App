@@ -1,3 +1,4 @@
+<!--  DUMMY CODE -->
 <div class="content-wrapper">
     <div class="container">
         <section class="content-header">
@@ -224,15 +225,15 @@ $(document).ready(function() {
 $(document).ready(function() {
     // Temporarily enable the disabled dropdown
     $('#category').prop('disabled', false);
-    $('#category').change(function() {
-        var status = $(this).val();
-        
-        if (status === 'others') {  
-            $('#specify-container').show();
-        } else {
-            $('#specify-container').hide();
-        }
-    });
+        $('#category').change(function() {
+            var status = $(this).val();
+            
+            if (status === 'others') {  
+                $('#specify-container').show();
+            } else {
+                $('#specify-container').hide();
+            }
+        });
 
     $('#category').trigger('change');
     $('#category').prop('disabled', true);

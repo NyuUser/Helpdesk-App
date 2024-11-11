@@ -23,13 +23,18 @@
 	<script href="<?php echo site_url();?>/assets/toast/toast.js"></script>
     
 </head>
+<style>
+    .yellow-shadow {
+        box-shadow: 0 4px 10px rgba(236,159,35,255); /* Adjust spread and opacity as needed */
+    }
+</style>
 <body>
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <div class="card">
+            <div class="card yellow-shadow">
                 <div class="card-header text-center">
-                    <h4>Employee Registration</h4>
+                    <h4 style ="font-size: 50px;" >Employee Registration</h4>
                 </div>
                 <div class="card-body">
                     <form id="registrationForm" action="<?= site_url('Main/registration'); ?>" method="POST">
@@ -97,14 +102,14 @@
                         <div class="row">
                             <div class="col-12 text-center">
                                 <div class="col-md-8 mx-auto">
-                                    <button type="submit" class="btn btn-primary btn-block mt-3">Register</button>
+                                    <button type="submit" class="btn btn-warning btn-block mt-3">Register</button>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 text-center">
                                 <div class="col-md-8 mx-auto">
-                                <button class="btn btn-outline-primary btn-block mt-1" onclick="window.location.href='<?= base_url(); ?>'">Back</button>
+                                <button class="btn btn-outline-warning btn-block mt-1" onclick="window.location.href='<?= base_url(); ?>'"><span style = "color: #000000">Back</span></button>
                                 </div>
                             </div>
                         </div>

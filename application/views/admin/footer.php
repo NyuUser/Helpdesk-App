@@ -274,6 +274,18 @@
                 "autoWidth": false,
                 "lengthChange": false
             });
+
+            $('#tblTicketsTraccRequest').DataTable({
+                "serverSide": true,
+                "processing": true,
+                "ajax": {
+                    "url": "<?= base_url(); ?>DataTables/all_tickets_tracc_request",
+                    "type": "POST"
+                }, 
+                "responsive": true,
+                "autoWidth": false,
+                "lengthChange": false
+            });
             
 
             $('#tblDepartment').DataTable({

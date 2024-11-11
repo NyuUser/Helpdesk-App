@@ -3,7 +3,7 @@
       			<div class="pull-right hidden-xs">
         			<b>Version</b> 1.0.0
       			</div>
-      			<strong>Copyright &copy; 2024-2025 <a href="#">ICT Helpdesk</a>.</strong> All rights
+      			<strong>Copyright &copy; 2024-2025 <a href="#"><span style="color: #9a1a1f">ICT Helpdesk</span></a>.</strong> All rights
       			reserved.
     		</div>
   		</footer>
@@ -225,9 +225,12 @@
 					} else {
 						buttonsConfig.push({
 							text: 'Create Tickets',
-							className: 'btn btn-info',
+							// className: 'btn btn-warning',
 							action: function (e, dt, node, config) {
 								window.location.href = '<?= base_url(); ?>' + 'sys/users/create/tickets/msrf';
+							},
+							attr: {
+								style: 'background-color: #301311; color: #ffffff; border: none; height: 35px; border-radius: 4px; padding: 6px 12px;'
 							}
 						});
 					}
@@ -262,9 +265,12 @@
 					}else{
 						buttonsConfig.push({
 							text: 'Create Tickets',
-							className: 'btn btn-primary',
+							// className: 'btn btn-primary',
 							action: function (e, dt, node, config){
 								window.location.href = '<?= base_url(); ?>sys/users/create/tickets/tracc_concern';
+							},
+							attr: {
+								style: 'background-color: #301311; color: #ffffff; border: none; height: 35px; border-radius: 4px; padding: 6px 12px;'
 							}
 						});
 					}
@@ -284,6 +290,46 @@
 					"className": "text-center"
 				}]
 			});
+
+			$('#tblTraccRequest').DataTable({
+				"serverSide": true,
+				"processing": true,
+				"ajax": {
+					"url": "<?= base_url(); ?>DataTables/get_trf_ticket",
+					"type": "POST"
+				},
+				"responsive": true,
+				"autoWidth": false,
+				"lengthChange": false,
+				'dom': "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
+
+				"buttons": (function() {
+					var buttonsConfig = [];
+					if (dept_id == 1) {
+						console.log(dept_id);
+					} else {
+						buttonsConfig.push({
+							text: 'Create Tickets',
+							// className: 'btn btn-primary', 
+							action: function (e, dt, node, config){
+								window.location.href = '<?= base_url(); ?>' + 'sys/users/create/tickets/tracc_request';
+							},
+							attr: {
+								style: 'background-color: #301311; color: #ffffff; border: none; height: 35px; border-radius: 4px; padding: 6px 12px;'
+							}
+						});
+					}
+					return buttonsConfig;
+				})(),
+
+				"columnDefs": [{
+					'target': 4,
+					'orderable': false,
+					"data": "btn_action",
+					"className": "text-center"
+				}]
+			});
+			
 			getDate();
         });
 

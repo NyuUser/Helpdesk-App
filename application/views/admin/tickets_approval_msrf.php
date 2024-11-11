@@ -118,7 +118,7 @@
 			                            </div>
 			                        </div>
 									<!-- Add a hidden input field to store the current approval status -->
-									<input type="hidden" name="approval_stat" value="<?php echo $msrf['approval_status']; ?>">
+									<!-- <input type="hidden" name="approval_stat" value="<?php echo $msrf['approval_status']; ?>"> -->
  
 
 									<div class="col-md-12">
@@ -136,7 +136,7 @@
 									<div class="col-md-12" id="ictassign" style="display:none;">
 										<div class="form-group">
 											<label>ICT Assign To</label>
-											<select name="assign_to" class="form-control select2" <?= $is_disabled ?>>
+											<select name="assign_to" id="assign_to" class="form-control select2" <?= $is_disabled ?>>
 												<option value="" disabled selected>Select ICT</option>
 												<option value="ChristianJ" <?php if ($msrf['assigned_it_staff'] == 'ChristianJ') echo ' selected'; ?>>Sir Chinchan</option>
 												<option value="Michael" <?php if ($msrf['assigned_it_staff'] == 'Michael') echo ' selected'; ?>>Sir Michael</option>
@@ -258,11 +258,11 @@
         }
         
         // Apply the resize function to the textarea on input
-        $('#rejecttix').on('input', autoResizeTextarea);
+        //$('#rejecttix').on('input', autoResizeTextarea);
         $('#concern').on('input', autoResizeTextarea);
 
         // Trigger the resize on page load if there's existing content in the textarea
-        $('#rejecttix').each(autoResizeTextarea);
+        //$('#rejecttix').each(autoResizeTextarea);
         $('#concern').each(autoResizeTextarea);
     });
 

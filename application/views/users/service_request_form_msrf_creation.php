@@ -52,7 +52,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Date Requested</label>
-                                                    <input type="text" name="date_req" id="date_req" class="form-control select2" value="" style="width: 100%;" readonly>
+                                                    <input type="date" name="date_req" id="date_req" class="form-control select2" value="" style="width: 100%;" readonly>
                                                 </div>
 			                                    <div class="form-group">
 			                                        <label>Date Needed</label>
@@ -152,10 +152,25 @@
         }
         
         // Apply the resize function to the textarea on input
-        $('#msrf_concerns').on('input', autoResizeTextarea);
+        $('#msrf_concern').on('input', autoResizeTextarea);
         
         // Trigger the resize on page load if there's existing content in the textarea
-        $('#msrf_concerns').each(autoResizeTextarea);
+        $('#msrf_concern').each(autoResizeTextarea);
         
+    }); 
+
+    $(document).ready(function() {
+        $('#category').change(function() {
+        var status = $(this).val();
+        
+        if (status === 'others') {  
+            $('#specifyDiv').show();
+        } else {
+            $('#specifyDiv').hide();
+        }
     });
+    
+    $('#category').trigger('change');
+    })
+    
 </script>
