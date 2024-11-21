@@ -303,7 +303,7 @@
                                                             <input type="checkbox" name="checkbox_others_account" id="checkbox_others_account" value="1">
                                                             <label for="checkbox_others_account">Others</label><br>
 
-                                                            <input type="text" name="others_text_account" id="others_text_account" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);">
+                                                            <input type="text" name="others_text_account" id="others_text_account" placeholder="Specific Concern" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);">
                                                         </div>
                                                     </div>
                                                 </div>

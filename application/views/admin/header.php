@@ -32,6 +32,8 @@
 	<!-- SweetAlert JS -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
