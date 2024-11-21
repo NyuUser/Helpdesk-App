@@ -333,6 +333,9 @@
 			});
 			
 			getDate();
+			$('.teststs').click(function() {
+            	alert("here");
+       		});
         });
 
         function getDate() {

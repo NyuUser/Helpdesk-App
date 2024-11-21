@@ -9,8 +9,6 @@ class Main extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('Main_model');
 	}
-
-
 	// code ni sir gilbert
 	/*public function login() {
 		$this->load->helper('form');
@@ -2442,9 +2440,60 @@ class Main extends CI_Controller {
 			}
 		}
 	}
-	
-	
-	
 
+	public function user_creation_tickets_customer_request_forms_tms() {
+		$id = $this->session->userdata('login_data')['user_id'];
+		$this->load->helper('form');
+		$this->load->library('session');
 	
+		$this->form_validation->set_rules('trf_number', 'Ticket Number', 'trim|required');
+	
+		$user_details = $this->Main_model->user_details();
+		$getdepartment = $this->Main_model->GetDepartmentID();
+		$users_det = $this->Main_model->users_details_put($id);
+		$ticket_numbers = $this->Main_model->get_all_trf_tickets(); // Fetch ticket numbers
+	
+		if ($this->form_validation->run() == FALSE) {
+			$data['user_details'] = $user_details[1];
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
+			$data['ticket_numbers'] = $ticket_numbers; // Pass ticket numbers to the view
+	
+			$users_department = $users_det[1]['dept_id'];
+			$get_department = $this->Main_model->UsersDepartment($users_department);
+			$data['get_department'] = $get_department;
+	
+			$this->load->view('users/header', $data);
+			$this->load->view('users/trf_forms_creation', $data);
+			$this->load->view('users/footer');
+		} else {
+			$comp_checkbox_values = isset($_POST['comp_checkbox_value']) ? $_POST['comp_checkbox_value'] : [];
+			$imploded_values = implode(',', $comp_checkbox_values);
+				
+			$process = $this->Main_model->trf_add_ticket($imploded_values);
+
+			if ($process[0] == 1) {
+				$this->session->set_flashdata('success', $process[1]);
+				redirect(base_url() . 'sys/users/list/tickets/tracc_request');
+			} else {
+				$this->session->set_flashdata('error', $process[1]);
+				redirect(base_url() . 'sys/users/create/tickets/tracc_request');
+			}
+		}
+	}
+	
+	public function approve_ticket(){
+		$id = $this->input->post('recid');
+		if($id){
+			$status = $this->Main_model->update_department_status($id);
+			if($status){
+					echo json_encode(['status' => 'success', 'message' => 'Succesfully Updated!']);
+				} else {
+					echo json_encode(['status' => 'error', 'message' => 'Failed to update Department approval status.']);
+				}
+		}else{
+			echo json_encode(['status' => 'error', 'message' => 'Failed to update Department approval status.']);
+		}
+		
+	}
 }

@@ -97,6 +97,40 @@
         </div>
     </div>
 
+    <!-- Approve Modal -->
+    <div class="modal fade" id="approve_modal" tabindex="-1" role="dialog" aria-labelledby="approve_modalLabel" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="approve_modalLabel">Approve Ticket</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body modal-padding-custom">
+                        <div class="form-group">
+                            <label>Requestor</label>
+                            <input type="text" name="name" class="form-control form-value" style="width: 100%;" readonly id="inp_requestor">
+                        </div>
+                        <div class="form-group">
+                            <label>Department</label>
+                            <input type="text" name="name" class="form-control" style="width: 100%;" readonly id="inp_department">
+                        </div>
+                        <div class="form-group">
+                            <label>Details Concern</label>
+                            <textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" readonly id="inp_concern">Details Concern</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Date Needed</label>
+                            <input type="date" name="date_needed" id="inp_date_needed" class="form-control" value="" style="width: 100%;" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" name="approve_ticket" id="approve_ticket">Approve</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+    </div>
 
 	<script src="<?php echo base_url();?>/assets/bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="<?php echo base_url();?>/assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
@@ -128,6 +162,7 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
     <script type="text/javascript">
+        var base_url = '<?= base_url();?>';
         $(document).ready(function() {
             <?php if($this->session->flashdata('success')): ?>
                 $('#successModal').modal('show');
@@ -314,9 +349,78 @@
                     "className": "text-center"
                 }]
             });
-
-
         });
+
+        $('#approve_modal').on('hidden.bs.modal', function (e) {
+          $(this)
+            .find("input,textarea,select")
+               .val('')
+               .end()
+            .find("input[type=checkbox], input[type=radio]")
+               .prop("checked", "")
+               .end();
+        })
+
+        $(document).on('click','.approve-ticket', function(e){
+            data_id = $(this).attr('data-id');
+            requestor = $(this).attr('data-requestor');
+            concern = $(this).attr('data-concern');
+            date_needed = $(this).attr('data-date-needed');
+            department = $(this).attr('data-department');
+            $('#approve_ticket').attr("data-id", data_id);
+            console.log(department);
+            $("#inp_requestor").val(requestor);
+            $("#inp_concern").val(concern);
+            $("#inp_department").val(department);
+            $("#inp_date_needed").val(date_needed);
+            $('#approve_modal').modal('show');
+        });
+
+        $(document).on('click','#approve_ticket', function(e){
+            ///data["id"] = []; 
+            id = $(this).attr("data-id");
+            //console.log(id);
+            $.ajax({
+                type: 'POST',
+                url: base_url + "Main/testing", 
+                data: {recid:id}, 
+                dataType: 'json',
+                success: function(response) {
+                    //response = is_json(response);
+                    console.log(response.status);
+                    if(response){
+                        $('#approve_modal').modal('hide');
+                        if(response.status === "success"){
+                            
+                            location.reload();
+                        }else{
+                        }
+                    }
+
+                },
+                error: function() {
+
+                }
+            });
+        });
+
+    function is_json(str) {
+        try {
+            if (/MSIE 9/i.test(navigator.userAgent)) {
+                return JSON.parse($.trim(str));
+            }else{
+                var jparse = JSON.parse($.trim(str));
+                if(Object.values(jparse)[0] == 'Asterisk is not allowed!'){
+                    alert(Object.values(jparse)[0]);
+                }else{
+                    return jparse;
+                }
+            }
+        } catch (e) {
+            return $.trim(str)
+        }
+    } 
+
     </script>
 </body>
 </html>

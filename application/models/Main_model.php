@@ -466,35 +466,20 @@ class Main_model extends CI_Model {
 		}
 	}
 	
-	public function update_department($data, $id) {
-		// Ensure $id is an integer for security
-		$id = (int) $id;
-	
-		// Check if there are any fields to update
-		if (empty($data)) {
-			return array(0, "No data provided for update.");
-		}
-	
-		// Update the department record
-		$this->db->where('recid', $id);
-		$this->db->update('departments', $data);
-	
-		// Check if the update was successful
-		if ($this->db->affected_rows() > 0) {
-			return array(1, "Department updated successfully.");
-		} else {
-			// If no rows were affected, check if the ID exists
-			$this->db->where('recid', $id);
-			$query = $this->db->get('departments');
-			
-			if ($query->num_rows() > 0) {
-				// ID exists but no changes were made
-				return array(0, "No changes were made.");
-			} else {
-				// ID does not exist
-				return array(0, "Department not found.");
-			}
-		}
+	public function update_department_status($id) {
+	    $id = (int) $id;  // Ensure $id is an integer
+
+	    // Update the approval status record
+	    $this->db->set('approval_status', 'Approved');
+	    $this->db->where('recid', $id); 
+	    $update_success = $this->db->update('service_request_msrf');
+
+	    // Check if the update was successful based on affected rows
+	    if ($update_success && $this->db->affected_rows() > 0) {
+	        return array(1, "Department approval status updated successfully.");
+	    } else {
+	        return array(0, "Department approval status not found or update failed.");
+	    }
 	}
 	
 	
@@ -1475,7 +1460,7 @@ class Main_model extends CI_Model {
 					'customer_shipping_setup' => isset($checkbox_data_newadd['checkbox_cus_ship_setup']) ? $checkbox_data_newadd['checkbox_cus_ship_setup'] : 0,
 					'item_request_form' => isset($checkbox_data_newadd['checkbox_item_req_form']) ? $checkbox_data_newadd['checkbox_item_req_form'] : 0,
 					'others' => isset($checkbox_data_newadd['checkbox_others_newadd']) ? $checkbox_data_newadd['checkbox_others_newadd'] : 0,
-					'others_description' => isset($checkbox_data_newadd['others_text_newadd']) ? $checkbox_data_newadd['others_text_newadd'] : ""
+					'others_description_add' => isset($checkbox_data_newadd['others_text_newadd']) ? $checkbox_data_newadd['others_text_newadd'] : ""
 				];
 				$this->db->insert('tracc_req_mf_new_add', $checkbox_entry_newadd);
 
@@ -1487,7 +1472,7 @@ class Main_model extends CI_Model {
 					'customer_details' => isset($checkbox_data_update['checkbox_customer_dets']) ? $checkbox_data_update['checkbox_customer_dets'] : 0,
 					'supplier_details' => isset($checkbox_data_update['checkbox_supplier_dets']) ? $checkbox_data_update['checkbox_supplier_dets'] : 0,
 					'others' => isset($checkbox_data_update['checkbox_others_update']) ? $checkbox_data_update['checkbox_others_update'] : 0,
-					'others_description' => isset($checkbox_data_update['others_text_update']) ? $checkbox_data_update['others_text_update'] : ""
+					'others_description_update' => isset($checkbox_data_update['others_text_update']) ? $checkbox_data_update['others_text_update'] : ""
 				];
 				$this->db->insert('tracc_req_mf_update', $checkbox_entry_update);
 
@@ -1500,7 +1485,7 @@ class Main_model extends CI_Model {
 					'sv' => isset($checkbox_data_account['checkbox_create_sv']) ? $checkbox_data_account['checkbox_create_sv'] : 0,
 					'gps_account' => isset($checkbox_data_account['checkbox_gps_account']) ? $checkbox_data_account['checkbox_gps_account'] : 0,
 					'others' => isset($checkbox_data_account['checkbox_others_account']) ? $checkbox_data_account['checkbox_others_account'] : 0,
-					'others_description' => isset($checkbox_data_account['others_text_account']) ? $checkbox_data_account['others_text_account'] : ""
+					'others_description_acc' => isset($checkbox_data_account['others_text_account']) ? $checkbox_data_account['others_text_account'] : ""
 				];
 				$this->db->insert('tracc_req_mf_account', $checkbox_entry_account);
 
@@ -1544,6 +1529,12 @@ class Main_model extends CI_Model {
 		}
 
 		return[];
+	}
+
+	public function get_all_trf_tickets(){
+		$this->db->select('ticket_id'); 
+		$query = $this->db->get('service_request_tracc_request'); 
+		return $query->result_array();
 	}
 	
 
