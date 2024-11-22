@@ -440,10 +440,10 @@
                 $("#approve_modal_msrf #inp_date_needed").val(date_needed);
                 $('#approve_modal_msrf').modal('show');
             }else{
-                reported_by = $(this).attr('data-reported-by');
+                requestor = $(this).attr('data-requestor');
                 department = $(this).attr('data-department');
 
-                $("#approve_modal_tracc_request #inp_requestor").val(reported_by);    
+                $("#approve_modal_tracc_request #inp_requestor").val(requestor);    
                 $("#approve_modal_tracc_request #inp_department").val(department);
                 $('#approve_modal_tracc_request').modal('show');
             }
@@ -470,12 +470,12 @@
                         if(response.status === "success"){
                             location.reload();
                         }else{
+                            alert("Invalid");
                         }
                     }
 
                 },
                 error: function() {
-
                 }
             });
         });

@@ -2509,6 +2509,18 @@ class Main extends CI_Controller {
 		} else {
 			$this->session->set_flashdata('error', $process[1]);
 			redirect(base_url().'sys/users/create/tickets/trf_customer_request_form_tms');  
+	public function approve_ticket(){
+		$id = $this->input->post('recid');
+		$data_module = $this->input->post('data_module');
+		if($id){
+			$status = $this->Main_model->update_department_status($data_module, $id);
+			if($status[0] === 1){
+					echo json_encode(['status' => 'success', 'message' => 'Succesfully Updated!']);
+				} else {
+					echo json_encode(['status' => 'error', 'message' => 'Failed to update Department approval status.']);
+				}
+		}else{
+			echo json_encode(['status' => 'error', 'message' => 'Failed to update Department approval status.']);
 		}
 	}
 

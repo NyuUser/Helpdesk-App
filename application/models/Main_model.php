@@ -466,13 +466,19 @@ class Main_model extends CI_Model {
 		}
 	}
 	
-	public function update_department_status($id) {
+	public function update_department_status($data_module, $id) {
 	    $id = (int) $id;  // Ensure $id is an integer
 
 	    // Update the approval status record
 	    $this->db->set('approval_status', 'Approved');
 	    $this->db->where('recid', $id); 
-	    $update_success = $this->db->update('service_request_msrf');
+	    if(strtolower($data_module) === "tracc-concern"){
+	    	$update_success = $this->db->update('service_request_tracc_concern');
+	    }else if(strtolower($data_module) === "tracc-request"){
+	    	$update_success = $this->db->update('service_request_tracc_request');
+	    }else{
+	    	$update_success = $this->db->update('service_request_msrf');
+	    }
 
 	    // Check if the update was successful based on affected rows
 	    if ($update_success && $this->db->affected_rows() > 0) {
