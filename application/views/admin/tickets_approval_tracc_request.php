@@ -235,7 +235,7 @@
                                                             <?= isset($checkbox_newadd['others']) && $checkbox_newadd['others'] ? 'checked' : ''; ?>>
                                                             <label for="checkbox_others_newadd">Others</label><br>
 
-                                                            <input type="text" name="others_text" id="others_text" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_newadd['others_description'] ?>">
+                                                            <input type="text" name="others_text" id="others_text" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_newadd['others_description_add'] ?>">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -273,7 +273,7 @@
                                                             <?= isset($checkbox_update['others']) && $checkbox_update['others'] ? 'checked' : ''; ?>>
                                                             <label for="checkbox_others_update">Others</label><br>
 
-                                                            <input type="text" name="others_text" id="others_text" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_update['others_description'] ?>">
+                                                            <input type="text" name="others_text" id="others_text" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_update['others_description_update'] ?>">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -322,7 +322,7 @@
                                                             <?= isset($checkbox_account['others']) && $checkbox_account['others'] ? 'checked' : ''; ?>>
                                                             <label for="checkbox_others">Others</label><br>
 
-                                                            <input type="text" name="others_text" id="others_text" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_update['others_description'] ?>">
+                                                            <input type="text" name="others_text" id="others_text" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_account['others_description_acc'] ?>">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -371,7 +371,7 @@
                                                         <option value="Medium"<?php if ($trf['priority'] == 'Medium') echo ' selected'; ?>>Medium</option>
                                                         <option value="High"<?php if ($trf['priority'] == 'High') echo ' selected'; ?>>High</option>
                                                     </select>                    
-			                    				</div>                                             
+			                    				</div>                                              
 			                                </div>
 
                                             <?php

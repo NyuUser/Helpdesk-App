@@ -2442,9 +2442,77 @@ class Main extends CI_Controller {
 			}
 		}
 	}
+
+	public function user_creation_tickets_customer_request_forms_tms() {
+		$id = $this->session->userdata('login_data')['user_id'];
+		$this->load->helper('form');
+		$this->load->library('session');
 	
+		$this->form_validation->set_rules('trf_number', 'Ticket Number', 'trim|required');
 	
+		$user_details = $this->Main_model->user_details();
+		$getdepartment = $this->Main_model->GetDepartmentID();
+		$users_det = $this->Main_model->users_details_put($id);
+		$ticket_numbers = $this->Main_model->get_customer_from_tracc_req_mf_new_add();
 	
+		if ($this->form_validation->run() == FALSE) {
+			$data['user_details'] = $user_details[1];
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
+			$data['ticket_numbers'] = $ticket_numbers;
+	
+			$users_department = $users_det[1]['dept_id'];
+			$get_department = $this->Main_model->UsersDepartment($users_department);
+			$data['get_department'] = $get_department;
+	
+			$this->load->view('users/header', $data);
+			$this->load->view('users/trf_customer_form_request_creation', $data);
+			$this->load->view('users/footer');
+		} else {
+			$comp_checkbox_values = isset($_POST['comp_checkbox_value']) ? $_POST['comp_checkbox_value'] : [];
+			$imploded_values = implode(',', $comp_checkbox_values);
+				
+			$process = $this->Main_model->trf_add_ticket($imploded_values);
+
+			if ($process[0] == 1) {
+				$this->session->set_flashdata('success', $process[1]);
+				redirect(base_url() . 'sys/users/list/tickets/tracc_request');
+			} else {
+				$this->session->set_flashdata('error', $process[1]);
+				redirect(base_url() . 'sys/users/create/tickets/tracc_request');
+			}
+		}
+	}
+
+	public function user_creation_customer_request_form_pdf() {
+		$crf_comp_checkbox_values = isset($_POST['crf_comp_checkbox_value']) ? $_POST['crf_comp_checkbox_value'] : [];
+		$imploded_values = implode(',', $crf_comp_checkbox_values);
+
+		$checkbox_cus_req_form_del = [
+			'checkbox_outright' => isset($_POST['checkbox_outright']) ? 1 : 0,
+			'checkbox_consignment' => isset($_POST['checkbox_consignment']) ? 1 : 0,
+			'checkbox_cus_a_supplier' => isset($_POST['checkbox_cus_a_supplier']) ? 1 : 0,
+			'checkbox_online' => isset($_POST['checkbox_online']) ? 1 : 0,
+			'checkbox_walkIn' => isset($_POST['checkbox_walkIn']) ? 1 : 0,
+			'checkbox_monday' => isset($_POST['checkbox_monday']) ? 1 : 0,
+			'checkbox_tuesday' => isset($_POST['checkbox_tuesday']) ? 1 : 0,
+			'checkbox_wednesday' => isset($_POST['checkbox_wednesday']) ? 1 : 0,
+			'checkbox_thursday' => isset($_POST['checkbox_thursday']) ? 1 : 0,
+			'checkbox_friday' => isset($_POST['checkbox_friday']) ? 1 : 0,
+			'checkbox_saturday' => isset($_POST['checkbox_saturday']) ? 1 : 0,
+			'checkbox_sunday' => isset($_POST['checkbox_sunday']) ? 1 : 0,
+		];
+	
+		$process = $this->Main_model->add_customer_request_form_pdf($imploded_values, $checkbox_cus_req_form_del);
+
+		if ($process[0] == 1) {
+			$this->session->set_flashdata('success', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_customer_request_form_tms');  
+		} else {
+			$this->session->set_flashdata('error', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_customer_request_form_tms');  
+		}
+	}
 
 	
 }

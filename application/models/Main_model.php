@@ -1475,7 +1475,7 @@ class Main_model extends CI_Model {
 					'customer_shipping_setup' => isset($checkbox_data_newadd['checkbox_cus_ship_setup']) ? $checkbox_data_newadd['checkbox_cus_ship_setup'] : 0,
 					'item_request_form' => isset($checkbox_data_newadd['checkbox_item_req_form']) ? $checkbox_data_newadd['checkbox_item_req_form'] : 0,
 					'others' => isset($checkbox_data_newadd['checkbox_others_newadd']) ? $checkbox_data_newadd['checkbox_others_newadd'] : 0,
-					'others_description' => isset($checkbox_data_newadd['others_text_newadd']) ? $checkbox_data_newadd['others_text_newadd'] : ""
+					'others_description_add' => isset($checkbox_data_newadd['others_text_newadd']) ? $checkbox_data_newadd['others_text_newadd'] : ""
 				];
 				$this->db->insert('tracc_req_mf_new_add', $checkbox_entry_newadd);
 
@@ -1487,7 +1487,7 @@ class Main_model extends CI_Model {
 					'customer_details' => isset($checkbox_data_update['checkbox_customer_dets']) ? $checkbox_data_update['checkbox_customer_dets'] : 0,
 					'supplier_details' => isset($checkbox_data_update['checkbox_supplier_dets']) ? $checkbox_data_update['checkbox_supplier_dets'] : 0,
 					'others' => isset($checkbox_data_update['checkbox_others_update']) ? $checkbox_data_update['checkbox_others_update'] : 0,
-					'others_description' => isset($checkbox_data_update['others_text_update']) ? $checkbox_data_update['others_text_update'] : ""
+					'others_description_update' => isset($checkbox_data_update['others_text_update']) ? $checkbox_data_update['others_text_update'] : ""
 				];
 				$this->db->insert('tracc_req_mf_update', $checkbox_entry_update);
 
@@ -1500,7 +1500,7 @@ class Main_model extends CI_Model {
 					'sv' => isset($checkbox_data_account['checkbox_create_sv']) ? $checkbox_data_account['checkbox_create_sv'] : 0,
 					'gps_account' => isset($checkbox_data_account['checkbox_gps_account']) ? $checkbox_data_account['checkbox_gps_account'] : 0,
 					'others' => isset($checkbox_data_account['checkbox_others_account']) ? $checkbox_data_account['checkbox_others_account'] : 0,
-					'others_description' => isset($checkbox_data_account['others_text_account']) ? $checkbox_data_account['others_text_account'] : ""
+					'others_description_acc' => isset($checkbox_data_account['others_text_account']) ? $checkbox_data_account['others_text_account'] : ""
 				];
 				$this->db->insert('tracc_req_mf_account', $checkbox_entry_account);
 
@@ -1545,6 +1545,97 @@ class Main_model extends CI_Model {
 
 		return[];
 	}
+
+	public function get_all_trf_tickets(){
+		$this->db->select('ticket_id'); 
+		$query = $this->db->get('service_request_tracc_request'); 
+		return $query->result_array();
+	}
+	
+	// 
+	
+	public function add_customer_request_form_pdf($crf_comp_checkbox_values = null, $checkbox_cus_req_form_del) {
+		$trf_number = $this->input->post('trf_number', true);
+		
+		$data = array(
+			'ticket_id' => $trf_number,
+			'requested_by' => $this->input->post('requested_by', true),
+			'date' => $this->input->post('date', true),
+			'customer_code' => $this->input->post('customer_code', true),
+			'customer_name' => $this->input->post('customer_name', true),
+			'tin_no' => $this->input->post('tin_no', true),
+			'terms' => $this->input->post('terms', true),
+			'customer_address' => $this->input->post('customer_address', true),
+			'contact_person' => $this->input->post('contact_person', true),
+			'office_tel_no' => $this->input->post('office_tel_no', true),
+			'pricelist' => $this->input->post('pricelist', true),
+			'payment_group' => $this->input->post('payment_grp', true),
+			'contact_no' => $this->input->post('contact_no', true),
+			'territory' => $this->input->post('territory', true),
+			'salesman' => $this->input->post('salesman', true),
+			'business_style' => $this->input->post('business_style', true),
+			'email' => $this->input->post('email', true),
+			'shipping_code' => $this->input->post('shipping_code', true),
+			'route_code' => $this->input->post('route_code', true),
+			'customer_shipping_address' => $this->input->post('customer_shipping_address', true),
+			'landmark' => $this->input->post('landmark', true),
+			'window_time_start' => $this->input->post('window_time_start', true),
+			'window_time_end' => $this->input->post('window_time_end', true),
+			'special_instruction' => $this->input->post('special_instruction', true),
+		);
+
+		// Add checkbox values if available
+		if ($crf_comp_checkbox_values !== null) {
+			$data['company'] = $crf_comp_checkbox_values;
+		}
+
+		// Start transaction
+		$this->db->trans_start();
+		$this->db->insert('tracc_req_customer_req_form', $data);
+		
+		if ($this->db->affected_rows() > 0) {
+			$checkbox_cus_req_form_del_days = [
+				'ticket_id' => $trf_number,
+				'outright' => isset($checkbox_cus_req_form_del['checkbox_outright']) ? $checkbox_cus_req_form_del['checkbox_outright'] : 0,
+				'consignment' => isset($checkbox_cus_req_form_del['checkbox_consignment']) ? $checkbox_cus_req_form_del['checkbox_consignment'] : 0,
+				'customer_is_also_a_supplier' =>  isset($checkbox_cus_req_form_del['checkbox_cus_a_supplier']) ? $checkbox_cus_req_form_del['checkbox_cus_a_supplier'] : 0,
+				'online' => isset($checkbox_cus_req_form_del['checkbox_online']) ? $checkbox_cus_req_form_del['checkbox_online'] : 0,
+				'walk_in' => isset($checkbox_cus_req_form_del['checkbox_walkIn']) ? $checkbox_cus_req_form_del['checkbox_walkIn'] : 0,
+				'monday' => isset($checkbox_cus_req_form_del['checkbox_monday']) ? $checkbox_cus_req_form_del['checkbox_monday'] : 0,
+				'tuesday' => isset($checkbox_cus_req_form_del['checkbox_tuesday']) ? $checkbox_cus_req_form_del['checkbox_tuesday'] : 0,
+				'wednesday' => isset($checkbox_cus_req_form_del['checkbox_wednesday']) ? $checkbox_cus_req_form_del['checkbox_wednesday'] : 0,
+				'thursday' => isset($checkbox_cus_req_form_del['checkbox_thursday']) ? $checkbox_cus_req_form_del['checkbox_thursday'] : 0,
+				'friday' => isset($checkbox_cus_req_form_del['checkbox_friday']) ? $checkbox_cus_req_form_del['checkbox_friday'] : 0,
+				'saturday' => isset($checkbox_cus_req_form_del['checkbox_saturday']) ? $checkbox_cus_req_form_del['checkbox_saturday'] : 0,
+				'sunday' => isset($checkbox_cus_req_form_del['checkbox_sunday']) ? $checkbox_cus_req_form_del['checkbox_sunday'] : 0
+			];
+			$this->db->insert('tracc_req_customer_req_form_del_days', $checkbox_cus_req_form_del_days);
+
+			// Check the second insert
+			if ($this->db->affected_rows() > 0) {
+				$this->db->trans_commit();
+				return array(1, "Successfully Created Customer Request Form for: " . $data['ticket_id']);
+			} else {
+				// Rollback if delivery days insert fails
+				$this->db->trans_rollback();
+				return array(0, "Error: Could not insert delivery days data.");
+			}
+		} else {
+			$this->db->trans_rollback();
+			return array(0, "Error: Could not insert data. Please try again.");
+		}
+
+	}
+
+	public function get_customer_from_tracc_req_mf_new_add() {
+		$this->db->select('ticket_id');
+		$this->db->from('tracc_req_mf_new_add');
+		$this->db->where('customer', 1); // Assuming "status" is the column to check
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+	
+	
 	
 
 }
