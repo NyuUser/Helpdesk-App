@@ -9,8 +9,6 @@ class Main extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('Main_model');
 	}
-
-
 	// code ni sir gilbert
 	/*public function login() {
 		$this->load->helper('form');

@@ -466,35 +466,20 @@ class Main_model extends CI_Model {
 		}
 	}
 	
-	public function update_department($data, $id) {
-		// Ensure $id is an integer for security
-		$id = (int) $id;
-	
-		// Check if there are any fields to update
-		if (empty($data)) {
-			return array(0, "No data provided for update.");
-		}
-	
-		// Update the department record
-		$this->db->where('recid', $id);
-		$this->db->update('departments', $data);
-	
-		// Check if the update was successful
-		if ($this->db->affected_rows() > 0) {
-			return array(1, "Department updated successfully.");
-		} else {
-			// If no rows were affected, check if the ID exists
-			$this->db->where('recid', $id);
-			$query = $this->db->get('departments');
-			
-			if ($query->num_rows() > 0) {
-				// ID exists but no changes were made
-				return array(0, "No changes were made.");
-			} else {
-				// ID does not exist
-				return array(0, "Department not found.");
-			}
-		}
+	public function update_department_status($id) {
+	    $id = (int) $id;  // Ensure $id is an integer
+
+	    // Update the approval status record
+	    $this->db->set('approval_status', 'Approved');
+	    $this->db->where('recid', $id); 
+	    $update_success = $this->db->update('service_request_msrf');
+
+	    // Check if the update was successful based on affected rows
+	    if ($update_success && $this->db->affected_rows() > 0) {
+	        return array(1, "Department approval status updated successfully.");
+	    } else {
+	        return array(0, "Department approval status not found or update failed.");
+	    }
 	}
 	
 	

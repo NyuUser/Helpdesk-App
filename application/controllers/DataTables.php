@@ -377,6 +377,7 @@ class DataTables extends CI_Controller {
                 $name[] = $rows->requestor_name;
                 // Store the subject of the request
                 $subject[] = $rows->subject;
+                
             }
     
             // Combine all columns' data into a single row for each ticket
@@ -388,7 +389,7 @@ class DataTables extends CI_Controller {
                     $prio_label[$i],    // Priority label
                     $status_label[$i],  // Status label
                     $app_stat_label[$i],// Department approval status label
-                    $it_stat_label[$i]  // ICT approval status label
+                    $it_stat_label[$i],  // ICT approval status label
                 );
             }
         }
@@ -400,7 +401,7 @@ class DataTables extends CI_Controller {
             "recordsFiltered" => $length_count,  // Total filtered records (with search)
             "data" => $data  // Data array that contains all the rows to be displayed
         );
-        
+       
         // Return the output as a JSON response
         echo json_encode($output);
         exit();  // Ensure no further processing happens
@@ -707,6 +708,12 @@ class DataTables extends CI_Controller {
     
                 // Generate a clickable link for the ticket ID.
                 $tickets[] = "<a href='" . base_url() . "sys/admin/approved/" . $rows->subject . "/" . $rows->ticket_id . "'>" . $rows->ticket_id . "</a>";
+
+                if($rows->approval_status === "Approved"){
+                    $action[] = '<span class="label"></span>';
+                }else{
+                    $action[] = '<span class="label">' . '<a class="approve-ticket" data-id="'.$rows->recid.'" data-requestor="'.$rows->requestor_name.'" data-department="'.$rows->department.'" data-concern="'.$rows->details_concern.'" data-date-needed="'.$rows->date_needed.'"><i class="fa fa-check"></i></a>' . '</span>';
+                }
             }
     
             // Populate data array with processed ticket information for DataTables.
@@ -718,7 +725,8 @@ class DataTables extends CI_Controller {
                     $prio_label[$i],
                     $status_label[$i],
                     $app_stat_label[$i],
-                    $it_stat_label[$i]
+                    $it_stat_label[$i],
+                    $action[$i], //Action
                 );
             }
         }
@@ -1307,6 +1315,12 @@ class DataTables extends CI_Controller {
                 $name[] = $rows->reported_by;
                 // Store the subject of the request
                 $subject[] = $rows->subject;
+
+                if($rows->approval_status === "Approved"){
+                    $action[] = '<span class="label"></span>';
+                }else{
+                    $action[] = '<span class="label">' . '<a class="approve-ticket" data-id="'.$rows->recid.'" data-reported-by="'.$rows->reported_by.'" data-concern="'.$rows->tcr_details.'"><i class="fa fa-check"></i></a>' . '</span>';
+                }
             }
     
             // Combine all columns' data into a single row for each ticket
@@ -1319,7 +1333,8 @@ class DataTables extends CI_Controller {
                     $comp_label[$i],    // Company label
                     $status_label[$i],  // Status label
                     $app_stat_label[$i],// Department approval status label
-                    $it_stat_label[$i]  // ICT approval status label
+                    $it_stat_label[$i],  // ICT approval status label
+                    $action[$i] //Action
                 );
             }   
         }
@@ -1475,6 +1490,12 @@ class DataTables extends CI_Controller {
                 $tickets[] = "<a href='" . base_url() . "sys/admin/approved/" . $rows->subject . "/" . $rows->ticket_id . "'>" . $rows->ticket_id ."</a>";
                 $name[] = $rows->requested_by;
                 $subject[] = $rows->subject;
+
+                if($rows->approval_status === "Approved"){
+                    $action[] = '<span class="label"></span>';
+                }else{
+                    $action[] = '<span class="label">' . '<a class="approve-ticket" data-id="'.$rows->recid.'" data-requestor="'.$rows->requested_by.'" data-department="'.$rows->department.'" data-concern="'.$rows->complete_details.'"><i class="fa fa-check"></i></a>' . '</span>';
+                }
             }
 
             for ($i = 0; $i < count($tickets); $i++){
@@ -1485,7 +1506,8 @@ class DataTables extends CI_Controller {
                     $priority_label[$i],
                     $status_label[$i],
                     $app_stat_label[$i],
-                    $it_stat_label[$i]
+                    $it_stat_label[$i],
+                    $action[$i]
                 );
             }
         }

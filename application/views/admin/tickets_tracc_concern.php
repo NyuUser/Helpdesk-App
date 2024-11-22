@@ -25,6 +25,7 @@
 								    <th>Status</th>
 									<th>Department Approval Status</th>
 									<th>ICT Approval Status</th>
+									<th>Action</th>
 								</tr>
 							</thead>
                             <tfoot>
@@ -37,6 +38,7 @@
 								    <th>Status</th>
 									<th>Department Approval Status</th>
 									<th>ICT Approval Status</th>
+									<th>Action</th>
 								</tr>
                             </tfoot>
                         </table>

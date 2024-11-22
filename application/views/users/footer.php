@@ -79,7 +79,9 @@
                 </div>
             </div>
         </div>
+
 	</div>
+
 	<!-- Modal for Success -->
 	<?php if ($this->input->get('success')): ?>
 		<?php echo urldecode($this->input->get('success')); ?>
@@ -126,19 +128,19 @@
 	</script>
 	<script>
 
-		$(function() {
-            CKEDITOR.replace('editor1')
-            $('.textarea').wysihtml5();
+		// $(function() {
+        //     //CKEDITOR.replace('editor1')
+        //     $('.textarea').wysihtml5();
             
-            $('#category').change(function() {
-            	var val = $(this).val();
-            	if(val === "others") {
-            		$("#specify").show();
-            	} else {
-		            $("#specify").hide();
-		        }
-            });
-        });
+        //     $('#category').change(function() {
+        //     	var val = $(this).val();
+        //     	if(val === "others") {
+        //     		$("#specify").show();
+        //     	} else {
+		//             $("#specify").hide();
+		//         }
+        //     });
+        // });
 
 		$(document).ready(function() {
 			<?php if($this->session->flashdata('success')): ?>
@@ -148,7 +150,7 @@
                 $('#errorModal').modal('show');
             <?php endif; ?>
 
-			console.log("JavaScript is running");
+			//console.log("JavaScript is running");
 			$(".close").click(function(){
 				$("#modal-success-users, #modal-error-users").modal("hide");
 			});
@@ -331,16 +333,20 @@
 			});
 			
 			getDate();
+			$('.teststs').click(function() {
+            	alert("here");
+       		});
         });
 
         function getDate() {
 			var today = new Date();
-			document.getElementById("date_req").value = ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2) + '-' + today.getFullYear();
+			//document.getElementById("date_req").value = ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2) + '-' + today.getFullYear();
 		}
 
-		window.onload = function() {
-            getDate();
-        };
+		// window.onload = function() {
+        //     getDate();
+        // };
+
 	</script>
 </body>
 </html>
