@@ -2485,11 +2485,9 @@ class Main extends CI_Controller {
 	public function approve_ticket(){
 		$id = $this->input->post('recid');
 		$data_module = $this->input->post('data_module');
-		print_r($data_module);
-		die();
 		if($id){
-			$status = $this->Main_model->update_department_status($id);
-			if($status){
+			$status = $this->Main_model->update_department_status($data_module, $id);
+			if($status[0] === 1){
 					echo json_encode(['status' => 'success', 'message' => 'Succesfully Updated!']);
 				} else {
 					echo json_encode(['status' => 'error', 'message' => 'Failed to update Department approval status.']);
