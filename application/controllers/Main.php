@@ -2484,6 +2484,9 @@ class Main extends CI_Controller {
 	
 	public function approve_ticket(){
 		$id = $this->input->post('recid');
+		$data_module = $this->input->post('data_module');
+		print_r($data_module);
+		die();
 		if($id){
 			$status = $this->Main_model->update_department_status($id);
 			if($status){

@@ -97,12 +97,12 @@
         </div>
     </div>
 
-    <!-- Approve Modal -->
-    <div class="modal fade" id="approve_modal" tabindex="-1" role="dialog" aria-labelledby="approve_modalLabel" data-backdrop="static" data-keyboard="false">
+    <!-- Approve Modal MSRF -->
+    <div class="modal fade" id="approve_modal_msrf" tabindex="-1" role="dialog" aria-labelledby="approve_modal_msrfLabel" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="approve_modalLabel">Approve Ticket</h4>
+                    <h4 class="modal-title" id="approve_modal_msrfLabel">Approve Ticket</h4>
                 </div>
                 <div class="modal-body">
                     <div class="modal-body modal-padding-custom">
@@ -125,7 +125,61 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" name="approve_ticket" id="approve_ticket">Approve</button>
+                    <button type="button" class="btn btn-success approve_ticket" name="approve_ticket" data-module="msrf">Approve</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+    </div>
+
+    <!-- Approve Modal TRACC Concern -->
+    <div class="modal fade" id="approve_modal_tracc_concern" tabindex="-1" role="dialog" aria-labelledby="approve_modal_tracc_concernLabel" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="approve_modal_tracc_concernLabel">Approve Ticket</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body modal-padding-custom">
+                        <div class="form-group">
+                            <label>Reported by</label>
+                            <input type="text" name="name" class="form-control form-value" style="width: 100%;" readonly id="inp_reported_by">
+                        </div>
+                        <div class="form-group">
+                            <label>Details Concern</label>
+                            <textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" readonly id="inp_concern">Details Concern</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success approve_ticket" name="approve_ticket" data-module="tracc-concern">Approve</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+    </div>
+
+    <!-- Approve Modal TRACC Request -->
+    <div class="modal fade" id="approve_modal_tracc_request" tabindex="-1" role="dialog" aria-labelledby="approve_modal_tracc_requestLabel" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="approve_modal_tracc_requestLabel">Approve Ticket</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body modal-padding-custom">
+                        <div class="form-group">
+                            <label>Requestor</label>
+                            <input type="text" name="name" class="form-control form-value" style="width: 100%;" readonly id="inp_requestor">
+                        </div>
+                        <div class="form-group">
+                            <label>Department</label>
+                            <input type="text" name="name" class="form-control" style="width: 100%;" readonly id="inp_department">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success approve_ticket" name="approve_ticket" data-module="tracc-request">Approve</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -351,7 +405,7 @@
             });
         });
 
-        $('#approve_modal').on('hidden.bs.modal', function (e) {
+        $('#approve_modal_msrf').on('hidden.bs.modal', function (e) {
           $(this)
             .find("input,textarea,select")
                .val('')
@@ -362,36 +416,58 @@
         })
 
         $(document).on('click','.approve-ticket', function(e){
+            var module_name = '<?=$this->uri->segment(5);?>';
+            console.log(module_name);
             data_id = $(this).attr('data-id');
-            requestor = $(this).attr('data-requestor');
-            concern = $(this).attr('data-concern');
-            date_needed = $(this).attr('data-date-needed');
-            department = $(this).attr('data-department');
-            $('#approve_ticket').attr("data-id", data_id);
-            console.log(department);
-            $("#inp_requestor").val(requestor);
-            $("#inp_concern").val(concern);
-            $("#inp_department").val(department);
-            $("#inp_date_needed").val(date_needed);
-            $('#approve_modal').modal('show');
+            
+            if(module_name.toLowerCase() === "tracc_concern"){
+
+                reported_by = $(this).attr('data-reported-by');
+                concern = $(this).attr('data-concern');
+
+                $("#approve_modal_tracc_concern #inp_concern").val(concern);
+                $("#approve_modal_tracc_concern #inp_reported_by").val(reported_by);
+                $('#approve_modal_tracc_concern').modal('show');
+            }else if(module_name.toLowerCase() === "msrf"){
+                requestor = $(this).attr('data-requestor');
+                date_needed = $(this).attr('data-date-needed');
+                department = $(this).attr('data-department');
+                concern = $(this).attr('data-concern');
+
+                $("#approve_modal_msrf #inp_concern").val(concern);
+                $("#approve_modal_msrf #inp_requestor").val(requestor);
+                $("#approve_modal_msrf #inp_department").val(department);
+                $("#approve_modal_msrf #inp_date_needed").val(date_needed);
+                $('#approve_modal_msrf').modal('show');
+            }else{
+                reported_by = $(this).attr('data-reported-by');
+                department = $(this).attr('data-department');
+
+                $("#approve_modal_tracc_request #inp_requestor").val(reported_by);    
+                $("#approve_modal_tracc_request #inp_department").val(department);
+                $('#approve_modal_tracc_request').modal('show');
+            }
+            
+            $('.approve_ticket').attr("data-id", data_id);
+            
         });
 
-        $(document).on('click','#approve_ticket', function(e){
-            ///data["id"] = []; 
+        $(document).on('click','.approve_ticket', function(e){
             id = $(this).attr("data-id");
-            //console.log(id);
+            data_module = $(this).attr('data-module');
             $.ajax({
                 type: 'POST',
-                url: base_url + "Main/testing", 
-                data: {recid:id}, 
+                url: base_url + "Main/approve_ticket", 
+                data: {recid:id, data_module: data_module}, 
                 dataType: 'json',
                 success: function(response) {
                     //response = is_json(response);
                     console.log(response.status);
                     if(response){
-                        $('#approve_modal').modal('hide');
+                         $('#approve_modal_tracc_concern').modal('hide');
+                        $('#approve_modal_tracc_request').modal('hide');
+                        $('#approve_modal_msrf').modal('hide');
                         if(response.status === "success"){
-                            
                             location.reload();
                         }else{
                         }
