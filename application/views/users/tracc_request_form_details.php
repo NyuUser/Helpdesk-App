@@ -220,8 +220,8 @@
                                                             <label for="checkbox_cus_ship_setup">Customer Shipping Setup</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_item_req_form" id="checkbox_item_req_form" <?php echo isset($checkbox_data_newadd['item_request_form']) && $checkbox_data_newadd['item_request_form'] == 1 ? 'checked' : ''; ?>>
-                                                            <label for="checkbox_item_req_form">Item Request Form</label>
+                                                            <input type="checkbox" name="checkbox_employee_req_form" id="checkbox_employee_req_form" <?php echo isset($checkbox_data_newadd['employee_request_form']) && $checkbox_data_newadd['employee_request_form'] == 1 ? 'checked' : ''; ?>>
+                                                            <label for="checkbox_employee_req_form">Employee Request Form</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2 d-flex align-items-center">
                                                             <input type="checkbox" name="checkbox_others_newadd" id="checkbox_others_newadd" <?php echo isset($checkbox_data_newadd['others']) && $checkbox_data_newadd['others'] == 1 ? 'checked' : ''; ?>>
@@ -254,6 +254,10 @@
                                                         <div class="circle-checkbox mb-2">
                                                             <input type="checkbox" name="checkbox_supplier_dets" id="checkbox_supplier_dets" <?php echo isset($checkbox_data_update['supplier_details']) && $checkbox_data_update['supplier_details'] == 1 ? 'checked' : ''; ?>>
                                                             <label for="checkbox_supplier_dets">Supplier Details</label>
+                                                        </div>
+                                                        <div class="circle-checkbox mb-2">
+                                                            <input type="checkbox" name="checkbox_employee_dets" id="checkbox_employee_dets" <?php echo isset($checkbox_data_update['employee_details']) && $checkbox_data_update['employee_details'] == 1 ? 'checked' : ''; ?>>
+                                                            <label for="checkbox_employee_dets">Employee Details</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2 d-flex align-items-center">
                                                             <input type="checkbox" name="checkbox_others_update" id="checkbox_others_update" <?php echo isset($checkbox_data_update['others']) && $checkbox_data_update['others'] == 1 ? 'checked' : ''; ?>>
@@ -396,7 +400,6 @@
                                                         <option value="DAN" <?php if ($trf['accomplished_by'] == 'DAN') echo ' selected'; ?>>Sir. Dan</option>
                                                         <option value="CK" <?php if ($trf['accomplished_by'] == 'CK') echo ' selected'; ?>>Sir. CK</option>
                                                         <option value="ERIC" <?php if ($trf['accomplished_by'] == 'ERIC') echo ' selected'; ?>>Sir. Eric</option>
-                                                        
                                                     </select>  
                                                 </div>
                                             </div>

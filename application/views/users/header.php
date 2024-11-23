@@ -19,6 +19,15 @@
 
 	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
 
+	<!-- SweetAlert CSS -->
+	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"> -->
+	<link rel="stylesheet" href="<?= base_url(); ?>/assets/dist/dist/css/sweetalert2.min.css">
+
+	<!-- SweetAlert JS -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script> -->
+	<link rel="stylesheet" href="<?= base_url(); ?>/assets/dist/dist/js/sweetalert2.all.min.js">
+
+
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
     <div class="wrapper">

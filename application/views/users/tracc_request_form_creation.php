@@ -222,8 +222,8 @@
                                                             <label for="checkbox_cus_ship_setup">Customer Shipping Setup</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_item_req_form" id="checkbox_item_req_form" value="1">
-                                                            <label for="checkbox_item_req_form">Item Request Form</label>
+                                                            <input type="checkbox" name="checkbox_employee_req_form" id="checkbox_employee_req_form" value="1">
+                                                            <label for="checkbox_employee_req_form">Employee Request Form</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2 d-flex align-items-center">
                                                             <input type="checkbox" name="checkbox_others_newadd" id="checkbox_others_newadd" value="1">
@@ -256,6 +256,10 @@
                                                         <div class="circle-checkbox mb-2">
                                                             <input type="checkbox" name="checkbox_supplier_dets" id="checkbox_supplier_dets" value="1">
                                                             <label for="checkbox_supplier_dets">Supplier Details</label>
+                                                        </div>
+                                                        <div class="circle-checkbox mb-2">
+                                                            <input type="checkbox" name="checkbox_employee_dets" id="checkbox_employee_dets" value="1">
+                                                            <label for="checkbox_employee_dets">Employee Details</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2 d-flex align-items-center">
                                                             <input type="checkbox" name="checkbox_others_update" id="checkbox_others_update" value="1">

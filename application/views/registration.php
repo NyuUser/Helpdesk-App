@@ -80,18 +80,22 @@
                                         ?>
                                     </select>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="position" class="form-label">Position</label>
                                     <input type="text" class="form-control" id="position" name="position" required>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Username</label>
                                     <input type="text" class="form-control" id="username" name="username" required>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input type="password" class="form-control" id="password" name="password" required>
                                 </div>
+                                
                                 <div class="mb-3">
                                     <label for="confirm-password" class="form-label">Confirm Password</label>
                                     <input type="password" class="form-control" id="conpassword" name="conpassword" required>

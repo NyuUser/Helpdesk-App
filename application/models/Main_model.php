@@ -413,6 +413,7 @@ class Main_model extends CI_Model {
 		return $qry->result_array();
 	}
 
+	// Fetch ALL the department from DB
 	public function getDepartment() {
 		$query = $this->db->query("SELECT * FROM departments");
 	
@@ -1464,7 +1465,7 @@ class Main_model extends CI_Model {
 					'warehouse' => isset($checkbox_data_newadd['checkbox_whs']) ? $checkbox_data_newadd['checkbox_whs'] : 0,
 					'bin_number' => isset($checkbox_data_newadd['checkbox_bin']) ? $checkbox_data_newadd['checkbox_bin'] : 0,
 					'customer_shipping_setup' => isset($checkbox_data_newadd['checkbox_cus_ship_setup']) ? $checkbox_data_newadd['checkbox_cus_ship_setup'] : 0,
-					'item_request_form' => isset($checkbox_data_newadd['checkbox_item_req_form']) ? $checkbox_data_newadd['checkbox_item_req_form'] : 0,
+					'employee_request_form' => isset($checkbox_data_newadd['checkbox_employee_req_form']) ? $checkbox_data_newadd['checkbox_employee_req_form'] : 0,
 					'others' => isset($checkbox_data_newadd['checkbox_others_newadd']) ? $checkbox_data_newadd['checkbox_others_newadd'] : 0,
 					'others_description_add' => isset($checkbox_data_newadd['others_text_newadd']) ? $checkbox_data_newadd['others_text_newadd'] : ""
 				];
@@ -1477,6 +1478,7 @@ class Main_model extends CI_Model {
 					'item_details' => isset($checkbox_data_update['checkbox_item_dets']) ? $checkbox_data_update['checkbox_item_dets'] : 0,
 					'customer_details' => isset($checkbox_data_update['checkbox_customer_dets']) ? $checkbox_data_update['checkbox_customer_dets'] : 0,
 					'supplier_details' => isset($checkbox_data_update['checkbox_supplier_dets']) ? $checkbox_data_update['checkbox_supplier_dets'] : 0,
+					'employee_details' => isset($checkbox_data_update['checkbox_employee_dets']) ? $checkbox_data_update['checkbox_employee_dets'] : 0,
 					'others' => isset($checkbox_data_update['checkbox_others_update']) ? $checkbox_data_update['checkbox_others_update'] : 0,
 					'others_description_update' => isset($checkbox_data_update['others_text_update']) ? $checkbox_data_update['others_text_update'] : ""
 				];
@@ -1543,8 +1545,6 @@ class Main_model extends CI_Model {
 		return $query->result_array();
 	}
 	
-	// 
-	
 	public function add_customer_request_form_pdf($crf_comp_checkbox_values = null, $checkbox_cus_req_form_del) {
 		$trf_number = $this->input->post('trf_number', true);
 		
@@ -1573,6 +1573,7 @@ class Main_model extends CI_Model {
 			'window_time_start' => $this->input->post('window_time_start', true),
 			'window_time_end' => $this->input->post('window_time_end', true),
 			'special_instruction' => $this->input->post('special_instruction', true),
+			'created_at' => date("Y-m-d H:i:s"),
 		);
 
 		// Add checkbox values if available
@@ -1598,7 +1599,8 @@ class Main_model extends CI_Model {
 				'thursday' => isset($checkbox_cus_req_form_del['checkbox_thursday']) ? $checkbox_cus_req_form_del['checkbox_thursday'] : 0,
 				'friday' => isset($checkbox_cus_req_form_del['checkbox_friday']) ? $checkbox_cus_req_form_del['checkbox_friday'] : 0,
 				'saturday' => isset($checkbox_cus_req_form_del['checkbox_saturday']) ? $checkbox_cus_req_form_del['checkbox_saturday'] : 0,
-				'sunday' => isset($checkbox_cus_req_form_del['checkbox_sunday']) ? $checkbox_cus_req_form_del['checkbox_sunday'] : 0
+				'sunday' => isset($checkbox_cus_req_form_del['checkbox_sunday']) ? $checkbox_cus_req_form_del['checkbox_sunday'] : 0,
+				'created_at' => date("Y-m-d H:i:s"),
 			];
 			$this->db->insert('tracc_req_customer_req_form_del_days', $checkbox_cus_req_form_del_days);
 
@@ -1621,12 +1623,97 @@ class Main_model extends CI_Model {
 	public function get_customer_from_tracc_req_mf_new_add() {
 		$this->db->select('ticket_id');
 		$this->db->from('tracc_req_mf_new_add');
-		$this->db->where('customer', 1); // Assuming "status" is the column to check
+		$this->db->where('customer', 1); 
 		$query = $this->db->get();
 		return $query->result_array();
 	}
+
+
+	public function add_customer_shipping_setup_pdf($css_comp_checkbox_values = null, $checkbox_cus_ship_setup) {
+		$trf_number = $this->input->post('trf_number', true);
 	
+		$data = array(
+			'ticket_id' => $trf_number,
+			'requested_by' => $this->input->post('requested_by', true),
+			'shipping_code' => $this->input->post('shipping_code', true),
+			'route_code' => $this->input->post('route_code', true),
+			'customer_address' => $this->input->post('customer_address', true),
+			'landmark' => $this->input->post('landmark', true),
+			'window_time_start' => $this->input->post('window_time_start', true),
+			'window_time_end' => $this->input->post('window_time_end', true),
+			'special_instruction' => $this->input->post('special_instruction', true),
+			'created_at' => date("Y-m-d H:i:s"),
+		);
+
+		if ($css_comp_checkbox_values !== null) {
+			$data['company'] = $css_comp_checkbox_values;
+		}
 	
+		$data['monday'] = isset($checkbox_cus_ship_setup['checkbox_monday']) ? $checkbox_cus_ship_setup['checkbox_monday'] : 0;
+		$data['tuesday'] = isset($checkbox_cus_ship_setup['checkbox_tuesday']) ? $checkbox_cus_ship_setup['checkbox_tuesday'] : 0;
+		$data['wednesday'] = isset($checkbox_cus_ship_setup['checkbox_wednesday']) ? $checkbox_cus_ship_setup['checkbox_wednesday'] : 0;
+		$data['thursday'] = isset($checkbox_cus_ship_setup['checkbox_thursday']) ? $checkbox_cus_ship_setup['checkbox_thursday'] : 0;
+		$data['friday'] = isset($checkbox_cus_ship_setup['checkbox_friday']) ? $checkbox_cus_ship_setup['checkbox_friday'] : 0;
+		$data['saturday'] = isset($checkbox_cus_ship_setup['checkbox_saturday']) ? $checkbox_cus_ship_setup['checkbox_saturday'] : 0;
+		$data['sunday'] = isset($checkbox_cus_ship_setup['checkbox_sunday']) ? $checkbox_cus_ship_setup['checkbox_sunday'] : 0;
+	
+		$this->db->trans_begin();
+	
+		$this->db->insert('tracc_req_customer_ship_setup', $data);
+	
+		if ($this->db->affected_rows() > 0) {
+			$this->db->trans_commit();
+			return array(1, "Successfully Created Customer Shipping Setup for: " . $data['ticket_id']);
+		} else {
+			$this->db->trans_rollback();
+			return array(0, "Error: Could not insert data. Please try again.");
+		}
+	}
+
+	public function get_customer_shipping_setup_from_tracc_req_mf_new_add(){
+		$this->db->select('ticket_id');
+		$this->db->from('tracc_req_mf_new_add');
+		$this->db->where('customer_shipping_setup', 1); 
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	public function add_employee_request_form_pdf() {
+		$trf_number = $this->input->post('trf_number', true);
+
+		$data = array(
+			'ticket_id' => $trf_number,
+			'requested_by' => $this->input->post('requested_by', true),
+			'name' => $this->input->post('employee_name', true),
+			'department' => $this->input->post('department', true),
+			'position' => $this->input->post('position', true),
+			'address' => $this->input->post('address', true),
+			'tel_no_mob_no' => $this->input->post('tel_mobile_no', true),
+			'tin_no' => $this->input->post('tin_no', true),
+			'contact_no' => $this->input->post('contact_person', true),
+			'created_at' => date("Y-m-d H:i:s"),
+		);
+
+		$this->db->trans_begin();
+
+		$this->db->insert('tracc_req_employee_req_form', $data);
+
+		if ($this->db->affected_rows() > 0) {
+			$this->db->trans_commit();
+			return array(1, "Successfully Created Customer Shipping Setup for: " . $data['ticket_id']);
+		} else {
+			$this->db->trans_rollback();
+			return array(0, "Error: Could not insert data. Please try again.");
+		}
+	}
+
+	public function get_employee_request_form_from_tracc_req_mf_new_add(){
+		$this->db->select('ticket_id');
+		$this->db->from('tracc_req_mf_new_add');
+		$this->db->where('employee_request_form', 1); 
+		$query = $this->db->get();
+		return $query->result_array();
+	}
 	
 
 }

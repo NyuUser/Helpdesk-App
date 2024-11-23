@@ -2394,7 +2394,7 @@ class Main extends CI_Controller {
 				'checkbox_whs' => $this->input->post('checkbox_whs') ? 1 : 0,
 				'checkbox_bin' => $this->input->post('checkbox_bin') ? 1 : 0,
 				'checkbox_cus_ship_setup' => $this->input->post('checkbox_cus_ship_setup') ? 1 : 0,
-				'checkbox_item_req_form' => $this->input->post('checkbox_item_req_form') ? 1 : 0,
+				'checkbox_employee_req_form' => $this->input->post('checkbox_employee_req_form') ? 1 : 0,
 				'checkbox_others_newadd' => $this->input->post('checkbox_others_newadd') ? 1 : 0, 
 				'others_text_newadd' => $this->input->post('others_text_newadd')
 			];
@@ -2405,6 +2405,7 @@ class Main extends CI_Controller {
 				'checkbox_item_dets' => $this->input->post('checkbox_item_dets') ? 1 : 0,
 				'checkbox_customer_dets' => $this->input->post('checkbox_customer_dets') ? 1 : 0,
 				'checkbox_supplier_dets' => $this->input->post('checkbox_supplier_dets') ? 1 : 0,
+				'checkbox_employee_dets' => $this->input->post('checkbox_employee_dets') ? 1 : 0,
 				'checkbox_others_update' => $this->input->post('checkbox_others_update') ? 1 : 0,
 				'others_text_update' => $this->input->post('others_text_update')
 			]; 
@@ -2446,8 +2447,6 @@ class Main extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('session');
 	
-		$this->form_validation->set_rules('trf_number', 'Ticket Number', 'trim|required');
-	
 		$user_details = $this->Main_model->user_details();
 		$getdepartment = $this->Main_model->GetDepartmentID();
 		$users_det = $this->Main_model->users_details_put($id);
@@ -2467,18 +2466,7 @@ class Main extends CI_Controller {
 			$this->load->view('users/trf_customer_form_request_creation', $data);
 			$this->load->view('users/footer');
 		} else {
-			$comp_checkbox_values = isset($_POST['comp_checkbox_value']) ? $_POST['comp_checkbox_value'] : [];
-			$imploded_values = implode(',', $comp_checkbox_values);
-				
-			$process = $this->Main_model->trf_add_ticket($imploded_values);
-
-			if ($process[0] == 1) {
-				$this->session->set_flashdata('success', $process[1]);
-				redirect(base_url() . 'sys/users/list/tickets/tracc_request');
-			} else {
-				$this->session->set_flashdata('error', $process[1]);
-				redirect(base_url() . 'sys/users/create/tickets/tracc_request');
-			}
+			return;
 		}
 	}
 
@@ -2508,7 +2496,10 @@ class Main extends CI_Controller {
 			redirect(base_url().'sys/users/create/tickets/trf_customer_request_form_tms');  
 		} else {
 			$this->session->set_flashdata('error', $process[1]);
-			redirect(base_url().'sys/users/create/tickets/trf_customer_request_form_tms');  
+			redirect(base_url().'sys/users/create/tickets/trf_customer_request_form_tms'); 
+		}
+	}
+	 
 	public function approve_ticket(){
 		$id = $this->input->post('recid');
 		$data_module = $this->input->post('data_module');
@@ -2524,5 +2515,107 @@ class Main extends CI_Controller {
 		}
 	}
 
+	public function user_creation_tickets_customer_shipping_setup() {
+		$id = $this->session->userdata('login_data')['user_id'];
+		$this->load->helper('form');
+		$this->load->library('session');
+	
+		$user_details = $this->Main_model->user_details();
+		$getdepartment = $this->Main_model->GetDepartmentID();
+		$users_det = $this->Main_model->users_details_put($id);
+		$ticket_numbers = $this->Main_model->get_customer_shipping_setup_from_tracc_req_mf_new_add();
+	
+		if ($this->form_validation->run() == FALSE) {
+			$data['user_details'] = $user_details[1];
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
+			$data['ticket_numbers'] = $ticket_numbers;
+	
+			$users_department = $users_det[1]['dept_id'];
+			$get_department = $this->Main_model->UsersDepartment($users_department);
+			$data['get_department'] = $get_department;
+	
+			$this->load->view('users/header', $data);
+			$this->load->view('users/trf_customer_shipping_setup', $data);
+			$this->load->view('users/footer');
+		} else {
+			return;
+		}
+	}
+
+	public function user_creation_customer_shipping_setup_pdf() {
+		$css_comp_checkbox_value = isset($_POST['css_comp_checkbox_value']) ? $_POST['css_comp_checkbox_value'] : [];
+		$imploded_values = implode(',', $css_comp_checkbox_value);
+
+		$checkbox_cus_ship_setup = [
+			'checkbox_monday' => isset($_POST['checkbox_monday']) ? 1 : 0,
+			'checkbox_tuesday' => isset($_POST['checkbox_tuesday']) ? 1 : 0,
+			'checkbox_wednesday' => isset($_POST['checkbox_wednesday']) ? 1 : 0,
+			'checkbox_thursday' => isset($_POST['checkbox_thursday']) ? 1 : 0,
+			'checkbox_friday' => isset($_POST['checkbox_friday']) ? 1 : 0,
+			'checkbox_saturday' => isset($_POST['checkbox_saturday']) ? 1 : 0,
+			'checkbox_sunday' => isset($_POST['checkbox_sunday']) ? 1 : 0,
+		];
+
+		$process = $this->Main_model->add_customer_shipping_setup_pdf($imploded_values, $checkbox_cus_ship_setup);
+
+		if ($process[0] == 1) {
+			$this->session->set_flashdata('success', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_customer_shipping_setup');  
+		} else {
+			$this->session->set_flashdata('error', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_customer_shipping_setup');  
+		}
+	}
+
+	public function user_creation_tickets_employee_request_form() {
+		$id = $this->session->userdata('login_data')['user_id'];
+		$this->load->helper('form');
+		$this->load->library('session');
+	
+		$user_details = $this->Main_model->user_details();
+		$getdepartment = $this->Main_model->GetDepartmentID();
+		$users_det = $this->Main_model->users_details_put($id);
+		$ticket_numbers = $this->Main_model->get_employee_request_form_from_tracc_req_mf_new_add();
+	
+		// New: Fetch all departments for the dropdown
+		$departments_result = $this->Main_model->getDepartment();
+		$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
+	
+		if ($this->form_validation->run() == FALSE) {
+			$data['user_details'] = $user_details[1];
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
+			$data['ticket_numbers'] = $ticket_numbers;
+	
+			// New: Pass departments for the dropdown
+			$data['departments'] = $departments;
+	
+			$users_department = $users_det[1]['dept_id'] ?? null;
+			$data['selected_department'] = $users_department;
+	
+			$this->load->view('users/header', $data);
+			$this->load->view('users/trf_employee_request_form', $data);
+			$this->load->view('users/footer');
+		} else {
+			return;
+		}
+	}
+
+	public function user_creation_employee_request_form_pdf() {
+		$process = $this->Main_model->add_employee_request_form_pdf();
+
+		if ($process[0] == 1) {
+			$this->session->set_flashdata('success', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_employee_request_form');  
+		} else {
+			$this->session->set_flashdata('error', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_employee_request_form');  
+		}
+	}
+
+	
+	
+	
 	
 }
