@@ -2645,6 +2645,71 @@ class Main extends CI_Controller {
 		}
 	}
 
+	public function user_creation_tickets_item_request_form() {
+		$id = $this->session->userdata('login_data')['user_id'];
+		$this->load->helper('form');
+		$this->load->library('session');
+	
+		$user_details = $this->Main_model->user_details();
+		$getdepartment = $this->Main_model->GetDepartmentID();
+		$users_det = $this->Main_model->users_details_put($id);
+		$ticket_numbers = $this->Main_model->get_item_request_form_from_tracc_req_mf_new_add();
+
+		$departments_result = $this->Main_model->getDepartment();
+		$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['user_details'] = $user_details[1];
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
+			$data['ticket_numbers'] = $ticket_numbers;
+	
+			// New: Pass departments for the dropdown
+			$data['departments'] = $departments;
+	
+			$users_department = $users_det[1]['dept_id'] ?? null;
+			$data['selected_department'] = $users_department;
+	
+			$this->load->view('users/header', $data);
+			$this->load->view('users/trf_item_request_form', $data);
+			$this->load->view('users/footer');
+		} else {
+			return;
+		}
+	}
+
+	public function user_creation_tickets_supplier_request_form_tms() {
+		$id = $this->session->userdata('login_data')['user_id'];
+		$this->load->helper('form');
+		$this->load->library('session');
+	
+		$user_details = $this->Main_model->user_details();
+		$getdepartment = $this->Main_model->GetDepartmentID();
+		$users_det = $this->Main_model->users_details_put($id);
+		//$ticket_numbers = $this->Main_model->get_item_request_form_from_tracc_req_mf_new_add();
+
+		$departments_result = $this->Main_model->getDepartment();
+		$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['user_details'] = $user_details[1];
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
+			//$data['ticket_numbers'] = $ticket_numbers;
+	
+			$data['departments'] = $departments;
+	
+			$users_department = $users_det[1]['dept_id'] ?? null;
+			$data['selected_department'] = $users_department;
+	
+			$this->load->view('users/header', $data);
+			$this->load->view('users/trf_supplier_request_form', $data);
+			$this->load->view('users/footer');
+		} else {
+			return;
+		}
+	}
+
 	
 	
 	

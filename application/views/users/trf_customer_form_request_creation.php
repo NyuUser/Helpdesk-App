@@ -99,14 +99,6 @@
                                                     <?php endif; ?>
                                                 </select>
                                             </div>
-
-                                            <!-- <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Ticket ID</label>
-                                                    <input type="text" name="ticket_id" id="ticket_id" value="" class="form-control select2" required> 
-                                                </div>
-                                            </div> -->
-
                                                
                                             <div class="row">
                                                 <!-- Checkboxes Section -->

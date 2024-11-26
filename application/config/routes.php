@@ -45,7 +45,7 @@ $route['sys/users/create/tickets/trf_employee_request_form'] = 'main/user_creati
 //---
 $route['sys/users/create/tickets/trf_item_request_form'] = 'main/user_creation_tickets_item_request_form';
 //---
-$route['sys/users/create/tickets/trf_supplier_request_form_tms'] = 'main/user_creation_supplier_request_form_tms';
+$route['sys/users/create/tickets/trf_supplier_request_form_tms'] = 'main/user_creation_tickets_supplier_request_form_tms';
 
 
 //--- ADMIN ROUTES ---//

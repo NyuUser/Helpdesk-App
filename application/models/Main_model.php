@@ -1721,6 +1721,14 @@ class Main_model extends CI_Model {
 		$query = $this->db->get();
 		return $query->result_array();
 	}
+
+	public function get_item_request_form_from_tracc_req_mf_new_add(){
+		$this->db->select('ticket_id');
+		$this->db->from('tracc_req_mf_new_add');
+		$this->db->where('item', 1); 
+		$query = $this->db->get();
+		return $query->result_array();
+	}
 	
 
 }
