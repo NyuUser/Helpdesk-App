@@ -4,7 +4,7 @@
         <section class="content">
             <div class="row">
                 <div class="col-xs-6" style="width: auto; margin-left: 35%; margin-top: 10px;">
-                    <h1>Print Ticket Reports</h1>
+                    <h1>Generate Reports</h1>
                     <div class="box" style="width: 440px; padding: 20px;">
 
                     <table style="height: 300px; width: 400px;">
