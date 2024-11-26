@@ -143,29 +143,36 @@ class Main_model extends CI_Model {
 	        $sid = $this->session->session_id;
 
 	        if (password_verify($input_pw, $stored_pw)) {
-	            $this->db->set('failed_attempts', 1);
-	            $this->db->where('username', $username);
-	            $this->db->update('users');
-	            return array(1, array('emp_id' => $emp_id, 'user_id' => $user_id, 'role' => $role, 'status' => 1, 'dept_id' => $dept_id, 'sup_id' => $sup_id));
+				$query = $this->db->where('username', $username)->get('users')->row();
+
+				if($query->status == 0) {
+					return array(0, 'message' => 'You Account is Locked.');
+				} else {
+					$this->db->set('failed_attempts', 1);
+					$this->db->where('username', $username);
+					$this->db->update('users');
+					return array(1, array('emp_id' => $emp_id, 'user_id' => $user_id, 'role' => $role, 'status' => 1, 'dept_id' => $dept_id, 'sup_id' => $sup_id));
+				}
 	        } else {
 	            $query = $this->db->where('username', $username)->get('users');
 
 	            if ($query->num_rows() > 0) {
 	                $row = $query->row();
-	                if (isset($row->failed_attempts) && $row->failed_attempts == 3) {
-	                    $this->db->set('status', 1);
+	                if ($row->failed_attempts == 3) {
+	                    $this->db->set('status', 0);
 	                    $this->db->where('username', $username);
 	                    $this->db->update('users');
 
-	                    return array(1, array('user_id' => $user_id, 'role' => $role, 'status' => 1, 'dept_id' => $dept_id, 'sup_id' => $sup_id));
-	                    return array(1, "Your Account is Locked.");
+	                    // return array(0, array('user_id' => $user_id, 'role' => $role, 'status' => 1, 'dept_id' => $dept_id, 'sup_id' => $sup_id));
+	                    return array(0, 'message' => "Your Account is Locked.");
+						// return array('status' => 0, 'message' => "Your Account is Locked.");
 	                } else {
 	                	$attempts = $this->db->where('username', $username)->get('users')->row()->failed_attempts;
 	                    $this->db->where('username', $username);
 				        $this->db->set('failed_attempts', ($attempts + 1), FALSE);
 				        $this->db->update('users');
-				        return array(0, "Your Username/Password is Invalid Please Try Again.");
-				        // return array('status' => 0, 'message' => "Your Username/Password is Invalid Please Try Again.");
+				        // return array(0, "Your Username or Password is Invalid Please Try Again.");
+				        return array('status' => 0, 'message' => "Your Username/Password is Invalid Please Try Again.");
 	                }
 	            } else {
 	                return array('status' => 0, 'message' => "User not found");

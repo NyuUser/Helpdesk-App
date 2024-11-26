@@ -1727,14 +1727,14 @@ class DataTables extends CI_Controller {
         }
 
         // Count the results from the query
-        $totalRecordsQuery = $this->db->query("SELECT COUNT(*) AS total FROM users");
-        $totalRecords = $totalRecordsQuery->row()->total;
+        // $totalRecordsQuery = $this->db->query("SELECT COUNT(*) AS total FROM users");
+        // $totalRecords = $totalRecordsQuery->row()->total;
 
         // Place needed information inside an array variable.
         $output = array(
             "draw" => intval($this->input->post('draw')),
-            "recordsTotal" => $totalRecords,
-            "recordsFiltered" => count($data),
+            // "recordsTotal" => $totalRecords,
+            // "recordsFiltered" => count($data),
             "data" => $formattedData
         );
 

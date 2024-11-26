@@ -446,6 +446,7 @@
                 // "searching" - enables/disables search functionality
                 // "paging" - enables/disables limiting of the results shown on the screen.
                 tableMSRF = $('#tblTicketsPrint').DataTable({
+                    "info": false,
                     "destroy": true,
                     "searching": false,
                     "paging": false,
@@ -565,6 +566,7 @@
                 // "searching" - enables/disables searching functionality.
                 // "paging" - enables/disables limiting of the data displayed in the table.
                 var tableTracc = $('#tblTicketsTraccConcernPrint').DataTable({
+                    "info": false,
                     "destroy": true,
                     "searching": false,
                     "paging": false,
