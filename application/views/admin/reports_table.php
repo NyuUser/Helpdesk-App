@@ -1,11 +1,11 @@
 <div class="content-wrapper">
-    <section class="content-header">
-        <h1>Print Ticket Reports</h1>
-    </section>
-    <section class="content">
-        <div class="row">
-            <div class="col-xs-6">
-                <div class="container-fluid" style="margin-bottom: 10px;">
+    <section class="content-header" style="margin-left: 35%;">
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-6" style="width: auto; margin-left: 35%; margin-top: 10px;">
+                    <h1>Print Ticket Reports</h1>
+                    <div class="box" style="width: 440px; padding: 20px;">
 
                     <table style="height: 300px; width: 400px;">
                         <tr>

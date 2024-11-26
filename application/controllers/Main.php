@@ -41,73 +41,65 @@ class Main extends CI_Controller {
 	
 	// LOGIN 
 	public function login() {
-	    $username = trim($this->input->post('username', true));
-	    $input_pw = $this->input->post('password');
-	    $new_pw = substr(sha1($input_pw), 0, 200);
-
-	    $sql = "SELECT * FROM users WHERE BINARY username = ?";
-		$res = $this->db->query($sql, array($username));
-
-	    if ($res->num_rows() > 0) {
-	        $t = $res->row_array();
-	        $user_id = $t['recid'];
-			$emp_id = $t['emp_id'];
-	        $session_id = $t['api_password'];
-	        $stored_pw = $t['password'];
-	        $role = $t['role'];
-	        $dept_id = $t['dept_id'];
-			$sup_id = $t['sup_id'];
-			$attempts = $t['failed_attempts'];
-			$status = $t['status'];
-	        $sid = $this->session->session_id;
-
-	        if (password_verify($input_pw, $stored_pw)) {
-				if($status == 0) {
-					$this->db->set('status', 0);
-					$this->db->where('username', $username);
-					$this->db->update('users');
-					return array(0, "Your Account is Locked. Please Contact IT Support.");
+		// Load helpers and libraries
+		$this->load->helper('form');
+		$this->load->library('session');
+		$this->load->library('form_validation');
+		
+		// Check if the request is a POST request
+		if ($this->input->server('REQUEST_METHOD') === 'POST') {
+			// Set validation rules
+			$this->form_validation->set_rules('username', 'Username', 'trim|required');
+			$this->form_validation->set_rules('password', 'Password', 'trim|required');
+	
+			if ($this->form_validation->run() == FALSE) {
+				// Return validation errors in JSON format if validation fails
+				$response = array(
+					'status' => 'error',
+					'message' => 'Validation failed',
+					'errors' => $this->form_validation->error_array()
+				);
+				echo json_encode($response);
+				exit; // Ensure no further code execution
+			} else {
+				// Process login
+				$process = $this->Main_model->login();
+	
+				if ($process[0] == 1 && $process[1]['status'] == 1) {
+					// Successful login
+					$role = $process[1]['role'];
+					$this->session->set_userdata(array('login_data' => $process[1]));
+	
+					// Set redirect URL based on role
+					//$redirect_url = ($role == "L2") ? base_url().'sys/admin/dashboard' : base_url().'sys/users/dashboard';
+					if ($role == "L2"){
+						$redirect_url = base_url().'sys/admin/dashboard';
+					} else if ($role == "L3"){
+						$redirect_url = base_url().'sys/admin/dashboard';
+					} else {
+						$redirect_url = base_url().'sys/users/dashboard';
+					}
+					// Return success response with redirect URL
+					$response = array(
+						'status' => 'success',
+						'message' => 'Login successful',
+						'redirect_url' => $redirect_url
+					);
+					echo json_encode($response);
 				} else {
-					$this->db->set('failed_attempts', 0);
-					$this->db->where('username', $username);
-					$this->db->update('users');
-					return array(1, array('emp_id' => $emp_id, 'user_id' => $user_id, 'role' => $role, 'status' => 1, 'dept_id' => $dept_id, 'sup_id' => $sup_id));
+					// Login failed, return error message
+					$response = array(
+						'status' => 'error',
+						'message' => isset($process['message']) ? $process['message'] : 'Invalid Login Credentials'
+					);
+					echo json_encode($response);
 				}
-	        } else {
-	            $query = $this->db->where('username', $username)->get('users');
-
-	            if ($query->num_rows() > 0) {
-	                $row = $query->row();
-
-					// $attempts = $this->db->where('username', $username)->get('users')->row()->failed_attempts;
-	            	// $this->db->where('username', $username);
-				    // $this->db->set('failed_attempts', ($attempts + 1), FALSE);
-				    // $this->db->update('users');
-				    // return array(0, "Your Username/Password is Invalid Please Try Again.");
-
-	                if (isset($row->failed_attempts) && $row->failed_attempts == 2 || $status == 0) {
-	                    $this->db->set('status', 0);
-	                    $this->db->where('username', $username);
-	                    $this->db->update('users');
-
-	                    //return array(1, array('user_id' => $user_id, 'role' => $role, 'status' => 1, 'dept_id' => $dept_id, 'sup_id' => $sup_id));
-	                    return array(0, "Your Account is Locked. Please Contact IT Support.");
-	                } else {
-	                	$attempts = $this->db->where('username', $username)->get('users')->row()->failed_attempts;
-	                    $this->db->where('username', $username);
-				        $this->db->set('failed_attempts', ($attempts + 1), FALSE);
-				        $this->db->update('users');
-				        return array(0, "Your Username/Password is Invalid Please Try Again.");
-				        // return array('status' => 0, 'message' => "Your Username/Password is Invalid Please Try Again.");
-	                }
-	            } else {
-	                return array('status' => 0, 'message' => "User not found");
-	            }
-	        }
-	    } else {
-	        log_message("error", "[Login] - Callback passed but can't retrieve data.");
-	        return array('status' => 0, 'message' => "Failed to retrieve your data. Please try again or reset your account.");
-	    }
+				exit; // Ensure no further code execution
+			}
+		} else {
+			// If not a POST request, load the login view (initial page load)
+			$this->load->view('login');
+		}
 	}
 
 	
