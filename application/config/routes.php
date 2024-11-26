@@ -59,6 +59,8 @@ $route['sys/admin/list/ticket/msrf'] = 'main/admin_list_tickets';
 $route['sys/admin/team'] = 'main/admin_team';
 //--- DATATABLE of ADMIN for TRACC REQUEST
 $route['sys/admin/list/ticket/tracc_request'] = 'main/admin_list_tracc_request';
+//--- DATATABLE of ADMIN for PRINT REPORTS
+$route['sys/admin/print'] = 'main/admin_print_report';
 
 
 //--- TICKET APPROVAL for MSRF and TRACC CONCERN and TRACC REQUEST

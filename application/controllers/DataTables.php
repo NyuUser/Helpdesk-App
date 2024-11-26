@@ -1690,5 +1690,111 @@ class DataTables extends CI_Controller {
         echo json_encode($output);
         exit();
     }
+
+    // Kevin's code
+    public function print_tickets_msrf() {
+
+        // Get start and end date input.
+        $startDate = $this->input->post('start_date');
+        $endDate = $this->input->post('end_date');
+        $status = $this->input->post('status');
+
+        // Get columns ticket_id, requestor_name, department, date_requested, date_needed, asset_code, and status from service_request_msrf table.
+        $this->db->select('ticket_id, requestor_name, department, date_requested, date_needed, asset_code, status');
+        $this->db->from('service_request_msrf');
+
+        if($status != '') {
+            $this->db->where('status', $status);
+        }
+
+        // If start and end date is provided, add where clauses to filter the results.
+        if($startDate && $endDate) {
+            $this->db->where('created_at >=', $startDate);
+            $this->db->where('created_at <=', $endDate);
+        }
+
+        // Place results inside a variable.
+        $query = $this->db->get();
+        $data = $query->result_array();
+
+        // Format Date
+        $formattedData = [];
+        foreach($data as $row) {
+            $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
+            $row['date_needed'] = date('M j, Y', strtotime($row['date_needed']));
+
+            $formattedData[] = $row;
+        }
+
+        // Count the results from the query
+        $totalRecordsQuery = $this->db->query("SELECT COUNT(*) AS total FROM users");
+        $totalRecords = $totalRecordsQuery->row()->total;
+
+        // Place needed information inside an array variable.
+        $output = array(
+            "draw" => intval($this->input->post('draw')),
+            "recordsTotal" => $totalRecords,
+            "recordsFiltered" => count($data),
+            "data" => $formattedData
+        );
+
+        // Convert the array into a JSON.
+        echo json_encode($output);
+        exit();
+    }
+
+    /*
+        Kevin's codes
+    */
+    
+    public function print_tickets_tracc_concern() {
+        
+        // Get start and end date input.
+        $startDate = $this->input->post('start_date');
+        $endDate = $this->input->post('end_date');
+        $status = $this->input->post('status');
+
+        // Get columns control_number, reported_by, reported_date, resolved_date, and status from service_request_tracc_concern.
+        $this->db->select('control_number, reported_by, reported_date, resolved_date, status');
+        $this->db->from('service_request_tracc_concern');
+
+        if($status != '') {
+            $this->db->where('status', $status);
+        }
+        // If start and end date input exists, an additional where clause is added to the query.
+        if($startDate && $endDate) {
+            $this->db->where('created_at >=', $startDate);
+            $this->db->where('created_at <=', $endDate);
+        }
+
+        // Place the values from the query to variables.
+        $query = $this->db->get();
+        $data = $query->result_array();
+
+        // Format Date.
+        $formattedData = [];
+        foreach($data as $row) {
+            $row['reported_date'] = date('M j, Y', strtotime($row['reported_date']));
+            $row['resolved_date'] = date('M j, Y', strtotime($row['resolved_date']));
+
+            $formattedData[] = $row;
+        }
+
+        // Count the returned rows.
+        $totalRecordsQuery = $this->db->query("SELECT COUNT(*) AS total FROM users");
+        $totalRecords = $totalRecordsQuery->row()->total;
+
+        // Insert all the data from the database into an array.
+        $output = array(
+            "draw" => intval($this->input->post('draw')),
+            "recordsTotal" => $totalRecords,
+            "recordsFiltered" => count($data),
+            "data" => $formattedData
+        );
+
+        // Convert the array to a JSON.
+        echo json_encode($output);
+        exit();
+    }
     
 }

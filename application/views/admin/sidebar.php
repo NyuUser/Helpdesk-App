@@ -54,6 +54,11 @@
                     <li class="<?= ($active_menu == 'team') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/team"><i class="fa solid fa-user-plus"></i> Departments</a></li>
                 </ul>
             </li>
+            <li class="<?= ($active_menu == 'print') ? 'active' : ''; ?>">
+                <a href="<?= base_url(); ?>sys/admin/print">
+                    <i class="fa fa-print"></i> <span>Print Report</span>
+                </a>
+            </li>
         </ul>
 	</section>
 </aside>

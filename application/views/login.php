@@ -19,7 +19,7 @@
 
     <style>
         .swal2-container {
-            position: fixed !important;  /* Make sure it's fixed */
+            position: absolute !important;  /* Make sure it's fixed */
             z-index: 10000 !important;   /* Ensure it's on top */
         }
 
@@ -114,6 +114,18 @@
                     if (response.status === 'success') {
                         // Redirect on success
                         window.location.href = response.redirect_url;
+                    } else if(response.status === 'error') {
+                        let errorMessage = response.message;
+                        if (response.errors) {
+                            for (let key in response.errors) {
+                                errorMessage += `\n${response.errors[key]}`;
+                            }
+                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Login Failed',
+                            text: response.message
+                        });
                     } else {
                         // Show validation errors if any
                         let errorMessage = response.message;

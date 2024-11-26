@@ -37,7 +37,7 @@
 	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
 
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-red sidebar-mini">
 	<div class="wrapper">
 		<header class="main-header">
 			<?php $this->load->view('admin/navbar'); ?>

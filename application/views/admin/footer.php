@@ -215,9 +215,18 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <script type="text/javascript">
         var base_url = '<?= base_url();?>';
         $(document).ready(function() {
+            // Kevin's codes: The tables would be hidden and users would choose which table reports to generate.
+            $('#tblMsrfBox').hide();
+            $('#tblTraccBox').hide();
+            $('#usersTable').hide();
+            $('#reload').hide();
+
             <?php if($this->session->flashdata('success')): ?>
                 $('#successModal').modal('show');
             <?php endif; ?>
@@ -402,6 +411,314 @@
                     'orderable': false,
                     "className": "text-center"
                 }]
+            });
+
+            // Kevin's codes: format date from yyyy-mm-dd to mm-dd-yyyy
+            function formatDate(date) {
+                var d = new Date(date);
+                var month = d.toLocaleString('en-US', { month: 'short' });
+                var day = d.getDate();
+                var year = d.getFullYear();
+
+                return month + " " + day + " " + year;
+            }
+
+            // Upon clicking of the #filter button, the program will get the start date, end date, the status, and the ticket type and will filter the results based on these dates and would populate the table based on the results.
+            $('#filter').click(function() {
+                // Get value from the element with an id of 'start_date' and 'end_date'.
+                var startDate = $('#start_date').val();
+                var endDate = $('#end_date').val();
+                var status = $('#status').val();
+                var ticket = $('#ticket').val();
+
+                var date = new Date();
+
+                if(ticket == 'msrf') {
+                    $('#tblMsrfBox').show();
+                    $('#tblTraccBox').hide();
+                } else if (ticket == 'tracc') {
+                    $('#tblMsrfBox').hide();
+                    $('#tblTraccBox').show();
+                }
+
+                // Table creation
+                // "destroy" - allows reinstantiation of the table
+                // "searching" - enables/disables search functionality
+                // "paging" - enables/disables limiting of the results shown on the screen.
+                tableMSRF = $('#tblTicketsPrint').DataTable({
+                    "destroy": true,
+                    "searching": false,
+                    "paging": false,
+                    "serverSide": true,
+                    "processing": true,
+                    "ajax": {
+                        "url": "<?= base_url(); ?>DataTables/print_tickets_msrf",
+                        "type": "POST",
+                        "data": {
+                            start_date: startDate,
+                            end_date: endDate,
+                            status: status,
+                        },
+                    },
+                    // Since we are not outputing all the columns, we need to define the columns.
+                    "columns": [
+                        { "data": "ticket_id" },
+                        { "data": "requestor_name" },
+                        { "data": "department" },
+                        { "data": "date_requested" },
+                        { "data": "date_needed" },
+                        { "data": "asset_code" },
+                        { "data": "status" }
+                    ],
+                    "responsive": true,
+                    "autoWidth": false,
+                    "lengthChange": false,
+                    "dom": "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
+                    "buttons": [
+                        {
+                            // Export table to a PDF document.
+                            text: 'PDF',
+                            className: 'btn btn-danger',
+                            action: function () {
+                                
+                                // Import jsPDF class only.
+                                const {jsPDF} = window.jspdf;
+
+                                // Instantiate jsPDF.
+                                var doc = new jsPDF();
+
+                                // Insert Logo
+                                var imageUrl = '<?= base_url('assets/images/lifestrong-logo.png'); ?>';
+                                doc.addImage(imageUrl, "PNG", 15, 2, 10, 10);
+                                
+                                // Place all data into a variable.
+                                var tableContent = $('#tblTicketsPrint')[0];
+                                
+                                // Set font size and text to the title of the document.
+                                doc.setFontSize(20);
+                                doc.text('Generated Report For MSRF Concern', 28, 10); 
+                                
+                                // Set font size and text to display the filtered start and end date of the report.
+                                doc.setFontSize(12);
+                                doc.text('Date started: ' + formatDate(startDate) + ' to ' + formatDate(endDate), 15, 20);
+                                doc.text('Date printed: ' + formatDate(date), 15, 26);
+
+                                // Styling the table.
+                                doc.autoTable({
+                                    html: tableContent,
+                                    theme: 'grid',
+                                    headStyles: {
+                                        fillColor: 'white',
+                                        textColor: 'black',
+                                        fontStyle: 'bold',
+                                        fontSize: 10,
+                                        lineWidth: 0.5,
+                                    },
+                                    bodyStyles: {
+                                        fillColor: 'white',
+                                        textColor: 'black',
+                                        fontSize: 10,
+                                        lineWidth: 0.5,
+                                    },
+                                    styles: {
+                                        cellPadding: 2,
+                                        fontSize: 12,
+                                        bordered: true,
+                                    },
+                                    margin: {
+                                        top: 30
+                                    },
+                                });
+                                
+                                // Open the document to another window.
+                                doc.output('dataurlnewwindow', 'MSRF Concern ' + '(' + formatDate(startDate) + ' to ' + formatDate(endDate) + ')');
+                            }
+                        },
+                        {
+                            // Export table to an Excel document.
+                            text: 'Excel',
+                            className: 'btn btn-danger',
+                            extend: 'excel',
+                            filename: '(' + formatDate(date) + ') MSRF Concern (' + startDate + ' to ' + endDate + ')',
+                            title: 'Open MSRF Tickets (' + startDate + ' to ' + endDate + ')',
+                        },
+                        {
+                            // Export table to a CSV document.
+                            text: 'CSV',
+                            className: 'btn btn-danger',
+                            extend: 'csv',
+                            filename: '(' + formatDate(date) + ') MSRF Concern (' + startDate + ' to ' + endDate + ')',
+                            customize: function(csv) {
+                                var rows = csv.split('\n');
+
+                                var title = 'Open MSRF Tickets (' + startDate + ' to ' + endDate + ')';
+                                rows.unshift(title);
+
+                                return rows.join('\n');
+                            }
+                        } 
+                    ]
+                });
+
+                // Table creation
+                // "destroy" - enables the reinstantiation of the table.
+                // "searching" - enables/disables searching functionality.
+                // "paging" - enables/disables limiting of the data displayed in the table.
+                var tableTracc = $('#tblTicketsTraccConcernPrint').DataTable({
+                    "destroy": true,
+                    "searching": false,
+                    "paging": false,
+                    "serverSide": true,
+                    "processing": true,
+                    "ajax": {
+                        "url": "<?= base_url(); ?>DataTables/print_tickets_tracc_concern",
+                        "type": "POST",
+                        "data": {
+                            start_date: startDate,
+                            end_date: endDate,
+                            status: status
+                        },
+                    },
+                    // Since we are not outputing all the columns, we need to define the columns.
+                    "columns": [
+                        { "data": "control_number" },
+                        { "data": "reported_by" },
+                        { "data": "reported_date" },
+                        { "data": "resolved_date" },
+                        { "data": "status" },
+                    ],
+                    "responsive": true,
+                    "autoWidth": false,
+                    "lengthChange": false,
+                    "dom": "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
+                    "buttons": [
+                        {
+                            // Export the table to a PDF document.
+                            text: 'PDF',
+                            className: 'btn btn-danger',
+                            action: function () {
+                                // Import the jsPDF class only.
+                                const {jsPDF} = window.jspdf;
+                                // Instantiate the jsPDF class.
+                                var doc = new jsPDF();
+
+                                // Insert Logo
+                                var imageUrl = '<?= base_url('assets/images/lifestrong-logo.png'); ?>';
+                                doc.addImage(imageUrl, "PNG", 15, 2, 10, 10);
+                                
+                                // Get the data from the table.
+                                var tableContent = $('#tblTicketsTraccConcernPrint')[0];
+                                
+                                // Set the font size and the text to the title of the document.
+                                doc.setFontSize(20);
+                                doc.text('Generated Report For Tracc Concern', 28, 10);
+                                
+                                // Set the font size and the text to the filtered start and end date of the report.
+                                doc.setFontSize(12);
+                                doc.text('Date started: ' + formatDate(startDate) + ' to ' + formatDate(endDate), 15, 20);
+                                doc.text('Date printed: ' + formatDate(date), 15, 26);
+
+                                // Styling of the table.
+                                doc.autoTable({
+                                    html: tableContent,
+                                    theme: 'grid',
+                                    headStyles: {
+                                        fillColor: 'white',
+                                        textColor: 'black',
+                                        fontSize: 10,
+                                        fontStyle: 'bold',
+                                        lineWidth: 0.5,
+                                    },
+                                    bodyStyles: {
+                                        fillColor: 'white',
+                                        textColor: 'black',
+                                        fontSize: 10,
+                                        lineWidth: 0.5,
+                                    },
+                                    styles: {
+                                        cellPadding: 4,
+                                        fontSize: 12,
+                                        bordered: true,
+                                    },
+                                    margin: {
+                                        top: 30
+                                    }
+                                });
+                                
+                                doc.output('dataurlnewwindow', 'Tracc Concern ' + '(' + formatDate(startDate) + ' to ' + formatDate(endDate) + ')');
+                            }
+                        },
+                        {
+                            // Export the table to an Excel document.
+                            text: 'Excel',
+                            className: 'btn btn-danger',
+                            extend: 'excel',
+                            filename: '(' + formatDate(date) + ') Tracc Concern (' + startDate + ' to ' + endDate + ')',
+                            title: 'Open Tracc Concern Tickets (' + startDate + ' to ' + endDate + ')'
+                        },
+                        {
+                            // Export the table to a CSV file.
+                            text: 'CSV',
+                            className: 'btn btn-danger',
+                            extend: 'csv',
+                            filename: '(' + formatDate(date) + ') Tracc Concern (' + startDate + ' to ' + endDate + ')',
+                            title: 'Open Tracc Concern Tickets (' + startDate + ' to ' + endDate + ')',
+                            customize: function(csv) {
+                                var rows = csv.split('\n');
+
+                                var title = 'Open Tracc Concern Tickets (' + startDate + ' to ' + endDate + ')';
+                                rows.unshift(title);
+
+                                return rows.join('\n');
+                            }
+                        } 
+                    ]
+                });
+            });
+
+            // Kevin's codes: Button functionality to show the MSRF Table.
+            $('#tblTicketsShow').on('click', function() {
+                $('#tblMsrfBox').show();
+                $('#tblTraccBox').hide();
+
+                // Sets the font weight of the MSRF tab to bold upon click.
+                $('#tblTicketsShow').css({
+                    "font-weight" : "bold"
+                });
+
+                // Sets the font weight of the Tracc Concern tab to normal upon click.
+                $('#tblTicketsTraccConcernShow').css({
+                    "font-weight" : "normal"
+                });
+
+            });
+
+            // Removes the built in styles of the MSRF Button.
+            $('#tblTicketsShow').css({
+                "background" : "none",
+                "border" : "none",
+            })
+
+            // Kevin's codes: Button functionality to show the Tracc Concern Table.
+            $('#tblTicketsTraccConcernShow').on('click', function() {
+                $('#tblMsrfBox').hide();
+                $('#tblTraccBox').show();
+                
+                // Sets the font weight of the Tracc Concern tab to bold upon click.
+                $('#tblTicketsShow').css({
+                    "font-weight" : "normal"
+                });
+
+                // Sets the font weight of the MSRF tab to normal upon click.
+                $('#tblTicketsTraccConcernShow').css({
+                    "font-weight" : "bold"
+                });
+            });
+
+            // Removes the built in styles of the Tracc Concern Button
+            $('#tblTicketsTraccConcernShow').css({
+                "background" : "none",
+                "border" : "none",
             });
         });
 
