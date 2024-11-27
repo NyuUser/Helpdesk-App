@@ -348,6 +348,9 @@ class DataTables extends CI_Controller {
                     case 'Rejected':
                         $app_stat_class = 'label-danger';
                         break;
+                    case 'Returned':
+                        $app_stat_class = 'label-warning';
+                        break;
                 }
                 // Store the department approval status label
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
@@ -685,6 +688,9 @@ class DataTables extends CI_Controller {
                     case 'Rejected':
                         $app_stat_class = 'label-danger';
                         break;
+                    case 'Returned':
+                        $app_stat_class = 'label-warning';
+                        break;
                 }
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
     
@@ -709,7 +715,7 @@ class DataTables extends CI_Controller {
                 // Generate a clickable link for the ticket ID.
                 $tickets[] = "<a href='" . base_url() . "sys/admin/approved/" . $rows->subject . "/" . $rows->ticket_id . "'>" . $rows->ticket_id . "</a>";
 
-                if($rows->approval_status === "Approved"){
+                if($rows->approval_status === "Approved" || $rows->approval_status === "Rejected"){
                     $action[] = '<span class="label"></span>';
                 }else{
                     $action[] = '<span class="label">' . '<a class="approve-ticket" data-id="'.$rows->recid.'" data-requestor="'.$rows->requestor_name.'" data-department="'.$rows->department.'" data-concern="'.$rows->details_concern.'" data-date-needed="'.$rows->date_needed.'"><i class="fa fa-check"></i></a>' . '</span>';
@@ -874,6 +880,9 @@ class DataTables extends CI_Controller {
                         break;
                     case 'Rejected':
                         $app_stat_class = 'label-danger';
+                        break;
+                    case 'Returned':
+                        $app_stat_class = 'label-warning';
                         break;
                 }
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
@@ -1316,7 +1325,7 @@ class DataTables extends CI_Controller {
                 // Store the subject of the request
                 $subject[] = $rows->subject;
 
-                if($rows->approval_status === "Approved"){
+                if($rows->approval_status === "Approved" || $rows->approval_status === "Rejected"){
                     $action[] = '<span class="label"></span>';
                 }else{
                     $action[] = '<span class="label">' . '<a class="approve-ticket" data-id="'.$rows->recid.'" data-reported-by="'.$rows->reported_by.'" data-concern="'.$rows->tcr_details.'"><i class="fa fa-check"></i></a>' . '</span>';
@@ -1491,7 +1500,7 @@ class DataTables extends CI_Controller {
                 $name[] = $rows->requested_by;
                 $subject[] = $rows->subject;
 
-                if($rows->approval_status === "Approved"){
+                if($rows->approval_status === "Approved" || $rows->approval_status === "Rejected"){
                     $action[] = '<span class="label"></span>';
                 }else{
                     $action[] = '<span class="label">' . '<a class="approve-ticket" data-id="'.$rows->recid.'" data-requestor="'.$rows->requested_by.'" data-department="'.$rows->department.'" data-concern="'.$rows->complete_details.'"><i class="fa fa-check"></i></a>' . '</span>';
