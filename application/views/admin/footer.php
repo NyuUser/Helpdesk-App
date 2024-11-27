@@ -132,7 +132,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success save-ticket" name="save_approve_ticket" data-module="msrf" data-status="Approved">Approve</button>
                     <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="msrf" data-status="Rejected">Disapprove</button>
-                    <button type="button" class="btn btn-warning save-ticket" name="save_disapprove_ticket" data-module="msrf" data-status="Returned">Returned</button>
+                    <button type="button" class="btn btn-info save-ticket" name="save_disapprove_ticket" data-module="msrf" data-status="Returned">Returned</button>
                 </div>
             </div>
             </div>
@@ -165,7 +165,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success save-ticket" name="save_approve_ticket" data-module="tracc-concern" data-status="Approved">Approve</button>
                     <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="tracc-concern" data-status="Rejected">Disapprove</button>
-                    <button type="button" class="btn btn-warning save-ticket" name="save_disapprove_ticket" data-module="tracc-concern" data-status="Returned">Returned</button>
+                    <button type="button" class="btn btn-info save-ticket" name="save_disapprove_ticket" data-module="tracc-concern" data-status="Returned">Returned</button>
                     
                 </div>
             </div>
@@ -199,7 +199,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success save-ticket" name="save_approve_ticket" data-module="tracc-request" data-status="Approved">Approve</button>
                     <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="tracc-request" data-status="Rejected">Disapprove</button>
-                    <button type="button" class="btn btn-warning save-ticket" name="save_disapprove_ticket" data-module="tracc-request" data-status="Returned">Returned</button>
+                    <button type="button" class="btn btn-info save-ticket" name="save_disapprove_ticket" data-module="tracc-request" data-status="Returned">Returned</button>
                 </div>
             </div>
             </div>
