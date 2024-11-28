@@ -148,7 +148,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/user_creation_employee_request_form_pdf'); ?>" method="POST">
+                                        <form action="<?= site_url('Main/user_creation_item_request_form_pdf'); ?>" method="POST">
                                             <div class="col-md-12">
                                                 <select name="trf_number" id="trf_number" class="form-control" required>
                                                     <option value="" disabled selected>Select Ticket Number</option>
@@ -198,7 +198,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>LMI Item Code</label>
-                                                    <input type="text" name="lmi_item_code" id="lmi_item_code" value="" class="form-control select2"> 
+                                                    <input type="text" name="lmi_item_code" id="lmi_item_code" value="" class="form-control select2" required pattern=".*-.*" title="Control number must contain a hyphen (-)" oninput="this.value = this.value.toUpperCase();"> 
                                                 </div>
                                             </div>
 
@@ -227,20 +227,20 @@
                                                             <label for="" class="custom-label">Item Type:</label>
                                                             <div class="d-flex flex-wrap custom-checkbox-group justify-content-center">
                                                                 <div class="checkbox-container">
-                                                                    <input type="checkbox" name="inventory" value="inventory" id="inventory">
-                                                                    <label for="inventory">Inventory</label>
+                                                                    <input type="checkbox" name="checkbox_inventory" id="checkbox_inventory" value="1">
+                                                                    <label for="checkbox_inventory">Inventory</label>
                                                                 </div>
                                                                 <div class="checkbox-container">
-                                                                    <input type="checkbox" name="non_inventory" value="non_inventory" id="non-inventory">
-                                                                    <label for="non-inventory">Non-Inventory</label>
+                                                                    <input type="checkbox" name="checkbox_non_inventory" id="checkbox_non_inventory" value="1">
+                                                                    <label for="checkbox_non_inventory">Non-Inventory</label>
                                                                 </div>
                                                                 <div class="checkbox-container">
-                                                                    <input type="checkbox" name="services" value="services" id="services">
-                                                                    <label for="services">Services</label>
+                                                                    <input type="checkbox" name="checkbox_services" id="checkbox_services" value="1">
+                                                                    <label for="checkbox_services">Services</label>
                                                                 </div>
                                                                 <div class="checkbox-container">
-                                                                    <input type="checkbox" name="charges" value="charges" id="charges">
-                                                                    <label for="charges">Charges</label>
+                                                                    <input type="checkbox" name="checkbox_charges" id="checkbox_charges" value="1">
+                                                                    <label for="checkbox_charges">Charges</label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -252,20 +252,20 @@
                                                             <label for="" class="custom-label">Item Account:</label>
                                                             <div class="d-flex flex-wrap custom-checkbox-group justify-content-center">
                                                                 <div class="checkbox-container">
-                                                                    <input type="checkbox" name="watsons" value="watsons" id="watsons">
-                                                                    <label for="watsons">Watsons</label>
+                                                                    <input type="checkbox" name="checkbox_watsons" id="checkbox_watsons" value="1">
+                                                                    <label for="checkbox_watsons">Watsons</label>
                                                                 </div>
                                                                 <div class="checkbox-container">
-                                                                    <input type="checkbox" name="other_accounts" value="other_accounts" id="other-accounts">
-                                                                    <label for="other-accounts">Other Accounts</label>
+                                                                    <input type="checkbox" name="checkbox_other_accounts" id="checkbox_other_accounts" value="1">
+                                                                    <label for="checkbox_other_accounts">Other Accounts</label>
                                                                 </div>
                                                                 <div class="checkbox-container">
-                                                                    <input type="checkbox" name="online" value="online" id="online">
-                                                                    <label for="online">Online</label>
+                                                                    <input type="checkbox" name="checkbox_online" id="checkbox_online" value="1">
+                                                                    <label for="checkbox_online">Online</label>
                                                                 </div>
                                                                 <div class="checkbox-container">
-                                                                    <input type="checkbox" name="all_accounts" value="all_accounts" id="all-accounts">
-                                                                    <label for="all-accounts">All Accounts</label>
+                                                                    <input type="checkbox" name="checkbox_all_accounts" id="checkbox_all_accounts" value="1">
+                                                                    <label for="checkbox_all_accounts">All Accounts</label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -281,12 +281,12 @@
                                                     <div class="col-md-6 d-flex align-items-center" style="margin-top: 5px;">
                                                         <div class="form-group d-flex flex-wrap align-items-center custom-checkbox-group">
                                                             <div class="checkbox-container">
-                                                                <input type="checkbox" name="trade" value="trade" id="trade">
-                                                                <label for="trade">Trade</label>
+                                                                <input type="checkbox" name="checkbox_trade" id="checkbox_trade" value="1">
+                                                                <label for="checkbox_trade">Trade</label>
                                                             </div>
                                                             <div class="checkbox-container">
-                                                                <input type="checkbox" name="non_trade" value="non_trade" id="non-trade">
-                                                                <label for="non-trade">Non-Trade</label>
+                                                                <input type="checkbox" name="checkbox_non_trade" id="checkbox_non_trade" value="1">
+                                                                <label for="checkbox_non_trade">Non-Trade</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -296,12 +296,12 @@
                                                         <div class="form-group d-flex flex-wrap align-items-center custom-checkbox-group">
                                                             <label for="" class="custom-label">Batch Required?</label>
                                                             <div class="checkbox-container">
-                                                                <input type="checkbox" name="batch_required" value="yes" id="yes">
-                                                                <label for="yes">YES</label>
+                                                                <input type="checkbox" name="checkbox_batch_required_yes" id="checkbox_batch_required_yes" value="1">
+                                                                <label for="checkbox_batch_required_yes">YES</label>
                                                             </div>
                                                             <div class="checkbox-container">
-                                                                <input type="checkbox" name="batch_required" value="no" id="no">
-                                                                <label for="no">NO</label>
+                                                                <input type="checkbox" name="checkbox_batch_required_no" id="checkbox_batch_required_no" value="1">
+                                                                <label for="checkbox_batch_required_no">NO</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -348,7 +348,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Supplier Code</label>
-                                                    <input type="text" name="supplier_code" id="supplier_code" value="" class="form-control select2"> 
+                                                    <input type="text" name="supplier_code" id="supplier_code" value="" class="form-control select2" oninput="this.value = this.value.toUpperCase();"> 
                                                 </div>
                                             </div>
 
@@ -387,18 +387,34 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <!-- <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Unit Cost</label>
                                                     <input type="text" name="unit_cost" id="unit_cost" value="" class="form-control select2"> 
                                                 </div>
+                                            </div> -->
+
+                                            <div class="col-md-6"> 
+                                                <div class="form-group"> 
+                                                    <label for="unit_cost">Unit Cost</label> 
+                                                    <input type="number" name="unit_cost" id="unit_cost" value="" class="form-control select2" min="0" step="0.01"> 
+                                                    <small class="form-text text-muted">Please enter a valid unit cost.</small> 
+                                                </div> 
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <!-- <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Selling Price</label>
                                                     <input type="text" name="selling_price" id="selling_price" value="" class="form-control select2"> 
                                                 </div>
+                                            </div> -->
+
+                                            <div class="col-md-6"> 
+                                                <div class="form-group"> 
+                                                    <label for="selling_price">Selling Price</label> 
+                                                    <input type="number" name="selling_price" id="selling_price" value="" class="form-control select2" min="0" step="0.01"> 
+                                                    <small class="form-text text-muted">Please enter a valid selling price.</small> 
+                                                </div> 
                                             </div>
 
                                             <hr class="divider"> 
@@ -507,50 +523,25 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <!-- Row 1 -->
+                                                        <?php for ($i = 0; $i < 4; $i++) : ?>
                                                         <tr>
-                                                            <td><input type="text" class="form-control" name="row1_col1" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col2" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col3" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col4" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col5" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col6" placeholder=""></td>
+                                                            <td><input type="text" class="form-control" name="rows_gl[<?php echo $i; ?>][uom]" placeholder=""></td>
+                                                            <td><input type="text" class="form-control" name="rows_gl[<?php echo $i; ?>][barcode]" placeholder=""></td>
+                                                            <td><input type="number" class="form-control" name="rows_gl[<?php echo $i; ?>][length]" placeholder=""></td>
+                                                            <td><input type="number" class="form-control" name="rows_gl[<?php echo $i; ?>][height]" placeholder=""></td>
+                                                            <td><input type="number" class="form-control" name="rows_gl[<?php echo $i; ?>][width]" placeholder=""></td>
+                                                            <td><input type="number" class="form-control" name="rows_gl[<?php echo $i; ?>][weight]" placeholder=""></td>
                                                         </tr>
-                                                        <!-- Row 2 -->
-                                                        <tr>
-                                                            <td><input type="text" class="form-control" name="row2_col1" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col2" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col3" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col4" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col5" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col6" placeholder=""></td>
-                                                        </tr>
-                                                        <!-- Row 3 -->
-                                                        <tr>
-                                                            <td><input type="text" class="form-control" name="row3_col1" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col2" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col3" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col4" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col5" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col6" placeholder=""></td>
-                                                        </tr>
-                                                        <!-- Row 4 -->
-                                                        <tr>
-                                                            <td><input type="text" class="form-control" name="row4_col1" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col2" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col3" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col4" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col5" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col6" placeholder=""></td>
-                                                        </tr>
+                                                        <?php endfor; ?>
                                                     </tbody>
                                                 </table>
                                             </div>
 
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Capacity per Pallet <small style="font-size:0.8em;">(Smallest OUM (PCS))</small></label>
-                                                    <input type="text" name="position" id="position" value="" class="form-control select2"> 
+                                                    <input type="text" name="capacity_per_pallet" id="capacity_per_pallet" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
@@ -580,79 +571,25 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <!-- Row 1 -->
-                                                        <tr>
-                                                            <td><input type="text" class="form-control" name="row1_col1" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col2" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col3" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col4" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col5" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col6" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col7" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col8" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col9" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col10" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row1_col11" placeholder=""></td>
-                                                        </tr>
-                                                        <!-- Row 2 -->
-                                                        <tr>
-                                                            <td><input type="text" class="form-control" name="row2_col1" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col2" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col3" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col4" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col5" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col6" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col7" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col8" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col9" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col10" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row2_col11" placeholder=""></td>
-                                                        </tr>
-                                                        <!-- Row 3 -->
-                                                        <tr>
-                                                            <td><input type="text" class="form-control" name="row3_col1" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col2" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col3" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col4" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col5" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col6" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col7" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col8" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col9" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col10" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row3_col11" placeholder=""></td>
-                                                        </tr>
-                                                        <!-- Row 4 -->
-                                                        <tr>
-                                                            <td><input type="text" class="form-control" name="row4_col1" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col2" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col3" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col4" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col5" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col6" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col7" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col8" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col9" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col10" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row4_col11" placeholder=""></td>
-                                                        </tr>
-                                                        <!-- Row 5 -->
-                                                        <tr>
-                                                            <td><input type="text" class="form-control" name="row5_col1" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row5_col2" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row5_col3" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row5_col4" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row5_col5" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row5_col6" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row5_col7" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row5_col8" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row5_col9" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row5_col10" placeholder=""></td>
-                                                            <td><input type="text" class="form-control" name="row5_col11" placeholder=""></td>
-                                                        </tr>
+                                                        <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                                            <tr>
+                                                                <td><input type="text" class="form-control" name="rows_whs[<?php echo $i; ?>][warehouse]" placeholder=""></td>
+                                                                <td><input type="text" class="form-control" name="rows_whs[<?php echo $i; ?>][warehouse_no]" placeholder=""></td>
+                                                                <td><input type="text" class="form-control" name="rows_whs[<?php echo $i; ?>][storage_location]" placeholder=""></td>
+                                                                <td><input type="text" class="form-control" name="rows_whs[<?php echo $i; ?>][storage_type]" placeholder=""></td>
+                                                                <td><input type="text" class="form-control" name="rows_whs[<?php echo $i; ?>][fixed_bin]" placeholder=""></td>
+                                                                <td><input type="number" class="form-control" name="rows_whs[<?php echo $i; ?>][min_qty]" placeholder=""></td>
+                                                                <td><input type="number" class="form-control" name="rows_whs[<?php echo $i; ?>][max_qty]" placeholder=""></td>
+                                                                <td><input type="number" class="form-control" name="rows_whs[<?php echo $i; ?>][replen_qty]" placeholder=""></td>
+                                                                <td><input type="number" class="form-control" name="rows_whs[<?php echo $i; ?>][control_qty]" placeholder=""></td>
+                                                                <td><input type="number" class="form-control" name="rows_whs[<?php echo $i; ?>][round_qty]" placeholder=""></td>
+                                                                <td><input type="text" class="form-control" name="rows_whs[<?php echo $i; ?>][uom]" placeholder=""></td>
+                                                            </tr>
+                                                        <?php endfor; ?>
                                                     </tbody>
                                                 </table>
                                             </div>
+
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -682,3 +619,19 @@
 </div>
 
 <script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){ 
+        // Function to handle the input validation
+        function validateNumberInput(inputElement) {
+            var value = inputElement.val();
+            if (!/^\d*\.?\d*$/.test(value)) {
+                inputElement.val(value.slice(0, -1)); // Remove the last character if it's not a number
+            } 
+        }
+
+        // Attach the input event to both fields
+        $('#unit_cost, #selling_price').on('input', function () {
+            validateNumberInput($(this));
+        });
+    });
+</script>

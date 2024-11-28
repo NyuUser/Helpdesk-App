@@ -29,7 +29,7 @@
 
 
 </head>
-<body class="hold-transition skin-red layout-top-nav">
+<body class="hold-transition skin-yellow layout-top-nav">
     <div class="wrapper">
         <header class="main-header">
             <?php $this->load->view('users/navbar'); ?>

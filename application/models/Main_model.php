@@ -1729,6 +1729,89 @@ class Main_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function add_item_request_form_pdf($irf_comp_checkbox_value = null, $checkbox_item_req_form) {
+		$trf_number = $this->input->post('trf_number', true);
+
+		$data = array(
+			'ticket_id' => $trf_number,
+			'requested_by' => $this->input->post('requested_by', true),
+			'date' => $this->input->post('date', true),
+			'lmi_item_code' => $this->input->post('lmi_item_code', true),
+			'long_description' => $this->input->post('long_description', true),
+			'short_description' => $this->input->post('short_description', true),
+			'item_classification' => $this->input->post('item_classification', true),
+			'item_sub_classification' => $this->input->post('item_sub_classification', true),
+			'department' => $this->input->post('department', true),
+			'merch_category' => $this->input->post('merch_cat', true),
+			'brand' => $this->input->post('brand', true),
+			'supplier_code' => $this->input->post('supplier_code', true),
+			'supplier_name' => $this->input->post('supplier_name', true),
+			'class' => $this->input->post('class', true),
+			'tag' => $this->input->post('tag', true),
+			'source' => $this->input->post('source', true),
+			'hs_code' => $this->input->post('hs_code', true),
+			'unit_cost' => $this->input->post('unit_cost', true),
+			'selling_price' => $this->input->post('selling_price', true),
+			'major_item_group' => $this->input->post('major_item_group', true),
+			'item_sub_group' => $this->input->post('item_sub_group', true),
+			'account_type' => $this->input->post('account_type', true),
+			'sales' => $this->input->post('sales', true),
+			'sales_return' => $this->input->post('sales_return', true),
+			'purchases' => $this->input->post('purchases', true),
+			'purchase_return' => $this->input->post('purchase_return', true),
+			'cgs' => $this->input->post('cgs', true),
+			'inventory' => $this->input->post('inventory', true),
+			'sales_disc' => $this->input->post('sales_disc', true),
+			'gl_department' => $this->input->post('gl_dept', true),
+			'capacity_per_pallet' => $this->input->post('capacity_per_pallet', true),
+			'created_at' => date("Y-m-d H:i:s"),
+		);
+
+		if ($irf_comp_checkbox_value !== null) {
+			$data['company'] = $irf_comp_checkbox_value;
+		}
+
+		$this->db->trans_begin();
+		$this->db->insert('tracc_req_item_request_form', $data);
+
+		if ($this->db->affected_rows() > 0) {
+			$checkboxes_item_req_form = [
+				'ticket_id' => $trf_number,
+				'inventory' => isset($checkbox_item_req_form['checkbox_inventory']) ? $checkbox_item_req_form['checkbox_inventory'] : 0,
+				'non_inventory' => isset($checkbox_item_req_form['checkbox_non_inventory']) ? $checkbox_item_req_form['checkbox_non_inventory'] : 0,
+				'services' => isset($checkbox_item_req_form['checkbox_services']) ? $checkbox_item_req_form['checkbox_services'] : 0,
+				'charges' => isset($checkbox_item_req_form['checkbox_charges']) ? $checkbox_item_req_form['checkbox_charges'] : 0,
+				'watsons' => isset($checkbox_item_req_form['checkbox_watsons']) ? $checkbox_item_req_form['checkbox_watsons'] : 0,
+				'other_accounts' => isset($checkbox_item_req_form['checkbox_other_accounts']) ? $checkbox_item_req_form['checkbox_other_accounts'] : 0,
+				'online' => isset($checkbox_item_req_form['checkbox_online']) ? $checkbox_item_req_form['checkbox_online'] : 0,
+				'all_accounts' => isset($checkbox_item_req_form['checkbox_all_accounts']) ? $checkbox_item_req_form['checkbox_all_accounts'] : 0,
+				'trade' => isset($checkbox_item_req_form['checkbox_trade']) ? $checkbox_item_req_form['checkbox_trade'] : 0,
+				'non_trade' => isset($checkbox_item_req_form['checkbox_non_trade']) ? $checkbox_item_req_form['checkbox_non_trade'] : 0,
+				'yes' => isset($checkbox_item_req_form['checkbox_batch_required_yes']) ? $checkbox_item_req_form['checkbox_batch_required_yes'] : 0,
+				'no' => isset($checkbox_item_req_form['checkbox_batch_required_no']) ? $checkbox_item_req_form['checkbox_batch_required_no'] : 0,
+			];
+			$this->db->insert('tracc_req_item_request_form_checkboxes', $checkboxes_item_req_form);
+
+			$this->db->trans_commit();
+			return array(1, "Successfully Created Item Request Form for: " . $data['ticket_id']);
+		} else {
+			$this->db->trans_rollback();
+			return array(0, "Error: Could not insert data. Please try again.");
+		}
+	}
+
+	public function insert_batch_rows_gl_setup($insert_data_gl_setup) {
+		if (!empty($insert_data_gl_setup)) {
+			$this->db->insert_batch('tracc_req_item_req_form_gl_setup', $insert_data_gl_setup);
+		}
+	}
+
+	public function insert_batch_rows_whs_setup($insert_data_wh_setup) {
+		if (!empty($insert_data_wh_setup)) {
+			$this->db->insert_batch('tracc_req_item_req_form_whs_setup', $insert_data_wh_setup);
+		}
+	}
+
 	public function get_item_request_form_from_tracc_req_mf_new_add(){
 		$this->db->select('ticket_id');
 		$this->db->from('tracc_req_mf_new_add');

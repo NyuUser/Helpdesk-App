@@ -232,7 +232,7 @@
 								window.location.href = '<?= base_url(); ?>' + 'sys/users/create/tickets/msrf';
 							},
 							attr: {
-								style: 'background-color: #ec9723; color: #ffffff; border: none; height: 35px; border-radius: 4px; padding: 6px 12px;'
+								style: 'background-color: #9a1b1e; color: #ffffff; border: none; height: 35px; border-radius: 4px; padding: 6px 12px;'
 							}
 						});
 					}
@@ -272,7 +272,7 @@
 								window.location.href = '<?= base_url(); ?>sys/users/create/tickets/tracc_concern';
 							},
 							attr: {
-								style: 'background-color: #ec9723; color: #ffffff; border: none; height: 35px; border-radius: 4px; padding: 6px 12px;'
+								style: 'background-color: #9a1b1e; color: #ffffff; border: none; height: 35px; border-radius: 4px; padding: 6px 12px;'
 							}
 						});
 					}
@@ -317,7 +317,7 @@
 								window.location.href = '<?= base_url(); ?>' + 'sys/users/create/tickets/tracc_request';
 							},
 							attr: {
-								style: 'background-color: #ec9723; color: #ffffff; border: none; height: 35px; border-radius: 4px; padding: 6px 12px;'
+								style: 'background-color: #9a1b1e; color: #ffffff; border: none; height: 35px; border-radius: 4px; padding: 6px 12px;'
 							}
 						});
 					}

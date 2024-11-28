@@ -2494,7 +2494,7 @@ class Main extends CI_Controller {
 			$data['get_department'] = $get_department;
 	
 			$this->load->view('users/header', $data);
-			$this->load->view('users/trf_customer_form_request_creation', $data);
+			$this->load->view('users/trf_customer_request_form_creation', $data);
 			$this->load->view('users/footer');
 		} else {
 			return;
@@ -2691,6 +2691,91 @@ class Main extends CI_Controller {
 			$this->load->view('users/footer');
 		} else {
 			return;
+		}
+	}
+
+	public function user_creation_item_request_form_pdf() {
+		$trf_number = $this->input->post('trf_number', true);
+		$irf_comp_checkbox_value = isset($_POST['irf_comp_checkbox_value']) ? $_POST['irf_comp_checkbox_value'] : [];
+		$imploded_values = implode(',', $irf_comp_checkbox_value);
+
+		$checkbox_item_req_form = [
+			'checkbox_inventory' => isset($_POST['checkbox_inventory']) ? 1 : 0,
+			'checkbox_non_inventory' => isset($_POST['checkbox_non_inventory']) ? 1 : 0,
+			'checkbox_services' => isset($_POST['checkbox_services']) ? 1 : 0,
+			'checkbox_charges' => isset($_POST['checkbox_charges']) ? 1 : 0,
+			'checkbox_watsons' => isset($_POST['checkbox_watsons']) ? 1 : 0,
+			'checkbox_other_accounts' => isset($_POST['checkbox_other_accounts']) ? 1 : 0,
+			'checkbox_online' => isset($_POST['checkbox_online']) ? 1 : 0,
+			'checkbox_all_accounts' => isset($_POST['checkbox_all_accounts']) ? 1 : 0,
+			'checkbox_trade' => isset($_POST['checkbox_trade']) ? 1 : 0,
+			'checkbox_non_trade' => isset($_POST['checkbox_non_trade']) ? 1 : 0,
+			'checkbox_batch_required_yes' => isset($_POST['checkbox_batch_required_yes']) ? 1 : 0,
+			'checkbox_batch_required_no' => isset($_POST['checkbox_batch_required_no']) ? 1 : 0,
+ 
+		];
+
+		$process = $this->Main_model->add_item_request_form_pdf($imploded_values, $checkbox_item_req_form);
+
+		$rows_data = $this->input->post('rows_gl', true);
+
+		if ($process[0] == 1 && !empty($rows_data)) {
+			// Prepare structured data for rows insertion
+			$insert_data_gl_setup = [];
+			foreach ($rows_data as $row) {
+				if (!empty($row['uom']) && !empty($row['barcode'])) { // Basic validation
+					$insert_data_gl_setup[] = [
+						'ticket_id' => $trf_number,
+						'uom' => $row['uom'],
+						'barcode' => $row['barcode'],
+						'length' => $row['length'],
+						'height' => $row['height'],
+						'width' => $row['width'],
+						'weight' => $row['weight'],
+					];
+				}
+			}
+
+			if (!empty($insert_data_gl_setup)) {
+				$this->Main_model->insert_batch_rows_gl_setup($insert_data_gl_setup);
+			}
+		}
+
+		$rows_data = $this->input->post('rows_whs',true);
+
+		if ($process[0] == 1 && !empty($rows_data)) {
+			$insert_data_whs_setup = [];
+			foreach ($rows_data as $row){
+				if(!empty($row['warehouse']) && !empty($row['warehouse_no'])) {
+					$insert_data_wh_setup[] = [
+						'ticket_id' => $trf_number,
+						'warehouse' => $row['warehouse'],
+						'warehouse_no' => $row['warehouse_no'],
+						'storage_location' => $row['storage_location'],
+						'storage_type' => $row['storage_type'],
+						'fixed_bin' => $row['fixed_bin'],
+						'min_qty' => $row['min_qty'],
+						'max_qty' => $row['max_qty'],
+						'replen_qty' => $row['replen_qty'],
+						'control_qty' => $row['control_qty'],
+						'round_qty' => $row['round_qty'],
+						'uom' => $row['uom'],
+					];
+				}
+			}
+
+			if (!empty($insert_data_wh_setup)) {
+				$this->Main_model->insert_batch_rows_whs_setup($insert_data_wh_setup);
+			}
+		}
+
+
+		if ($process[0] == 1) {
+			$this->session->set_flashdata('success', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_item_request_form');  
+		} else {
+			$this->session->set_flashdata('error', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_item_request_form');  
 		}
 	}
 
