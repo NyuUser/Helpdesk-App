@@ -2530,21 +2530,37 @@ class Main extends CI_Controller {
 			redirect(base_url().'sys/users/create/tickets/trf_customer_request_form_tms'); 
 		}
 	}
-	 
-	public function approve_ticket(){
-		$id = $this->input->post('recid');
+	
+	public function save_ticket(){
+		$login_data = $this->session->userdata('login_data');
+		$user_id = $login_data['user_id'];
+		$recid = $this->input->post('recid');
 		$data_module = $this->input->post('data_module');
-		if($id){
-			$status = $this->Main_model->update_department_status($data_module, $id);
+		$data_remarks = $this->input->post('data_remarks');
+		$data_status = $this->input->post('data_status');
+
+		if($recid){
+			$status = $this->Main_model->update_department_status($data_module, $recid, $data_remarks, $data_status);
 			if($status[0] === 1){
-					echo json_encode(['status' => 'success', 'message' => 'Succesfully Updated!']);
-				} else {
-					echo json_encode(['status' => 'error', 'message' => 'Failed to update Department approval status.']);
-				}
+				$data_array = array(
+					'recid' 			=> $recid,
+					'module' 			=> $data_module,
+					'remarks' 			=> $data_remarks,
+					'status'			=> $data_status,
+					'updated_by' 		=> $user_id,
+					'created_date' 		=> date('Y-m-d H:i:s')
+				);
+
+				$this->Main_model->save_data('tickets_approval_history', $data_array);
+				echo json_encode(['status' => 'success', 'message' => 'Succesfully Updated!']);
+			} else {
+				echo json_encode(['status' => 'error', 'message' => 'Failed to update Department approval status.']);
+			}
 		}else{
 			echo json_encode(['status' => 'error', 'message' => 'Failed to update Department approval status.']);
 		}
 	}
+
 
 	public function user_creation_tickets_customer_shipping_setup() {
 		$id = $this->session->userdata('login_data')['user_id'];

@@ -102,6 +102,7 @@
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float: right;">X</button>
                     <h4 class="modal-title" id="approve_modal_msrfLabel">Approve Ticket</h4>
                 </div>
                 <div class="modal-body">
@@ -116,17 +117,22 @@
                         </div>
                         <div class="form-group">
                             <label>Details Concern</label>
-                            <textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" readonly id="inp_concern">Details Concern</textarea>
+                            <textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" readonly id="inp_concern"></textarea>
                         </div>
                         <div class="form-group">
                             <label>Date Needed</label>
                             <input type="date" name="date_needed" id="inp_date_needed" class="form-control" value="" style="width: 100%;" readonly>
                         </div>
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea class="form-control" name="remarks" placeholder="" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" id="msrf_inp_remarks"></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success approve_ticket" name="approve_ticket" data-module="msrf">Approve</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success save-ticket" name="save_approve_ticket" data-module="msrf" data-status="Approved">Approve</button>
+                    <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="msrf" data-status="Rejected">Disapprove</button>
+                    <button type="button" class="btn btn-info save-ticket" name="save_disapprove_ticket" data-module="msrf" data-status="Returned">Returned</button>
                 </div>
             </div>
             </div>
@@ -137,6 +143,7 @@
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float: right;">X</button>
                     <h4 class="modal-title" id="approve_modal_tracc_concernLabel">Approve Ticket</h4>
                 </div>
                 <div class="modal-body">
@@ -147,13 +154,19 @@
                         </div>
                         <div class="form-group">
                             <label>Details Concern</label>
-                            <textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" readonly id="inp_concern">Details Concern</textarea>
+                            <textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" readonly id="inp_concern"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea class="form-control" name="remarks" placeholder="" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" id="tracc_request_inp_remarks"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success approve_ticket" name="approve_ticket" data-module="tracc-concern">Approve</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success save-ticket" name="save_approve_ticket" data-module="tracc-concern" data-status="Approved">Approve</button>
+                    <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="tracc-concern" data-status="Rejected">Disapprove</button>
+                    <button type="button" class="btn btn-info save-ticket" name="save_disapprove_ticket" data-module="tracc-concern" data-status="Returned">Returned</button>
+                    
                 </div>
             </div>
             </div>
@@ -164,6 +177,7 @@
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float: right;">X</button>
                     <h4 class="modal-title" id="approve_modal_tracc_requestLabel">Approve Ticket</h4>
                 </div>
                 <div class="modal-body">
@@ -176,11 +190,16 @@
                             <label>Department</label>
                             <input type="text" name="name" class="form-control" style="width: 100%;" readonly id="inp_department">
                         </div>
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea class="form-control" name="remarks" placeholder="" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" id="tracc_concern_inp_remarks"></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success approve_ticket" name="approve_ticket" data-module="tracc-request">Approve</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success save-ticket" name="save_approve_ticket" data-module="tracc-request" data-status="Approved">Approve</button>
+                    <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="tracc-request" data-status="Rejected">Disapprove</button>
+                    <button type="button" class="btn btn-info save-ticket" name="save_disapprove_ticket" data-module="tracc-request" data-status="Returned">Returned</button>
                 </div>
             </div>
             </div>
@@ -221,6 +240,9 @@
     <script type="text/javascript">
         var base_url = '<?= base_url();?>';
         $(document).ready(function() {
+
+            const savedFilter = localStorage.getItem('datatable_filter') || '';
+
             // Kevin's codes: The tables would be hidden and users would choose which table reports to generate.
             $('#tblMsrfBox').hide();
             $('#tblTraccBox').hide();
@@ -311,6 +333,13 @@
             });
 
             let table = $('#tblTickets').DataTable({
+
+                initComplete: function () {
+                    if (savedFilter) {
+                        table.search(savedFilter).draw();
+                    }
+                },
+                //"searching": false,
                 "serverSide": true,
                 "processing": true,
                 "ajax": {
@@ -358,6 +387,12 @@
                     // After table is reloaded, trigger the print functionality
                     table.button('.buttons-print').trigger();
                 }, false); // false to avoid resetting the page number
+            });
+
+            $('.input-sm').on('keyup', function () {
+                const value = $(this).val();
+                localStorage.setItem('datatable_filter', value);
+                //console.log(localStorage);
             });
 
 
@@ -767,23 +802,31 @@
                 $('#approve_modal_tracc_request').modal('show');
             }
             
-            $('.approve_ticket').attr("data-id", data_id);
+            $('.save-ticket').attr("data-id", data_id);
             
         });
 
-        $(document).on('click','.approve_ticket', function(e){
+        $(document).on('click','.save-ticket', function(e){
             id = $(this).attr("data-id");
             data_module = $(this).attr('data-module');
+            data_remarks = "";
+            if(data_module === "msrf"){
+                data_remarks = $('#msrf_inp_remarks').val();
+            }else if(data_module === "tracc_request"){
+                data_remarks = $('#tracc_request_inp_remarks').val();    
+            }else{
+                data_remarks = $('#tracc_concern_inp_remarks').val();
+            }
+            
+            data_status = $(this).attr('data-status');
             $.ajax({
                 type: 'POST',
-                url: base_url + "Main/approve_ticket", 
-                data: {recid:id, data_module: data_module}, 
+                url: base_url + "Main/save_ticket", 
+                data: {recid:id, data_module: data_module, data_remarks:data_remarks, data_status:data_status}, 
                 dataType: 'json',
                 success: function(response) {
-                    //response = is_json(response);
-                    console.log(response.status);
                     if(response){
-                         $('#approve_modal_tracc_concern').modal('hide');
+                        $('#approve_modal_tracc_concern').modal('hide');
                         $('#approve_modal_tracc_request').modal('hide');
                         $('#approve_modal_msrf').modal('hide');
                         if(response.status === "success"){

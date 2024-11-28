@@ -474,11 +474,19 @@ class Main_model extends CI_Model {
 		}
 	}
 	
-	public function update_department_status($data_module, $id) {
+	public function update_department_status($data_module, $id, $data_remarks, $data_status) {
 	    $id = (int) $id;  // Ensure $id is an integer
-
-	    // Update the approval status record
-	    $this->db->set('approval_status', 'Approved');
+	    
+	    if($data_status === "Rejected"){
+	    	$this->db->set('approval_status', 'Rejected');
+	    	$this->db->set('status', 'Rejected');
+	    }else if($data_status === "Approved"){
+	    	$this->db->set('approval_status', 'Approved');
+	    	$this->db->set('status', 'Approved');
+	    }else{
+	    	$this->db->set('approval_status', 'Returned');
+	    	$this->db->set('status', 'Returned');
+	    }
 	    $this->db->where('recid', $id); 
 	    if(strtolower($data_module) === "tracc-concern"){
 	    	$update_success = $this->db->update('service_request_tracc_concern');
@@ -495,7 +503,6 @@ class Main_model extends CI_Model {
 	        return array(0, "Department approval status not found or update failed.");
 	    }
 	}
-	
 	
 	public function delete_department($id) {
         $this->db->where('recid', $id);
@@ -1723,5 +1730,15 @@ class Main_model extends CI_Model {
 	}
 	
 
+	public function save_data($table = NULL, $data = NULL)
+	{
+		$this->db->insert($table, $data);
+		$insertId = $this->db->insert_id();
+			if($insertId):
+				return $insertId;
+			else:
+			    return "failed";
+			endif;
+	}
 }
 ?>
