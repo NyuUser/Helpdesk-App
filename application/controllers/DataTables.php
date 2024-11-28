@@ -1814,8 +1814,10 @@ class DataTables extends CI_Controller {
         foreach($data as $row) {
             if($row['reported_date'] == '0000-00-00') {
                 $row['reported_date'] = '';
+                $row['resolved_date'] = date('M j, Y', strtotime($row['resolved_date']));
             } elseif ($row['resolved_date'] == '0000-00-00') {
                 $row['resolved_date'] = '';
+                $row['reported_date'] = date('M j, Y', strtotime($row['reported_date']));
             } else {
                 $row['reported_date'] = date('M j, Y', strtotime($row['reported_date']));
                 $row['resolved_date'] = date('M j, Y', strtotime($row['resolved_date']));
@@ -1864,8 +1866,10 @@ class DataTables extends CI_Controller {
         foreach($data as $row) {
             if($row['date_requested'] == '0000-00-00') {
                 $row['date_requested'] = '';
+                $row['accomplished_by_date'] = date('M j, Y', strtotime($row['accomplished_by_date']));
             } elseif ($row['accomplished_by_date'] == '0000-00-00') {
                 $row['accomplished_by_date'] = '';
+                $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
             } else {
                 $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
                 $row['accomplished_by_date'] = date('M j, Y', strtotime($row['accomplished_by_date']));

@@ -707,20 +707,20 @@
                             text: 'Excel',
                             className: 'btn btn-danger',
                             extend: 'excel',
-                            filename: '(' + formatDate(date) + ') Tracc Concern (' + startDate + ' to ' + endDate + ')',
-                            title: 'Open Tracc Concern Tickets (' + startDate + ' to ' + endDate + ')'
+                            filename: '(' + formatDate(date) + ') Tracc Concern (' + dateRange + ')',
+                            title: 'Open Tracc Concern Tickets (' + dateRange + ')'
                         },
                         {
                             // Export the table to a CSV file.
                             text: 'CSV',
                             className: 'btn btn-danger',
                             extend: 'csv',
-                            filename: '(' + formatDate(date) + ') Tracc Concern (' + startDate + ' to ' + endDate + ')',
-                            title: 'Open Tracc Concern Tickets (' + startDate + ' to ' + endDate + ')',
+                            filename: '(' + formatDate(date) + ') Tracc Concern (' + dateRange + ')',
+                            title: 'Open Tracc Concern Tickets (' + dateRange + ')',
                             customize: function(csv) {
                                 var rows = csv.split('\n');
 
-                                var title = 'Open Tracc Concern Tickets (' + startDate + ' to ' + endDate + ')';
+                                var title = 'Open Tracc Concern Tickets (' + dateRange + ')';
                                 rows.unshift(title);
 
                                 return rows.join('\n');
