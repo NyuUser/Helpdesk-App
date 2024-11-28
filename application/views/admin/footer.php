@@ -102,7 +102,9 @@
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float: right;">X</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" style="border: none; font-size: 20px; font-weight: bold; background: transparent; color: #dc3545; float: right;" aria-label="Close">
+                        &times;
+                    </button>
                     <h4 class="modal-title" id="approve_modal_msrfLabel">Approve Ticket</h4>
                 </div>
                 <div class="modal-body">
@@ -125,13 +127,13 @@
                         </div>
                         <div class="form-group">
                             <label>Remarks</label>
-                            <textarea class="form-control" name="remarks" placeholder="" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" id="msrf_inp_remarks"></textarea>
+                            <textarea class="form-control" name="remarks" placeholder="" style="width: 100%; height: 90px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" id="msrf_inp_remarks"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success save-ticket" name="save_approve_ticket" data-module="msrf" data-status="Approved">Approve</button>
-                    <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="msrf" data-status="Rejected">Disapprove</button>
+                    <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="msrf" data-status="Rejected">Rejected</button>
                     <button type="button" class="btn btn-warning save-ticket" name="save_disapprove_ticket" data-module="msrf" data-status="Returned">Returned</button>
                 </div>
             </div>
@@ -143,7 +145,9 @@
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float: right;">X</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" style="border: none; font-size: 20px; font-weight: bold; background: transparent; color: #dc3545; float: right;" aria-label="Close">
+                        &times;
+                    </button>
                     <h4 class="modal-title" id="approve_modal_tracc_concernLabel">Approve Ticket</h4>
                 </div>
                 <div class="modal-body">
@@ -158,13 +162,13 @@
                         </div>
                         <div class="form-group">
                             <label>Remarks</label>
-                            <textarea class="form-control" name="remarks" placeholder="" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" id="tracc_request_inp_remarks"></textarea>
+                            <textarea class="form-control" name="remarks" placeholder="" style="width: 100%; height: 90px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" id="tracc_request_inp_remarks"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success save-ticket" name="save_approve_ticket" data-module="tracc-concern" data-status="Approved">Approve</button>
-                    <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="tracc-concern" data-status="Rejected">Disapprove</button>
+                    <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="tracc-concern" data-status="Rejected">Rejected</button>
                     <button type="button" class="btn btn-warning save-ticket" name="save_disapprove_ticket" data-module="tracc-concern" data-status="Returned">Returned</button>
                     
                 </div>
@@ -177,7 +181,9 @@
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float: right;">X</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" style="border: none; font-size: 20px; font-weight: bold; background: transparent; color: #dc3545; float: right;" aria-label="Close">
+                        &times;
+                    </button>
                     <h4 class="modal-title" id="approve_modal_tracc_requestLabel">Approve Ticket</h4>
                 </div>
                 <div class="modal-body">
@@ -192,13 +198,13 @@
                         </div>
                         <div class="form-group">
                             <label>Remarks</label>
-                            <textarea class="form-control" name="remarks" placeholder="" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" id="tracc_concern_inp_remarks"></textarea>
+                            <textarea class="form-control" name="remarks" placeholder="" style="width: 100%; height: 90px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" id="tracc_concern_inp_remarks"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success save-ticket" name="save_approve_ticket" data-module="tracc-request" data-status="Approved">Approve</button>
-                    <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="tracc-request" data-status="Rejected">Disapprove</button>
+                    <button type="button" class="btn btn-danger save-ticket" name="save_disapprove_ticket" data-module="tracc-request" data-status="Rejected">Rejected</button>
                     <button type="button" class="btn btn-warning save-ticket" name="save_disapprove_ticket" data-module="tracc-request" data-status="Returned">Returned</button>
                 </div>
             </div>
