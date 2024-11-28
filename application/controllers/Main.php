@@ -2534,26 +2534,20 @@ class Main extends CI_Controller {
 	public function save_ticket(){
 		$login_data = $this->session->userdata('login_data');
 		$user_id = $login_data['user_id'];
-		//die();
 		$recid = $this->input->post('recid');
 		$data_module = $this->input->post('data_module');
 		$data_remarks = $this->input->post('data_remarks');
 		$data_status = $this->input->post('data_status');
-	//	$data_status = "Pending";
-		// print_r($data_status);
-		// die();
+
 		if($recid){
 			$status = $this->Main_model->update_department_status($data_module, $recid, $data_remarks, $data_status);
-			// print_r($status);
-			// die();
 			if($status[0] === 1){
 				$data_array = array(
 					'recid' 			=> $recid,
 					'module' 			=> $data_module,
 					'remarks' 			=> $data_remarks,
 					'status'			=> $data_status,
-					'approved_by' 		=> $user_id,
-					'returned_by' 		=> null,
+					'updated_by' 		=> $user_id,
 					'created_date' 		=> date('Y-m-d H:i:s')
 				);
 

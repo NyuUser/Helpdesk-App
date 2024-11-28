@@ -479,10 +479,13 @@ class Main_model extends CI_Model {
 	    
 	    if($data_status === "Rejected"){
 	    	$this->db->set('approval_status', 'Rejected');
+	    	$this->db->set('status', 'Rejected');
 	    }else if($data_status === "Approved"){
 	    	$this->db->set('approval_status', 'Approved');
+	    	$this->db->set('status', 'Approved');
 	    }else{
 	    	$this->db->set('approval_status', 'Returned');
+	    	$this->db->set('status', 'Returned');
 	    }
 	    $this->db->where('recid', $id); 
 	    if(strtolower($data_module) === "tracc-concern"){
