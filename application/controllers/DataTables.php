@@ -1730,13 +1730,17 @@ class DataTables extends CI_Controller {
         $this->db->select('ticket_id, requestor_name, department, date_requested, date_needed, asset_code, status');
         $this->db->from('service_request_msrf');
 
-        if($status != '') {
+        if($status) {
             $this->db->where('status', $status);
         }
 
         // If start and end date is provided, add where clauses to filter the results.
         if($startDate && $endDate) {
             $this->db->where('created_at >=', $startDate);
+            $this->db->where('created_at <=', $endDate);
+        } else if ($startDate) {
+            $this->db->where('created_at >=', $startDate);
+        } else if ($endDate) {
             $this->db->where('created_at <=', $endDate);
         }
 
@@ -1747,21 +1751,24 @@ class DataTables extends CI_Controller {
         // Format Date
         $formattedData = [];
         foreach($data as $row) {
-            $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
-            $row['date_needed'] = date('M j, Y', strtotime($row['date_needed']));
+            if($row['date_needed'] == '0000-00-00') {
+                $row['date_needed'] = '';
+                $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
+            } elseif ($row['date_requested'] == '0000-00-00') {
+                $row['date_requested'] = '';
+                $row['date_needed'] = date('M j, Y', strtotime($row['date_needed']));
+            } else {
+                $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
+                $row['date_needed'] = date('M j, Y', strtotime($row['date_needed']));
+            }
 
             $formattedData[] = $row;
         }
 
-        // Count the results from the query
-        // $totalRecordsQuery = $this->db->query("SELECT COUNT(*) AS total FROM users");
-        // $totalRecords = $totalRecordsQuery->row()->total;
 
         // Place needed information inside an array variable.
         $output = array(
             "draw" => intval($this->input->post('draw')),
-            // "recordsTotal" => $totalRecords,
-            // "recordsFiltered" => count($data),
             "data" => $formattedData
         );
 
@@ -1785,12 +1792,16 @@ class DataTables extends CI_Controller {
         $this->db->select('control_number, reported_by, reported_date, resolved_date, status');
         $this->db->from('service_request_tracc_concern');
 
-        if($status != '') {
+        if($status) {
             $this->db->where('status', $status);
         }
         // If start and end date input exists, an additional where clause is added to the query.
         if($startDate && $endDate) {
             $this->db->where('created_at >=', $startDate);
+            $this->db->where('created_at <=', $endDate);
+        } elseif ($startDate) {
+            $this->db->where('created_at >=', $startDate);
+        } elseif ($endDate) {
             $this->db->where('created_at <=', $endDate);
         }
 
@@ -1801,8 +1812,14 @@ class DataTables extends CI_Controller {
         // Format Date.
         $formattedData = [];
         foreach($data as $row) {
-            $row['reported_date'] = date('M j, Y', strtotime($row['reported_date']));
-            $row['resolved_date'] = date('M j, Y', strtotime($row['resolved_date']));
+            if($row['reported_date'] == '0000-00-00') {
+                $row['reported_date'] = '';
+            } elseif ($row['resolved_date'] == '0000-00-00') {
+                $row['resolved_date'] = '';
+            } else {
+                $row['reported_date'] = date('M j, Y', strtotime($row['reported_date']));
+                $row['resolved_date'] = date('M j, Y', strtotime($row['resolved_date']));
+            }
 
             $formattedData[] = $row;
         }
@@ -1820,6 +1837,50 @@ class DataTables extends CI_Controller {
         );
 
         // Convert the array to a JSON.
+        echo json_encode($output);
+        exit();
+    }
+
+    public function print_tickets_tracc_request() {
+        $startDate = $this->input->post('start_date');
+        $endDate = $this->input->post('end_date');
+
+        $this->db->select('ticket_id, requested_by, department, date_requested, company, complete_details, accomplished_by, accomplished_by_date');
+        $this->db->from('service_request_tracc_request');
+
+        if ($startDate && $endDate) {
+            $this->db->where('created_at >=', $startDate);
+            $this->db->where('created_at <=', $endDate);
+        } elseif ($startDate) {
+            $this->db->where('created_at >=', $startDate);
+        } elseif ($endDate) {
+            $this->db->where('created_at <=', $endDate);
+        }
+
+        $query = $this->db->get();
+        $data = $query->result_array();
+
+        $formattedData = [];
+        foreach($data as $row) {
+            if($row['date_requested'] == '0000-00-00') {
+                $row['date_requested'] = '';
+            } elseif ($row['accomplished_by_date'] == '0000-00-00') {
+                $row['accomplished_by_date'] = '';
+            } else {
+                $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
+                $row['accomplished_by_date'] = date('M j, Y', strtotime($row['accomplished_by_date']));
+            }
+            
+            $row['company'] = str_replace(',', '<br>', $row['company']);
+
+            $formattedData[] = $row;
+        }
+
+        $output = array(
+            "draw" => intval($this->input->post('draw')),
+            "data" => $formattedData
+        );
+
         echo json_encode($output);
         exit();
     }
