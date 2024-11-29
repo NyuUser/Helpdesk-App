@@ -1718,7 +1718,10 @@ class DataTables extends CI_Controller {
         exit();
     }
 
-    // Kevin's code
+    /*
+        Kevin's codes
+    */
+
     public function print_tickets_msrf() {
 
         // Get start and end date input.
@@ -1730,7 +1733,8 @@ class DataTables extends CI_Controller {
         $this->db->select('ticket_id, requestor_name, department, date_requested, date_needed, asset_code, status');
         $this->db->from('service_request_msrf');
 
-        if($status != '') {
+        // Check if status variable has a value.
+        if($status) {
             $this->db->where('status', $status);
         }
 
@@ -1738,41 +1742,45 @@ class DataTables extends CI_Controller {
         if($startDate && $endDate) {
             $this->db->where('created_at >=', $startDate);
             $this->db->where('created_at <=', $endDate);
+        } else if ($startDate) {
+            $this->db->where('created_at >=', $startDate);
+        } else if ($endDate) {
+            $this->db->where('created_at <=', $endDate);
         }
 
         // Place results inside a variable.
         $query = $this->db->get();
         $data = $query->result_array();
 
-        // Format Date
+        // Format Date. Three letter month, date, and year format. Set date to blank if the date is not given.
         $formattedData = [];
         foreach($data as $row) {
-            $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
-            $row['date_needed'] = date('M j, Y', strtotime($row['date_needed']));
+            if($row['date_needed'] == '0000-00-00') {
+                $row['date_needed'] = '';
+                $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
+            } elseif ($row['date_requested'] == '0000-00-00') {
+                $row['date_requested'] = '';
+                $row['date_needed'] = date('M j, Y', strtotime($row['date_needed']));
+            } else {
+                $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
+                $row['date_needed'] = date('M j, Y', strtotime($row['date_needed']));
+            }
 
+            // insert formated date to an array.
             $formattedData[] = $row;
         }
 
-        // Count the results from the query
-        // $totalRecordsQuery = $this->db->query("SELECT COUNT(*) AS total FROM users");
-        // $totalRecords = $totalRecordsQuery->row()->total;
 
         // Place needed information inside an array variable.
         $output = array(
             "draw" => intval($this->input->post('draw')),
-            // "recordsTotal" => $totalRecords,
-            // "recordsFiltered" => count($data),
             "data" => $formattedData
         );
 
-        // Convert the array into a JSON.
+        // Return the array in json format.
         echo json_encode($output);
         exit();
     }
-
-    /*
-        Kevin's codes
-    */
     
     public function print_tickets_tracc_concern() {
         
@@ -1785,43 +1793,106 @@ class DataTables extends CI_Controller {
         $this->db->select('control_number, reported_by, reported_date, resolved_date, status');
         $this->db->from('service_request_tracc_concern');
 
-        if($status != '') {
+        // Check if status variable is not null.
+        if($status) {
             $this->db->where('status', $status);
         }
+
         // If start and end date input exists, an additional where clause is added to the query.
         if($startDate && $endDate) {
             $this->db->where('created_at >=', $startDate);
             $this->db->where('created_at <=', $endDate);
+        } elseif ($startDate) {
+            $this->db->where('created_at >=', $startDate);
+        } elseif ($endDate) {
+            $this->db->where('created_at <=', $endDate);
         }
 
-        // Place the values from the query to variables.
+        // Place the values from the query to a variable.
         $query = $this->db->get();
         $data = $query->result_array();
 
-        // Format Date.
+        // Format Date. Three letter month, date, and year format. Set date to blank if date is not given.
         $formattedData = [];
         foreach($data as $row) {
-            $row['reported_date'] = date('M j, Y', strtotime($row['reported_date']));
-            $row['resolved_date'] = date('M j, Y', strtotime($row['resolved_date']));
+            if($row['reported_date'] == '0000-00-00') {
+                $row['reported_date'] = '';
+                $row['resolved_date'] = date('M j, Y', strtotime($row['resolved_date']));
+            } elseif ($row['resolved_date'] == '0000-00-00') {
+                $row['resolved_date'] = '';
+                $row['reported_date'] = date('M j, Y', strtotime($row['reported_date']));
+            } else {
+                $row['reported_date'] = date('M j, Y', strtotime($row['reported_date']));
+                $row['resolved_date'] = date('M j, Y', strtotime($row['resolved_date']));
+            }
 
+            // Store the formated information inside an array.
             $formattedData[] = $row;
         }
-
-        // Count the returned rows.
-        $totalRecordsQuery = $this->db->query("SELECT COUNT(*) AS total FROM users");
-        $totalRecords = $totalRecordsQuery->row()->total;
 
         // Insert all the data from the database into an array.
         $output = array(
             "draw" => intval($this->input->post('draw')),
-            "recordsTotal" => $totalRecords,
-            "recordsFiltered" => count($data),
             "data" => $formattedData
         );
 
-        // Convert the array to a JSON.
+        // Return the array in json format.
         echo json_encode($output);
         exit();
     }
-    
+
+    public function print_tickets_tracc_request() {
+        // Get start and end date.
+        $startDate = $this->input->post('start_date');
+        $endDate = $this->input->post('end_date');
+
+        // Get columns ticet_id, requested_by, department, date_requested, company, complete_details, accomplished_by, accomplished_by_date from service_request_tracc_request table.
+        $this->db->select('ticket_id, requested_by, department, date_requested, company, complete_details, accomplished_by, accomplished_by_date');
+        $this->db->from('service_request_tracc_request');
+
+        // Check if start and end date exists
+        if ($startDate && $endDate) {
+            $this->db->where('created_at >=', $startDate);
+            $this->db->where('created_at <=', $endDate);
+        } elseif ($startDate) {
+            $this->db->where('created_at >=', $startDate);
+        } elseif ($endDate) {
+            $this->db->where('created_at <=', $endDate);
+        }
+
+        // Store the values from the query to a variable.
+        $query = $this->db->get();
+        $data = $query->result_array();
+
+        // Format Date. Three letter month, date, and year format. Set date to blank if date is not given.
+        $formattedData = [];
+        foreach($data as $row) {
+            if($row['date_requested'] == '0000-00-00') {
+                $row['date_requested'] = '';
+                $row['accomplished_by_date'] = date('M j, Y', strtotime($row['accomplished_by_date']));
+            } elseif ($row['accomplished_by_date'] == '0000-00-00') {
+                $row['accomplished_by_date'] = '';
+                $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
+            } else {
+                $row['date_requested'] = date('M j, Y', strtotime($row['date_requested']));
+                $row['accomplished_by_date'] = date('M j, Y', strtotime($row['accomplished_by_date']));
+            }
+            
+            // Set line breaks per company.
+            $row['company'] = str_replace(',', '<br>', $row['company']);
+
+            // Store data inside an array.
+            $formattedData[] = $row;
+        }
+
+        // Insert all the data from the database to an array.
+        $output = array(
+            "draw" => intval($this->input->post('draw')),
+            "data" => $formattedData
+        );
+
+        // Return the array in json format.
+        echo json_encode($output);
+        exit();
+    }
 }

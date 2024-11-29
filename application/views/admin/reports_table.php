@@ -39,6 +39,7 @@
                                 <select id="ticket" style="border-width: 0; padding: 7px; border-radius: 15px; width: 100%;">
                                     <option value="msrf">MSRF Ticket</option>
                                     <option value="tracc">Tracc Concern</option>
+                                    <option value="request">Tracc Request</option>
                                 </select>
                             </td>
                         </tr>
@@ -50,8 +51,8 @@
                     <!-- Filter Button -->
                     
                 </div>
-                <div class="box-body" id="tblMsrfBox">
 
+                <div class="box-body" id="tblMsrfBox">
                     <table id="tblTicketsPrint" class="table table-bordered table-striped" style="display: none">
                         <thead>
                             <tr>
@@ -66,7 +67,8 @@
                         </thead>
                     </table>
                 </div>
-                <div class="box-body" id="tblTraccBox">
+
+                <div class="box-body" id="tblTraccBox" style="display: none">
                     <table id="tblTicketsTraccConcernPrint" class="table table-bordered table-striped" style="display: none">
                         <thead>
                             <tr>
@@ -75,6 +77,23 @@
                                 <th>Reported Date</th>
                                 <th>Resolved Date</th>
                                 <th>Status</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="box-body" id="tblTraccRequest" style="display: none">
+                    <table id="tblTicketsTraccRequestPrint" class="table table-bordered table-striped" style="display: none">
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Requested By</th>
+                                <th>Department</th>
+                                <th>Date Requested</th>
+                                <th>Company</th>
+                                <th>Complete Details</th>
+                                <th>Accomplished By</th>
+                                <th>Accomplished Date</th>
                             </tr>
                         </thead>
                     </table>

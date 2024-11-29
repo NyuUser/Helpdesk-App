@@ -255,14 +255,18 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// Kevin
 	public function admin_print_report($active_menu = 'print') {
+		// Check if user is logged in.
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 
+			// If user is ok, user id will be stored in the session.
 			if($user_details[0] == "ok"){
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
 
+				// defines all the menus allowed.
 				$allowed_menus = ['print', 'system_administration', 'other_menus'];
 				if(!in_array($active_menu, $allowed_menus)) {
 					$active_menu = 'dashboard';
@@ -270,6 +274,7 @@ class Main extends CI_Controller {
 
 				$data['active_menu'] = $active_menu;
 
+				// render reports_table view.
 				$this->check_upload_size();
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);

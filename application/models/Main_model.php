@@ -389,7 +389,7 @@ class Main_model extends CI_Model {
 		$user_id = $this->session->userdata('login_data')['user_id'];
 		$id = $this->input->post('id', true);
 
-		$this->db->set('status', 1);
+		$this->db->set(['status' => 1, 'failed_attempts' => 1]);
 		$this->db->where('recid', $id);
 		$this->db->update('users');
 
