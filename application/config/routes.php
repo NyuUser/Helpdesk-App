@@ -59,8 +59,18 @@ $route['sys/admin/list/ticket/msrf'] = 'main/admin_list_tickets';
 $route['sys/admin/team'] = 'main/admin_team';
 //--- DATATABLE of ADMIN for TRACC REQUEST
 $route['sys/admin/list/ticket/tracc_request'] = 'main/admin_list_tracc_request';
-//--- DATATABLE of ADMIN for PRINT REPORTS
+
+
+//--- ADMIN for PRINT REPORTS
 $route['sys/admin/print'] = 'main/admin_print_report';
+
+
+//--- PDF REPORTS ---//
+$route['sys/admin/supplier_request_form_pdf'] = 'main/supplier_request_form_pdf_view';
+$route['sys/admin/customer_request_form_pdf'] = 'main/customer_request_form_pdf_view';
+$route['sys/admin/customer_shipping_setup_pdf'] = 'main/customer_shipping_setup_pdf_view';
+$route['sys/admin/employee_request_form_pdf'] = 'main/employee_request_form_pdf_view';
+$route['sys/admin/item_request_form_pdf'] = 'main/item_request_form_pdf_view';
 
 
 //--- TICKET APPROVAL for MSRF and TRACC CONCERN and TRACC REQUEST

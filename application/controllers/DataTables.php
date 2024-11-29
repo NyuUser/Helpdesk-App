@@ -6,154 +6,124 @@ class DataTables extends CI_Controller {
 		parent::__construct();
 	}
 
-    //Datatable ng Admin
+    //DATATABLE for ADMIN EMPLOYEE MODULE
     public function employee() {
-        // Fetch request parameters sent by DataTables
-        $draw = intval($this->input->post("draw"));  // The draw counter for DataTables (helps in ensuring AJAX requests are correctly processed)
-        $start = intval($this->input->post("start"));  // The starting point for records (used for pagination)
-        $length = intval($this->input->post("length"));  // The number of records to return (used for pagination)
-        $order = $this->input->post("order");  // The column and direction for sorting
-        $search = $this->input->post("search");  // The search value entered in the DataTables search box
-        $search = $this->db->escape_str($search['value']);  // Escaping the search value to prevent SQL injection
+        $draw = intval($this->input->post("draw"));  
+        $start = intval($this->input->post("start"));  
+        $length = intval($this->input->post("length"));  
+        $order = $this->input->post("order");  
+        $search = $this->input->post("search");  
+        $search = $this->db->escape_str($search['value']); 
     
-        // Initialize variables for column index and direction
-        $col = 0;  // Default column index for sorting
-        $dir = "";  // Default sorting direction
+        $col = 0;  
+        $dir = "";  
     
-        // Process the order array to get the column index and sort direction
         if (!empty($order)) {
             foreach ($order as $o) {
-                $col = $o['column'];  // Column index (as sent by DataTables)
-                $dir = $o['dir'];  // Sorting direction ('asc' or 'desc')
+                $col = $o['column'];  
+                $dir = $o['dir'];  
             }
         }
     
-        // Validate the sort direction
         if ($dir != "asc" && $dir != "desc") {
-            $dir = "asc";  // Default to ascending if an invalid direction is provided
+            $dir = "asc";  
         }
     
-        // Define an array of valid columns that can be used for sorting
         $valid_columns = array(
             0 => 'disable_date',
             1 => 'stamp'
         );
     
-        // Validate the selected column index, if invalid, set $order to null
         if (!isset($valid_columns[$col])) {
             $order = null;
         } else {
-            $order = $valid_columns[$col];  // Set the column name based on the column index
+            $order = $valid_columns[$col];  
         }
     
-        // Enhance the search query
-        // If a search term is provided, construct the search query
+        // SEARCH 
         if (!empty($search)) {
             $search_query = "WHERE (emp_id LIKE '%".$search."%' OR fname LIKE '%".$search."%' OR mname LIKE '%".$search."%' OR lname LIKE '%".$search."%' OR email LIKE '%".$search."%' OR username LIKE '%".$search."%' OR role LIKE '%".$search."%' OR department_description LIKE '%".$search."%')";
         } else {
-            // If no search term, add a dummy condition to simplify SQL syntax
-            $search_query = "WHERE 1=1";  // Ensures the query remains valid when no search term is provided
+            $search_query = "WHERE 1=1";  
         }
     
-        // Get the total count of records matching the search criteria
         $count_array = $this->db->query("SELECT * FROM users ".$search_query." ORDER BY recid");
-        $length_count = $count_array->num_rows();  // Get the total number of rows for pagination
+        $length_count = $count_array->num_rows();  
     
-        // Initialize an empty array to hold the data that will be returned
         $data = array();
     
-        // Fetch the data with the applied search, sorting, and pagination
         $query = $this->db->query("SELECT * FROM users ".$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
     
-        // Check if any records are returned from the query
         if ($query->num_rows() > 0) {
-            // Loop through each row of the result set
             foreach ($query->result() as $rows) { 
-                // Collecting data for each column to be displayed
                 $bid[] = $rows->recid;
                 $emp_id[] = $rows->emp_id;
-                $full_name[] = $rows->fname . ' ' . $rows->mname . ' ' . $rows->lname;  // Concatenate first, middle, and last names
+                $full_name[] = $rows->fname . ' ' . $rows->mname . ' ' . $rows->lname; 
                 $email[] = $rows->email;
                 $position[] = $rows->position;
                 $username[] = $rows->username;
                 $role[] = $rows->role;
     
-                // Create action buttons (lock/unlock and update details) based on the status
                 if ($rows->status == 1) {
-                    // If account is active, show the "Lock Account" button
                     $btn_action[] = "<button class='btn btn-warning btn-sm btn_lock lock_btn' data-empid='".$rows->recid."'><i class='fa fa-power-off'></i> Lock Account</button>";
                 } else {
-                    // If account is inactive, show the "Unlock Account" button
                     $btn_action[] = "<button class='btn btn-warning btn-sm btn_lock unlock_btn' data-empid='".$rows->recid."'><i class='fa fa-power-off'></i> Unlock Account</button>";
                 }
-    
-                // Add the "Update Details" button
                 $btn_edit[] = "<a href='".base_url()."sys/admin/update/employee/".$rows->recid."' class='btn btn-success btn-sm btn-edit'><i class='fa fa-pencil'></i> Update Details</a>";
                 $btn_delete[] = "<button class='btn btn-danger btn-sm btn-delete' data-toggle='modal' data-target='#UsersDeleteModal' data-id='".$rows->recid."'>
                  <i class='fa fa-trash'></i> Delete</button>";
 
             }
     
-            // Combine all columns' data into a single row for each employee
             for ($i = 0; $i < count($bid); $i++) {
                 $data[] = array($emp_id[$i], $full_name[$i], $email[$i], $position[$i], $username[$i], $role[$i], $btn_action[$i] . $btn_edit[$i] . $btn_delete[$i]);
             }
         }
     
-        // Prepare the output for DataTables
         $output = array(
-            "draw"              => $draw,  // Echo back the draw counter received from DataTables
-            "recordsTotal"      => $length_count,  // Total records in the result set (with search)
-            "recordsFiltered"   => $length_count,  // Total filtered records (with search)
-            "data"              => $data  // Data array that contains all the rows to be displayed
+            "draw"              => $draw,  
+            "recordsTotal"      => $length_count,  
+            "recordsFiltered"   => $length_count,  
+            "data"              => $data  
         );
         
-        // Return the output as a JSON response
         echo json_encode($output);
-        exit();  // Ensure no further processing happens
+        exit();  
     }
 
-    //Datatable ng Admin
+    //DATATABLE for ADMIN Department Viewing
     public function all_departments() {
-        // Fetching session data for user_id and emp_id
         $user_id = $this->session->userdata('login_data')['user_id'];
         $emp_id = $this->session->userdata('login_data')['emp_id'];
         
-        // Retrieving DataTables parameters from the POST request
         $draw = intval($this->input->post("draw"));
         $start = intval($this->input->post("start"));
         $length = intval($this->input->post("length"));
         $order = $this->input->post("order");
         $search = $this->input->post("search");
-        $search = $this->db->escape_str($search['value']);  // Escaping the search input to prevent SQL injection
+        $search = $this->db->escape_str($search['value']);  
         
-        // Default sorting direction
         $dir = "asc";
         $col = 0;
     
-        // Determine the column and direction for ordering
         if (!empty($order)) {
             $col = $order[0]['column'];
             $dir = $order[0]['dir'];
         }
     
-        // Validate the direction, default to 'asc' if invalid
         if ($dir != "asc" && $dir != "desc") {
             $dir = "asc";
         }
     
-        // Define valid columns that exist in the 'departments' table for ordering
         $valid_columns = array(
-            0 => 'recid',         // Ensure these columns exist in your 'departments' table
+            0 => 'recid',         
             1 => 'dept_desc',
             2 => 'manager_id',
             3 => 'sup_id'
         );
     
-        // Determine the column to order by, default to 'recid'
         $order = isset($valid_columns[$col]) ? $valid_columns[$col] : 'recid';
     
-        // Build the search query if a search term is provided
         $search_query = "";
         if (!empty($search)) {
             $search_query = "WHERE (recid LIKE '%".$search."%' OR dept_desc LIKE '%".$search."%' OR manager_id LIKE '%".$search."%' OR sup_id LIKE '%".$search."%')";
@@ -172,7 +142,6 @@ class DataTables extends CI_Controller {
     
         $data = array();
     
-        // Populate the data array with the results and add action buttons
         if ($data_query->num_rows() > 0) {
             foreach ($data_query->result() as $row) {
                 // Create Edit and Delete buttons
@@ -180,10 +149,6 @@ class DataTables extends CI_Controller {
                 $btn_delete = "<button class='btn btn-danger btn-sm btn-delete' data-toggle='modal' data-target='#deleteModal' data-id='".$row->recid."'>
                <i class='fa fa-trash'></i> Delete</button>";
 
-
-                //$btn_delete = "<button class='btn btn-danger btn-sm btn-delete' data-deptid='".$row->recid."'><i class='fa fa-trash'></i> Delete</button>";
-                
-                // Combine the department data with the action buttons
                 $data[] = array(
                     $row->recid,
                     $row->dept_desc,
@@ -194,7 +159,6 @@ class DataTables extends CI_Controller {
             }
         }
     
-        // Prepare the output for DataTables
         $output = array(
             "draw"              => $draw,
             "recordsTotal"      => $total_records,
@@ -202,77 +166,63 @@ class DataTables extends CI_Controller {
             "data"              => $data
         );
         
-        // Return the output as JSON
         echo json_encode($output);
         exit();
     }
 
-    //Datatable ng User
+    //DATATABLE for USER (MSRF)
     public function get_msrf_ticket() {
-        // Retrieve user data from session
-        $user_id = $this->session->userdata('login_data')['user_id'];  // Get the user ID from the session
-        $emp_id = $this->session->userdata('login_data')['emp_id'];  // Get the employee ID from the session
-        //$dept_desc = $this->session->userdata('login_data')['dept_desc'];  // Assuming dept_desc is in session
-        //echo $emp_id;
-        $string_emp = $this->db->escape($emp_id);  // Properly escape the employee ID to prevent SQL injection
+        $user_id = $this->session->userdata('login_data')['user_id'];  
+        $emp_id = $this->session->userdata('login_data')['emp_id'];  
+        $string_emp = $this->db->escape($emp_id);  
     
-        // Retrieve DataTables request parameters
-        $draw = intval($this->input->post("draw"));  // The draw counter for DataTables (used to ensure AJAX requests are correctly processed)
-        $start = intval($this->input->post("start"));  // The starting point for records (used for pagination)
-        $length = intval($this->input->post("length"));  //0 The number of records to return (used for pagination)
-        $order = $this->input->post("order");  // The column and direction for sorting
-        $search = $this->input->post("search");  // The search value entered in the DataTables search box
-        $search = $this->db->escape_str($search['value']);  // Escape the search value to prevent SQL injection
+        $draw = intval($this->input->post("draw")); 
+        $start = intval($this->input->post("start")); 
+        $length = intval($this->input->post("length"));  
+        $order = $this->input->post("order"); 
+        $search = $this->input->post("search");  
+        $search = $this->db->escape_str($search['value']);  
     
-        // Initialize variables for column index and direction
-        $col = 0;  // Default column index for sorting
-        $dir = "";  // Default sorting direction
+        $col = 0;  
+        $dir = ""; 
     
-        // Process the order array to get the column index and sort direction
         if (!empty($order)) {
             foreach ($order as $o) {
-                $col = $o['column'];  // Column index (as sent by DataTables)
-                $dir = $o['dir'];  // Sorting direction ('asc' or 'desc')
+                $col = $o['column'];  
+                $dir = $o['dir'];  
             }
         }
     
-        // Validate the sort direction
         if ($dir != "asc" && $dir != "desc") {
-            $dir = "asc";  // Default to ascending if an invalid direction is provided
+            $dir = "asc";  
         }
     
-        // Define an array of valid columns that can be used for sorting
         $valid_columns = array(
-            0 => 'disable_date',  // Example column for sorting
-            1 => 'stamp'  // Example column for sorting
+            0 => 'disable_date',  
+            1 => 'stamp'  
         );
     
-        // Validate the selected column index, if invalid, set $order to null
         if (!isset($valid_columns[$col])) {
             $order = null;
         } else {
-            $order = $valid_columns[$col];  // Set the column name based on the column index
+            $order = $valid_columns[$col]; 
         }
-    
-        // Enhance the search query
+
+        // SEARCH
         if (!empty($search)) {
-            // If a search term is provided, construct the search query
             $search_query = "AND (ticket_id LIKE '%" . $search . "%' OR requestor_name LIKE '%" . $search . "%' OR subject LIKE '%" . $search . "%')";
         } else {
-            // If no search term, leave the search query empty
             $search_query = "";
         }
     
-        // Count total records excluding 'Closed' status
         $count_array = $this->db->query("
             SELECT * FROM service_request_msrf 
             WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ") 
             OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND requester_id = " . $user_id . ") " 
             . $search_query
         );
-        $length_count = $count_array->num_rows();  // Get the total number of rows for pagination
+        $length_count = $count_array->num_rows();  
     
-        // Fetch records excluding 'Closed' status
         $data = array();
         $strQry = $this->db->query("
             SELECT * FROM service_request_msrf 
@@ -282,19 +232,8 @@ class DataTables extends CI_Controller {
             " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
         );
 
-        /*$strQry = $this->db->query("
-            SELECT * FROM service_request_msrf 
-            WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved') 
-            AND requester_id = " . $user_id . " " 
-            . $search_query . 
-            " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
-        ); */
-
-        // Check if any records are returned from the query
         if ($strQry->num_rows() > 0) {
-            // Loop through each row of the result set
             foreach ($strQry->result() as $rows) {
-                // Determine the appropriate label class for the status
                 $label_class = '';
                 switch ($rows->status) {
                     case 'Open':
@@ -307,7 +246,7 @@ class DataTables extends CI_Controller {
                     case 'Resolved':
                         $label_class = 'label-success';
                         break;
-                    case 'Closed':  // This case should never be hit because 'Closed' status tickets are excluded
+                    case 'Closed': 
                         $label_class = 'label-danger';
                         break;
                     case 'Rejected':
@@ -323,10 +262,8 @@ class DataTables extends CI_Controller {
                         $label_class = 'label-warning';
                         break;
                 }
-                // Store the status label
                 $status_label[] = '<span class="label ' . $label_class . '">' . $rows->status . '</span>';
     
-                // Determine the appropriate label class for the priority
                 $prio_class = '';
                 switch ($rows->priority) {
                     case 'Low':
@@ -339,10 +276,8 @@ class DataTables extends CI_Controller {
                         $prio_class = 'label-danger';
                         break;
                 }
-                // Store the priority label
                 $prio_label[] = '<span class="label ' . $prio_class . '">' . $rows->priority . '</span>';
     
-                // Determine the appropriate label class for the department approval status
                 $app_stat_class = '';
                 switch ($rows->approval_status) {
                     case 'Approved':
@@ -358,10 +293,8 @@ class DataTables extends CI_Controller {
                         $app_stat_class = 'label-warning';
                         break;
                 }
-                // Store the department approval status label
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
     
-                // Determine the appropriate label class for the ICT approval status
                 $it_stat_class = '';
                 switch ($rows->it_approval_status) {
                     case 'Approved':
@@ -377,263 +310,97 @@ class DataTables extends CI_Controller {
                         $it_stat_class = 'label-info';
                         break;
                 }
-                // Store the ICT approval status label
                 $it_stat_label[] = '<span class="label ' . $it_stat_class . '">' . $rows->it_approval_status . '</span>';
     
-                // Store the ticket ID as a clickable link to the details page
                 $tickets[] = "<a href='" . base_url() . "sys/users/details/concern/msrf/" . $rows->ticket_id . "'>" . $rows->ticket_id . "</a>";
-                // Store the requestor name
                 $name[] = $rows->requestor_name;
-                // Store the subject of the request
                 $subject[] = $rows->subject;
                 
             }
     
-            // Combine all columns' data into a single row for each ticket
             for ($i = 0; $i < count($tickets); $i++) {
                 $data[] = array(
-                    $tickets[$i],       // Ticket ID
-                    $name[$i],          // Requestor name
-                    $subject[$i],       // Subject
-                    $prio_label[$i],    // Priority label
-                    $status_label[$i],  // Status label
-                    $app_stat_label[$i],// Department approval status label
-                    $it_stat_label[$i],  // ICT approval status label
+                    $tickets[$i],       
+                    $name[$i],          
+                    $subject[$i],      
+                    $prio_label[$i],    
+                    $status_label[$i],  
+                    $app_stat_label[$i],
+                    $it_stat_label[$i],  
                 );
             }
         }
     
-        // Prepare the output for DataTables
         $output = array(
-            "draw" => $draw,  // Echo back the draw counter received from DataTables
-            "recordsTotal" => $length_count,  // Total records in the result set (with search)
-            "recordsFiltered" => $length_count,  // Total filtered records (with search)
-            "data" => $data  // Data array that contains all the rows to be displayed
+            "draw" => $draw,  
+            "recordsTotal" => $length_count,  
+            "recordsFiltered" => $length_count,  
+            "data" => $data  
         );
        
-        // Return the output as a JSON response
         echo json_encode($output);
-        exit();  // Ensure no further processing happens
+        exit();  
     }
-    
-    /*
-	public function get_msrf_ticket() {
-        $user_id = $this->session->userdata('login_data')['user_id'];
-        $emp_id = $this->session->userdata('login_data')['emp_id'];
-        $string_emp = "'$emp_id'";
-		$draw = intval($this->input->post("draw"));
-        $start = intval($this->input->post("start"));
-        $length = intval($this->input->post("length"));
-        $order = $this->input->post("order");
-        $search = $this->input->post("search");
-        $search = $this->db->escape_str($search['value']);
-        $col = 0;
-        $dir = "";
 
-        if (!empty($order)) {
-            foreach ($order as $o) {
-                $col = $o['column'];
-                $dir = $o['dir'];
-            }
-        }
-
-        if ($dir != "asc" && $dir != "desc") {
-            $dir = "asc";
-        }
-
-        $valid_columns = array(
-            0 => 'disable_date',
-	        1 => 'stamp'
-        );
-
-        if (!isset($valid_columns[$col])) {
-            $order = null;
-        } else {
-            $order = $valid_columns[$col];
-        }
-
-        if (!empty($search)) {
-            $search_query = "and (ticket_id like '%".$search."%' OR requestor_name like '%".$search."%' OR subject like '%".$search."%')";
-        } else {
-            $search_query = "";
-        }
-
-        $count_array = $this->db->query("SELECT * FROM service_request_msrf WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = ".$string_emp.") OR requester_id = ".$user_id." ".$search_query." ORDER BY recid");
-        $length_count = $count_array->num_rows();
-
-        $data = array();
-        $strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ") OR requester_id = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length . "");
-        //$strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = ".$string_emp.") OR requester_id = ".$user_id." ".$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
-        if ($strQry->num_rows() > 0) {
-        	foreach ($strQry->result() as $rows) { 
-                $bid[] = $rows->recid;
-                $ticket[] = $rows->ticket_id;
-                $name[] = $rows->requestor_name;
-                $subject[] = $rows->subject;
-                $status[] = $rows->status;
-                $prio[] = $rows->priority;
-                $app_stat[] = $rows->approval_status;
-                $it_status[] = $rows->it_approval_status;
-
-                $label_class = '';
-                if ($rows->status == 'Open') {
-                    $label_class = 'label-primary';
-                } else if ($rows->status == 'In Progress') {
-                    $label_class = 'label-warning';
-                } else if ($rows->status == 'On going') {
-                    $label_class = 'label-warning';
-                } else if ($rows->status == 'Resolved') {
-                    $label_class = 'label-success';
-                } else if ($rows->status == 'Closed') { 
-                    $label_class = 'label-danger';
-                }
-
-                $status_label[] = '<span class="label ' . $label_class . '">' . $rows->status . '</span>';
-
-                $prio_class = '';
-                if ($rows->priority == 'Low') {
-                    $prio_class = 'label-primary';
-                } else if ($rows->priority == 'Medium') {
-                    $prio_class = 'label-warning';
-                } else if ($rows->priority == 'High') {
-                    $prio_class = 'label-danger';
-                }
-
-                $prio_label[] = '<span class="label ' . $prio_class . '">' . $rows->priority . '</span>';
-
-                $app_stat_class = '';
-                if ($rows->approval_status == 'Approved') {
-                    $app_stat_class = 'label-success';
-                } else if ($rows->approval_status == 'Pending') {
-                    $app_stat_class = 'label-warning';
-                } else if ($rows->approval_status == 'Rejected') {
-                    $app_stat_class = 'label-danger';
-                }
-
-                $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
-
-                $it_stat_class = '';
-                if ($rows->it_approval_status == 'Approved') {
-                    $it_stat_class = 'label-success';
-                } else if ($rows->it_approval_status == 'Pending') {
-                    $it_stat_class = 'label-warning';
-                } else if ($rows->it_approval_status == 'Rejected') {
-                    $it_stat_class = 'label-danger';
-                }
-
-                $it_stat_label[] = '<span class="label ' . $it_stat_class . '">' . $rows->it_approval_status . '</span>';
-
-                $tickets[] = "<a href='".base_url()."sys/users/details/concern/msrf/".$rows->ticket_id."'>". $rows->ticket_id ."</a>";
-            }
-
-            for ($i = 0; $i < count($bid); $i++) {
-            	$data[] = array($tickets[$i],$name[$i],$subject[$i],$prio_label[$i], $status_label[$i],$app_stat_label[$i],$it_stat_label[$i]);
-            }
-        }
-
-        $output = array(
-            "draw"              => $draw,
-            "recordsTotal"      => $length_count,
-            "recordsFiltered"   => $length_count,
-            "data"              => $data
-        );
-        echo json_encode($output);
-        exit();
-	}*/
-
-    //Datatable ng Admin
+    // DATATABLE for ADMIN (MSRF)
     public function all_tickets_msrf() {
-        // SESSION DATA
-        // Retrieve user_id and emp_id from the session to filter tickets relevant to the logged-in user.
         $user_id = $this->session->userdata('login_data')['user_id'];
         $emp_id = $this->session->userdata('login_data')['emp_id'];   
     
-        // DATATABLE PARAMETERS
-        // Retrieve parameters sent by DataTables for server-side processing (pagination, ordering, search).
-        $draw = intval($this->input->post("draw")); // Request sequence number for synchronization.
-        $start = intval($this->input->post("start")); // Pagination starting point.
-        $length = intval($this->input->post("length")); // Number of records to retrieve per page.
-        $order = $this->input->post("order"); // User-specified column ordering.
-        $search = $this->input->post("search"); // Search string input by the user.
-        $search = $this->db->escape_str($search['value']); // Escape search string to prevent SQL injection.
+        $draw = intval($this->input->post("draw")); 
+        $start = intval($this->input->post("start")); 
+        $length = intval($this->input->post("length")); 
+        $order = $this->input->post("order"); 
+        $search = $this->input->post("search"); 
+        $search = $this->db->escape_str($search['value']); 
         
-        // DATE AND STATUS FILTERS
         $startDate = $this->input->post('startDate');
         $endDate = $this->input->post('endDate');
         $statusFilter = $this->input->post('statusFilter');
 
-        // COLUMN ORDERING
-        // Handles sorting based on user input, mapping the column index to valid database columns.
-        $col = 0; // Default column index.
-        $dir = "asc"; // Default sorting direction.
+        $col = 0; 
+        $dir = "asc"; 
     
         if (!empty($order)) {
             foreach ($order as $o) {
-                $col = $o['column']; // Column index selected for ordering.
-                $dir = $o['dir']; // Sorting direction (asc/desc).
+                $col = $o['column']; 
+                $dir = $o['dir']; 
             }
         }
         
-        // Ensure the sorting direction is valid (either 'asc' or 'desc').
         if ($dir != "asc" && $dir != "desc") {
             $dir = "asc";
         }
     
-        // Map column index to valid database column names.
         $valid_columns = array(
             0 => 'disable_date',
             1 => 'stamp'
         );
-    
-        // Default ordering if column index is invalid.
+
         $order = isset($valid_columns[$col]) ? $valid_columns[$col] : null;
     
-        // SEARCH QUERY
-        // Constructs a search query to filter results based on user input.
+        // SEARCH 
         $search_query = "";
         if (!empty($search)) {
             $search_query = "AND (ticket_id LIKE '%" . $search . "%' OR requestor_name LIKE '%" . $search . "%' OR subject LIKE '%" . $search . "%' OR department LIKE '%" . $search . "%')";
         }
         
-        // QUERY WITH DATE FILTERS
-        /*$query = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved')";
-
-        if (!empty($startDate) && !empty($endDate)) {
-            $query .= " AND date BETWEEN '$startDate' AND '$endDate'";
-        }
-        if (!empty($statusFilter)) {
-            $query .= " AND status = '$statusFilter'";
-        }*/
-        //$datafilters = $this->db->query($query)->result();
-
-
-        // TOTAL RECORD COUNT
-        // Retrieve the total number of records that match the search and status filters.
-        // Modify the query to exclude 'Closed' tickets if necessary.
         $count_query = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') " . $search_query . " ORDER BY recid";
         $count_array = $this->db->query($count_query);
         $length_count = $count_array->num_rows();
     
-        // MAIN QUERY
-        // Fetch the filtered records based on user permissions (assigned supervisor or IT staff).
-        // Modify the query to exclude 'Closed' tickets if necessary.
         $strQry = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND (sup_id = " . $user_id . " OR it_sup_id = '23-0001' OR assigned_it_staff = '" . $emp_id . "') " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length;
         $data_query = $this->db->query($strQry);
-    
-        // DATA PROCESSING
-        // Prepare the data to be returned to DataTables.
         $data = array();
     
         if ($data_query->num_rows() > 0) {
             foreach ($data_query->result() as $rows) {
-                // Initialize arrays to store individual ticket attributes.
                 $bid[] = $rows->recid;
                 $ticket[] = $rows->ticket_id;
                 $name[] = $rows->requestor_name;
                 $subject[] = $rows->subject;
                 $status[] = $rows->status;
     
-                // If IT approval status is 'Resolved', set the ticket status to 'Closed'.
                 if ($rows->it_approval_status == 'Resolved') {
                     $status = 'Closed';
                 }
@@ -643,7 +410,6 @@ class DataTables extends CI_Controller {
                 $it_status[] = $rows->it_approval_status;
                 $assigned_it_staff[] = $rows->assigned_it_staff;
     
-                // Format status label with corresponding CSS classes.
                 $label_class = '';
                 switch ($rows->status) {
                     case 'Open':
@@ -672,8 +438,7 @@ class DataTables extends CI_Controller {
                         break;
                 }
                 $status_label[] = '<span class="label ' . $label_class . '">' . $rows->status . '</span>';
-    
-                // Format priority label with corresponding CSS classes.
+
                 $prio_class = '';
                 switch ($rows->priority) {
                     case 'Low':
@@ -687,8 +452,7 @@ class DataTables extends CI_Controller {
                         break;
                 }
                 $prio_label[] = '<span class="label ' . $prio_class . '">' . $rows->priority . '</span>';
-    
-                // Format approval status label with corresponding CSS classes.
+
                 $app_stat_class = '';
                 switch ($rows->approval_status) {
                     case 'Approved':
@@ -705,8 +469,7 @@ class DataTables extends CI_Controller {
                         break;
                 }
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
-    
-                // Format IT approval status label with corresponding CSS classes.
+
                 $it_stat_class = '';
                 switch ($rows->it_approval_status) {
                     case 'Approved':
@@ -733,8 +496,7 @@ class DataTables extends CI_Controller {
                     $action[] = '<span class="label"></span>';
                 }
             }
-    
-            // Populate data array with processed ticket information for DataTables.
+
             for ($i = 0; $i < count($bid); $i++) {
                 $data[] = array(
                     $tickets[$i],
@@ -749,19 +511,17 @@ class DataTables extends CI_Controller {
             }
         }
     
-        // PREPARE THE RESPONSE FOR DATATABLES
-        // Encode the output as JSON and send it to the client.
         $output = array(
-            "draw"            => $draw,             // Synchronize request-response cycle.
-            "recordsTotal"    => $length_count,     // Total number of records.
-            "recordsFiltered" => $length_count,     // Number of filtered records.
-            "data"            => $data              // Processed ticket data.
+            "draw"            => $draw,             
+            "recordsTotal"    => $length_count,   
+            "recordsFiltered" => $length_count,     
+            "data"            => $data              
         );
         echo json_encode($output);
         exit();
     }
 
-    //Datatable ng User Tracc Concern
+    // DATATABLE for USER (TRACC CONCERN)
     public function get_tracc_concern_ticket() {
         $user_id = $this->session->userdata('login_data')['user_id'];  
         $emp_id = $this->session->userdata('login_data')['emp_id']; 
@@ -806,7 +566,6 @@ class DataTables extends CI_Controller {
             $search_query = "AND reported_by_id = " . $this->db->escape($user_id);
         }        
     
-        // Fetch the count of records with the search filter
         $count_array = $this->db->query("
             SELECT * FROM service_request_tracc_concern 
             WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by_id = " . $user_id . ") 
@@ -815,20 +574,7 @@ class DataTables extends CI_Controller {
         );
         $length_count = $count_array->num_rows();
     
-        // Fetch records with pagination and search filter applied
         $data = array();
-        //papalitan query
-        /*$strQry = $this->db->query("
-            SELECT * FROM service_request_tracc_concern 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by = " . $user_id . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved')) 
-            " . $search_query . " 
-            ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
-        );*/
-
-        //nasa by_id ang mali
-        //checking ng query
-        //$strQry = $this->db->query("SELECT * FROM service_request_tracc_concern WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by_id = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length );
         
         $strQry = $this->db->query("
             SELECT * FROM service_request_tracc_concern
@@ -838,7 +584,6 @@ class DataTables extends CI_Controller {
 
         if ($strQry->num_rows() > 0) {
             foreach ($strQry->result() as $rows) {
-                // Status label
                 $label_class = '';
                 switch ($rows->status) {
                     case 'Open':
@@ -869,7 +614,6 @@ class DataTables extends CI_Controller {
                 }
                 $status_label[] = '<span class="label ' . $label_class . '">' . $rows->status . '</span>';
     
-                // Company label
                 $comp_class = '';
                 switch ($rows->company) {
                     case 'LMI':
@@ -887,7 +631,6 @@ class DataTables extends CI_Controller {
                 }
                 $comp_label[] = '<span class="label ' . $comp_class . '">' . $rows->company . '</span>';
     
-                // Approval status label
                 $app_stat_class = '';
                 switch ($rows->approval_status) {
                     case 'Approved':
@@ -905,7 +648,6 @@ class DataTables extends CI_Controller {
                 }
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
     
-                // IT approval status label
                 $it_stat_class = '';
                 switch ($rows->it_approval_status) {
                     case 'Approved':
@@ -945,23 +687,21 @@ class DataTables extends CI_Controller {
                 $name[] = $rows->reported_by;
                 $subject[] = $rows->subject;
             }
-    
-            // Create rows for the output
+
             for ($i = 0; $i < count($control_number); $i++) {
                 $data[] = array(
-                    $control_number[$i],// Control Number   
-                    $name[$i],          // Reported by
-                    $subject[$i],       // Subject
+                    $control_number[$i],  
+                    $name[$i],          
+                    $subject[$i],       
                     $priority_label[$i],
-                    $comp_label[$i],    // Company label
-                    $status_label[$i],  // Status label
-                    $app_stat_label[$i],// Approval status label
-                    $it_stat_label[$i] // IT approval status label
+                    $comp_label[$i],    
+                    $status_label[$i],  
+                    $app_stat_label[$i],
+                    $it_stat_label[$i] 
                 );
             }
         }
-    
-        // Return the output for DataTables
+
         $output = array(
             "draw" => $draw,  
             "recordsTotal" => $length_count,  
@@ -971,243 +711,52 @@ class DataTables extends CI_Controller {
     
         echo json_encode($output);
         exit();
-    }
-    
+    }   
 
-    /*public function all_tickets_tracc_concern() {
-        // Retrieve user data from session
-        $user_id = $this->session->userdata('login_data')['user_id'];  // Get the user ID from the session
-        $emp_id = $this->session->userdata('login_data')['emp_id'];  // Get the employee ID from the session
-        $string_emp = $this->db->escape($emp_id);  // Properly escape the employee ID to prevent SQL injection
-    
-        // Retrieve DataTables request parameters
-        $draw = intval($this->input->post("draw"));  // The draw counter for DataTables (used to ensure AJAX requests are correctly processed)
-        $start = intval($this->input->post("start"));  // The starting point for records (used for pagination)
-        $length = intval($this->input->post("length"));  // The number of records to return (used for pagination)
-        $order = $this->input->post("order");  // The column and direction for sorting
-        $search = $this->input->post("search");  // The search value entered in the DataTables search box
-        $search = $this->db->escape_str($search['value']);  // Escape the search value to prevent SQL injection
-    
-        // Initialize variables for column index and direction
-        $col = 0;  // Default column index for sorting
-        $dir = "";  // Default sorting direction
-    
-        // Process the order array to get the column index and sort direction
-        if (!empty($order)) {
-            foreach ($order as $o) {
-                $col = $o['column'];  // Column index (as sent by DataTables)
-                $dir = $o['dir'];  // Sorting direction ('asc' or 'desc')
-            }
-        }
-    
-        // Validate the sort direction
-        if ($dir != "asc" && $dir != "desc") {
-            $dir = "asc";  // Default to ascending if an invalid direction is provided
-        }
-    
-        // Define an array of valid columns that can be used for sorting
-        $valid_columns = array(
-            0 => 'disable_date',  // Example column for sorting
-            1 => 'stamp'  // Example column for sorting
-        );
-    
-        // Validate the selected column index, if invalid, set $order to null
-        if (!isset($valid_columns[$col])) {
-            $order = null;
-        } else {
-            $order = $valid_columns[$col];  // Set the column name based on the column index
-        }
-    
-        // Enhance the search query
-        if (!empty($search)) {
-            // If a search term is provided, construct the search query
-            $search_query = "AND (control_number LIKE '%" . $search . "%' OR module_affected LIKE '%" . $search . "%' OR company LIKE '%" . $search . "%')";
-        } else {
-            // If no search term, leave the search query empty
-            $search_query = "";
-        }
-        
-        //PAPALITAN NG QUERY
-        // Count total records excluding 'Closed' status
-        //$count_array = $this->db->query("SELECT * FROM service_request_tracc_concern  WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ")  OR (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by = ". $user_id . ") " . $search_query);
-        $count_array = $this->db->query("SELECT * FROM service_request_tracc_concern WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND resolved_by = " . $string_emp . ") OR (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by = " . $user_id . ") " . $search_query);
-        $length_count = $count_array->num_rows();  // Get the total number of rows for pagination
-        
-        // Fetch records excluding 'Closed' status
-        $data = array();
-        //$strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ") OR (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by = " . $user_id . ") " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length);
-        //$strQry = $this->db->query("SELECT * FROM service_request_tracc_concern WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND resolved_by = " . $string_emp . ") OR (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by = " . $user_id . ") " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length);
-        $strQry = $this->db->query("SELECT * FROM service_request_tracc_concern WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved')) OR (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by = " . $user_id . ") " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length);
-
-        //PAPALITAN NG DATAS
-        // Check if any records are returned from the query
-        if ($strQry->num_rows() > 0) {
-            // Loop through each row of the result set  
-            foreach ($strQry->result() as $rows) {
-                // Determine the appropriate label class for the status
-                $label_class = '';
-                switch ($rows->status) {
-                    case 'Open':
-                        $label_class = 'label-primary';
-                        break;
-                    case 'In Progress':
-                    case 'On going':
-                        $label_class = 'label-warning';
-                        break;
-                    case 'Resolved':
-                        $label_class = 'label-success';
-                        break;
-                    case 'Closed': 
-                        $label_class = 'label-danger';
-                        break;
-                }
-
-                $status_label[] = '<span class="label ' . $label_class . '">' . $rows->status . '</span>';
-                
-                $comp_class = '';
-                switch ($rows->company) {
-                    case 'LMI':
-                        $comp_class = 'label-primary';
-                        break;
-                    case 'LPI':
-                        $comp_class = 'label-warning';
-                        break;
-                    case 'RGDI':
-                        $comp_class = 'label-danger';
-                        break;
-                    case 'SV':
-                        $comp_class = 'label-primary';
-                        break;
-                }
-                // Store the priority label
-                $comp_label[] = '<span class="label ' . $comp_class . '">' . $rows->company . '</span>';
-                
-                // Determine the appropriate label class for the department approval status
-                $app_stat_class = '';
-                switch ($rows->approval_status) {
-                    case 'Approved':
-                        $app_stat_class = 'label-success';
-                        break;
-                    case 'Pending':
-                        $app_stat_class = 'label-warning';
-                        break;
-                    case 'Rejected':
-                        $app_stat_class = 'label-danger';
-                        break;
-                }
-                // Store the department approval status label
-                $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
-                
-                // Determine the appropriate label class for the ICT approval status
-                $it_stat_class = '';
-                switch ($rows->it_approval_status) {
-                    case 'Approved':
-                        $it_stat_class = 'label-success';
-                        break;
-                    case 'Pending':
-                        $it_stat_class = 'label-warning';
-                        break;
-                    case 'Rejected':
-                        $it_stat_class = 'label-danger';
-                        break;
-                }
-                // Store the ICT approval status label
-                $it_stat_label[] = '<span class="label ' . $it_stat_class . '">' . $rows->it_approval_status . '</span>';
-    
-                // Store the ticket ID as a clickable link to the details page
-                $tickets[] = "<a href='" . base_url() . "sys/users/details/concern/tracc_concern/" . $rows->control_number . "'>" . $rows->control_number . "</a>";
-                // Store the requestor name
-                $name[] = $rows->reported_by;
-                // Store the subject of the request
-                $subject[] = $rows->subject;
-            }
-            
-            // Combine all columns' data into a single row for each ticket
-            for ($i = 0; $i < count($tickets); $i++) {
-                $data[] = array(
-                    $tickets[$i],       // Ticket ID
-                    $name[$i],          // Requestor name
-                    $subject[$i],       // Subject
-                    $comp_label[$i],    // Priority label
-                    $status_label[$i],  // Status label
-                    $app_stat_label[$i],// Department approval status label
-                    $it_stat_label[$i]  // ICT approval status label
-                );
-            }
-        }
-    
-        // Prepare the output for DataTables
-        $output = array(
-            "draw" => $draw,  // Echo back the draw counter received from DataTables
-            "recordsTotal" => $length_count,  // Total records in the result set (with search)
-            "recordsFiltered" => $length_count,  // Total filtered records (with search)
-            "data" => $data  // Data array that contains all the rows to be displayed
-        );
-        
-        // Return the output as a JSON response
-        echo json_encode($output);
-        exit();  // Ensure no further processing happens
-    }*/
-    
-
-    //Datatable ng Admin Tracc Concern
+    // DATATABLE for ADMIN (TRACC CONCERN)
     public function all_tickets_tracc_concern() {
-        // Retrieve user data from session
-        $user_id = $this->session->userdata('login_data')['user_id'];  // Get the user ID from the session
-        $emp_id = $this->session->userdata('login_data')['emp_id'];  // Get the employee ID from the session
-        $string_emp = $this->db->escape($emp_id);  // Properly escape the employee ID to prevent SQL injection
+        $user_id = $this->session->userdata('login_data')['user_id'];  
+        $emp_id = $this->session->userdata('login_data')['emp_id'];  
+        $string_emp = $this->db->escape($emp_id);  
+
+        $draw = intval($this->input->post("draw")); 
+        $start = intval($this->input->post("start"));  
+        $length = intval($this->input->post("length"));  
+        $order = $this->input->post("order");  
+        $search = $this->input->post("search"); 
+        $search = $this->db->escape_str($search['value']); 
     
-        // Retrieve DataTables request parameters
-        $draw = intval($this->input->post("draw"));  // The draw counter for DataTables (used to ensure AJAX requests are correctly processed)
-        $start = intval($this->input->post("start"));  // The starting point for records (used for pagination)
-        $length = intval($this->input->post("length"));  // The number of records to return (used for pagination)
-        $order = $this->input->post("order");  // The column and direction for sorting
-        $search = $this->input->post("search");  // The search value entered in the DataTables search box
-        $search = $this->db->escape_str($search['value']);  // Escape the search value to prevent SQL injection
-    
-        // Initialize variables for column index and direction
-        $col = 0;  // Default column index for sorting
-        $dir = "";  // Default sorting direction
-    
-        // Process the order array to get the column index and sort direction
+        $col = 0; 
+        $dir = "";  
+
         if (!empty($order)) {
             foreach ($order as $o) {
-                $col = $o['column'];  // Column index (as sent by DataTables)
-                $dir = $o['dir'];  // Sorting direction ('asc' or 'desc')
+                $col = $o['column']; 
+                $dir = $o['dir'];  
             }
         }
     
-        // Validate the sort direction
         if ($dir != "asc" && $dir != "desc") {
-            $dir = "asc";  // Default to ascending if an invalid direction is provided
+            $dir = "asc";  
         }
     
-        // Define an array of valid columns that can be used for sorting
         $valid_columns = array(
-            0 => 'disable_date',  // Example column for sorting
-            1 => 'stamp'  // Example column for sorting
+            0 => 'disable_date',  
+            1 => 'stamp'  
         );
     
-        // Validate the selected column index, if invalid, set $order to null
         if (!isset($valid_columns[$col])) {
             $order = null;
         } else {
-            $order = $valid_columns[$col];  // Set the column name based on the column index
+            $order = $valid_columns[$col];  
         }
 
-        /*$search_query = "";
-        if (!empty($search)) {
-            $search_query = "AND (control_number LIKE '%" . $search . "%' OR module_affected LIKE '%" . $search . "%' OR company LIKE '%" . $search . "%')";
-        }*/
-         // Enhanced search logic to search multiple fields
         if (!empty($search)) {
             $search_query = "AND (control_number LIKE '%" . $search . "%' OR module_affected LIKE '%" . $search . "%' OR company LIKE '%" . $search . "%')";
         } else {
             $search_query = "";
         }
         
-        // Fetch the count of records with the search filter // Count total records excluding 'Closed' status
-        //$count_array = $this->db->query("SELECT * FROM service_request_tracc_concern WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND resolved_by = " . $string_emp . ") OR (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by = " . $user_id . ") " . $search_query);
         $count_array = $this->db->query("
             SELECT * FROM service_request_tracc_concern 
             WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND reported_by = " . $user_id . ") 
@@ -1216,11 +765,6 @@ class DataTables extends CI_Controller {
         );
         $length_count = $count_array->num_rows();
 
-        // Fetch records excluding 'Closed' status
-        // $data = array();
-        // $strQry = $this->db->query("SELECT * FROM service_request_tracc_concern WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved')) OR (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by = " . $user_id . ") " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length);
-        // $strQry = $this->db->query("SELECT * FROM service_request_tracc_concern WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved') OR reported_by = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length); 
-        // Fetch records with pagination and search filter applied
         
         $data = array();
         $strQry = $this->db->query("
@@ -1231,13 +775,9 @@ class DataTables extends CI_Controller {
             ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
         );
 
-        // Check if any records are returned from the query
-        if ($strQry->num_rows() > 0) {
-            // Loop through each row of the result set  
-            foreach ($strQry->result() as $rows) {
-                // Determine the appropriate label class for the status
 
-                // If IT approval status is 'Resolved', set the ticket status to 'Closed'.
+        if ($strQry->num_rows() > 0) {
+            foreach ($strQry->result() as $rows) {
                 if ($rows->it_approval_status == 'Resolved') {
                     $status = 'Closed';
                 }
@@ -1335,12 +875,8 @@ class DataTables extends CI_Controller {
                 }
                 $priority_label[] = '<span class="label ' . $priority_class . '">' . $rows->priority . '</span>';
     
-                // Store the ticket ID as a clickable link to the details page
-                //$tickets[] = "<a href='" . base_url() . "sys/admin/approved/" . $rows->subject . "/" . $rows->ticket_id . "'>" . $rows->ticket_id . "</a>";
                 $tickets[] = "<a href='" . base_url() . "sys/admin/approved/" . $rows->subject . "/" . $rows->control_number . "'>" . $rows->control_number . "</a>";
-                // Store the requestor name
                 $name[] = $rows->reported_by;
-                // Store the subject of the request
                 $subject[] = $rows->subject;
 
                 if($rows->approval_status === "Pending"){
@@ -1350,36 +886,33 @@ class DataTables extends CI_Controller {
                 }
             }
     
-            // Combine all columns' data into a single row for each ticket
             for ($i = 0; $i < count($tickets); $i++) {
                 $data[] = array(
-                    $tickets[$i],       // Ticket ID
-                    $name[$i],          // Requestor name
-                    $subject[$i],       // Subject
+                    $tickets[$i],     
+                    $name[$i],          
+                    $subject[$i],     
                     $priority_label[$i],
-                    $comp_label[$i],    // Company label
-                    $status_label[$i],  // Status label
-                    $app_stat_label[$i],// Department approval status label
-                    $it_stat_label[$i],  // ICT approval status label
+                    $comp_label[$i],    
+                    $status_label[$i],  
+                    $app_stat_label[$i],
+                    $it_stat_label[$i], 
                     $action[$i] //Action
                 );
             }   
         }
-    
-        // Prepare the output for DataTables
+
         $output = array(
-            "draw" => $draw,  // Echo back the draw counter received from DataTables
-            "recordsTotal" => $length_count,  // Total records in the result set (with search)
-            "recordsFiltered" => $length_count,  // Total filtered records (with search)
-            "data" => $data  // Data array that contains all the rows to be displayed
+            "draw" => $draw,  
+            "recordsTotal" => $length_count,  
+            "recordsFiltered" => $length_count, 
+            "data" => $data 
         );
-    
-        // Return the output as a JSON response
+
         echo json_encode($output);
-        exit();  // Ensure no further processing happens
+        exit();  
     }
 
-      //Datatable ng Admin Tracc Request
+    //DATATABLE for ADMIN (TRACC REQUEST)
     public function all_tickets_tracc_request() {
         $user_id = $this->session->userdata('login_data')['user_id'];
         $emp_id = $this->session->userdata('login_data')['emp_id'];
@@ -1550,7 +1083,7 @@ class DataTables extends CI_Controller {
         exit();
     }
     
-    //Datatable ng User
+    // DATATABLE for USER (TRACC REQUEST FORM)
     public function get_trf_ticket() {
         $user_id = $this->session->userdata('login_data')['user_id'];  
         $emp_id = $this->session->userdata('login_data')['emp_id']; 
@@ -1685,28 +1218,25 @@ class DataTables extends CI_Controller {
                         break;
                 }
                 $priority_label[] = '<span class="label ' . $priority_class . '">' . $rows->priority . '</span>';
-    
                 // Ticket data
                 $trf_ticket[] = "<a href='" . base_url() . "sys/users/details/concern/tracc_request/" . $rows->ticket_id . "'>" . $rows->ticket_id . "</a>";
                 $name[] = $rows->requested_by;
                 $subject[] = $rows->subject;
             }
     
-            // Create rows for the output
             for ($i = 0; $i < count($trf_ticket); $i++) {
                 $data[] = array(
-                    $trf_ticket[$i],// Control Number   
-                    $name[$i],          // Reported by
-                    $subject[$i],       // Subject
+                    $trf_ticket[$i],
+                    $name[$i],         
+                    $subject[$i],       
                     $priority_label[$i],
-                    $status_label[$i],  // Status label
-                    $app_stat_label[$i],// Approval status label
-                    $it_stat_label[$i]  // IT approval status label
+                    $status_label[$i],  
+                    $app_stat_label[$i],
+                    $it_stat_label[$i] 
                 );
             }
         }
     
-        // Return the output for DataTables
         $output = array(
             "draw" => $draw,  
             "recordsTotal" => $length_count,  
@@ -1718,10 +1248,7 @@ class DataTables extends CI_Controller {
         exit();
     }
 
-    /*
-        Kevin's codes
-    */
-
+    // Kevin's code 
     public function print_tickets_msrf() {
 
         // Get start and end date input.
@@ -1777,7 +1304,6 @@ class DataTables extends CI_Controller {
             "data" => $formattedData
         );
 
-        // Return the array in json format.
         echo json_encode($output);
         exit();
     }

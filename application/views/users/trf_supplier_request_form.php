@@ -97,7 +97,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/user_creation_customer_request_form_pdf'); ?>" method="POST">
+                                        <form action="<?= site_url('Main/user_creation_supplier_request_form_pdf'); ?>" method="POST">
                                             <div class="col-md-12">
                                                 <select name="trf_number" id="trf_number" class="form-control" required>
                                                     <option value="" disabled selected>Select Ticket Number</option>
@@ -118,19 +118,19 @@
                                                 <div class="col-md-7 text-center" style="margin-top: 15px;">
                                                     <div class="form-group d-flex justify-content-center">
                                                         <div class="checkbox-inline custom-checkbox">
-                                                            <input type="checkbox" name="crf_comp_checkbox_value[]" value="LMI" id="checkbox_lmi">
+                                                            <input type="checkbox" name="trf_comp_checkbox_value[]" value="LMI" id="checkbox_lmi">
                                                             <label for="checkbox_lmi" class="checkbox-label">LMI</label>
                                                         </div>
                                                         <div class="checkbox-inline custom-checkbox">
-                                                            <input type="checkbox" name="crf_comp_checkbox_value[]" value="RGDI" id="checkbox_rgdi">
+                                                            <input type="checkbox" name="trf_comp_checkbox_value[]" value="RGDI" id="checkbox_rgdi">
                                                             <label for="checkbox_rgdi" class="checkbox-label">RGDI</label>
                                                         </div>
                                                         <div class="checkbox-inline custom-checkbox">
-                                                            <input type="checkbox" name="crf_comp_checkbox_value[]" value="LPI" id="checkbox_lpi">
+                                                            <input type="checkbox" name="trf_comp_checkbox_value[]" value="LPI" id="checkbox_lpi">
                                                             <label for="checkbox_lpi" class="checkbox-label">LPI</label>
                                                         </div>
                                                         <div class="checkbox-inline custom-checkbox">
-                                                            <input type="checkbox" name="crf_comp_checkbox_value[]" value="SV" id="checkbox_sv">
+                                                            <input type="checkbox" name="trf_comp_checkbox_value[]" value="SV" id="checkbox_sv">
                                                             <label for="checkbox_sv" class="checkbox-label">SVI</label>
                                                         </div>
                                                     </div>
@@ -153,13 +153,13 @@
                                                     <div class="d-flex flex-column">
                                                         <!-- Local Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
-                                                            <label for="local_supplier" class="mb-0 supplier-group-label checkbox-label-sup">01 - Local</label>
-                                                            <input type="checkbox" name="local_supplier" id="local_supplier" value="">
+                                                            <label for="local_supplier_grp" class="mb-0 supplier-group-label checkbox-label-sup">01 - Local</label>
+                                                            <input type="checkbox" name="local_supplier_grp" id="local_supplier_grp" value="1">
                                                         </div>
                                                         <!-- Foreign Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
-                                                            <label for="foreign_supplier" class="mb-0 supplier-group-label checkbox-label-sup">02 - Foreign</label>
-                                                            <input type="checkbox" name="foreign_supplier" id="foreign_supplier" value="">
+                                                            <label for="foreign_supplier_grp" class="mb-0 supplier-group-label checkbox-label-sup">02 - Foreign</label>
+                                                            <input type="checkbox" name="foreign_supplier_grp" id="foreign_supplier_grp" value="1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -172,12 +172,12 @@
                                                         <!-- Local Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="supplier_trade" class="mb-0 supplier-group-label checkbox-label-sup">01 - Trade</label>
-                                                            <input type="checkbox" name="supplier_trade" id="supplier_trade" value="">
+                                                            <input type="checkbox" name="supplier_trade" id="supplier_trade" value="1">
                                                         </div>
                                                         <!-- Foreign Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="supplier_non_trade" class="mb-0 supplier-group-label checkbox-label-sup">02 - Non-Trade</label>
-                                                            <input type="checkbox" name="supplier_non_trade" id="supplier_non_trade" value="">
+                                                            <input type="checkbox" name="supplier_non_trade" id="supplier_non_trade" value="1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -190,16 +190,16 @@
                                                         <!-- Local Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="trade_type_goods" class="mb-0 supplier-group-label checkbox-label-sup">01 - Goods</label>
-                                                            <input type="checkbox" name="trade_type_goods" id="trade_type_goods" value="01">
+                                                            <input type="checkbox" name="trade_type_goods" id="trade_type_goods" value="1">
                                                         </div>
                                                         <!-- Foreign Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="trade_type_services" class="mb-0 supplier-group-label checkbox-label-sup">02 - Services</label>
-                                                            <input type="checkbox" name="trade_type_services" id="trade_type_services" value="02">
+                                                            <input type="checkbox" name="trade_type_services" id="trade_type_services" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="trade_type_GoodsServices" class="mb-0 supplier-group-label checkbox-label-sup">03 - Goods/Services</label>
-                                                            <input type="checkbox" name="trade_type_GoodsServices" id="trade_type_GoodsServices" value="02">
+                                                            <input type="checkbox" name="trade_type_GoodsServices" id="trade_type_GoodsServices" value="1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -213,56 +213,56 @@
                                                         <!-- Local Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_local_trade_ven" class="mb-0 major-group-label">001 - Local Trade Vendors</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_local_trade_ven" id="major_grp_local_trade_ven" value="01">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_local_trade_ven" id="major_grp_local_trade_ven" value="1">
                                                         </div>
                                                         <!-- Foreign Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_local_nontrade_ven" class="mb-0 major-group-label">002 - Local Non-Trade Vendors</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_local_nontrade_ven" id="major_grp_local_nontrade_ven" value="02">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_local_nontrade_ven" id="major_grp_local_nontrade_ven" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_foreign_trade_ven" class="mb-0 major-group-label">003 - Foreign Trade Vendors</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_foreign_trade_ven" id="major_grp_foreign_trade_ven" value="03">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_foreign_trade_ven" id="major_grp_foreign_trade_ven" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_foreign_nontrade_ven" class="mb-0 major-group-label">004 - Foreign Non-Trade Vendors</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_foreign_nontrade_ven" id="major_grp_foreign_nontrade_ven" value="04">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_foreign_nontrade_ven" id="major_grp_foreign_nontrade_ven" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_local_broker_forwarder" class="mb-0 major-group-label">005 - Local-Broker/Forwarder</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_local_broker_forwarder" id="major_grp_local_broker_forwarder" value="05">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_local_broker_forwarder" id="major_grp_local_broker_forwarder" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_rental" class="mb-0 major-group-label">006 - Rental</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_rental" id="major_grp_rental" value="06">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_rental" id="major_grp_rental" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_bank" class="mb-0 major-group-label">007 - Bank</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_bank" id="major_grp_bank" value="07">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_bank" id="major_grp_bank" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_one_time_supplier" class="mb-0 major-group-label">008 - One Time Supplier</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_one_time_supplier" id="major_grp_one_time_supplier" value="08">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_one_time_supplier" id="major_grp_one_time_supplier" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_government_offices" class="mb-0 major-group-label">009 - Government Offices</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_government_offices" id="major_grp_government_offices" value="09">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_government_offices" id="major_grp_government_offices" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_insurance" class="mb-0 major-group-label">010 - Insurance</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_insurance" id="major_grp_insurance" value="10">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_insurance" id="major_grp_insurance" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_employees" class="mb-0 major-group-label">011 - Employees</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_employees" id="major_grp_employees" value="11">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_employees" id="major_grp_employees" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_subs_affiliates" class="mb-0 major-group-label">012 - Sub/Affiliates/Intercompany</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_subs_affiliates" id="major_grp_subs_affiliates" value="12">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_subs_affiliates" id="major_grp_subs_affiliates" value="1">
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_utilities" class="mb-0 major-group-label">013 - Utilities</label>
-                                                            <input type="checkbox" class="ms-auto" name="major_grp_utilities" id="major_grp_utilities" value="13">
+                                                            <input type="checkbox" class="ms-auto" name="major_grp_utilities" id="major_grp_utilities" value="1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -271,98 +271,98 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Supplier Code</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="supplier_code" id="supplier_code" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Supplier Code</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <label>Supplier Account Group</label>
+                                                    <input type="text" name="supplier_account_group" id="supplier_account_group" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
                                             
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Supplier Name</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="supplier_name" id="supplier_name" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Country Origin</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="country_origin" id="country_origin" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Supplier Address</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="supplier_address" id="supplier_address" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Office Tel. No:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="office_tel_no" id="office_tel_no" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Zip Code:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="number" name="zip_code" id="zip_code" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Contact Person:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="contact_person" id="contact_person" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Terms:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2">  
+                                                    <input type="text" name="terms" id="terms" value="" class="form-control select2">  
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Tin No:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="number" name="tin_no" id="tin_no" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Pricelist:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2">  
+                                                    <input type="number" name="pricelist" id="pricelist" value="" class="form-control select2">  
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>A/P Account:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="ap_account" id="ap_account" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>EWT:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2">  
+                                                    <input type="text" name="ewt" id="ewt" value="" class="form-control select2">  
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Advance Account:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="advance_acc" id="advance_acc" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
@@ -371,11 +371,11 @@
                                                     <label for="item_classification">VAT:</label>
                                                     <div class="d-flex align-items-center">
                                                         <!-- Textbox -->
-                                                        <input type="text" name="item_classification" id="item_classification" class="form-control" style="flex: 1;">
+                                                        <input type="number" name="vat" id="vat" class="form-control" style="flex: 1;">
                                                         <!-- Checkbox -->
                                                         <div class="form-check ms-auto d-flex align-items-center" style="margin-left: auto; margin-top: 10px;">
                                                             <label for="non_vat" class="form-check-label me-2" style="font-size: 20px; line-height: 1.5;">Non-VAT</label>
-                                                            <input type="checkbox" name="non_vat" id="non_vat" class="form-check-input" style="width: 40px; height: 19px;">
+                                                            <input type="checkbox" name="checkbox_non_vat" id="checkbox_non_vat" class="form-check-input" style="width: 40px; height: 19px;">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -384,21 +384,21 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Payee 1</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="payee1" id="payee1" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Payee 2</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="payee2" id="payee2" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Payee 3</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="payee3" id="payee3" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
@@ -419,28 +419,28 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Name</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="driver_name" id="driver_name" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Contact No:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="driver_contact_no" id="driver_contact_no" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Fleet:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="driver_fleet" id="driver_fleet" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Plate No:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="driver_plate_no" id="driver_plate_no" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
@@ -451,21 +451,21 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Name</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="helper_name" id="helper_name" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Contact No:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="helper_contact_no" id="helper_contact_no" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Rate Card:</label>
-                                                    <input type="text" name="item_classification" id="item_classification" value="" class="form-control select2"> 
+                                                    <input type="text" name="helper_rate_card" id="helper_rate_card" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 
@@ -499,10 +499,5 @@
 <script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
 <script>
 
-    $(document).ready(function() {
-        // Set the current date in YYYY-MM-DD format
-        var today = new Date().toISOString().split('T')[0];
-        $('#date').val(today);
-    });
-
+   
 </script>

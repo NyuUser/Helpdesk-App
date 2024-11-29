@@ -12,7 +12,7 @@
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">Employee List</h3>
+                <h3 class="box-title">Add Department</h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                 </div>
@@ -53,50 +53,43 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
-	/* Popup: Overall container */
-.swal-custom-popup {
-    padding: 20px; /* Adjust padding */
-}
+    .swal-custom-popup {
+        padding: 20px; 
+    }
 
-/* Title: Customize font size and weight */
-.swal-custom-title {
-    font-size: 3em; /* Larger title */
-    font-weight: bold; /* Make the title bold */
-}
+    .swal-custom-title {
+        font-size: 3em; 
+        font-weight: bold; 
+    }
 
-/* Content: Customize font size and line spacing */
-.swal-custom-content {
-    font-size: 5.5em; /* Larger content text */
-    line-height: 1.6; /* Adjust line spacing */
-}
+    .swal-custom-content {
+        font-size: 5.5em; 
+        line-height: 1.6;
+    }
 
-/* Confirm Button: Customize size and padding */
-.swal-custom-confirm-btn {
-    font-size: 1.6em; /* Larger button text */
-    padding: 10px 20px; /* Adjust padding for the button */
-}
+    .swal-custom-confirm-btn {
+        font-size: 1.6em; 
+        padding: 10px 20px; 
+    }
 
-/* Optional: Increase button border radius and background color */
-.swal-custom-confirm-btn, .swal-custom-cancel-btn {
-    border-radius: 8px; /* Make the buttons more rounded */
-    background-color: #007bff; /* Change button color */
-    color: #fff; /* Ensure text is white */
-}
+    .swal-custom-confirm-btn, .swal-custom-cancel-btn {
+        border-radius: 8px;
+        background-color: #007bff; 
+        color: #fff; 
+    }
 
-.swal-custom-confirm-btn:hover, .swal-custom-cancel-btn:hover {
-    background-color: #0056b3; /* Darker color on hover */
-}
+    .swal-custom-confirm-btn:hover, .swal-custom-cancel-btn:hover {
+        background-color: #0056b3; 
+    }
 
-.swal-custom-text {
-    font-size: 2em; /* Adjust the size as needed */
-}
+    .swal-custom-text {
+        font-size: 2em; 
+    }
 
-/* Optional: To ensure the custom styles are applied correctly */
-.swal2-html-container {
-    font-size: 2em !important; /* Use !important if necessary to override defaults */
-}
+    .swal2-html-container {
+        font-size: 2em !important; 
+    }
 
-/* mema lagay */
 </style>
 
 <script>

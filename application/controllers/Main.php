@@ -1109,74 +1109,6 @@ class Main extends CI_Controller {
 			redirect("sys/authentication");
 		}
 	}
-	
-
-	/*public function admin_approval_list($subject, $id) {
-		if ($this->session->userdata('login_data')) {
-			$user_id = $this->session->userdata('login_data')['user_id'];
-			$user_role = $this->session->userdata('login_data')['role'];
-			$user_dept = $this->session->userdata('login_data')['sup_id'];
-			$dept_id = $this->session->userdata('login_data')['dept_id'];
-			$user_details = $this->Main_model->user_details();
-			$msrf_tickets = $this->Main_model->getTicketsMSRF($id);
-			$getTraccCon = $this->Main_model->getTraccConcernByID($id);
-			$ict = $this->Main_model->GetICTSupervisor();
-	
-			if ($user_details[0] == "ok") {
-				$sid = $this->session->session_id;
-				$data['user_details'] = $user_details[1];
-				$data['msrf'] = $msrf_tickets[1];
-				$data['ict'] = $ict;
-				$emp_id = $user_details[1]["emp_id"];
-				$getTeam = $this->Main_model->GetTeam($dept_id);
-				$data['pages'] = 'tickets';
-	
-				// Handle the active menu logic
-				$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
-				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';
-				$data['active_menu'] = $active_menu;
-	
-				// Handle TRACC Concern data
-				if ($subject == "TRACC_CONCERN") {
-					if ($getTraccCon[0] == "ok") {
-						// Access control_number safely
-						$control_number = $getTraccCon[1]['control_number'];
-						$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
-						$data['tracc_con'] = $getTraccCon[1]; // Store TRACC concern data
-					} else {
-						// Handle the case where no TRACC Concern data was found
-						$data['checkboxes'] = []; // Set to empty array if no data
-						$data['tracc_con'] = []; // Set to empty array if no data
-						$this->session->set_flashdata('error', $getTraccCon[1]); // Use the error message returned
-					}
-	
-					// Load TRACC Concern views
-					$this->load->view('admin/header', $data);
-					$this->load->view('admin/tickets_approval_tracc_concern', $data);
-					$this->load->view('admin/sidebar', $data);
-					$this->load->view('admin/footer');
-	
-				} else if ($subject == "MSRF") {
-					$this->load->view('admin/header', $data);
-					$this->load->view('admin/tickets_approval_msrf', $data);
-					$this->load->view('admin/sidebar', $data);
-					$this->load->view('admin/footer');
-				}
-	
-				// Other logic for L2 user role if applicable
-				if ($user_role == "L2") {
-					$data['getTeam'] = $getTeam[1];
-				}
-	
-			} else {
-				$this->session->set_flashdata('error', 'Error fetching user information.');
-				redirect("sys/authentication");
-			}
-		} else {
-			$this->session->set_flashdata('error', 'Error fetching user information');
-			redirect("sys/authentication");
-		}
-	}*/
 
 
 	public function dept_supervisor_approval() {
@@ -2792,7 +2724,7 @@ class Main extends CI_Controller {
 		$user_details = $this->Main_model->user_details();
 		$getdepartment = $this->Main_model->GetDepartmentID();
 		$users_det = $this->Main_model->users_details_put($id);
-		//$ticket_numbers = $this->Main_model->get_item_request_form_from_tracc_req_mf_new_add();
+		$ticket_numbers = $this->Main_model->get_supplier_from_tracc_req_mf_new_add();
 
 		$departments_result = $this->Main_model->getDepartment();
 		$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
@@ -2801,7 +2733,7 @@ class Main extends CI_Controller {
 			$data['user_details'] = $user_details[1];
 			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
 			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
-			//$data['ticket_numbers'] = $ticket_numbers;
+			$data['ticket_numbers'] = $ticket_numbers;
 	
 			$data['departments'] = $departments;
 	
@@ -2816,8 +2748,99 @@ class Main extends CI_Controller {
 		}
 	}
 
+	public function user_creation_supplier_request_form_pdf() {
+		$trf_comp_checkbox_value = isset($_POST['trf_comp_checkbox_value']) ? $_POST['trf_comp_checkbox_value'] : [];
+		$imploded_values = implode(',', $trf_comp_checkbox_value);
+
+		$checkbox_non_vat = isset($_POST['checkbox_non_vat']) ? 1 : 0;
+
+		$checkbox_supplier_req_form = [
+			'local_supplier_grp' => isset($_POST['local_supplier_grp']) ? 1 : 0,
+			'foreign_supplier_grp' => isset($_POST['foreign_supplier_grp']) ? 1 : 0,
+			'supplier_trade' => isset($_POST['supplier_trade']) ? 1 : 0,
+			'supplier_non_trade' => isset($_POST['supplier_non_trade']) ? 1 : 0,
+			'trade_type_goods' => isset($_POST['trade_type_goods']) ? 1 : 0,
+			'trade_type_services' => isset($_POST['trade_type_services']) ? 1 : 0,
+			'trade_type_GoodsServices' => isset($_POST['trade_type_GoodsServices']) ? 1 : 0,
+			'major_grp_local_trade_ven' => isset($_POST['major_grp_local_trade_ven']) ? 1 : 0,
+			'major_grp_local_nontrade_ven' => isset($_POST['major_grp_local_nontrade_ven']) ? 1 : 0,
+			'major_grp_foreign_trade_ven' => isset($_POST['major_grp_foreign_trade_ven']) ? 1 : 0,
+			'major_grp_foreign_nontrade_ven' => isset($_POST['major_grp_foreign_nontrade_ven']) ? 1 : 0,
+			'major_grp_local_broker_forwarder' => isset($_POST['major_grp_local_broker_forwarder']) ? 1 : 0,
+			'major_grp_rental' => isset($_POST['major_grp_rental']) ? 1 : 0,
+			'major_grp_bank' => isset($_POST['major_grp_bank']) ? 1 : 0,
+			'major_grp_one_time_supplier' => isset($_POST['major_grp_one_time_supplier']) ? 1 : 0,
+			'major_grp_government_offices' => isset($_POST['major_grp_government_offices']) ? 1 : 0,
+			'major_grp_insurance' => isset($_POST['major_grp_insurance']) ? 1 : 0,
+			'major_grp_employees' => isset($_POST['major_grp_employees']) ? 1 : 0,
+			'major_grp_subs_affiliates' => isset($_POST['major_grp_subs_affiliates']) ? 1 : 0,
+			'major_grp_utilities' => isset($_POST['major_grp_utilities']) ? 1 : 0,
+		];
 	
+		$process = $this->Main_model->add_supplier_request_form_pdf($imploded_values, $checkbox_non_vat,$checkbox_supplier_req_form);
+
+		if ($process[0] == 1) {
+			$this->session->set_flashdata('success', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_supplier_request_form_tms');  
+		} else {
+			$this->session->set_flashdata('error', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_supplier_request_form_tms');  
+		}
+	}
 	
+	public function supplier_request_form_pdf_view($active_menu = 'supplier_request_form_pdf') {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+
+			if($user_details[0] == "ok"){
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+
+				$allowed_menus = ['supplier_request_form_pdf', 'system_administration', 'other_menus'];
+				if(!in_array($active_menu, $allowed_menus)) {
+					$active_menu = 'dashboard';
+				}
+				$data['active_menu'] = $active_menu;
+
+				$this->load->view('admin/header', $data);
+				$this->load->view('admin/sidebar', $data);
+				$this->load->view('admin/pdf_request_form', $data);
+				$this->load->view('admin/footer');
+			} else {
+				$this->session->setflashdata('error', 'Error fetching user information.');
+				redirect('sys/authentication');
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect('sys/authentication');
+		}
+	}
+
+
+
+	public function fetch_data() {
+		$tab = $this->input->post('tab'); // Get the tab ID
+	
+		// Load the Main_model
+		$this->load->model('Main_model'); 
+	
+		// Determine the condition based on the selected tab
+		$condition = "";
+		if ($tab === 'tab-1') {
+			$condition = 'value1';
+		} elseif ($tab === 'tab-2') {
+			$condition = 'value2';
+		} elseif ($tab === 'tab-3') {
+			$condition = 'value3';
+		}
+	
+		// Fetch data using Main_model
+		$data = $this->Main_model->get_tab_data($condition);
+	
+		// Return the data as HTML
+		echo $data;
+	}
 	
 	
 }

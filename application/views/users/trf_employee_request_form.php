@@ -78,7 +78,7 @@
                 <div class="col-xs-12">
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
-			                <li class="active"><a href="#msrf" data-toggle="tab">Customer Request Form Tickets</a></li>
+			                <li class="active"><a href="#msrf" data-toggle="tab">Employee Request Form Tickets</a></li>
 			            </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="msrf">

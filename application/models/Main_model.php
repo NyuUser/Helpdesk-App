@@ -11,28 +11,22 @@ class Main_model extends CI_Model {
 		$password = $this->input->post('password');
 		$conpassword = $this->input->post('conpassword');
 	
-		// Check if passwords match
 		if ($password != $conpassword) {
 			$response = array(
 				'status' => 'error',
 				'message' => 'Passwords do not match!'
 			);
 			echo json_encode($response);
-			exit; // Prevent further execution
+			exit;
 		} else {
 			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-			
-			// Get department ID
 			$dept_id = $this->input->post('dept_name');
-
-			// Fetch department description from the model
 			$department_details = $this->Main_model->get_department_details($dept_id);
 			
-			// Check if department details were fetched successfully
 			if ($department_details[0] == "ok") {
-				$department_description = $department_details[1]['dept_desc']; // Assuming 'dept_desc' is the column name
+				$department_description = $department_details[1]['dept_desc']; 
 			} else {
-				$department_description = ''; // Handle case if department not found
+				$department_description = '';
 			}
 
 			$employee_id = $this->input->post('employee_id');
@@ -66,11 +60,9 @@ class Main_model extends CI_Model {
 				'failed_attempts' => 1,
 				'created_at' => date("Y-m-d H:i:s")
 			);
-	
-			// Insert user data into the database
+
 			$this->db->insert('users', $data);
 	
-			// Check if insert was successful
 			if ($this->db->affected_rows() > 0) {
 				$response = array(
 					'status' => 'success',
@@ -84,45 +76,9 @@ class Main_model extends CI_Model {
 			}
 	
 			echo json_encode($response);
-			exit; // Prevent further execution
+			exit; 
 		}
 	}
-	
-
-	/*public function login() {
-		// Retrieve and sanitize the username from POST data
-		$username = $this->input->post('username');
-		$password = $this->input->post('password');
-
-		// SQL query to fetch the user record based on the provided username
-		//$sql = "SELECT * FROM users WHERE username = ?";
-		//$res = $this->db->query($sql, array($username));
-		$this->db->where('username', $username);
-		$query = $this->db->get('users');
-
-
-		
-		// Debugging: Print the query result
-		echo '<pre>';
-		print_r($query->result_array()); // Display the query result
-		echo '</pre>';
-		exit; // Stop execution to check data
-
-		// Check if the query returned any results
-		if ($query->num_rows() > 0) {
-			// Fetch the user data as an associative array
-			$user = $query->row();
-			if(password_verify($password, $user->password))
-				return array(1, array(
-						'emp_id' => ['emp_id'],
-						'user_id' => ['recid'],
-						'role' => ['role'],
-						'status' => 1,
-						'dept_id' => ['dept_id'],
-						'sup_id' => ['sup_id']
-				));
-		}
-	}*/
 	
 	public function login() {
 	    $username = trim($this->input->post('username', true));
@@ -185,20 +141,6 @@ class Main_model extends CI_Model {
 	}
 	
 	//fetch details of the currently logged-in user from 'user' table
-	/*public function user_details() {
-		$user_id = $this->session->userdata('login_data')['user_id'];
-		$this->db->where('recid', $user_id);
-		$query = $this->db->get('users');
-		
-		if ($query->num_rows() > 0) {
-			return array("ok", $query->row_array());
-		} else {
-			return array("error", "No data was fetched.");
-		}
-	}*/
-	
-
-	//fetch details of the currently logged-in user from 'user' table
 	public function user_details() {
 		$user_id = $this->session->userdata('login_data')['user_id'];
 		$this->db->where('recid', $user_id);
@@ -214,7 +156,6 @@ class Main_model extends CI_Model {
 		}
 	}	
 
-	//retrieves the details of a specific user from the 'user' table based on the user ID 
 	public function users_details_put($id) {
 		$this->db->where('recid', $id);
 		$query = $this->db->get('users');
@@ -291,7 +232,6 @@ class Main_model extends CI_Model {
 				'created_at' => date("Y-m-d H:i:s")
 			);
 			
-			 // Check if there is a file path and add it to the data array
 			if ($file_path !== null) {
 				$data['file'] = $file_path;
 			}
@@ -420,7 +360,6 @@ class Main_model extends CI_Model {
 		return $qry->result_array();
 	}
 
-	// Fetch ALL the department from DB
 	public function getDepartment() {
 		$query = $this->db->query("SELECT * FROM departments");
 	
@@ -463,7 +402,6 @@ class Main_model extends CI_Model {
 	public function get_department_details($id) {
 		$id = (int) $id;
 	
-		// Fetch the department details
 		$this->db->where('recid', $id);
 		$query = $this->db->get('departments');
 	
@@ -475,7 +413,7 @@ class Main_model extends CI_Model {
 	}
 	
 	public function update_department_status($data_module, $id, $data_remarks, $data_status) {
-	    $id = (int) $id;  // Ensure $id is an integer
+	    $id = (int) $id;  
 	    
 	    if($data_status === "Rejected"){
 	    	$this->db->set('approval_status', 'Rejected');
@@ -496,7 +434,6 @@ class Main_model extends CI_Model {
 	    	$update_success = $this->db->update('service_request_msrf');
 	    }
 
-	    // Check if the update was successful based on affected rows
 	    if ($update_success && $this->db->affected_rows() > 0) {
 	        return array(1, "Department approval status updated successfully.");
 	    } else {
@@ -515,94 +452,7 @@ class Main_model extends CI_Model {
         }
     }
 	
-	/*public function add_employee() {
-		// Retrieve form data with XSS filtering
-		$emp_id = $this->input->post('emp_id', true);
-		$fname = $this->input->post('fname', true);
-		$mname = $this->input->post('mname', true);
-		$lname = $this->input->post('lname', true);
-		$email = $this->input->post('email', true);
-		$department = $this->input->post('department', true);
-		$position = $this->input->post('position', true);
-		$role = $this->input->post('role', true);
-		$username = $this->input->post('username', true);
-		$password = $this->input->post('password', true);
-		$cpassword = $this->input->post('cpassword', true);
-
-		if (!empty($password) && $password !== $cpassword) {
-			return array(0, "Password and Confirm Password do not match.");
-		}
-		
-		// Hash the password for secure storage
-		$new_password = password_hash($password, PASSWORD_DEFAULT);
-
-		$sup_id = $this->Main_model->getSupervisorByDepartment($department);
-		/*
-		// Initialize a variable for role detection
-		$word_preg = '';
-
-		// Check if the position contains the word "Manager"
-		if (preg_match('/\bManager\b/i', $position, $matches)) {
-			$word_preg = $matches[0];
-		} 
-		// Check if the position contains the word "Supervisor"
-		else if (preg_match('/\bSupervisor\b/i', $position, $matches)) {
-			$word_preg = $matches[0];
-		} 
-		// If neither, set it to an empty string
-		else {
-			$word_preg = '';
-		}
-
-		// Determine the role ID and supervisor ID based on the position
-		if ($word_preg == "Manager") {
-			$pos_id = "L3";   // Manager level
-			$sup_id = '';      // No supervisor for Managers
-		} else if ($word_preg == "Supervisor") {
-			$pos_id = "L2";   // Supervisor level
-			$sup_id = '';      // No supervisor for Supervisors
-		} else {
-			$pos_id = "L1";   // Regular employee level
-			$sup_id = $department; // Set supervisor ID to department
-		}*/
-
-		// Prepare data for insertion into the database
-		/*$data = array(
-			'emp_id' => $emp_id,
-			'fname' => $fname, 	
-			'mname' => $mname,
-			'lname' => $lname,
-			'email' => $email,
-			'position' => $position,
-			'username' => $username,
-			'password' => $new_password,
-			's_password' => $password,
-			'api_password' => $new_password,
-			's_api_password' => $password,
-			'dept_id' => $department,
-			'department_description' => $department,
-			'sup_id' => $sup_id,
-			'role' => $role,
-			'status' => 1,
-			'failed_attempts' => 1,
-			'created_at' => date("Y-m-d H:i:s")
-		);
-
-		// Insert the data into the 'users' table
-		$query = $this->db->insert('users', $data);
-
-		// Check if the insert operation was successful
-		if ($this->db->affected_rows() > 0) {
-			$this->db->trans_commit();  // Commit the transaction
-			return array(1, "Successfully added employee."); // Return success message
-		} else {
-			$this->db->trans_rollback();  // Rollback the transaction
-			return array(0, "Error adding employee. Please try again."); // Return error message
-		}
-	}*/
-
 	public function add_employee() {
-		// Retrieve form data with XSS filtering
 		$emp_id = $this->input->post('emp_id', true);
 		$fname = $this->input->post('fname', true);
 		$mname = $this->input->post('mname', true);
@@ -619,24 +469,18 @@ class Main_model extends CI_Model {
 			return array(0, "Password and Confirm Password do not match.");
 		}
 	
-		// Hash the password for secure storage
 		$new_password = password_hash($password, PASSWORD_DEFAULT);
 	
-		// Get supervisor ID based on department
 		$sup_id = $this->Main_model->getSupervisorByDepartment($department);
 	
-		// Get department details using the department ID
 		list($status, $department_details) = $this->get_department_details($department);
-	
-		// Check if the department was found
+
 		if ($status === "error") {
-			return array(0, $department_details); // Return error message if no data found
+			return array(0, $department_details); 
 		}
+
+		$department_description = $department_details['dept_desc']; 
 	
-		// Extract department description
-		$department_description = $department_details['dept_desc']; // Adjust based on your actual column name
-	
-		// Prepare data for insertion into the database
 		$data = array(
 			'emp_id' => $emp_id,
 			'fname' => $fname,
@@ -649,8 +493,8 @@ class Main_model extends CI_Model {
 			//'s_password' => $password,
 			'api_password' => $new_password,
 			//'s_api_password' => $password,
-			'dept_id' => $department, // Store department ID
-			'department_description' => $department_description, // Store department description
+			'dept_id' => $department, 
+			'department_description' => $department_description, 
 			'sup_id' => $sup_id,
 			'role' => $role,
 			'status' => 1,
@@ -658,17 +502,15 @@ class Main_model extends CI_Model {
 			'created_at' => date("Y-m-d H:i:s")
 		);
 	
-		// Insert the data into the 'users' table
-		$this->db->trans_start(); // Start transaction
+		$this->db->trans_start(); 
 		$query = $this->db->insert('users', $data);
-	
-		// Check if the insert operation was successful
+
 		if ($this->db->affected_rows() > 0) {
-			$this->db->trans_commit();  // Commit the transaction
-			return array(1, "Successfully added employee."); // Return success message
+			$this->db->trans_commit();  
+			return array(1, "Successfully added employee."); 
 		} else {
-			$this->db->trans_rollback();  // Rollback the transaction
-			return array(0, "Error adding employee. Please try again."); // Return error message
+			$this->db->trans_rollback();  
+			return array(0, "Error adding employee. Please try again."); 
 		}
 	}
 	
@@ -690,7 +532,6 @@ class Main_model extends CI_Model {
 			return array(0, "Passwords do not match.");
 		}
 
-		// Fetch department details
 		$department_details = $this->get_department_details($department);  
 		if ($department_details[0] == "ok") {
 			$department_description = $department_details[1]['dept_desc']; 
@@ -698,10 +539,8 @@ class Main_model extends CI_Model {
 			return array(0, "Department not found.");
 		}
 
-		// Start a transaction
 		$this->db->trans_start();
 		 
-		// Prepare update data
 		$data = [
 			'emp_id' => $emp_id,
 			'fname' => $fname,
@@ -726,23 +565,16 @@ class Main_model extends CI_Model {
 			//$data['s_api_password'] = $password;
 		}
 	
-		// Set supervisor ID if applicable (Make sure to define `$sup_id` logic)
-		// $data['sup_id'] = $sup_id;
-	
-		// Perform the update
 		$this->db->where('recid', $id);
 		$this->db->update('users', $data);
 	
-		// Complete the transaction
 		$this->db->trans_complete();
 
-		// Check the status of the transaction
 		if ($this->db->trans_status() === FALSE) {
 			return array(0, "Error updating Users. Please try again.");
 		} elseif ($this->db->affected_rows() > 0) {
 			return array(1, "Successfully updated User ID: ". $id);
 		} else {
-			// No rows were updated because no data changed
 			return array(1, "No changes were made for User ID: " . $id);
 		}
 	}
@@ -802,72 +634,6 @@ class Main_model extends CI_Model {
 		}
 	}
 
-	/*public function status_approval_tracc_concern() {
-		$control_number = $this->input->post('control_number', true);
-		$received_by = $this->input->post('received_by', true);
-		$noted_by = $this->input->post('noted_by', true);
-		$approval_stat = $this->input->post('app_stat', true);
-		$it_approval_stat = $this->input->post('it_app_stat', true);
-		$reject_ticket_traccCon = $this->input->post('reason_rejected', true);
-		$solution = $this->input->post('tcr_solution', true);
-		$resolved_by = $this->input->post('resolved_by', true);
-		$resolved_date = $this->input->post('res_date', true);
-		$others = $this->input->post('others', true);
-		$received_by_lst = $this->input->post('received_by_lst', true);
-		$date_lst = $this->input->post('date_lst', true);
-
-		$this->db->trans_start();
-
-		$qry = $this->db->query('SELECT * FROM service_request_tracc_concern WHERE control_number = ?', array($control_number));
-
-		if ($qry->num_rows() > 0) {
-			$row = $qry->row();
-
-			if ($row->approval_status == "Approved") {
-				$this->db->set('status', 'Open');
-
-				if ($it_approval_stat == 'Resolved') {
-					$this->db->set('it_approval_status', 'Resolved');
-				} else if ($it_approval_stat == 'Closed') {
-					$this->db->set('it_approval_status', 'Closed');
-					$this->db->set('status', 'Closed');
-				} else if($it_approval_stat == 'Rejected') {
-					$this->db->set('it_approval_status', 'Rejected');
-					$this->db->set('status', 'Rejected');
-				} else if ($it_approval_stat == 'Approved'){
-					$this->db->set('it_approval_status', 'Approved');
-					$this->db->set('status', 'In Progress');
-				}
-
-				$this->db->set('it_approval_status', $it_approval_stat);
-			} else {
-				$this->db->set('approval_status', $approval_stat);
-			}	
-				$this->db->set('received_by', $received_by);
-				$this->db->set('noted_by', $noted_by);
-				$this->db->set('reason_reject_tickets', $reject_ticket_traccCon);
-				$this->db->set('tcr_solution', $solution);
-				$this->db->set('resolved_by', $resolved_by);
-				$this->db->set('resolved_date', $resolved_date);
-				$this->db->set('others', $others);
-				$this->db->set('received_by_lst', $received_by_lst);
-				$this->db->set('date_lst', $date_lst);
-				$this->db->where('control_number', $control_number);
-				$this->db->update('service_request_tracc_concern');
-
-				$this->db->trans_complete();
-
-				if ($this->db->trans_status === FALSE){
-					return array(0, "Error updating ticket, please try again.");
-				} else {
-					return array(1, "Succesfully updated ticket: " . $control_number);
-				}
-		} else {
-			return array(0, "Service request not found for ticket: " . $control_number);
-		}
-		
-	}*/
-
 	public function status_approval_tracc_concern() {
 		$control_number = $this->input->post('control_number', true);
 		$received_by = $this->input->post('received_by', true);
@@ -885,28 +651,25 @@ class Main_model extends CI_Model {
 	
 		$this->db->trans_start();
 	
-		// Retrieve the ticket based on control_number
 		$qry = $this->db->query('SELECT * FROM service_request_tracc_concern WHERE control_number = ?', array($control_number));
 	
 		if ($qry->num_rows() > 0) {
 			$row = $qry->row();
 			
-			// Update the 'approval_status' and 'it_approval_status' based on the form inputs
 			if ($approval_stat == 'Rejected') {
 				$this->db->set('approval_status', 'Rejected');
-				$this->db->set('status', 'Rejected');  // Update the overall status when the main approval is Rejected
+				$this->db->set('status', 'Rejected');  
 			} else if ($approval_stat == 'Approved') {
 				$this->db->set('approval_status', 'Approved');
-				$this->db->set('status', 'In Progress');  // In Progress after main approval
+				$this->db->set('status', 'In Progress'); 
 			} else if ($approval_stat == 'Pending') {
 				$this->db->set('approval_status', 'Pending');
-				$this->db->set('status', 'Pending');  // Set to pending
+				$this->db->set('status', 'Pending'); 
 			}
 	
-			// Handle the IT-specific approval status independently
 			if ($it_approval_stat == 'Resolved') {
 				$this->db->set('it_approval_status', 'Resolved');
-				$this->db->set('status', 'Done');  // Set status to Resolved for IT
+				$this->db->set('status', 'Done'); 
 			} else if ($it_approval_stat == 'Closed') {
 				$this->db->set('it_approval_status', 'Closed');
 				$this->db->set('status', 'Closed');
@@ -925,7 +688,6 @@ class Main_model extends CI_Model {
 				$this->db->set('priority', 'High');
 			}
 	
-			// Set other fields from the form
 			$this->db->set('received_by', $received_by);
 			$this->db->set('noted_by', $noted_by);
 			$this->db->set('reason_reject_tickets', $reject_ticket_traccCon);
@@ -935,12 +697,10 @@ class Main_model extends CI_Model {
 			$this->db->set('others', $others);
 			$this->db->set('received_by_lst', $received_by_lst);
 			$this->db->set('date_lst', $date_lst);
-	
-			// Update the ticket in the database
+
 			$this->db->where('control_number', $control_number);
 			$this->db->update('service_request_tracc_concern');
-	
-			// Complete the transaction
+
 			$this->db->trans_complete();
 	
 			if ($this->db->trans_status() === FALSE) {
@@ -982,58 +742,6 @@ class Main_model extends CI_Model {
 			];
 		}
 	}
-
-	// public function status_approval_msrf() {
-	// 	$ticket_id = $this->input->post('msrf_number', true);
-	// 	$it_approval_stat = $this->input->post('it_approval_stat', true);
-	// 	$assign_staff = $this->input->post('assign_to', true);
-	// 	$approval_stat = $this->input->post('approval_stat', true);
-	// 	$reject_reason = $this->input->post('rejecttix', true);  // Get rejection reason
-		
-	// 	// Start transaction
-	// 	$this->db->trans_start();
-		
-	// 	// Retrieve ticket details
-	// 	$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE ticket_id = ?', array($ticket_id));
-
-	// 	if ($qry->num_rows() > 0) {
-	// 		$row = $qry->row();
-
-	// 		// If the ticket is approved
-	// 		if ($row->approval_status == "Approved") {
-	// 			// Set default status for approved tickets
-	// 			$this->db->set('status', 'In Progress');
-
-	// 			// Update status based on IT approval status
-	// 			if ($it_approval_stat == 'Resolved') {
-	// 				$this->db->set('status', 'Closed'); // Change status to 'Closed' if resolved
-	// 			} else if ($it_approval_stat == 'Rejected') {
-	// 				$this->db->set('remarks_ict', $reject_reason); // Add rejection reason if rejected
-	// 			}
-
-	// 			$this->db->set('it_approval_status', $it_approval_stat);
-	// 			$this->db->set('assigned_it_staff', $assign_staff);
-	// 		} else {
-	// 			// Update approval status if the ticket is not approved
-	// 			$this->db->set('approval_status', $approval_stat);
-	// 		}
-			
-	// 		// Update the ticket
-	// 		$this->db->where('ticket_id', $ticket_id);
-	// 		$this->db->update('service_request_msrf'); 
-
-	// 		// Complete transaction
-	// 		$this->db->trans_complete();
-
-	// 		if ($this->db->trans_status() === FALSE) {
-	// 			return array(0, "Error updating ticket, please try again.");
-	// 		} else {
-	// 			return array(1, "Successfully updated ticket: " . $ticket_id);
-	// 		}
-	// 	} else {
-	// 		return array(0, "Service request not found for ticket: " . $ticket_id);
-	// 	}
-	// }
 
 	public function status_approval_trf() {
 		$ticket_id = $this->input->post('trf_number', true);
@@ -1107,18 +815,15 @@ class Main_model extends CI_Model {
 		$it_approval_stat = $this->input->post('it_approval_stat', true);
 		$assign_staff = $this->input->post('assign_to', true);
 		$approval_stat = $this->input->post('approval_stat', true);
-		$reject_reason = $this->input->post('rejecttix', true);  // Get rejection reason
+		$reject_reason = $this->input->post('rejecttix', true);
 	
-		// Start transaction
 		$this->db->trans_start();
-	
-		// Retrieve ticket details
+
 		$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE ticket_id = ?', array($ticket_id));
 	
 		if ($qry->num_rows() > 0) {
 			$row = $qry->row();
 	
-			// Handle approval status (admin)
 			if ($approval_stat == 'Rejected') {
 				$this->db->set('approval_status', 'Rejected');
 				$this->db->set('status', 'Rejected'); 
@@ -1140,7 +845,6 @@ class Main_model extends CI_Model {
 				$this->db->set('status', 'In Progress'); 
 			}
 	
-			// Assign IT staff if provided
 			if (!empty($assign_staff)) {
 				$this->db->set('assigned_it_staff', $assign_staff);
 			}
@@ -1186,24 +890,7 @@ class Main_model extends CI_Model {
 			return array("error", "Internal error. Please try again.");
 		}
 	}
-
-	/*public function GetTeam($dept_id) {
-		$this->db->select('*');
-		$this->db->from('users');
-		$this->db->where('dept_id', $dept_id);
-		$this->db->where('role', 'L1');
 	
-		$query = $this->db->get(); // Execute the query
-	
-		// Check the result
-		if ($query->num_rows() > 0) {
-			return array("status" => "ok", "data" => $query->result_array());
-		} else {
-			return array("status" => "error", "message" => "No data was fetched.");
-		}
-	}*/
-	
-
 	public function GetDepartmentID() {
 		$user_id = $this->session->userdata('login_data')['user_id'];
 		if ($query = $this->db->query("SELECT * FROM users WHERE recid = ".$user_id."")) {
@@ -1240,43 +927,6 @@ class Main_model extends CI_Model {
 		redirect(base_url(). "sys/users/list/tickets/tracc_concern");
 
 	}
-
-	/*public function UpdateMSRFAssign($ticket_id) {
-		$user_id = $this->session->userdata('login_data')['user_id'];
-		$status = $this->input->post('it_status', true);
-		$status_users = $this->input->post('status_users', true);
-		$status_requestor = $this->input->post('status_requestor', true);
-		
-		$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE status = "In Progress" OR status = "On going" OR status = "Resolved"');
-
-		if ($qry->num_rows() > 0) {
-			$row = $qry->row();
-
-			// Check if status is 'On going'
-			if ($row->status == 'In Progress') {
-				$this->db->set('status', $status);
-			} else if ($row->status == 'Resolved') {
-				$this->db->set('status', $status_requestor);
-			} else {
-				$this->db->set('status', $status_users);
-			}
-		
-			// Update only status in the database
-			$this->db->where('ticket_id', $ticket_id);
-			$this->db->update('service_request_msrf');
-		
-			if ($this->db->affected_rows() > 0) {
-				$this->db->trans_commit();
-				return array(1, "Successfully Updating Tickets: ". $ticket_id);
-			} else {
-				$this->db->trans_rollback();
-				return array(0, "Error updating Keywords's status. Please try again.");
-			}
-
-		} else {
-			return array(0, "Service request not found for ticket: " . $status);
-		}
-	}*/
 
 	public function UpdateMSRFAssign($ticket_id, $date_needed, $asset_code, $request_category, $specify, $details_concern) {
 		$user_id = $this->session->userdata('login_data')['user_id'];
@@ -1323,7 +973,7 @@ class Main_model extends CI_Model {
 	}
 	
 
-	//kinukuha yung name ng it assigned keysa id ang dinidisplay
+	//kinukuha yung name ng it assigned keysa id ang dinidisplay hindi tapos
 	/*public function getTicketWithAssignedIT($ticket_id){
 		$this->db->select('msrf.ticket_id, CONCAT(users.fname, " ", users.mname, " ", users.lname) as assigned_it_name');
 		$this->db->from('service_request_msrf as msrf');
@@ -1385,13 +1035,9 @@ class Main_model extends CI_Model {
 			'created_at' => date("Y-m-d H:i:s")
 		);
 
-		 // Check if there is a file path and add it to the data array
 		if ($file_path !== null) {
 			$data['file'] = $file_path;
 		}
-
-		//var_dump($data);
-		//exit;
 
 		$this->db->trans_start();
 		$query = $this->db->insert('service_request_tracc_concern', $data);
@@ -1403,28 +1049,6 @@ class Main_model extends CI_Model {
 			return array(0, "There seems to be a problem when inserting new ticket. Please try again.");
 		}
 	}
-
-	// public function update_tracc_concern($control_number, $module_affected, $company, $concern) {
-		
-	// 	$this->db->trans_start();
-
-	// 	$this->db->set('module_affected', $module_affected);
-	// 	$this->db->set('company', $company);
-	// 	$this->db->set('tcr_details', $concern);
-	
-	// 	$this->db->where('control_number', $control_number);
-	// 	$this->db->update('service_request_tracc_concern');
-
-	// 	$this->db->trans_complete();
-
-	// 	if ($this->db->affected_rows() > 0) {
-	// 		$this->db->trans_commit();
-	// 		return array(1, "Successfully Updating Tickets: " . $control_number);
-	// 	} else {
-	// 		$this->db->trans_rollback();
-	// 		return array(0, "Error updating Keywords's status. Please try again.");
-	// 	}
-	// }
 
 	public function trf_add_ticket($file_path = null, $comp_checkbox_values = null, $checkbox_data_newadd, $checkbox_data_update, $checkbox_data_account) {
 		$user_id = $this->session->userdata('login_data')['user_id'];
@@ -1462,7 +1086,6 @@ class Main_model extends CI_Model {
 				$data['file'] = $file_path;
 			}
 	
-			// Add checkbox values if available
 			if ($comp_checkbox_values !== null) {
 				$data['company'] = $comp_checkbox_values;
 			}
@@ -1618,12 +1241,10 @@ class Main_model extends CI_Model {
 			];
 			$this->db->insert('tracc_req_customer_req_form_del_days', $checkbox_cus_req_form_del_days);
 
-			// Check the second insert
 			if ($this->db->affected_rows() > 0) {
 				$this->db->trans_commit();
 				return array(1, "Successfully Created Customer Request Form for: " . $data['ticket_id']);
 			} else {
-				// Rollback if delivery days insert fails
 				$this->db->trans_rollback();
 				return array(0, "Error: Could not insert delivery days data.");
 			}
@@ -1820,6 +1441,91 @@ class Main_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	public function add_supplier_request_form_pdf($trf_comp_checkbox_value = null, $checkbox_non_vat = 0, $checkbox_supplier_req_form) {
+		$trf_number = $this->input->post('trf_number', true);
+
+		$data = array(
+			'ticket_id' => $trf_number,
+			'requested_by'  => $this->input->post('requested_by', true),
+			'date' => $this->input->post('date', true),
+			'supplier_code' => $this->input->post('supplier_code', true),
+			'supplier_account_group' => $this->input->post('supplier_account_group', true),
+			'supplier_name' => $this->input->post('supplier_name', true),
+			'country_origin' => $this->input->post('country_origin', true),
+			'supplier_address' => $this->input->post('supplier_address', true),
+			'office_tel' => $this->input->post('office_tel_no', true),
+			'zip_code' => $this->input->post('zip_code', true),
+			'contact_person' => $this->input->post('contact_person', true),
+			'terms' => $this->input->post('terms', true),
+			'tin_no' => $this->input->post('tin_no', true),
+			'pricelist' => $this->input->post('pricelist', true),
+			'ap_account' => $this->input->post('ap_account', true),
+			'ewt' => $this->input->post('ewt', true),
+			'advance_account' => $this->input->post('advance_acc', true),
+			'vat' => $this->input->post('vat', true),
+			'non_vat' => $checkbox_non_vat,
+			'payee_1' => $this->input->post('payee1', true),
+			'payee_2' => $this->input->post('payee2', true),
+			'payee_3' => $this->input->post('payee3', true),
+			'driver_name' => $this->input->post('driver_name', true),
+			'driver_contact_no' => $this->input->post('driver_contact_no', true),
+			'driver_fleet' => $this->input->post('driver_fleet', true),
+			'driver_plate_no' => $this->input->post('driver_plate_no', true),
+			'helper_name' => $this->input->post('helper_name', true),
+			'helper_contact_no' => $this->input->post('helper_contact_no', true),
+			'helper_rate_card' => $this->input->post('helper_rate_card', true),
+		);
+	
+		if ($trf_comp_checkbox_value !== null) {
+			$data['company'] = $trf_comp_checkbox_value;
+		}
+
+		$this->db->trans_begin();
+		$this->db->insert('tracc_req_supplier_req_form', $data);	
+	
+		if ($this->db->affected_rows() > 0) {
+			$checkboxes_sup_req_form = [
+				'ticket_id' => $trf_number,
+				'supplier_group_local' => isset($checkbox_supplier_req_form['local_supplier_grp']) ? $checkbox_supplier_req_form['local_supplier_grp'] : 0,
+				'supplier_group_foreign' => isset($checkbox_supplier_req_form['foreign_supplier_grp']) ? $checkbox_supplier_req_form['foreign_supplier_grp'] : 0,
+				'supplier_trade' => isset($checkbox_supplier_req_form['supplier_trade']) ? $checkbox_supplier_req_form['supplier_trade'] : 0, 
+				'supplier_non_trade' => isset($checkbox_supplier_req_form['supplier_non_trade']) ? $checkbox_supplier_req_form['supplier_non_trade'] : 0,
+				'trade_type_goods' => isset($checkbox_supplier_req_form['trade_type_goods']) ? $checkbox_supplier_req_form['trade_type_goods'] : 0, 
+				'trade_type_services' => isset($checkbox_supplier_req_form['trade_type_services']) ? $checkbox_supplier_req_form['trade_type_services'] : 0,
+				'trade_type_goods_services' => isset($checkbox_supplier_req_form['trade_type_GoodsServices']) ? $checkbox_supplier_req_form['trade_type_GoodsServices'] : 0,
+				'major_grp_local_trade_vendor' => isset($checkbox_supplier_req_form['major_grp_local_trade_ven']) ? $checkbox_supplier_req_form['major_grp_local_trade_ven'] : 0,
+				'major_grp_local_non_trade_vendor' => isset($checkbox_supplier_req_form['major_grp_local_nontrade_ven']) ? $checkbox_supplier_req_form['major_grp_local_nontrade_ven'] : 0,
+				'major_grp_foreign_trade_vendors' => isset($checkbox_supplier_req_form['major_grp_foreign_trade_ven']) ? $checkbox_supplier_req_form['major_grp_foreign_trade_ven'] : 0,
+				'major_grp_foreign_non_trade_vendors' => isset($checkbox_supplier_req_form['major_grp_foreign_nontrade_ven']) ? $checkbox_supplier_req_form['major_grp_foreign_nontrade_ven'] : 0,
+				'major_grp_local_broker_forwarder' => isset($checkbox_supplier_req_form['major_grp_local_broker_forwarder']) ? $checkbox_supplier_req_form['major_grp_local_broker_forwarder'] : 0,
+				'major_grp_rental' => isset($checkbox_supplier_req_form['major_grp_rental']) ? $checkbox_supplier_req_form['major_grp_rental'] : 0,
+				'major_grp_bank' => isset($checkbox_supplier_req_form['major_grp_bank']) ? $checkbox_supplier_req_form['major_grp_bank'] : 0,
+				'major_grp_ot_supplier' => isset($checkbox_supplier_req_form['major_grp_one_time_supplier']) ? $checkbox_supplier_req_form['major_grp_one_time_supplier'] : 0,
+				'major_grp_government_offices' => isset($checkbox_supplier_req_form['major_grp_government_offices']) ? $checkbox_supplier_req_form['major_grp_government_offices'] : 0,
+				'major_grp_insurance' => isset($checkbox_supplier_req_form['major_grp_insurance']) ? $checkbox_supplier_req_form['major_grp_insurance'] : 0,
+				'major_grp_employees' => isset($checkbox_supplier_req_form['major_grp_employees']) ? $checkbox_supplier_req_form['major_grp_employees'] : 0,
+				'major_grp_sub_aff_intercompany' => isset($checkbox_supplier_req_form['major_grp_subs_affiliates']) ? $checkbox_supplier_req_form['major_grp_subs_affiliates'] : 0,
+				'major_grp_utilities' => isset($checkbox_supplier_req_form['major_grp_utilities']) ? $checkbox_supplier_req_form['major_grp_utilities'] : 0,
+			];
+			$this->db->insert('tracc_req_supplier_req_form_checkboxes', $checkboxes_sup_req_form);
+
+			$this->db->trans_commit();
+			return array(1, "Successfully Created Item Request Form for: " . $data['ticket_id']);
+		} else {
+			$this->db->trans_rollback();
+			return array(0, "Error: Could not insert data. Please try again.");
+		}
+	}
+	
+
+	public function get_supplier_from_tracc_req_mf_new_add(){
+		$this->db->select('ticket_id');
+		$this->db->from('tracc_req_mf_new_add');
+		$this->db->where('supplier', 1); 
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+	
 
 	public function save_data($table = NULL, $data = NULL)
 	{
@@ -1831,5 +1537,23 @@ class Main_model extends CI_Model {
 			    return "failed";
 			endif;
 	}
+
+
+	public function get_tab_data($condition) {
+		$this->db->select('*');
+		$this->db->from('tracc_req_employee_req_form');
+		$this->db->where('ticket_id', $condition);
+		$query = $this->db->get();
+	
+		// Build the HTML dynamically
+		$output = "<ul>";
+		foreach ($query->result() as $row) {
+			$output .= "<li>" . $row->ticket_id . "</li>"; // Replace 'your_column' with the actual column name
+		}
+		$output .= "</ul>";
+	
+		return $output; // Return the generated HTML
+	}
+	
 }
 ?>
