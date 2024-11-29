@@ -462,18 +462,24 @@
                 }
             }
 
-            // Upon clicking of the #filter button, the program will get the start date, end date, the status, and the ticket type and will filter the results based on these dates and would populate the table based on the results.
+            // Upon clicking of the #filter button, the program will get the start date, end date, the status, and the ticket type to filter the results based on these dates and would populate the table based on the results.
             $('#filter').click(function() {
+                // importing the jsPDF function.
                 const {jsPDF} = window.jspdf;
-                // Get value from the element with an id of 'start_date' and 'end_date'.
+
+                // Get value from the element with an id of 'start_date', 'end_date', 'status', and 'ticket'.
                 var startDate = $('#start_date').val();
                 var endDate = $('#end_date').val();
                 var status = $('#status').val();
                 var ticket = $('#ticket').val();
 
+                // Instantiate a new Date variable.
                 var date = new Date();
+
+                // Variable to store and display start date to end date.
                 var dateRange = '';
 
+                // Hides and shows table based on user request.
                 if(ticket == 'msrf') {
                     $('#tblMsrfBox').show();
                     $('#tblTraccBox').hide();
@@ -488,6 +494,7 @@
                     $('#tblTraccRequest').show();
                 }
 
+                // Checks if start and end dates variable has value.
                 if(startDate == '' && endDate == '') {
                     dateRange = 'All reports';
                 } else if (endDate == '') {
@@ -498,7 +505,7 @@
                     dateRange = formatDate(startDate) + ' to ' + formatDate(endDate);
                 }
 
-                // Table creation
+                // Table MSRF Concern creation
                 // "destroy" - allows reinstantiation of the table
                 // "searching" - enables/disables search functionality
                 // "paging" - enables/disables limiting of the results shown on the screen.
@@ -541,21 +548,11 @@
                                 // Instantiate jsPDF.
                                 var doc = new jsPDF();
 
-                                // Insert Logo
-                                var imageUrl = '<?= base_url('assets/images/lifestrong-logo.png'); ?>';
-                                doc.addImage(imageUrl, "PNG", 15, 2, 10, 10);
-                                
+                                // Set page number
+                                var page = 1;
+
                                 // Place all data into a variable.
                                 var tableContent = $('#tblTicketsPrint')[0];
-                                
-                                // Set font size and text to the title of the document.
-                                doc.setFontSize(20);
-                                doc.text('Generated Report For MSRF Concern', 28, 10); 
-                                
-                                // Set font size and text to display the filtered start and end date of the report.
-                                doc.setFontSize(12);
-                                doc.text('Date range: ' + dateRange, 15, 20);
-                                doc.text('Date printed: ' + formatDate(date), 15, 26);
 
                                 // Styling the table.
                                 doc.autoTable({
@@ -582,6 +579,29 @@
                                     margin: {
                                         top: 30
                                     },
+                                    didDrawPage: function(data) {
+                                        // This section will appear to all pages.
+
+                                        // Insert Logo
+                                        var imageUrl = '<?= base_url('assets/images/lifestrong-logo.png'); ?>';
+                                        doc.addImage(imageUrl, "PNG", 15, 2, 10, 10);
+                                        
+                                        // Set font size and text to the title of the document.
+                                        doc.setFontSize(20);
+                                        doc.text('Generated Report For MSRF Concern', 28, 10);
+
+                                        // Set font size and text to display the filtered start and end date of the report.
+                                        doc.setFontSize(12);
+                                        doc.text('Date range: ' + dateRange, 15, 20);
+                                        doc.text('Date printed: ' + formatDate(date), 15, 26);
+
+                                        // Set font size and position of the page number.
+                                        doc.setFontSize(10);
+                                        doc.text(page.toString(), 200, 290);
+
+                                        // Increment the page number per page.
+                                        page++;
+                                    }
                                 });
                                 
                                 // Open the document to another window.
@@ -614,7 +634,7 @@
                     ]
                 });
 
-                // Table creation
+                // Table Tracc Concern creation
                 // "destroy" - enables the reinstantiation of the table.
                 // "searching" - enables/disables searching functionality.
                 // "paging" - enables/disables limiting of the data displayed in the table.
@@ -656,23 +676,13 @@
                                 // Instantiate the jsPDF class.
                                 var doc = new jsPDF();
 
-                                // Insert Logo
-                                var imageUrl = '<?= base_url('assets/images/lifestrong-logo.png'); ?>';
-                                doc.addImage(imageUrl, "PNG", 15, 2, 10, 10);
-                                
-                                // Get the data from the table.
-                                var tableContent = $('#tblTicketsTraccConcernPrint')[0];
-                                
-                                // Set the font size and the text to the title of the document.
-                                doc.setFontSize(20);
-                                doc.text('Generated Report For Tracc Concern', 28, 10);
-                                
-                                // Set the font size and the text to the filtered start and end date of the report.
-                                doc.setFontSize(12);
-                                doc.text(dateRange, 15, 20);
-                                doc.text('Date printed: ' + formatDate(date), 15, 26);
+                                // Set page number
+                                var page = 1;
 
-                                // Styling of the table.
+                                // Get the data from table.
+                                var tableContent = $('#tblTicketsTraccConcernPrint')[0];
+
+                                // Styling of table.
                                 doc.autoTable({
                                     html: tableContent,
                                     theme: 'grid',
@@ -696,6 +706,27 @@
                                     },
                                     margin: {
                                         top: 30
+                                    },
+                                    didDrawPage: function (data) {
+                                        // Insert Logo
+                                        var imageUrl = '<?= base_url('assets/images/lifestrong-logo.png'); ?>';
+                                        doc.addImage(imageUrl, "PNG", 15, 2, 10, 10);
+                                        
+                                        // Set the font size and the text to the title of the document.
+                                        doc.setFontSize(20);
+                                        doc.text('Generated Report For Tracc Concern', 28, 10);
+                                        
+                                        // Set the font size and the text to the filtered start and end date of the report.
+                                        doc.setFontSize(12);
+                                        doc.text(dateRange, 15, 20);
+                                        doc.text('Date printed: ' + formatDate(date), 15, 26);
+
+                                        // Set font size and position of the page number.
+                                        doc.setFontSize(10);
+                                        doc.text(page.toString(), 200, 290);
+
+                                        // Increment the page number per page.
+                                        page++;
                                     }
                                 });
                                 
@@ -729,6 +760,11 @@
                     ]
                 });
 
+                // Table Tracc Request creation
+                // "info" - shows the number of items retrieved.
+                // "destroy" - enables the reinstantiation of the table.
+                // "searching" - enables/disables searching functionality.
+                // "paging" - enables/disables limiting of the data displayed in the table.
                 var tableRequest = $('#tblTicketsTraccRequestPrint').DataTable({
                     "info": false,
                     "destroy": true,
@@ -760,23 +796,20 @@
                     "dom": "<'row'<'col-sm-6'B><'col-sm-6'f>>" + 'rltip',
                     "buttons": [
                         {
+                            // Exports the table to a pdf document.
                             text: 'PDF',
                             className: 'btn btn-danger',
                             action: function () {
+                                // Instantiate jsPDF.
                                 var doc = new jsPDF();
 
-                                var imageUrl = '<?= base_url('assets/images/lifestrong-logo.png'); ?>';
-                                doc.addImage(imageUrl, "PNG", 15, 2, 10, 10);
+                                // Set page number.
+                                var page = 1;
 
+                                // Place the table data to a variable.
                                 var tableContent = $('#tblTicketsTraccRequestPrint')[0];
 
-                                doc.setFontSize(20);
-                                doc.text('Generated Report For Tracc Requests', 28, 10);
-
-                                doc.setFontSize(12);
-                                doc.text('Date range: ' + dateRange, 15, 20);
-                                doc.text('Date printed: ' + formatDate(date), 15, 26);
-
+                                // Table styles.
                                 doc.autoTable({
                                     html: tableContent,
                                     theme: 'grid',
@@ -801,12 +834,37 @@
                                     margin: {
                                         top: 30
                                     },
+                                    didDrawPage: function (data) {
+                                        // Document header per page.
+
+                                        // Image logo
+                                        var imageUrl = '<?= base_url('assets/images/lifestrong-logo.png'); ?>';
+                                        doc.addImage(imageUrl, "PNG", 15, 2, 10, 10);
+
+                                        // Table name
+                                        doc.setFontSize(20);
+                                        doc.text('Generated Report For Tracc Requests', 28, 10);
+
+                                        // Date range and date printed of document.
+                                        doc.setFontSize(12);
+                                        doc.text('Date range: ' + dateRange, 15, 20);
+                                        doc.text('Date printed: ' + formatDate(date), 15, 26);
+
+                                        // Font size and position of the page number.
+                                        doc.setFontSize(10);
+                                        doc.text(page.toString(), 200, 290);
+
+                                        // Increment the page number per page.
+                                        page++;
+                                    }
                                 });
 
+                                // Open a new tab to view the pdf document.
                                 doc.output('dataurlnewwindow', 'Tracc Request ' + '(' + dateRange + ')');
                             }
                         },
                         {
+                            // Export the table to xlsx
                             text: 'Excel',
                             className: 'btn btn-danger',
                             extend: 'excel',
@@ -814,6 +872,7 @@
                             title: 'Open Tracc Requests (' + dateRange + ')',
                         },
                         {
+                            // Export the table to csv
                             text: 'CSV',
                             className: 'btn btn-danger',
                             extend: 'csv',
