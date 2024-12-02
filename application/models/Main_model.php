@@ -675,6 +675,7 @@ class Main_model extends CI_Model {
 				$this->db->set('status', 'Closed');
 			} else if ($it_approval_stat == 'Rejected') {
 				$this->db->set('it_approval_status', 'Rejected');
+				$this->db->set('status', 'Rejected');
 			} else if ($it_approval_stat == 'Approved') {
 				$this->db->set('it_approval_status', 'Approved');
 				$this->db->set('status', 'In Progress');
@@ -829,7 +830,7 @@ class Main_model extends CI_Model {
 				$this->db->set('status', 'Rejected'); 
 			} else if ($approval_stat == 'Approved') {
 				$this->db->set('approval_status', 'Approved');
-				$this->db->set('status', 'On Going'); 
+				$this->db->set('status', 'In Progress'); 
 			}
 	
 			

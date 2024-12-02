@@ -759,8 +759,8 @@ class DataTables extends CI_Controller {
         
         $count_array = $this->db->query("
             SELECT * FROM service_request_tracc_concern 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND reported_by = " . $user_id . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done')) 
+            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Approved') AND reported_by = " . $user_id . ") 
+            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done', 'Approved')) 
             " . $search_query
         );
         $length_count = $count_array->num_rows();
@@ -769,8 +769,8 @@ class DataTables extends CI_Controller {
         $data = array();
         $strQry = $this->db->query("
             SELECT * FROM service_request_tracc_concern 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by = " . $user_id . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done')) 
+            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Approved') AND reported_by = " . $user_id . ") 
+            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done', 'Approved')) 
             " . $search_query . " 
             ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
         );
@@ -800,6 +800,9 @@ class DataTables extends CI_Controller {
                         $label_class = 'label-info';
                         break;
                     case 'Done':
+                        $label_class = 'label-success';
+                        break;
+                    case 'Approved':
                         $label_class = 'label-success';
                         break;
                 }
@@ -1418,6 +1421,29 @@ class DataTables extends CI_Controller {
         );
 
         // Return the array in json format.
+        echo json_encode($output);
+        exit();
+    }
+
+    public function display_msrf() {
+        $user_id = $this->session->userdata('login_data')['user_id'];
+
+        $this->db->select('ticket_id, status');
+        $this->db->where('requester_id', $user_id);
+        $this->db->from('service_request_msrf');
+
+        $query = $this->db->get()->result_array;
+
+        $data = [];
+        foreach($query as $row) {
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => intval($this->input->post('draw')),
+            "data" => $data,
+        );
+
         echo json_encode($output);
         exit();
     }
