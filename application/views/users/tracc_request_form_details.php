@@ -368,11 +368,22 @@
                                                     </select>       
                                                 </div>
                                             </div>
-
+                                            <?php 
+                                                $sess_login_data = $this->session->userdata('login_data');
+                                                $role = $sess_login_data['role'];
+                                                $disabled = "";
+                                                if($role === "L1"){
+                                                    $department_status = $trf['approval_status'];
+                                                    if($department_status === "Rejected" || $department_status === "Returned")
+                                                    $disabled = "disabled";
+                                                }else{
+                                                    $disabled = "";
+                                                }  
+                                            ?>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>ICT Approval Status <span style = "color:red;">*</span></label>
-                                                    <select class="form-control select2" name="it_app_stat" id="it_app_stat" disabled>
+                                                    <select class="form-control select2" name="it_app_stat" id="it_app_stat" <?= $disabled?>>
                                                         <option value=""disabled selected>ICT Approval Status</option>
                                                         <option value="Approved"<?php if ($trf['it_approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($trf['it_approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -387,7 +398,7 @@
                                             <div class="col-md-12" id="reason_rejected_ticket">
                                                 <div class="form-group">
                                                     <label>Reason for Rejected Ticket</label>
-                                                    <textarea class="form-control" id="reason_rejected" name="reason_rejected" placeholder="Place the reason here" style="width: 100%; height: 40px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" disabled><?= isset($trf['reason_reject_tickets']) ? htmlspecialchars($trf['reason_reject_tickets']) : ''; ?></textarea>
+                                                    <textarea class="form-control" id="reason_rejected" name="reason_rejected" placeholder="Place the reason here" style="width: 100%; height: 40px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" <?= $disabled?>><?= isset($trf['reason_reject_ticket']) ? htmlspecialchars($trf['reason_reject_ticket']) : ''; ?></textarea>
                                                 </div>
                                             </div>
 
@@ -435,7 +446,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">
-                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" disabled>Submit Tickets</button>
+                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?= $disabled?>>Submit Tickets</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -508,4 +519,37 @@
         });
     });
 
+
+    $(document).on('click', '#form-add-submit-button', function(e) {
+        e.preventDefault();
+        var ticket_id = '<?= $this->uri->segment(6)?>';
+        ticket_id = ticket_id.trim();
+        var ict_approval = $('#it_app_stat').val();
+        var reason_rejected = $('#reason_rejected').val();
+
+        var data = {
+            ict_approval: ict_approval,
+            reason_rejected: reason_rejected,
+            data_id: ticket_id,
+            module:"tracc-request"
+        };
+
+        $.ajax({
+            url: base_url + "Main/update_ticket",
+            type: "POST",
+            data: data,
+            success: function(response) {
+                var response = JSON.parse(response);
+                if (response.message === "success") {
+                    location.href = '<?=base_url("sys/users/list/tickets/tracc_request") ?>';
+                } else {
+                    //change this and add error message or redirect to main listing page
+                    location.href = '<?=base_url("sys/users/list/tickets/tracc_request") ?>';
+                }
+            },
+            error: function(xhr, status, error) {
+                //console.error("AJAX Error: " + error);
+            }
+        });
+    });
 </script>

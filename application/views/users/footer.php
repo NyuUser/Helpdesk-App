@@ -123,8 +123,8 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 	<script>
-		var dept_id = <?php echo json_encode($dept_id); ?>;
-		console.log(dept_id);
+		var dept_id = <?php echo json_encode(empty($dept_id)); ?> || '';
+		//console.log(dept_id);
 	</script>
 	<script>
 

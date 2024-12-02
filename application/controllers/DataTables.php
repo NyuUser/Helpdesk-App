@@ -2,9 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class DataTables extends CI_Controller { 
-	public function __construct() {
-		parent::__construct();
-	}
+    public function __construct() {
+        parent::__construct();
+    }
 
     //Datatable ng Admin
     public function employee() {
@@ -115,7 +115,7 @@ class DataTables extends CI_Controller {
 
     //Datatable ng Admin
     public function all_departments() {
-        // Fetching session data for user_id and emp_id
+        // Fetching session data for `user_id and emp_id
         $user_id = $this->session->userdata('login_data')['user_id'];
         $emp_id = $this->session->userdata('login_data')['emp_id'];
         
@@ -215,7 +215,6 @@ class DataTables extends CI_Controller {
         //$dept_desc = $this->session->userdata('login_data')['dept_desc'];  // Assuming dept_desc is in session
         //echo $emp_id;
         $string_emp = $this->db->escape($emp_id);  // Properly escape the employee ID to prevent SQL injection
-    
         // Retrieve DataTables request parameters
         $draw = intval($this->input->post("draw"));  // The draw counter for DataTables (used to ensure AJAX requests are correctly processed)
         $start = intval($this->input->post("start"));  // The starting point for records (used for pagination)
@@ -253,35 +252,54 @@ class DataTables extends CI_Controller {
         } else {
             $order = $valid_columns[$col];  // Set the column name based on the column index
         }
-    
+
+        $search_query = "AND assigned_it_staff = ".$string_emp;
         // Enhance the search query
         if (!empty($search)) {
             // If a search term is provided, construct the search query
-            $search_query = "AND (ticket_id LIKE '%" . $search . "%' OR requestor_name LIKE '%" . $search . "%' OR subject LIKE '%" . $search . "%')";
-        } else {
+            $search_query .= "AND (ticket_id LIKE '%" . $search . "%' OR requestor_name LIKE '%" . $search . "%' OR subject LIKE '%" . $search . "%')";
+        } 
+        //else {
             // If no search term, leave the search query empty
-            $search_query = "";
-        }
+        //    $search_query = "";
+       // }
     
         // Count total records excluding 'Closed' status
-        $count_array = $this->db->query("
-            SELECT * FROM service_request_msrf 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND requester_id = " . $user_id . ") " 
-            . $search_query
-        );
-        $length_count = $count_array->num_rows();  // Get the total number of rows for pagination
-    
-        // Fetch records excluding 'Closed' status
-        $data = array();
-        $strQry = $this->db->query("
-            SELECT * FROM service_request_msrf 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND requester_id = " . $user_id . ") " 
-            . $search_query . 
-            " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
-        );
 
+       
+        $sess_login_data = $this->session->userdata('login_data');
+        $role = $sess_login_data['role'];
+
+        if($role === "L1"){
+            $query = "status IN ('Open', 'In Progress', 'On going', 'Resolved') ". $search_query;
+            $select = "recid, status, approval_status, it_approval_status, priority, ticket_id, subject, requestor_name, department, dept_id, date_requested";
+            $result_data = $this->Tickets_model->get_data_list("service_request_msrf", $query, 999,0, $select, null, null, null, null);
+
+            $length_count = count($result_data);
+
+        }else{
+            // Count total records excluding 'Closed' status
+            $count_array = $this->db->query("
+                SELECT * FROM service_request_msrf 
+                WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ") 
+                OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND requester_id = " . $user_id . ") " 
+                . $search_query
+            );
+            $length_count = $count_array->num_rows();  // Get the total number of rows for pagination
+        
+            // Fetch records excluding 'Closed' status
+            $data = array();
+            $strQry = $this->db->query("
+                SELECT * FROM service_request_msrf 
+                WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ") 
+                OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND requester_id = " . $user_id . ") " 
+                . $search_query . 
+                " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
+            );
+            $result_data = $strQry->num_rows();
+        }
+
+    
         /*$strQry = $this->db->query("
             SELECT * FROM service_request_msrf 
             WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved') 
@@ -291,9 +309,12 @@ class DataTables extends CI_Controller {
         ); */
 
         // Check if any records are returned from the query
-        if ($strQry->num_rows() > 0) {
+        $tickets = [];
+        $data = [];
+        if ($result_data > 0) {
             // Loop through each row of the result set
-            foreach ($strQry->result() as $rows) {
+            foreach ($result_data as $rows) {
+
                 // Determine the appropriate label class for the status
                 $label_class = '';
                 switch ($rows->status) {
@@ -390,16 +411,18 @@ class DataTables extends CI_Controller {
             }
     
             // Combine all columns' data into a single row for each ticket
-            for ($i = 0; $i < count($tickets); $i++) {
-                $data[] = array(
-                    $tickets[$i],       // Ticket ID
-                    $name[$i],          // Requestor name
-                    $subject[$i],       // Subject
-                    $prio_label[$i],    // Priority label
-                    $status_label[$i],  // Status label
-                    $app_stat_label[$i],// Department approval status label
-                    $it_stat_label[$i],  // ICT approval status label
-                );
+            if($tickets){
+                for ($i = 1; $i < $length_count; $i++) {
+                    $data[] = array(
+                        $tickets[$i],       // Ticket ID
+                        $name[$i],          // Requestor name
+                        $subject[$i],       // Subject
+                        $prio_label[$i],    // Priority label
+                        $status_label[$i],  // Status label
+                        $app_stat_label[$i],// Department approval status label
+                        $it_stat_label[$i],  // ICT approval status label
+                    );
+                }
             }
         }
     
@@ -412,16 +435,19 @@ class DataTables extends CI_Controller {
         );
        
         // Return the output as a JSON response
+        // print_r($data);
+        // die();
         echo json_encode($output);
+        die();
         exit();  // Ensure no further processing happens
     }
     
     /*
-	public function get_msrf_ticket() {
+    public function get_msrf_ticket() {
         $user_id = $this->session->userdata('login_data')['user_id'];
         $emp_id = $this->session->userdata('login_data')['emp_id'];
         $string_emp = "'$emp_id'";
-		$draw = intval($this->input->post("draw"));
+        $draw = intval($this->input->post("draw"));
         $start = intval($this->input->post("start"));
         $length = intval($this->input->post("length"));
         $order = $this->input->post("order");
@@ -443,7 +469,7 @@ class DataTables extends CI_Controller {
 
         $valid_columns = array(
             0 => 'disable_date',
-	        1 => 'stamp'
+            1 => 'stamp'
         );
 
         if (!isset($valid_columns[$col])) {
@@ -465,7 +491,7 @@ class DataTables extends CI_Controller {
         $strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ") OR requester_id = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length . "");
         //$strQry = $this->db->query("SELECT * FROM service_request_msrf WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = ".$string_emp.") OR requester_id = ".$user_id." ".$search_query." ORDER BY recid ".$dir." LIMIT ". $start .", ". $length ."");
         if ($strQry->num_rows() > 0) {
-        	foreach ($strQry->result() as $rows) { 
+            foreach ($strQry->result() as $rows) { 
                 $bid[] = $rows->recid;
                 $ticket[] = $rows->ticket_id;
                 $name[] = $rows->requestor_name;
@@ -527,7 +553,7 @@ class DataTables extends CI_Controller {
             }
 
             for ($i = 0; $i < count($bid); $i++) {
-            	$data[] = array($tickets[$i],$name[$i],$subject[$i],$prio_label[$i], $status_label[$i],$app_stat_label[$i],$it_stat_label[$i]);
+                $data[] = array($tickets[$i],$name[$i],$subject[$i],$prio_label[$i], $status_label[$i],$app_stat_label[$i],$it_stat_label[$i]);
             }
         }
 
@@ -539,7 +565,7 @@ class DataTables extends CI_Controller {
         );
         echo json_encode($output);
         exit();
-	}*/
+    }*/
 
     //Datatable ng Admin
     public function all_tickets_msrf() {
@@ -594,7 +620,6 @@ class DataTables extends CI_Controller {
         if (!empty($search)) {
             $search_query = "AND (ticket_id LIKE '%" . $search . "%' OR requestor_name LIKE '%" . $search . "%' OR subject LIKE '%" . $search . "%' OR department LIKE '%" . $search . "%')";
         }
-        
         // QUERY WITH DATE FILTERS
         /*$query = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved')";
 
@@ -800,44 +825,47 @@ class DataTables extends CI_Controller {
         }
     
         // Enhanced search logic to search multiple fields
+        $search_query = "AND reported_by_id = " . $this->db->escape($user_id);
         if (!empty($search)) {
-            $search_query = "AND (control_number LIKE '%" . $search . "%' OR reported_by LIKE '%" . $search . "%' OR subject LIKE '%" . $search . "%' OR company LIKE '%" . $search . "%')";
-        } else {
-            $search_query = "AND reported_by_id = " . $this->db->escape($user_id);
-        }        
+            $search_query .= "AND (control_number LIKE '%" . $search . "%' OR reported_by LIKE '%" . $search . "%' OR subject LIKE '%" . $search . "%' OR company LIKE '%" . $search . "%')";
+        } 
+        // else {
+        //     $search_query = "AND reported_by_id = " . $this->db->escape($user_id);
+        // }        
     
-        // Fetch the count of records with the search filter
-        $count_array = $this->db->query("
-            SELECT * FROM service_request_tracc_concern 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by_id = " . $user_id . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done')) 
-            " . $search_query
-        );
-        $length_count = $count_array->num_rows();
-    
-        // Fetch records with pagination and search filter applied
-        $data = array();
-        //papalitan query
-        /*$strQry = $this->db->query("
-            SELECT * FROM service_request_tracc_concern 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by = " . $user_id . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved')) 
-            " . $search_query . " 
-            ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
-        );*/
+        $sess_login_data = $this->session->userdata('login_data');
+        $role = $sess_login_data['role'];
 
-        //nasa by_id ang mali
-        //checking ng query
-        //$strQry = $this->db->query("SELECT * FROM service_request_tracc_concern WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by_id = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length );
+        if($role === "L1"){
+            $query = "status IN ('Open', 'In Progress', 'On going', 'Resolved') ".$search_query;
+            $select = "recid, control_number, subject, module_affected, company, reported_by, reported_by_id, received_by, resolved_by, ack_as_resolved, others, priority, status, approval_status, it_approval_status";
+            $result_data = $this->Tickets_model->get_data_list("service_request_tracc_concern", $query, 999,0, $select, null, null, null, null);
+
+            $length_count = count($result_data);
+        }else{
+            // Fetch the count of records with the search filter
+            $count_array = $this->db->query("
+                SELECT * FROM service_request_tracc_concern 
+                WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND reported_by_id = " . $user_id . ") 
+                OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done')) 
+                " . $search_query
+            );
+            $length_count = $count_array->num_rows();
         
-        $strQry = $this->db->query("
-            SELECT * FROM service_request_tracc_concern
-            WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done')
-            AND reported_by_id = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length);
+            // Fetch records with pagination and search filter applied
+            $data = array();
+            
+            $strQry = $this->db->query("
+                SELECT * FROM service_request_tracc_concern
+                WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done')
+                AND reported_by_id = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length);
+            $result_data = $strQry->num_rows();
+        }
 
-
-        if ($strQry->num_rows() > 0) {
-            foreach ($strQry->result() as $rows) {
+        $control_number = [];
+        $data = [];
+        if ($result_data > 0) {
+            foreach ($result_data as $rows) {
                 // Status label
                 $label_class = '';
                 switch ($rows->status) {
@@ -947,17 +975,19 @@ class DataTables extends CI_Controller {
             }
     
             // Create rows for the output
-            for ($i = 0; $i < count($control_number); $i++) {
-                $data[] = array(
-                    $control_number[$i],// Control Number   
-                    $name[$i],          // Reported by
-                    $subject[$i],       // Subject
-                    $priority_label[$i],
-                    $comp_label[$i],    // Company label
-                    $status_label[$i],  // Status label
-                    $app_stat_label[$i],// Approval status label
-                    $it_stat_label[$i] // IT approval status label
-                );
+            if($control_number){
+                for ($i = 0; $i < count($control_number); $i++) {
+                    $data[] = array(
+                        $control_number[$i],// Control Number   
+                        $name[$i],          // Reported by
+                        $subject[$i],       // Subject
+                        $priority_label[$i],
+                        $comp_label[$i],    // Company label
+                        $status_label[$i],  // Status label
+                        $app_stat_label[$i],// Approval status label
+                        $it_stat_label[$i] // IT approval status label
+                    );
+                }
             }
         }
     
@@ -1589,31 +1619,47 @@ class DataTables extends CI_Controller {
         }
     
         // Enhanced search logic to search multiple fields
+        $search_query = "AND requested_by_id = " . $this->db->escape($user_id);
         if (!empty($search)) {
-            $search_query = "AND (ticket_id LIKE '%" . $search . "%' OR requested_by LIKE '%" . $search . "%' OR department LIKE '%" . $search . "%')";
-        } else {
-            $search_query = "AND requested_by_id = " . $this->db->escape($user_id);
-        }        
+            $search_query .= "AND (ticket_id LIKE '%" . $search . "%' OR requested_by LIKE '%" . $search . "%' OR department LIKE '%" . $search . "%')";
+        }
+        //else {
+        //    $search_query = "AND requested_by_id = " . $this->db->escape($user_id);
+        //}        
     
-        // Fetch the count of records with the search filter
-        $count_array = $this->db->query("
-            SELECT * FROM service_request_tracc_request 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND requested_by_id = " . $user_id . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected')) 
-            " . $search_query
-        );
-        $length_count = $count_array->num_rows();
-        
-        $data = array();
-        
-        $strQry = $this->db->query("
-            SELECT * FROM service_request_tracc_request
-            WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected')
-            AND requested_by_id = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length);
+        $sess_login_data = $this->session->userdata('login_data');
+        $role = $sess_login_data['role'];
+
+        if($role === "L1"){
+            $query = "status IN ('Open', 'In Progress', 'On going', 'Resolved') ".$search_query;
+            $select = "recid, ticket_id, subject, company, priority, status, approval_status, it_approval_status, requested_by";
+            $result_data = $this->Tickets_model->get_data_list("service_request_tracc_request", $query, 999,0, $select, null, null, null, null);
+
+            $length_count = count($result_data);
+        }else{
+            // Fetch the count of records with the search filter
+            $count_array = $this->db->query("
+                SELECT * FROM service_request_tracc_request 
+                WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND requested_by_id = " . $user_id . ") 
+                OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected')) 
+                " . $search_query
+            );
+            $length_count = $count_array->num_rows();
+            
+            $data = array();
+            
+            $strQry = $this->db->query("
+                SELECT * FROM service_request_tracc_request
+                WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected')
+                AND requested_by_id = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length); 
+            $result_data = $strQry->num_rows();              
+        }
 
 
-        if ($strQry->num_rows() > 0) {
-            foreach ($strQry->result() as $rows) {
+        $trf_ticket = [];
+        $data = [];
+        if ($result_data > 0) {
+            foreach ($result_data as $rows) {
                 // Status label
                 $label_class = '';
                 switch ($rows->status) {
@@ -1693,17 +1739,20 @@ class DataTables extends CI_Controller {
             }
     
             // Create rows for the output
-            for ($i = 0; $i < count($trf_ticket); $i++) {
-                $data[] = array(
-                    $trf_ticket[$i],// Control Number   
-                    $name[$i],          // Reported by
-                    $subject[$i],       // Subject
-                    $priority_label[$i],
-                    $status_label[$i],  // Status label
-                    $app_stat_label[$i],// Approval status label
-                    $it_stat_label[$i]  // IT approval status label
-                );
+            if($trf_ticket){
+                for ($i = 0; $i < count($trf_ticket); $i++) {
+                    $data[] = array(
+                        $trf_ticket[$i],// Control Number   
+                        $name[$i],          // Reported by
+                        $subject[$i],       // Subject
+                        $priority_label[$i],
+                        $status_label[$i],  // Status label
+                        $app_stat_label[$i],// Approval status label
+                        $it_stat_label[$i]  // IT approval status label
+                    );
+                }                
             }
+
         }
     
         // Return the output for DataTables

@@ -2661,7 +2661,47 @@ class Main extends CI_Controller {
 		}
 	}
 
-	
+	public function update_ticket(){
+		
+		$ict_approval = $this->input->post('ict_approval', TRUE);
+		$reason_rejected = $this->input->post('reason_rejected', TRUE);
+		$control_number = $this->input->post('control_number', TRUE);
+		$module_name = $this->input->post('module', TRUE);
+		$data_id = $this->input->post('data_id', TRUE);
+		
+		$field = "ticket_id";
+		if($module_name === "tracc-concern"){
+			$table = "service_request_tracc_concern";
+			$field = "control_number";
+			$data = array(
+				"it_approval_status" => $ict_approval,
+				"reason_reject_tickets" => $reason_rejected
+			);
+		}else if($module_name === "tracc-request"){
+			$table = "service_request_tracc_request";
+			$data = array(
+				"it_approval_status" => $ict_approval,
+				"reason_reject_ticket" => $reason_rejected
+			);
+		}else{
+			$table = "service_request_msrf";
+			$data = array(
+				"it_approval_status" => $ict_approval,
+				"remarks_ict" => $reason_rejected
+			);
+		}
+		// print_r($data);
+		// die();
+		if($ict_approval){
+			$process = $this->Tickets_model->update_data($table, $data, $field, $data_id);
+			if($process === "success"){
+				echo json_encode(array("message" => "success"));
+			}else{
+				echo json_encode(array("message" => "failed"));
+			}
+			
+		}
+	}
 	
 	
 	
