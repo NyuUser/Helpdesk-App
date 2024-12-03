@@ -3,26 +3,26 @@
         </section>
         <section class="content">
             <div class="row">
-                <div class="col-xs-6" style="width: auto; margin-left: 35%; margin-top: 10px;">
+                <div class="col-xs-6" id="report_box">
                     <h1>Generate Reports</h1>
-                    <div class="box" style="width: 440px; padding: 20px;">
+                    <div class="box" id="report_filter_box">
 
-                    <table style="height: 300px; width: 400px;">
+                    <table class="report_filter_form">
                         <tr>
                             <!-- Start Date Picker -->
-                            <td><label for="start_date" style="font-size: 18px;">Start Date:</label></td>
-                            <td><input type="date" id="start_date" name="start_date" style="border-width: 0; padding: 7px; border-radius: 15px; width: 100%;"></td>
+                            <td><label for="start_date" class="report_label">Start Date:</label></td>
+                            <td><input type="date" id="start_date" name="start_date" class="report_input"></td>
                         </tr>
                         <tr>
                             <!-- End Date Picker -->
-                            <td><label for="end_date" style="font-size: 18px;">End Date:</label></td>
-                            <td><input type="date" id="end_date" name="end_date" style="border-width: 0; padding: 7px; border-radius: 15px; width: 100%;">
+                            <td><label for="end_date" class="report_label">End Date:</label></td>
+                            <td><input type="date" id="end_date" name="end_date" class="report_input">
                         </tr>
                         <tr>
                             <!-- Status Picker -->
-                            <td><label for="status" style="font-size: 18px;">Status:</label></td>
+                            <td><label for="status" class="report_label">Status:</label></td>
                             <td>
-                                <select id="status" style="border-width: 0; padding: 7px; border-radius: 15px; width: 100%;">
+                                <select id="status" class="report_input">
                                     <option value="">All</option>
                                     <option value="Open">Open</option>
                                     <option value="In Progress">In Progress</option>
@@ -34,9 +34,9 @@
                         </tr>
                         <tr>
                             <!-- Choose between MSRF or Tracc -->
-                            <td><label for="ticket" style="font-size: 18px;">Ticket:</label></td>
+                            <td><label for="ticket" class="report_label">Ticket:</label></td>
                             <td>
-                                <select id="ticket" style="border-width: 0; padding: 7px; border-radius: 15px; width: 100%;">
+                                <select id="ticket" class="report_input">
                                     <option value="msrf">MSRF Ticket</option>
                                     <option value="tracc">Tracc Concern</option>
                                     <option value="request">Tracc Request</option>
@@ -44,11 +44,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan=2><button id="filter" style="padding: 7px; width: 100%; border-radius: 15px; border-width: 0; background-color: lightgreen;">Filter</button></td>
+                            <td colspan=2><button id="filter" class="report_button">Filter</button></td>
                         </tr>
                     </table>
-
-                    <!-- Filter Button -->
                     
                 </div>
 

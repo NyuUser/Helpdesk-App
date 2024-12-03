@@ -24,21 +24,11 @@
                                         <th>Subject</th>
                                         <th>Priority</th>
                                         <th>Status</th>
-                                        <th>Department Approval Status</th>
+                                        <th>Dept. Head Approval Status</th>
                                         <th>ICT Approval Status</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Ticket ID</th>
-                                        <th>Requestor Name</th>
-                                        <th>Subject</th>
-                                        <th>Priority</th>
-                                        <th>Status</th>
-                                        <th>Department Approval Status</th>
-                                        <th>ICT Approval Status</th>
-                                    </tr>
-                                </tfoot>
+                                
                             </table>
                         </div>
                     </div>

@@ -32,11 +32,11 @@
                                             <div class="col-md-6">
 			                                    <div class="form-group">
 			                                        <label>Requestor</label>
-			                                        <input type="text" name="name" value="<?= $msrf['requestor_name']; ?>" class="form-control select2" style="width: 100%;" readonly>
+			                                        <input type="text" name="name" value="<?= htmlentities($msrf['requestor_name']); ?>" class="form-control select2" style="width: 100%;" readonly>
 			                                    </div>
 			                                    <div class="form-group">
 			                                        <label>Department</label>
-			                                        <input type="text" name="department_description" id="department_description" value="<?= $msrf['department']; ?>" class="form-control select2" style="width: 100%;" readonly/>
+			                                        <input type="text" name="department_description" id="department_description" value="<?= htmlentities($msrf['department']); ?>" class="form-control select2" style="width: 100%;" readonly/>
 												<input type="hidden" name="dept_id" value="">
 												<input type="hidden" name="sup_id" value="">
 			                                    </div>
@@ -124,10 +124,24 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <?php 
+                                                $sess_login_data = $this->session->userdata('login_data');
+                                                $role = $sess_login_data['role'];
+                                                $disabled = "";
+                                                if($role === "L1"){
+                                                    $department_status = $msrf['approval_status'];
+                                                    if($department_status === "Rejected" || $department_status === "Returned")
+                                                    $disabled = "disabled";
+                                                }else{
+                                                    $disabled = "";
+                                                }
+                                                
+                                            ?>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>ICT Approval Status</label>
-                                                    <select name="it_approval_stat" id="it_approval_stat" class="form-control select2" <?php if ($msrf['it_approval_status'] == 'Approved' || $msrf['it_approval_status'] == 'Rejected') echo 'disabled'; ?> disabled>
+                                                    <select name="it_approval_stat" id="it_approval_stat" class="form-control select2" <?= $disabled;?>>
                                                         <option value=""disabled selected></option>
                                                         <option value="Approved"<?php if ($msrf['it_approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($msrf['it_approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -139,7 +153,7 @@
                                             <div class="col-md-12" id="ictassign" style="display:none;">
                                                 <div class="form-group">
                                                     <label>ICT Assign To</label>
-                                                    <select name="assign_to" class="form-control select2" disabled>
+                                                    <select name="assign_to" class="form-control select2" <?= $disabled;?>>
                                                         <option value="" disabled selected>Select ICT</option>
                                                         <option value="ChristianJ" <?php if ($msrf['assigned_it_staff'] == 'ChristianJ') echo ' selected'; ?>>Sir Chinchan</option>
                                                         <option value="Michael" <?php if ($msrf['assigned_it_staff'] == 'Michael') echo ' selected'; ?>>Sir Michael</option>
@@ -153,16 +167,16 @@
                                             <div class="col-md-12" id="reason">
                                                 <div class="form-group">
                                                     <label>Reason for Reject Tickets</label>
-                                                    <textarea class="form-control" name="rejecttix" id="rejecttix" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'readonly'; ?>><?= $msrf['remarks_ict']; ?></textarea>
+                                                    <textarea class="form-control" name="rejecttix" id="rejecttix" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" <?= $disabled;?>><?= $msrf['remarks_ict']; ?></textarea>
                                                 </div>
                                             </div>
                                             <!-- REASON WHY REJECTED in db remarks_ict -->
-
+                                          
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">
                                                         <!-- style="display:none;" -->
-                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status']== 'Rejected') echo 'disabled'; ?>>Submit Tickets</button>
+                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?php if ($msrf['approval_status'] === 'Approved' || $msrf['approval_status'] === 'Rejected') $disabled; ?>>Submit Tickets</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -279,6 +293,39 @@
                 $('#specify-container').show();
             } else {
                 $('#specify-container').hide();
+            }
+        });
+    });
+
+    $(document).on('click', '#form-add-submit-button', function(e) {
+        e.preventDefault();
+        var ticket_id = '<?= $this->uri->segment(6)?>';
+        ticket_id = ticket_id.trim();
+        var ict_approval = $('#it_approval_stat').val();
+        var reason_rejected = $('#rejecttix').val();
+
+        var data = {
+            ict_approval: ict_approval,
+            reason_rejected: reason_rejected,
+            data_id: ticket_id,
+            module:"msrf"
+        };
+
+        $.ajax({
+            url: base_url + "Main/update_ticket",
+            type: "POST",
+            data: data,
+            success: function(response) {
+                var response = JSON.parse(response);
+                if (response.message === "success") {
+                    location.href = '<?=base_url("sys/users/list/tickets/msrf") ?>';
+                } else {
+                    //change this and add error message or redirect to main listing page
+                    location.href = '<?=base_url("sys/users/list/tickets/msrf") ?>';
+                }
+            },
+            error: function(xhr, status, error) {
+                //console.error("AJAX Error: " + error);
             }
         });
     });

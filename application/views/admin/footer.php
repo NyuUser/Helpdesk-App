@@ -550,6 +550,7 @@
                             // Export table to a PDF document.
                             text: 'PDF',
                             className: 'btn btn-danger',
+                            filename: 'MSRF Concern ' + '(' + dateRange + ')',
                             action: function () {
                                 // Instantiate jsPDF.
                                 var doc = new jsPDF();

@@ -31,11 +31,11 @@
 			                    	<div class="col-md-6">
 			                            <div class="form-group">
 			                                <label>Requestor</label>
-			                                <input type="text" name="name" class="form-control" value="<?php echo $msrf['requestor_name']; ?>" readonly>
+			                                <input type="text" name="name" class="form-control" value="<?php echo htmlentities($msrf['requestor_name']); ?>" readonly>
 			                            </div>
 			                            <div class="form-group">
 			                                <label>Department</label>
-												<input type="text" name="department_description" id="department_description" value="<?php echo $msrf['department']; ?>" class="form-control select2" style="width: 100%;" readonly/>
+												<input type="text" name="department_description" id="department_description" value="<?php echo htmlentities($msrf['department']); ?>" class="form-control select2" style="width: 100%;" readonly/>
 												<input type="hidden" name="dept_id" value="">
 												<input type="hidden" name="sup_id" value="">
 			                            </div>
@@ -108,7 +108,7 @@
 
 									<div class="col-md-12">
 			                            <div class="form-group">
-			                                <label>Approval Status</label>											
+			                                <label>Dept. Head Approval Status</label>											
 											<select class="form-control select2" name="approval_stat" id="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?> <?= $is_disable ?>>
 												<option value="" disabled selected>Select Approval</option>
 												<option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>

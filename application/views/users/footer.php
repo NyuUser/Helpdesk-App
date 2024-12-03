@@ -123,7 +123,7 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 	<script>
-		var dept_id = <?php echo json_encode($dept_id); ?>;
+		var dept_id = <?php echo json_encode($user_details['dept_id']); ?>;
 		console.log(dept_id);
 	</script>
 	<script>
@@ -143,6 +143,8 @@
         // });
 
 		$(document).ready(function() {
+			let status = '';
+
 			<?php if($this->session->flashdata('success')): ?>
                 $('#successModal').modal('show');
             <?php endif; ?>
@@ -331,11 +333,97 @@
 					"className": "text-center"
 				}]
 			});
+
+			$('#filterMsrf').click(function() {
+				status = $('#msrfStatus').val();
+				$('#tblMsrf').DataTable().ajax.reload();
+			});
+
+			$('#filterConcern').click(function() {
+				status = $('#concernStatus').val();
+				$('#tblConcerns').DataTable().ajax.reload();
+			});
+
+			$('#filterRequest').click(function() {
+				status = $('#requestStatus').val();
+				$('#tblRequests').DataTable().ajax.reload();
+			})
+			
+			$('#tblMsrf').DataTable({
+				"destroy": true,
+				"info": false,
+				"searching": false,
+				"serverSide": true,
+				"processing": true,
+				"ajax": {
+					"url": "<?= base_url(); ?>DataTables/display_msrf",
+					"type": "POST",
+					"data": function(d) {
+						d.status = $('#msrfStatus').val();
+					}
+				},
+				"columns": [
+					{ "data": "ticket_id" },
+					{ "data": "status" },
+				],
+				"responsive": true,
+				"autoWidth": false,
+				"lengthChange": false,
+				"dom": 'rltp',
+				"pageLength": 10,
+			});
+			
+			$('#tblConcerns').DataTable({
+				"destroy": true,
+				"info": false,
+				"searching": false,
+				"serverSide": true,
+				"processing": true,
+				"ajax": {
+					"url": "<?= base_url(); ?>DataTables/display_concerns",
+					"type": "POST",
+					"data": function(d) {
+						d.status = $('#concernStatus').val();
+					}
+				},
+				"columns": [
+					{ "data": "control_number" },
+					{ "data": "status" },
+				],
+				"responsive": true,
+				"autoWidth": false,
+				"lengthChange": false,
+				"dom": 'rltp',
+				"pageLength": 10,
+			});
+
+			$('#tblRequests').DataTable({
+				"serverSide": true,
+				"processing": true,
+				"ajax": {
+					"url": "<?= base_url(); ?>DataTables/display_requests",
+					"type": "POST",
+					"data": function(d) {
+						d.status = $('#requestStatus').val();
+					}
+				},
+				"columns": [
+					{ "data": "ticket_id" },
+					{ "data": "status" }
+				],
+				"responsive": true,
+				"autoWidth": false,
+				"lengthChange": false,
+				"dom": 'rltp',
+				"pageLength": 10,
+			});
 			
 			getDate();
 			$('.teststs').click(function() {
             	alert("here");
        		});
+
+
         });
 
         function getDate() {

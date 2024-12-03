@@ -28,17 +28,17 @@
 							</div>
 							<div class="form-group">
 								<label>Firstname</label>
-								<input type="text" name="fname" id="fname" value="<?php echo $users_det['fname']; ?>" class="form-control">
+								<input type="text" name="fname" id="fname" value="<?php echo htmlentities($users_det['fname']); ?>" class="form-control">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Middlename</label>
-								<input type="text" name="mname" id="mname" value="<?php echo $users_det['mname']; ?>" class="form-control">
+								<input type="text" name="mname" id="mname" value="<?php echo htmlentities($users_det['mname']); ?>" class="form-control">
 							</div>
 							<div class="form-group">
 								<label>Lastname</label>
-								<input type="text" name="lname" id="lname" value="<?php echo $users_det['lname']; ?>" class="form-control">
+								<input type="text" name="lname" id="lname" value="<?php echo htmlentities($users_det['lname']); ?>" class="form-control">
 							</div>
 						</div>
 						<div class="col-md-12">
@@ -61,7 +61,7 @@
 							</div>
 							<div class="form-group">
 								<label>Position</label>
-								<input type="text" name="position" id="position" value="<?php echo $users_det['position']; ?>" class="form-control">
+								<input type="text" name="position" id="position" value="<?php echo htmlentities($users_det['position']); ?>" class="form-control">
 							</div>
 							<div class="form-group">
 								<label>Role</label>
@@ -74,7 +74,7 @@
 							</div>
 							<div class="form-group">
 								<label>Username</label>
-								<input type="text" name="username" id="username" value="<?php echo $users_det['username']; ?>" class="form-control">
+								<input type="text" name="username" id="username" value="<?php echo htmlentities($users_det['username']); ?>" class="form-control">
 							</div>
 							<div class="form-group">
 								<label>Password</label> <span style="font-size: 12px;">(Leave blank if you don't need to update your password)</span>

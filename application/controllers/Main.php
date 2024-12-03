@@ -255,18 +255,14 @@ class Main extends CI_Controller {
 		}
 	}
 
-	// Kevin
 	public function admin_print_report($active_menu = 'print') {
-		// Check if user is logged in.
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 
-			// If user is ok, user id will be stored in the session.
 			if($user_details[0] == "ok"){
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
 
-				// defines all the menus allowed.
 				$allowed_menus = ['print', 'system_administration', 'other_menus'];
 				if(!in_array($active_menu, $allowed_menus)) {
 					$active_menu = 'dashboard';
@@ -274,7 +270,6 @@ class Main extends CI_Controller {
 
 				$data['active_menu'] = $active_menu;
 
-				// render reports_table view.
 				$this->check_upload_size();
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
@@ -1109,6 +1104,74 @@ class Main extends CI_Controller {
 			redirect("sys/authentication");
 		}
 	}
+	
+
+	/*public function admin_approval_list($subject, $id) {
+		if ($this->session->userdata('login_data')) {
+			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_role = $this->session->userdata('login_data')['role'];
+			$user_dept = $this->session->userdata('login_data')['sup_id'];
+			$dept_id = $this->session->userdata('login_data')['dept_id'];
+			$user_details = $this->Main_model->user_details();
+			$msrf_tickets = $this->Main_model->getTicketsMSRF($id);
+			$getTraccCon = $this->Main_model->getTraccConcernByID($id);
+			$ict = $this->Main_model->GetICTSupervisor();
+	
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['msrf'] = $msrf_tickets[1];
+				$data['ict'] = $ict;
+				$emp_id = $user_details[1]["emp_id"];
+				$getTeam = $this->Main_model->GetTeam($dept_id);
+				$data['pages'] = 'tickets';
+	
+				// Handle the active menu logic
+				$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
+				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';
+				$data['active_menu'] = $active_menu;
+	
+				// Handle TRACC Concern data
+				if ($subject == "TRACC_CONCERN") {
+					if ($getTraccCon[0] == "ok") {
+						// Access control_number safely
+						$control_number = $getTraccCon[1]['control_number'];
+						$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
+						$data['tracc_con'] = $getTraccCon[1]; // Store TRACC concern data
+					} else {
+						// Handle the case where no TRACC Concern data was found
+						$data['checkboxes'] = []; // Set to empty array if no data
+						$data['tracc_con'] = []; // Set to empty array if no data
+						$this->session->set_flashdata('error', $getTraccCon[1]); // Use the error message returned
+					}
+	
+					// Load TRACC Concern views
+					$this->load->view('admin/header', $data);
+					$this->load->view('admin/tickets_approval_tracc_concern', $data);
+					$this->load->view('admin/sidebar', $data);
+					$this->load->view('admin/footer');
+	
+				} else if ($subject == "MSRF") {
+					$this->load->view('admin/header', $data);
+					$this->load->view('admin/tickets_approval_msrf', $data);
+					$this->load->view('admin/sidebar', $data);
+					$this->load->view('admin/footer');
+				}
+	
+				// Other logic for L2 user role if applicable
+				if ($user_role == "L2") {
+					$data['getTeam'] = $getTeam[1];
+				}
+	
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Error fetching user information');
+			redirect("sys/authentication");
+		}
+	}*/
 
 
 	public function dept_supervisor_approval() {
@@ -2431,7 +2494,7 @@ class Main extends CI_Controller {
 			$data['get_department'] = $get_department;
 	
 			$this->load->view('users/header', $data);
-			$this->load->view('users/trf_customer_request_form_creation', $data);
+			$this->load->view('users/trf_customer_form_request_creation', $data);
 			$this->load->view('users/footer');
 		} else {
 			return;
@@ -2598,249 +2661,48 @@ class Main extends CI_Controller {
 		}
 	}
 
-	public function user_creation_tickets_item_request_form() {
-		$id = $this->session->userdata('login_data')['user_id'];
-		$this->load->helper('form');
-		$this->load->library('session');
-	
-		$user_details = $this->Main_model->user_details();
-		$getdepartment = $this->Main_model->GetDepartmentID();
-		$users_det = $this->Main_model->users_details_put($id);
-		$ticket_numbers = $this->Main_model->get_item_request_form_from_tracc_req_mf_new_add();
-
-		$departments_result = $this->Main_model->getDepartment();
-		$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
-
-		if ($this->form_validation->run() == FALSE) {
-			$data['user_details'] = $user_details[1];
-			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
-			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
-			$data['ticket_numbers'] = $ticket_numbers;
-	
-			// New: Pass departments for the dropdown
-			$data['departments'] = $departments;
-	
-			$users_department = $users_det[1]['dept_id'] ?? null;
-			$data['selected_department'] = $users_department;
-	
-			$this->load->view('users/header', $data);
-			$this->load->view('users/trf_item_request_form', $data);
-			$this->load->view('users/footer');
-		} else {
-			return;
+	public function update_ticket(){
+		
+		$ict_approval = $this->input->post('ict_approval', TRUE);
+		$reason_rejected = $this->input->post('reason_rejected', TRUE);
+		$control_number = $this->input->post('control_number', TRUE);
+		$module_name = $this->input->post('module', TRUE);
+		$data_id = $this->input->post('data_id', TRUE);
+		
+		$field = "ticket_id";
+		if($module_name === "tracc-concern"){
+			$table = "service_request_tracc_concern";
+			$field = "control_number";
+			$data = array(
+				"it_approval_status" => $ict_approval,
+				"reason_reject_tickets" => $reason_rejected
+			);
+		}else if($module_name === "tracc-request"){
+			$table = "service_request_tracc_request";
+			$data = array(
+				"it_approval_status" => $ict_approval,
+				"reason_reject_ticket" => $reason_rejected
+			);
+		}else{
+			$table = "service_request_msrf";
+			$data = array(
+				"it_approval_status" => $ict_approval,
+				"remarks_ict" => $reason_rejected
+			);
 		}
-	}
-
-	public function user_creation_item_request_form_pdf() {
-		$trf_number = $this->input->post('trf_number', true);
-		$irf_comp_checkbox_value = isset($_POST['irf_comp_checkbox_value']) ? $_POST['irf_comp_checkbox_value'] : [];
-		$imploded_values = implode(',', $irf_comp_checkbox_value);
-
-		$checkbox_item_req_form = [
-			'checkbox_inventory' => isset($_POST['checkbox_inventory']) ? 1 : 0,
-			'checkbox_non_inventory' => isset($_POST['checkbox_non_inventory']) ? 1 : 0,
-			'checkbox_services' => isset($_POST['checkbox_services']) ? 1 : 0,
-			'checkbox_charges' => isset($_POST['checkbox_charges']) ? 1 : 0,
-			'checkbox_watsons' => isset($_POST['checkbox_watsons']) ? 1 : 0,
-			'checkbox_other_accounts' => isset($_POST['checkbox_other_accounts']) ? 1 : 0,
-			'checkbox_online' => isset($_POST['checkbox_online']) ? 1 : 0,
-			'checkbox_all_accounts' => isset($_POST['checkbox_all_accounts']) ? 1 : 0,
-			'checkbox_trade' => isset($_POST['checkbox_trade']) ? 1 : 0,
-			'checkbox_non_trade' => isset($_POST['checkbox_non_trade']) ? 1 : 0,
-			'checkbox_batch_required_yes' => isset($_POST['checkbox_batch_required_yes']) ? 1 : 0,
-			'checkbox_batch_required_no' => isset($_POST['checkbox_batch_required_no']) ? 1 : 0,
- 
-		];
-
-		$process = $this->Main_model->add_item_request_form_pdf($imploded_values, $checkbox_item_req_form);
-
-		$rows_data = $this->input->post('rows_gl', true);
-
-		if ($process[0] == 1 && !empty($rows_data)) {
-			// Prepare structured data for rows insertion
-			$insert_data_gl_setup = [];
-			foreach ($rows_data as $row) {
-				if (!empty($row['uom']) && !empty($row['barcode'])) { // Basic validation
-					$insert_data_gl_setup[] = [
-						'ticket_id' => $trf_number,
-						'uom' => $row['uom'],
-						'barcode' => $row['barcode'],
-						'length' => $row['length'],
-						'height' => $row['height'],
-						'width' => $row['width'],
-						'weight' => $row['weight'],
-					];
-				}
+		// print_r($data);
+		// die();
+		if($ict_approval){
+			$process = $this->Tickets_model->update_data($table, $data, $field, $data_id);
+			if($process === "success"){
+				echo json_encode(array("message" => "success"));
+			}else{
+				echo json_encode(array("message" => "failed"));
 			}
-
-			if (!empty($insert_data_gl_setup)) {
-				$this->Main_model->insert_batch_rows_gl_setup($insert_data_gl_setup);
-			}
-		}
-
-		$rows_data = $this->input->post('rows_whs',true);
-
-		if ($process[0] == 1 && !empty($rows_data)) {
-			$insert_data_whs_setup = [];
-			foreach ($rows_data as $row){
-				if(!empty($row['warehouse']) && !empty($row['warehouse_no'])) {
-					$insert_data_wh_setup[] = [
-						'ticket_id' => $trf_number,
-						'warehouse' => $row['warehouse'],
-						'warehouse_no' => $row['warehouse_no'],
-						'storage_location' => $row['storage_location'],
-						'storage_type' => $row['storage_type'],
-						'fixed_bin' => $row['fixed_bin'],
-						'min_qty' => $row['min_qty'],
-						'max_qty' => $row['max_qty'],
-						'replen_qty' => $row['replen_qty'],
-						'control_qty' => $row['control_qty'],
-						'round_qty' => $row['round_qty'],
-						'uom' => $row['uom'],
-					];
-				}
-			}
-
-			if (!empty($insert_data_wh_setup)) {
-				$this->Main_model->insert_batch_rows_whs_setup($insert_data_wh_setup);
-			}
-		}
-
-
-		if ($process[0] == 1) {
-			$this->session->set_flashdata('success', $process[1]);
-			redirect(base_url().'sys/users/create/tickets/trf_item_request_form');  
-		} else {
-			$this->session->set_flashdata('error', $process[1]);
-			redirect(base_url().'sys/users/create/tickets/trf_item_request_form');  
-		}
-	}
-
-	public function user_creation_tickets_supplier_request_form_tms() {
-		$id = $this->session->userdata('login_data')['user_id'];
-		$this->load->helper('form');
-		$this->load->library('session');
-	
-		$user_details = $this->Main_model->user_details();
-		$getdepartment = $this->Main_model->GetDepartmentID();
-		$users_det = $this->Main_model->users_details_put($id);
-		$ticket_numbers = $this->Main_model->get_supplier_from_tracc_req_mf_new_add();
-
-		$departments_result = $this->Main_model->getDepartment();
-		$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
-
-		if ($this->form_validation->run() == FALSE) {
-			$data['user_details'] = $user_details[1];
-			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
-			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
-			$data['ticket_numbers'] = $ticket_numbers;
-	
-			$data['departments'] = $departments;
-	
-			$users_department = $users_det[1]['dept_id'] ?? null;
-			$data['selected_department'] = $users_department;
-	
-			$this->load->view('users/header', $data);
-			$this->load->view('users/trf_supplier_request_form', $data);
-			$this->load->view('users/footer');
-		} else {
-			return;
-		}
-	}
-
-	public function user_creation_supplier_request_form_pdf() {
-		$trf_comp_checkbox_value = isset($_POST['trf_comp_checkbox_value']) ? $_POST['trf_comp_checkbox_value'] : [];
-		$imploded_values = implode(',', $trf_comp_checkbox_value);
-
-		$checkbox_non_vat = isset($_POST['checkbox_non_vat']) ? 1 : 0;
-
-		$checkbox_supplier_req_form = [
-			'local_supplier_grp' => isset($_POST['local_supplier_grp']) ? 1 : 0,
-			'foreign_supplier_grp' => isset($_POST['foreign_supplier_grp']) ? 1 : 0,
-			'supplier_trade' => isset($_POST['supplier_trade']) ? 1 : 0,
-			'supplier_non_trade' => isset($_POST['supplier_non_trade']) ? 1 : 0,
-			'trade_type_goods' => isset($_POST['trade_type_goods']) ? 1 : 0,
-			'trade_type_services' => isset($_POST['trade_type_services']) ? 1 : 0,
-			'trade_type_GoodsServices' => isset($_POST['trade_type_GoodsServices']) ? 1 : 0,
-			'major_grp_local_trade_ven' => isset($_POST['major_grp_local_trade_ven']) ? 1 : 0,
-			'major_grp_local_nontrade_ven' => isset($_POST['major_grp_local_nontrade_ven']) ? 1 : 0,
-			'major_grp_foreign_trade_ven' => isset($_POST['major_grp_foreign_trade_ven']) ? 1 : 0,
-			'major_grp_foreign_nontrade_ven' => isset($_POST['major_grp_foreign_nontrade_ven']) ? 1 : 0,
-			'major_grp_local_broker_forwarder' => isset($_POST['major_grp_local_broker_forwarder']) ? 1 : 0,
-			'major_grp_rental' => isset($_POST['major_grp_rental']) ? 1 : 0,
-			'major_grp_bank' => isset($_POST['major_grp_bank']) ? 1 : 0,
-			'major_grp_one_time_supplier' => isset($_POST['major_grp_one_time_supplier']) ? 1 : 0,
-			'major_grp_government_offices' => isset($_POST['major_grp_government_offices']) ? 1 : 0,
-			'major_grp_insurance' => isset($_POST['major_grp_insurance']) ? 1 : 0,
-			'major_grp_employees' => isset($_POST['major_grp_employees']) ? 1 : 0,
-			'major_grp_subs_affiliates' => isset($_POST['major_grp_subs_affiliates']) ? 1 : 0,
-			'major_grp_utilities' => isset($_POST['major_grp_utilities']) ? 1 : 0,
-		];
-	
-		$process = $this->Main_model->add_supplier_request_form_pdf($imploded_values, $checkbox_non_vat,$checkbox_supplier_req_form);
-
-		if ($process[0] == 1) {
-			$this->session->set_flashdata('success', $process[1]);
-			redirect(base_url().'sys/users/create/tickets/trf_supplier_request_form_tms');  
-		} else {
-			$this->session->set_flashdata('error', $process[1]);
-			redirect(base_url().'sys/users/create/tickets/trf_supplier_request_form_tms');  
+			
 		}
 	}
 	
-	public function supplier_request_form_pdf_view($active_menu = 'supplier_request_form_pdf') {
-		if($this->session->userdata('login_data')) {
-			$user_details = $this->Main_model->user_details();
-
-			if($user_details[0] == "ok"){
-				$sid = $this->session->session_id;
-				$data['user_details'] = $user_details[1];
-
-				$allowed_menus = ['supplier_request_form_pdf', 'system_administration', 'other_menus'];
-				if(!in_array($active_menu, $allowed_menus)) {
-					$active_menu = 'dashboard';
-				}
-				$data['active_menu'] = $active_menu;
-
-				$this->load->view('admin/header', $data);
-				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/pdf_request_form', $data);
-				$this->load->view('admin/footer');
-			} else {
-				$this->session->setflashdata('error', 'Error fetching user information.');
-				redirect('sys/authentication');
-			}
-		} else {
-			$this->session->sess_destroy();
-			$this->session->set_flashdata('error', 'Session expired. Please login again.');
-			redirect('sys/authentication');
-		}
-	}
-
-
-
-	public function fetch_data() {
-		$tab = $this->input->post('tab'); // Get the tab ID
-	
-		// Load the Main_model
-		$this->load->model('Main_model'); 
-	
-		// Determine the condition based on the selected tab
-		$condition = "";
-		if ($tab === 'tab-1') {
-			$condition = 'value1';
-		} elseif ($tab === 'tab-2') {
-			$condition = 'value2';
-		} elseif ($tab === 'tab-3') {
-			$condition = 'value3';
-		}
-	
-		// Fetch data using Main_model
-		$data = $this->Main_model->get_tab_data($condition);
-	
-		// Return the data as HTML
-		echo $data;
-	}
 	
 	
 }

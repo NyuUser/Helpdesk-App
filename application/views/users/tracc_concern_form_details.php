@@ -108,11 +108,22 @@
                                                     </select>       
                                                 </div>
                                             </div>
-
+                                            <?php 
+                                                $sess_login_data = $this->session->userdata('login_data');
+                                                $role = $sess_login_data['role'];
+                                                $disabled = "";
+                                                if($role === "L1"){
+                                                    $department_status = $tracc_con['approval_status'];
+                                                    if($department_status === "Rejected" || $department_status === "Returned")
+                                                    $disabled = "disabled";
+                                                }else{
+                                                    $disabled = "";
+                                                }  
+                                            ?>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>ICT Approval Status <span style = "color:red;">*</span></label>
-                                                    <select class="form-control select2" name="it_app_stat" id="it_app_stat" disabled>
+                                                    <select class="form-control select2" name="it_app_stat" id="it_app_stat" <?= $disabled?>>
                                                         <option value=""disabled selected>ICT Approval Status</option>
                                                         <option value="Approved"<?php if ($tracc_con['it_approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($tracc_con['it_approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -127,7 +138,7 @@
                                             <div class="col-md-12" id="reason_rejected_ticket">
                                                 <div class="form-group">
                                                     <label>Reason for Rejected Ticket</label>
-                                                    <textarea class="form-control" id="reason_rejected" name="reason_rejected" placeholder="Place the reason here" style="width: 100%; height: 40px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" disabled><?= isset($tracc_con['reason_reject_tickets']) ? htmlspecialchars($tracc_con['reason_reject_tickets']) : ''; ?></textarea>
+                                                    <textarea class="form-control" id="reason_rejected" name="reason_rejected" placeholder="Place the reason here" style="width: 100%; height: 40px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" <?= $disabled;?>><?= isset($tracc_con['reason_reject_tickets']) ? htmlspecialchars($tracc_con['reason_reject_tickets']) : ''; ?></textarea>
                                                 </div>
                                             </div>
 
@@ -267,7 +278,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">
-                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary">Submit Tickets</button>
+                                                        <button id="form-add-submit-button" class="btn btn-primary">Submit Tickets</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -348,6 +359,39 @@
         // Trigger the resize on page load if there's existing content in the textarea
         $('#reason_rejected').each(autoResizeTextarea);
         $('#tcr_solution').each(autoResizeTextarea);
+    });
+
+    $(document).on('click', '#form-add-submit-button', function(e) {
+        e.preventDefault();
+        var control_number = '<?= $this->uri->segment(6)?>';
+        control_number = control_number.trim();
+        var ict_approval = $('#it_app_stat').val();
+        var reason_rejected = $('#reason_rejected').val();
+
+        var data = {
+            ict_approval: ict_approval,
+            reason_rejected: reason_rejected,
+            data_id: control_number,
+            module:"tracc-concern"
+        };
+
+        $.ajax({
+            url: base_url + "Main/update_ticket",
+            type: "POST",
+            data: data,
+            success: function(response) {
+                var response = JSON.parse(response);
+                if (response.message === "success") {
+                    location.href = '<?=base_url("sys/users/list/tickets/tracc_concern") ?>';
+                } else {
+                    //change this and add error message or redirect to main listing page
+                    location.href = '<?=base_url("sys/users/list/tickets/tracc_concern") ?>';
+                }
+            },
+            error: function(xhr, status, error) {
+                //console.error("AJAX Error: " + error);
+            }
+        });
     });
 
 </script>

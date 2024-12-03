@@ -11,6 +11,7 @@
   	<link rel="stylesheet" href="<?= base_url(); ?>/assets/bower_components/font-awesome/css/font-awesome.min.css">
   	<link rel="stylesheet" href="<?= base_url(); ?>/assets/bower_components/Ionicons/css/ionicons.min.css">
   	<link rel="stylesheet" href="<?= base_url(); ?>assets/dist/dist/css/AdminLTE.min.css">
+	<link rel="stylesheet" href="<?= base_url(); ?>assets/dist/dist/css/Admin.css">
   	<link rel="stylesheet" href="<?= base_url(); ?>assets/dist/dist/css/skins/_all-skins.min.css">
   	<link rel="stylesheet" href="<?= base_url(); ?>/assets/bower_components/morris.js/morris.css">
   	<link rel="stylesheet" href="<?= base_url(); ?>/assets/bower_components/jvectormap/jquery-jvectormap.css">

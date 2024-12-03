@@ -1,0 +1,47 @@
+.dashboard-table {
+    margin-top: 30px;
+}
+
+.table-data {
+    padding: 10px;
+    vertical-align: top;
+}
+
+.table-data-summary {
+    background-color: white;
+    padding: 20px;
+    width: 370px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px lightgray;
+    transition: 0.5s;
+}
+
+.table-data-summary:hover {
+    box-shadow: 0px 0px 50px lightgray;
+    transition: 0.5s;
+}
+
+a {
+    color: black;
+}
+
+.table-data tr:hover {
+    background-color: lightgreen;
+}
+
+.status-dropdown {
+    padding: 5px;
+    border-radius: 5px;
+    border-color: lightgray;
+    font-size: 11px;
+}
+
+.status-button {
+    padding: 5px;
+    width: 70px;
+    border-radius: 5px;
+    border-width: 0;
+    background-color: #337ab7;
+    color: white;
+    font-size: 11px;
+}

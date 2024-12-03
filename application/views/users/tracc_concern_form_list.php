@@ -25,22 +25,10 @@
                                         <th>Priority</th>
                                         <th>Company</th>
                                         <th>Status</th>
-                                        <th>Department Approval Status</th>
+                                        <th>Dept. Head Approval Status</th>
                                         <th>ICT Approval Status</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Control Number</th>
-                                        <th>Reported By</th>
-                                        <th>Subject</th>
-                                        <th>Priority</th>
-                                        <th>Company</th>
-                                        <th>Status</th>
-                                        <th>Department Approval Status</th>
-                                        <th>ICT Approval Status</th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
