@@ -550,7 +550,6 @@
                             // Export table to a PDF document.
                             text: 'PDF',
                             className: 'btn btn-danger',
-                            filename: 'MSRF Concern ' + '(' + dateRange + ')',
                             action: function () {
                                 // Instantiate jsPDF.
                                 var doc = new jsPDF();
@@ -612,7 +611,8 @@
                                 });
                                 
                                 // Open the document to another window.
-                                doc.output('dataurlnewwindow', 'MSRF Concern ' + '(' + dateRange + ')');
+                                //doc.output('dataurlnewwindow', 'MSRF Concern ' + '(' + dateRange + ')');
+                                doc.save('MSRF Concern ' + '(' + dateRange + ')');
                             }
                         },
                         {
@@ -737,7 +737,8 @@
                                     }
                                 });
                                 
-                                doc.output('dataurlnewwindow', 'Tracc Concern ' + '(' + dateRange + ')');
+                                //doc.output('dataurlnewwindow', 'Tracc Concern ' + '(' + dateRange + ')');
+                                doc.save('Tracc Concern ' + '(' + dateRange + ')');
                             }
                         },
                         {
@@ -867,7 +868,8 @@
                                 });
 
                                 // Open a new tab to view the pdf document.
-                                doc.output('dataurlnewwindow', 'Tracc Request ' + '(' + dateRange + ')');
+                                //doc.output('dataurlnewwindow', 'Tracc Request ' + '(' + dateRange + ')');
+                                doc.save('Tracc Request ' + '(' + dateRange + ')');
                             }
                         },
                         {
