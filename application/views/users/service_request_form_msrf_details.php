@@ -1,3 +1,36 @@
+<?php 
+    $sess_login_data = $this->session->userdata('login_data');
+    $role = $sess_login_data['role'];
+    $department_id = $sess_login_data['dept_id'];
+    print_r($sess_login_data);
+    $disabled = "";
+    $readonly = "";
+    $btn_label = "Submit Ticket";
+    if ($role === "L1") {
+        $department_head_status = $msrf['approval_status'];
+        $status_msrf = $msrf['status'];
+        if(($department_head_status === "Returned" || $department_head_status === "Pending") && ($status_msrf === "Open" || $status_msrf === "Returned")) {
+            // echo "try";
+            // die();
+            $disabled = "disabled";
+            $readonly = "readonly";
+            $btn_label = "Update Ticket";
+        } else {
+            $disabled = "";
+            $readonly = "";
+        }
+    }
+    // if($role === "L1" && $department_id === "1"){
+    //     $department_status = $msrf['approval_status'];
+    //         if($department_status === "Rejected" || $department_status === "Returned", || $department_status === "Approved"){
+    //             $disabled = "disabled";
+    //         }
+    // }else{
+    //     $disabled = "";
+    // }
+    
+?>
+
 <div class="content-wrapper">
     <div class="container">
         <section class="content-header">
@@ -26,17 +59,17 @@
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>MSRF#</label>
-			                    					<input type="text" name="msrf_number" id="msrf_number" class="form-control" value="<?= $msrf['ticket_id']; ?>" readonly>
+			                    					<input type="text" name="msrf_number" id="msrf_number" class="form-control" value="<?= $msrf['ticket_id']; ?>" <?=$readonly?>>
 			                    				</div>
 			                    			</div>
                                             <div class="col-md-6">
 			                                    <div class="form-group">
 			                                        <label>Requestor</label>
-			                                        <input type="text" name="name" value="<?= htmlentities($msrf['requestor_name']); ?>" class="form-control select2" style="width: 100%;" readonly>
+			                                        <input type="text" name="name" value="<?= htmlentities($msrf['requestor_name']); ?>" class="form-control select2" style="width: 100%;" <?=$readonly?>>
 			                                    </div>
 			                                    <div class="form-group">
 			                                        <label>Department</label>
-			                                        <input type="text" name="department_description" id="department_description" value="<?= htmlentities($msrf['department']); ?>" class="form-control select2" style="width: 100%;" readonly/>
+			                                        <input type="text" name="department_description" id="department_description" value="<?= htmlentities($msrf['department']); ?>" class="form-control select2" style="width: 100%;" <?=$readonly?>/>
 												<input type="hidden" name="dept_id" value="">
 												<input type="hidden" name="sup_id" value="">
 			                                    </div>
@@ -44,12 +77,12 @@
                                             <div class="col-md-6">
 			                                    <div class="form-group">
 			                                        <label>Date Requested</label>
-			                                        <input type="date" name="date_req" id="date_req" class="form-control select2" value="<?= $msrf['date_requested']; ?>" style="width: 100%;" readonly>
+			                                        <input type="date" name="date_req" id="date_req" class="form-control select2" value="<?= $msrf['date_requested']; ?>" style="width: 100%;" <?=$readonly?>>
 			                                    </div>
 			                                    <div class="form-group">
 			                                        <label>Date Needed</label>
 			                                        <input type="date" name="date_need" class="form-control select2" value="<?= $msrf['date_needed']; ?>" style="width: 100%;" 
-                                                    <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'readonly'; ?>>
+                                                    <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected'); ?> <?=$readonly?>>
 			                                    </div>
 			                                </div>
 
@@ -58,7 +91,7 @@
                                                 <div class="form-group">
                                                     <label>Asset Code</label>
                                                     <input type="text" name="asset_code" class="form-control select2" value="<?php echo $msrf['asset_code']; ?>" style="width: 100%;" placeholder="Asset Code"
-                                                    <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'readonly'; ?>>
+                                                    <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected'); ?> <?=$readonly?>>
                                                 </div>
                                             </div>
                                             <!-- ASSET CODE END -->
@@ -68,7 +101,7 @@
                                                 <div class="form-group">
                                                     <label>Request Category</label>
                                                     <select class="form-control select2" name="category" id="category" style="width: 100%;"
-                                                    <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?>>
+                                                    <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected'); ?><?=$disabled?>>
                                                         <option value="" disabled selected>Select Category</option>
                                                         <option value="computer"<?php if ($msrf['category'] == 'computer') echo ' selected'; ?>>Computer (Laptop or Desktop)</option>
                                                         <option value="printer"<?php if ($msrf['category'] == 'printer') echo ' selected'; ?>>Printer Concerns</option>
@@ -85,7 +118,7 @@
                                                 <div class="form-group">
                                                     <label>Specify</label>
                                                     <input type="text" name="msrf_specify" id="msrf_specify" class="form-control" value="<?= $msrf['specify']; ?>" 
-                                                    <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'readonly'; ?>>
+                                                    <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected'); ?>  <?=$readonly?>>
                                                 </div>
                                             </div>
                                             <!-- SPECIFY END -->
@@ -93,7 +126,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Details Concern</label>                                            
-                                                    <textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;"<?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'readonly'; ?>><?= $msrf['details_concern']; ?></textarea>
+                                                    <textarea class="form-control" name="concern" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;"<?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected'); ?> <?=$readonly?>><?= $msrf['details_concern']; ?></textarea>
                                                 </div>
                                             </div>
 
@@ -116,7 +149,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Approval Status</label>
-                                                    <select class="form-control select2" name="approval_stat" id="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?> disabled>
+                                                    <select class="form-control select2" name="approval_stat" id="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?>  <?=$disabled?>>
                                                         <option value=""disabled selected>Approval Status</option>
                                                         <option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($msrf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -125,19 +158,7 @@
                                                 </div>
                                             </div>
 
-                                            <?php 
-                                                $sess_login_data = $this->session->userdata('login_data');
-                                                $role = $sess_login_data['role'];
-                                                $disabled = "";
-                                                if($role === "L1"){
-                                                    $department_status = $msrf['approval_status'];
-                                                    if($department_status === "Rejected" || $department_status === "Returned")
-                                                    $disabled = "disabled";
-                                                }else{
-                                                    $disabled = "";
-                                                }
-                                                
-                                            ?>
+                                        
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>ICT Approval Status</label>
@@ -176,7 +197,7 @@
                                                 <div class="form-group">
                                                     <div class="box-body pad">
                                                         <!-- style="display:none;" -->
-                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?php if ($msrf['approval_status'] === 'Approved' || $msrf['approval_status'] === 'Rejected') $disabled; ?>>Submit Tickets</button>
+                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?=$disabled?>;><?=$btn_label?></button>
                                                     </div>
                                                 </div>
                                             </div>

@@ -173,19 +173,17 @@ class DataTables extends CI_Controller {
 
     //DATATABLE for USER (MSRF)
     public function get_msrf_ticket() {
-        // Retrieve user data from session
-        $user_id = $this->session->userdata('login_data')['user_id'];  // Get the user ID from the session
-        $emp_id = $this->session->userdata('login_data')['emp_id'];  // Get the employee ID from the session
-        //$dept_desc = $this->session->userdata('login_data')['dept_desc'];  // Assuming dept_desc is in session
-        //echo $emp_id;
-        $string_emp = $this->db->escape($emp_id);  // Properly escape the employee ID to prevent SQL injection
-        // Retrieve DataTables request parameters
-        $draw = intval($this->input->post("draw"));  // The draw counter for DataTables (used to ensure AJAX requests are correctly processed)
-        $start = intval($this->input->post("start"));  // The starting point for records (used for pagination)
-        $length = intval($this->input->post("length"));  //0 The number of records to return (used for pagination)
-        $order = $this->input->post("order");  // The column and direction for sorting
-        $search = $this->input->post("search");  // The search value entered in the DataTables search box
-        $search = $this->db->escape_str($search['value']);  // Escape the search value to prevent SQL injection
+        $user_id = $this->session->userdata('login_data')['user_id'];  
+        $emp_id = $this->session->userdata('login_data')['emp_id'];  
+        //$dept_desc = $this->session->userdata('login_data')['dept_desc']; 
+        $string_emp = $this->db->escape($emp_id);  
+        
+        $draw = intval($this->input->post("draw"));  
+        $start = intval($this->input->post("start"));  
+        $length = intval($this->input->post("length")); 
+        $order = $this->input->post("order");  
+        $search = $this->input->post("search");  
+        $search = $this->db->escape_str($search['value']);
     
         $col = 0;  
         $dir = ""; 
@@ -212,10 +210,8 @@ class DataTables extends CI_Controller {
             $order = $valid_columns[$col]; 
         }
 
-        $search_query = "AND assigned_it_staff = ".$string_emp;
-        // Enhance the search query
+        $search_query = "";
         if (!empty($search)) {
-            // If a search term is provided, construct the search query
             $search_query .= "AND (ticket_id LIKE '%" . $search . "%' OR requestor_name LIKE '%" . $search . "%' OR subject LIKE '%" . $search . "%')";
         } 
         //else {
@@ -230,12 +226,10 @@ class DataTables extends CI_Controller {
         $role = $sess_login_data['role'];
 
         if($role === "L1"){
-            $query = "status IN ('Open', 'In Progress', 'On going', 'Resolved') ". $search_query;
+            $query = "status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Approved') ". $search_query;
             $select = "recid, status, approval_status, it_approval_status, priority, ticket_id, subject, requestor_name, department, dept_id, date_requested";
             $result_data = $this->Tickets_model->get_data_list("service_request_msrf", $query, 999,0, $select, null, null, null, null);
-
             $length_count = count($result_data);
-
         }else{
             // Count total records excluding 'Closed' status
             $count_array = $this->db->query("
@@ -361,7 +355,7 @@ class DataTables extends CI_Controller {
     
             // Combine all columns' data into a single row for each ticket
             if($tickets){
-                for ($i = 1; $i < $length_count; $i++) {
+                for ($i = 0; $i < $length_count; $i++) {
                     $data[] = array(
                         $tickets[$i],       // Ticket ID
                         $name[$i],          // Requestor name
@@ -515,7 +509,7 @@ class DataTables extends CI_Controller {
         exit();
     }*/
 
-    //Datatable ng Admin
+    // DATATABLE for ADMIN (MSRF)
     public function all_tickets_msrf() {
         $user_id = $this->session->userdata('login_data')['user_id'];
         $emp_id = $this->session->userdata('login_data')['emp_id'];   
@@ -565,19 +559,14 @@ class DataTables extends CI_Controller {
         $strQry = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'Resolved', 'Rejected', 'Approved', 'Returned') AND (sup_id = " . $user_id . " OR it_sup_id = '23-0001' OR assigned_it_staff = '" . $emp_id . "') " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length;
         $data_query = $this->db->query($strQry);
         $data = array();
-    
+
         if ($data_query->num_rows() > 0) {
             foreach ($data_query->result() as $rows) {
                 $bid[] = $rows->recid;
                 $ticket[] = $rows->ticket_id;
                 $name[] = $rows->requestor_name;
                 $subject[] = $rows->subject;
-                $status[] = $rows->status;
-    
-                if ($rows->it_approval_status == 'Resolved') {
-                    $status = 'Closed';
-                }
-    
+                $status[] = $rows->status; 
                 $prio[] = $rows->priority;
                 $app_stat[] = $rows->approval_status;
                 $it_status[] = $rows->it_approval_status;
@@ -742,7 +731,7 @@ class DataTables extends CI_Controller {
         $role = $sess_login_data['role'];
 
         if($role === "L1"){
-            $query = "status IN ('Open', 'In Progress', 'On going', 'Resolved') ".$search_query;
+            $query = "status IN ('Open', 'In Progress', 'On going', 'Returned', 'Approved', 'Pending') ".$search_query;
             $select = "recid, control_number, subject, module_affected, company, reported_by, reported_by_id, received_by, resolved_by, ack_as_resolved, others, priority, status, approval_status, it_approval_status";
             $result_data = $this->Tickets_model->get_data_list("service_request_tracc_concern", $query, 999,0, $select, null, null, null, null);
 

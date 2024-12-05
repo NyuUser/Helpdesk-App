@@ -36,7 +36,7 @@ $route['sys/users/list/tickets/tracc_request'] = 'main/service_form_tracc_reques
 $route['sys/users/create/tickets/tracc_request'] = 'main/user_creation_tickets_tracc_request';
 
 
-//--- FORM CREATION of USER for TRACC REQUEST FORM
+//--- FORM CREATION of USER for TRACC REQUEST FORM PDF
 $route['sys/users/create/tickets/trf_customer_request_form_tms'] = 'main/user_creation_tickets_customer_request_forms_tms';
 //--- 
 $route['sys/users/create/tickets/trf_customer_shipping_setup'] = 'main/user_creation_tickets_customer_shipping_setup';

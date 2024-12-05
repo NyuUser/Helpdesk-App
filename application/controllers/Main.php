@@ -102,7 +102,7 @@ class Main extends CI_Controller {
 		}
 	}
 	
-	//Registration 
+	//REGISTRATION
 	public function registration() {
 		$this->load->helper('form');
 		$this->load->library('session');
@@ -137,7 +137,7 @@ class Main extends CI_Controller {
 	}
 	
 	
-	// Admin Dashboard, Viewing of Admin Dashboard
+	// ADMIN Dashboard, Viewing of ADMIN Dashboard
 	public function admin_dashboard($active_menu = 'dashboard') {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -182,6 +182,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// VIEWING of ADMIN for GENERATING REPORTS
 	public function admin_print_report($active_menu = 'print') {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -213,7 +214,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//Viewing of users/employees for Admin Datatable
+	//VIEWING of USERS/EMPLOYEES for ADMIN Datatable
 	public function admin_users() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -242,7 +243,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//Viewing of Department for Admin Datatable
+	//VIEWING of DEPARTMENT for ADMIN Datatable
 	public function admin_team() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -333,7 +334,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//TRACC CONCERN List of Ticket for Admin
+	//TRACC CONCERN List of Ticket for ADMIN
 	public function admin_list_tracc_concern($active_menu = 'system_tickets_list'){
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -408,7 +409,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//TRACC REQUEST List of Ticket for Admin
+	//TRACC REQUEST List of Ticket for ADMIN
 	public function admin_list_tracc_request(){
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -452,7 +453,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//MSRF List of Ticket for Admin
+	//MSRF List of Ticket for ADMIN
 	public function admin_list_tickets() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -500,7 +501,7 @@ class Main extends CI_Controller {
 		}
 	}
 	
-	//Adding FORM of department for ADMIN
+	//ADDING FORM of DEPARTMENT for ADMIN
 	public function admin_list_department() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -541,7 +542,7 @@ class Main extends CI_Controller {
 	}
 
 
-	//Adding FORM Employee in ADMIN
+	//ADDING FORM Employee in ADMIN
 	public function admin_list_employee() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -578,7 +579,7 @@ class Main extends CI_Controller {
 		}
 	}
 	
-	// Adding employee ADMIN
+	// Adding employee FUNCTION ADMIN
 	public function employee_add() {
 		$this->load->helper('form');
 		$this->load->library('session');
@@ -610,7 +611,7 @@ class Main extends CI_Controller {
 		echo json_encode($response);
 	}
 
-	//Updating Employee for ADMIN
+	//Updating Employee FUNCTION for ADMIN
 	public function employee_update() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -643,7 +644,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//Deleting Employee for Admin
+	//Deleting Employee FUCNTION for ADMIN
 	public function employee_delete($id){
 		if (is_numeric($id)){
 			$status = $this->Main_model->delete_employee($id);
@@ -657,6 +658,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// FORM of Updating Details of a employee/users FOR ADMIN
 	public function list_update_employee($id) {
 		if ($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -808,7 +810,7 @@ class Main extends CI_Controller {
 	// 	}
 	// }
    	
-	//ADMIN APPROVAL for all tickets
+	//ADMIN APPROVAL for ALL TICKETS
 	public function admin_approval_list($subject, $id) {
 		if ($this->session->userdata('login_data')) {
 			$user_id = $this->session->userdata('login_data')['user_id'];
@@ -986,7 +988,7 @@ class Main extends CI_Controller {
 		}
 	}*/
 
-
+	// DI PA ALAM FUNCTION
 	public function dept_supervisor_approval() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -1017,7 +1019,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	// Method to handle adding a department
+	// ADDING Department FUNCTION
 	public function department_add() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -1053,7 +1055,7 @@ class Main extends CI_Controller {
 		}
 	}
 	
-	//Updating department
+	// UPDATING Department FUNCTION
 	public function department_update($id) {
 		$id = (int) $id;
 		$data['user'] = $this->Main_model->get_department_details($id);
@@ -1089,7 +1091,7 @@ class Main extends CI_Controller {
 		$this->load->view('admin/update_department', $data);
 	}
 	
-	//Deleting department
+	// DELETING Department FUNCTION
 	public function department_delete($id) {
 		if (is_numeric($id)) {
 			$status = $this->Main_model->delete_department($id);
@@ -1103,7 +1105,7 @@ class Main extends CI_Controller {
 			}
 	}
 
-	//Edit Form for department
+	//EDIT FORM for Department ADMIN
 	public function list_update_department($id) {
 		if ($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -1145,21 +1147,21 @@ class Main extends CI_Controller {
 	}
 
 
-	public function details_tickets_list() {
-		if($this->session->userdata('login_data')) {
-			$user_details = $this->Main_model->user_details();
+	// public function details_tickets_list() {
+	// 	if($this->session->userdata('login_data')) {
+	// 		$user_details = $this->Main_model->user_details();
 
-			$this->load->view('admin/header', $data);
-			$this->load->view('admin/sidebar', $data);
-			$this->load->view('admin/tickets_msrf');
-			$this->load->view('admin/footer');
+	// 		$this->load->view('admin/header', $data);
+	// 		$this->load->view('admin/sidebar', $data);
+	// 		$this->load->view('admin/tickets_msrf');
+	// 		$this->load->view('admin/footer');
 
-		} else {
-			$this->session->sess_destroy();
-        	$this->session->set_flashdata('error', 'Session expired. Please login again.');
-			redirect("sys/authentication");
-		}
-	}
+	// 	} else {
+	// 		$this->session->sess_destroy();
+    //     	$this->session->set_flashdata('error', 'Session expired. Please login again.');
+	// 		redirect("sys/authentication");
+	// 	}
+	// }
 
 	// Users Dashboard
 	public function users_dashboard() {
@@ -1282,7 +1284,7 @@ class Main extends CI_Controller {
 		}
 	}*/
 
-	//creation of ticket for tracc concern
+	// CREATION TICKET FORM for tracc concern
 	public function user_creation_tickets_tracc_concern() {
 		$id = $this->session->userdata('login_data')['user_id'];
 
@@ -1304,8 +1306,7 @@ class Main extends CI_Controller {
 			$users_department = $users_det[1]['dept_id'];
 			$get_department = $this->Main_model->UsersDepartment($users_department);   
 			$data['get_department'] = $get_department;  
-	
-			// Load the form view
+
 			$this->load->view('users/header', $data);  
 			$this->load->view('users/tracc_concern_form_creation', $data);  
 			$this->load->view('users/footer');  
@@ -1342,7 +1343,7 @@ class Main extends CI_Controller {
 		}
 	}
 	
-	//creation of ticket for msrf
+	// CREATION TICKET FORM for msrf
 	public function users_creation_tickets_msrf() {
 		$id = $this->session->userdata('login_data')['user_id'];
 	
@@ -1405,112 +1406,94 @@ class Main extends CI_Controller {
 		}
 	}
 	
-	//datatable na nakikita ni user MSRF
+	// DATATABLE na nakikita ni USER (MSRF)
 	public function service_form_msrf_list() {
-		// Get session data for the logged-in user
-		$id = $this->session->userdata('login_data')['user_id']; // Fetches the user ID from the session
-		$dept_id = $this->session->userdata('login_data')['dept_id']; // Fetches the department ID from the session
+		$id = $this->session->userdata('login_data')['user_id']; 
+		$dept_id = $this->session->userdata('login_data')['dept_id']; 
 	
-		// Load form and session libraries/helpers for validation
-		$this->load->helper('form'); // Loads form helper for handling form elements
-		$this->load->library('session'); // Loads session library to access session data
+		$this->load->helper('form'); 
+		$this->load->library('session'); 
 	
 		// Set validation rule for the form input 'msrf_number'
 		$this->form_validation->set_rules('msrf_number', 'Ticket ID', 'trim|required'); 
-		// 'msrf_number' is required; it will trigger an error if it's not present.
 	
-		// Fetch user and department details from the model
-		$user_details = $this->Main_model->user_details(); // Gets the current user details
-		$department_data = $this->Main_model->getDepartment(); // Gets the department data
-		$users_det = $this->Main_model->users_details_put($id); // Gets user details based on the session user ID
-		$getdepartment = $this->Main_model->GetDepartmentID(); // Fetches department data based on the session department ID
-	
-		// Check if the form validation has failed
+		$user_details = $this->Main_model->user_details(); 
+		$department_data = $this->Main_model->getDepartment(); 
+		$users_det = $this->Main_model->users_details_put($id); 
+		$getdepartment = $this->Main_model->GetDepartmentID(); 
+
 		if ($this->form_validation->run() == FALSE) { 
 			// If validation fails, it will proceed to generate the MSRF number
 			$msrfNumber = $this->GenerateMSRFNo(); // Calls a function to generate a new MSRF number
 	
-			// Populate data array to pass to views
-			$data['user_details'] = $user_details[1]; // Stores the user details in the data array for view
-			$data['department_data'] = $department_data; // Stores department data
-			$data['users_det'] = $users_det[1]; // User details (fetched using user ID)
-			$data['dept_id'] = $dept_id; // Stores department ID from session
-	
-			// Check if department data is retrieved successfully
+			$data['user_details'] = $user_details[1]; 
+			$data['department_data'] = $department_data; 
+			$data['users_det'] = $users_det[1]; 
+			$data['dept_id'] = $dept_id; 
+
 			if ($department_data[0] == "ok") { 
-				$data['departments'] = $department_data[1]; // Stores departments if the data was fetched successfully
+				$data['departments'] = $department_data[1]; 
 			} else {
-				$data['departments'] = array(); // If no departments were found, set to an empty array
-				echo "No departments found."; // Output an error message
+				$data['departments'] = array(); 
+				echo "No departments found."; 
 			}
 	
-			$data['getdept'] = $getdepartment[1]; // Stores department information
+			$data['getdept'] = $getdepartment[1]; 
 			
 			// Add a form type to differentiate between MSRF and TRACC
 			$data['form_type'] = 'msrf';
-			
-			// Prepare the MSRF number and load views
-			$data['msrfNumber'] = $msrfNumber; // Stores the generated MSRF number
-			$this->load->view('users/header', $data); // Loads the header view, passing the data array
-			$this->load->view('users/service_request_form_msrf_list', $data); // Loads the main view for the service request form
-			$this->load->view('users/footer', $data); // Loads the footer view
+
+			$data['msrfNumber'] = $msrfNumber; 
+			$this->load->view('users/header', $data); 
+			$this->load->view('users/service_request_form_msrf_list', $data); 
+			$this->load->view('users/footer', $data); 
 	
-		} else { // If form validation passes, proceed to process the form data
-	
-			// Add ticket (submit the MSRF form)
-			$process = $this->Main_model->msrf_add_ticket(); // Calls model function to add a new MSRF ticket
-	
-			// Check if ticket was added successfully
+		} else { 
+
+			$process = $this->Main_model->msrf_add_ticket(); 
+
 			if ($process[0] == 1) { 
-				$this->session->set_flashdata('success', $process[1]); // Sets a success message in session data
-				redirect(base_url().'sys/users/dashboard'); // Redirect to the user's dashboard
+				$this->session->set_flashdata('success', $process[1]); 
+				redirect(base_url().'sys/users/dashboard');
 			} else {
-				$this->session->set_flashdata('error', $process[1]); // Sets an error message in session data
-				redirect(base_url().'sys/users/dashboard'); // Redirect to the dashboard on error as well
+				$this->session->set_flashdata('error', $process[1]); 
+				redirect(base_url().'sys/users/dashboard'); 
 			}
 		}
 	}
 
-	//datatable na makikita ni user tracc concern
+	// DATATABLE na nakikita ni USER TRACC CONCERN
 	public function service_form_tracc_concern_list() {
-		$id = $this->session->userdata('login_data')['user_id']; // Fetches the user ID from the session
-		$dept_id = $this->session->userdata('login_data')['dept_id']; // Fetches the department ID from the session
-		
-		// Load form and session libraries/helpers for validation
-		$this->load->helper('form'); // Loads form helper for handling form elements
-		$this->load->library('session'); // Loads session library to access session data
-	
-		// Set validation rule for the form input 'Control Number'
+		$id = $this->session->userdata('login_data')['user_id']; 
+		$dept_id = $this->session->userdata('login_data')['dept_id']; 
+
+		$this->load->helper('form'); 
+		$this->load->library('session'); 
+
 		$this->form_validation->set_rules('control_number', 'Control Number', 'trim|required'); 
-		// 'Control Number' is required; it will trigger an error if it's not present.
 	
-		// Fetch user and department details from the model
-		$user_details = $this->Main_model->user_details(); // Gets the current user details
-		$department_data = $this->Main_model->getDepartment(); // Gets the department data
-		$users_det = $this->Main_model->users_details_put($id); // Gets user details based on the session user ID
-		$getdepartment = $this->Main_model->GetDepartmentID(); // Fetches department data based on the session department ID
+		$user_details = $this->Main_model->user_details(); 
+		$department_data = $this->Main_model->getDepartment(); 
+		$users_det = $this->Main_model->users_details_put($id); 
+		$getdepartment = $this->Main_model->GetDepartmentID(); 
 	
-		// Check if the form validation has failed
 		if ($this->form_validation->run() == FALSE) { 
 			
-			// Populate data array to pass to views
-			$data['user_details'] = $user_details[1]; // Stores the user details in the data array for view
-			$data['department_data'] = $department_data; // Stores department data
-			$data['users_det'] = $users_det[1]; // User details (fetched using user ID)
-			$data['dept_id'] = $dept_id; // Stores department ID from session
+			$data['user_details'] = $user_details[1]; 
+			$data['department_data'] = $department_data; 
+			$data['users_det'] = $users_det[1]; 
+			$data['dept_id'] = $dept_id; 
 			$control_number = $this->session->userdata('control_number');
 	
-			// Check if department data is retrieved successfully
 			if ($department_data[0] == "ok") { 
-				$data['departments'] = $department_data[1]; // Stores departments if the data was fetched successfully
+				$data['departments'] = $department_data[1]; 
 			} else {
-				$data['departments'] = array(); // If no departments were found, set to an empty array
-				echo "No departments found."; // Output an error message
+				$data['departments'] = array(); 
+				echo "No departments found."; 
 			}
 	
-			$data['getdept'] = $getdepartment[1]; // Stores department information
+			$data['getdept'] = $getdepartment[1]; 
 			
-			// Add a form type to differentiate between MSRF and TRACC
 			//$data['form_type'] = 'tracc_concern';
 
 			$data['control_number'] = $control_number; 
@@ -1523,11 +1506,11 @@ class Main extends CI_Controller {
 			$process = $this->Main_model->tracc_concern_add_ticket();
 
 			if ($process[0] == 1) { 
-				$this->session->set_flashdata('success', $process[1]); // Sets a success message in session data
-				redirect(base_url().'sys/users/dashboard'); // Redirect to the user's dashboard
+				$this->session->set_flashdata('success', $process[1]);
+				redirect(base_url().'sys/users/dashboard'); 
 			} else {
-				$this->session->set_flashdata('error', $process[1]); // Sets an error message in session data
-				redirect(base_url().'sys/users/dashboard'); // Redirect to the dashboard on error as well
+				$this->session->set_flashdata('error', $process[1]); 
+				redirect(base_url().'sys/users/dashboard');
 			}
 		}
 
@@ -1617,74 +1600,7 @@ class Main extends CI_Controller {
         return $newTRFNumber;
 	}
 
-	public function users_creation_tickets_tracc() {
-		// for tracc function
-		$id = $this->session->userdata('login_data')['user_id'];
-		$this->load->helper('form');
-        $this->load->library('session');
-		$this->form_validation->set_rules('trn_number', 'Ticket ID', 'trim|required');
-		$user_details = $this->Main_model->user_details();
-		$department_data = $this->Main_model->getDepartment();
-		$users_det = $this->Main_model->users_details_put($id);
-
-		if ($this->form_validation->run() == FALSE) {
-			$data['user_details'] = $user_details[1];
-			$traccNumber = $this->GenerateTRACCNo();
-
-			$data['traccNumber'] = $traccNumber;
-			$data['department_data'] = $department_data;
-			$data['users_det'] = $users_det[1];
-
-			if ($department_data[0] == "ok") {
-				$data['departments'] = $department_data[1];
-			} else {
-				$data['departments'] = array();
-				echo "No departments found.";
-			}
-
-			$this->load->view('users/service_form_tracc', $data);
-		} else {
-			$trn_no = $this->input->post('trn_number', true);
-			$name = $this->input->post('name', true);
-			$department = $this->input->post('department_description', true);
-			$dept_id = $this->input->post('dept_id', true);
-			$date_req = $this->input->post('date_req', true);
-			$date_need = $this->input->post('date_need', true);
-			$web_app = $this->input->post('r3', true);
-			$webString = implode(", ", $web_app);
-			$links_master = $this->input->post('r1', true);
-			$details = $this->input->post('concern', true);
-			$sup_id = $this->input->post('sup_id', true);
-			$others = $this->input->post('others', true);
-			$purpose = $this->input->post('purpose', true);
-			
-			$data = array(
-				'ticket_id' => $trn_no,
-				'subject' => 'TRACC',
-				'requestor_name' => $name,
-				'department' => $department,
-				'dept_id' => $dept_id,
-				'date_requested' => $date_req,
-				'date_needed' => $date_need,
-				'web_concern' => $webString,
-				'tracc_access' => $links_master,
-				'others' => $others,
-				'purpose' => $purpose,
-				'details_concern' => $details,
-				'status' => 'Open',
-				'head_approval_status' => 'Pending',
-				'priority' => 'High',
-				'request_id' => $id,
-				'sup_id' => $sup_id,
-				'it_dept_id' => 1,
-				'it_sup_id' => '',
-				'it_approval_status' => 'In Progress',
-				'created_at' => date("Y-m-d H:i:s")
-			);
-
-			var_dump($data);
-		}
-	}
+	
 
 	/*public function tracc_concern_form_details($id) {
 		if($this->session->userdata('login_data')) {
@@ -1712,7 +1628,7 @@ class Main extends CI_Controller {
 		}
 	}*/
 
-	//MSRF details
+	//MSRF details USERS
 	public function service_form_msrf_details($id) {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -1739,7 +1655,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//Tracc concern details
+	//Tracc concern details USERS
 	public function tracc_concern_form_details($id) {
 		if ($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -1776,7 +1692,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//Tracc Request details
+	//Tracc Request details USERS
 	public function tracc_request_form_details($id) {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -1785,11 +1701,6 @@ class Main extends CI_Controller {
 			$getCheckboxDataNewAdd = $this->Main_model->getCheckboxDataNewAdd($id);
 			$getCheckeboxDataUpdate = $this->Main_model->getCheckboxDataUpdate($id);
 			$getCheckboxDataAccount = $this->Main_model->getCheckboxDataAccount($id);
-
-			// echo '<pre>'; 
-			// print_r($getCheckboxDataNewAdd); 
-			// echo '</pre>'; 
-			// exit;
 
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
@@ -1801,7 +1712,7 @@ class Main extends CI_Controller {
 				$data['checkbox_data_account'] = $getCheckboxDataAccount;
 
 				$selected_companies = isset($data['trf']['company']) ? explode(',', $data['trf']['company']) : [];
-				$data['selected_companies'] = $selected_companies; // Add to data
+				$data['selected_companies'] = $selected_companies; 
 
 				$this->load->view('users/header', $data);
 				$this->load->view('users/tracc_request_form_details', $data);
@@ -2057,7 +1968,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//datatable na makikita ng user sa get_tracc_request_form
+	// DATATABLE na makikita ni USERS sa get_tracc_request_form
 	public function service_form_tracc_request_list(){
 		$id = $this->session->userdata('login_data')['user_id'];
 		$dept_id = $this->session->userdata('login_data')['dept_id'];
@@ -2108,7 +2019,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//user creation of ticket
+	// USER CREATION of TICKET for TRACC REQUEST
 	public function user_creation_tickets_tracc_request() {
 		$id = $this->session->userdata('login_data')['user_id'];
 		$this->load->helper('form');
@@ -2188,12 +2099,6 @@ class Main extends CI_Controller {
 				'checkbox_others_account' => $this->input->post('checkbox_others_account') ? 1 : 0,
 				'others_text_account' => $this->input->post('others_text_account')
 			];
-
-
-			// echo '<pre>';
-			// print_r($checkbox_data_update);
-			// echo '</pre>';
-			// exit;
 	
 			$comp_checkbox_values = isset($_POST['comp_checkbox_value']) ? $_POST['comp_checkbox_value'] : [];
 			$imploded_values = implode(',', $comp_checkbox_values);
@@ -2210,6 +2115,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// USER CREATION FORM of CUSTOMER REQUEST FORM TMS (pdf ni mam hanna)
 	public function user_creation_tickets_customer_request_forms_tms() {
 		$id = $this->session->userdata('login_data')['user_id'];
 		$this->load->helper('form');
@@ -2231,13 +2137,14 @@ class Main extends CI_Controller {
 			$data['get_department'] = $get_department;
 	
 			$this->load->view('users/header', $data);
-			$this->load->view('users/trf_customer_form_request_creation', $data);
+			$this->load->view('users/trf_customer_request_form_creation', $data);
 			$this->load->view('users/footer');
 		} else {
 			return;
 		}
 	}
 
+	// USER CREATION FUNCTION of CUSTOMER REQUEST FORM TMS (pdf ni mam hanna)
 	public function user_creation_customer_request_form_pdf() {
 		$crf_comp_checkbox_values = isset($_POST['crf_comp_checkbox_value']) ? $_POST['crf_comp_checkbox_value'] : [];
 		$imploded_values = implode(',', $crf_comp_checkbox_values);
@@ -2298,7 +2205,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-
+	// USER CREATION FORM of CUSTOMER SHIPPING SETUP (pdf ni mam hanna)
 	public function user_creation_tickets_customer_shipping_setup() {
 		$id = $this->session->userdata('login_data')['user_id'];
 		$this->load->helper('form');
@@ -2327,6 +2234,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// USER CREATION FUCNTION of CUSTOMER SHIPPING SETUP (pdf ni mam hanna)
 	public function user_creation_customer_shipping_setup_pdf() {
 		$css_comp_checkbox_value = isset($_POST['css_comp_checkbox_value']) ? $_POST['css_comp_checkbox_value'] : [];
 		$imploded_values = implode(',', $css_comp_checkbox_value);
@@ -2352,6 +2260,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// USER CREATION FORM of EMPLOYEE REQUEST FORM (pdf ni mam hanna)
 	public function user_creation_tickets_employee_request_form() {
 		$id = $this->session->userdata('login_data')['user_id'];
 		$this->load->helper('form');
@@ -2386,6 +2295,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// USER CREATION FUCNTION of EMPLOYEE REQUEST FORM (pdf ni mam hanna)
 	public function user_creation_employee_request_form_pdf() {
 		$process = $this->Main_model->add_employee_request_form_pdf();
 
@@ -2398,8 +2308,8 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// UPDATING TICKET for HEAD
 	public function update_ticket(){
-		
 		$ict_approval = $this->input->post('ict_approval', TRUE);
 		$reason_rejected = $this->input->post('reason_rejected', TRUE);
 		$control_number = $this->input->post('control_number', TRUE);
@@ -2439,8 +2349,148 @@ class Main extends CI_Controller {
 			
 		}
 	}
+
+	// USER CREATION FORM of ITEM REQUEST FORM (pdf ni mam hanna)
+	public function user_creation_tickets_item_request_form() {
+		$id = $this->session->userdata('login_data')['user_id'];
+		$this->load->helper('form');
+		$this->load->library('session');
 	
+		$user_details = $this->Main_model->user_details();
+		$getdepartment = $this->Main_model->GetDepartmentID();
+		$users_det = $this->Main_model->users_details_put($id);
+		$ticket_numbers = $this->Main_model->get_item_request_form_from_tracc_req_mf_new_add();
+
+		$departments_result = $this->Main_model->getDepartment();
+		$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['user_details'] = $user_details[1];
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
+			$data['ticket_numbers'] = $ticket_numbers;
 	
+			// New: Pass departments for the dropdown
+			$data['departments'] = $departments;
+	
+			$users_department = $users_det[1]['dept_id'] ?? null;
+			$data['selected_department'] = $users_department;
+	
+			$this->load->view('users/header', $data);
+			$this->load->view('users/trf_item_request_form', $data);
+			$this->load->view('users/footer');
+		} else {
+			return;
+		}
+	}
+
+	// USER CREATION FUCNTION of ITEM REQUEST FORM (pdf ni mam hanna)
+	public function user_creation_item_request_form_pdf() {
+		$trf_number = $this->input->post('trf_number', true);
+		$irf_comp_checkbox_value = isset($_POST['irf_comp_checkbox_value']) ? $_POST['irf_comp_checkbox_value'] : [];
+		$imploded_values = implode(',', $irf_comp_checkbox_value);
+
+		$checkbox_item_req_form = [
+			'checkbox_inventory' => isset($_POST['checkbox_inventory']) ? 1 : 0,
+			'checkbox_non_inventory' => isset($_POST['checkbox_non_inventory']) ? 1 : 0,
+			'checkbox_services' => isset($_POST['checkbox_services']) ? 1 : 0,
+			'checkbox_charges' => isset($_POST['checkbox_charges']) ? 1 : 0,
+			'checkbox_watsons' => isset($_POST['checkbox_watsons']) ? 1 : 0,
+			'checkbox_other_accounts' => isset($_POST['checkbox_other_accounts']) ? 1 : 0,
+			'checkbox_online' => isset($_POST['checkbox_online']) ? 1 : 0,
+			'checkbox_all_accounts' => isset($_POST['checkbox_all_accounts']) ? 1 : 0,
+			'checkbox_trade' => isset($_POST['checkbox_trade']) ? 1 : 0,
+			'checkbox_non_trade' => isset($_POST['checkbox_non_trade']) ? 1 : 0,
+			'checkbox_batch_required_yes' => isset($_POST['checkbox_batch_required_yes']) ? 1 : 0,
+			'checkbox_batch_required_no' => isset($_POST['checkbox_batch_required_no']) ? 1 : 0,
+ 
+		];
+
+		$process = $this->Main_model->add_item_request_form_pdf($imploded_values, $checkbox_item_req_form);
+
+		$rows_data = $this->input->post('rows_gl', true);
+
+		if ($process[0] == 1 && !empty($rows_data)) {
+			// Prepare structured data for rows insertion
+			$insert_data_gl_setup = [];
+			foreach ($rows_data as $row) {
+				if (!empty($row['uom']) && !empty($row['barcode'])) { // Basic validation
+					$insert_data_gl_setup[] = [
+						'ticket_id' => $trf_number,
+						'uom' => $row['uom'],
+						'barcode' => $row['barcode'],
+						'length' => $row['length'],
+						'height' => $row['height'],
+						'width' => $row['width'],
+						'weight' => $row['weight'],
+					];
+				}
+			}
+
+			if (!empty($insert_data_gl_setup)) {
+				$this->Main_model->insert_batch_rows_gl_setup($insert_data_gl_setup);
+			}
+		}
+
+		$rows_data = $this->input->post('rows_whs',true);
+
+		if ($process[0] == 1 && !empty($rows_data)) {
+			$insert_data_whs_setup = [];
+			foreach ($rows_data as $row){
+				if(!empty($row['warehouse']) && !empty($row['warehouse_no'])) {
+					$insert_data_wh_setup[] = [
+						'ticket_id' => $trf_number,
+						'warehouse' => $row['warehouse'],
+						'warehouse_no' => $row['warehouse_no'],
+						'storage_location' => $row['storage_location'],
+						'storage_type' => $row['storage_type'],
+						'fixed_bin' => $row['fixed_bin'],
+						'min_qty' => $row['min_qty'],
+						'max_qty' => $row['max_qty'],
+						'replen_qty' => $row['replen_qty'],
+						'control_qty' => $row['control_qty'],
+						'round_qty' => $row['round_qty'],
+						'uom' => $row['uom'],
+					];
+				}
+			}
+
+			if (!empty($insert_data_wh_setup)) {
+				$this->Main_model->insert_batch_rows_whs_setup($insert_data_wh_setup);
+			}
+		}
+
+
+		if ($process[0] == 1) {
+			$this->session->set_flashdata('success', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_item_request_form');  
+		} else {
+			$this->session->set_flashdata('error', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_item_request_form');  
+		}
+	}
+	
+	// USER CREATION FORM of SUPPLIER REQUEST FORM (pdf ni mam hanna)
+	public function user_creation_tickets_supplier_request_form_tms() {
+		$id = $this->session->userdata('login_data')['user_id'];
+		$this->load->helper('form');
+		$this->load->library('session');
+	
+		$user_details = $this->Main_model->user_details();
+		$getdepartment = $this->Main_model->GetDepartmentID();
+		$users_det = $this->Main_model->users_details_put($id);
+		$ticket_numbers = $this->Main_model->get_supplier_from_tracc_req_mf_new_add();
+
+		$departments_result = $this->Main_model->getDepartment();
+		$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
+
+		if ($this->form_validation->run() == FALSE) {
+			$data['user_details'] = $user_details[1];
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();
+			$data['ticket_numbers'] = $ticket_numbers;
+	
+			$data['departments'] = $departments;
 	
 			$users_department = $users_det[1]['dept_id'] ?? null;
 			$data['selected_department'] = $users_department;
@@ -2453,6 +2503,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// USER CREATION FUCNTION of SUPPLIER REQUEST FORM (pdf ni mam hanna)
 	public function user_creation_supplier_request_form_pdf() {
 		$trf_comp_checkbox_value = isset($_POST['trf_comp_checkbox_value']) ? $_POST['trf_comp_checkbox_value'] : [];
 		$imploded_values = implode(',', $trf_comp_checkbox_value);
@@ -2493,6 +2544,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// ADMIN FORM for Supplier Request form (PDF ni mam hanna)
 	public function supplier_request_form_pdf_view($active_menu = 'supplier_request_form_pdf') {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -2522,21 +2574,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	// public function sup_req_form_JTabs() {
-	// 	// echo 'testt';
-	// 	// die();
-	// 	$this->load->model('Main_model');
-	// 	$data = $this->Main_model->get_ticket_counts_supplier_req();
-	// 	// echo json_encode($data);
-		
-	// 	if($data){
-	// 		echo json_encode(array('message'=>'success', 'data'=>json_encode($data)));
-	// 	} else {
-	// 		echo json_encode(array('message'=>'failed', 'data'=>''));
-	// 	}
-	// }
-
-
+	// JQuery TABS for Supplier Request Form
 	public function sup_req_form_JTabs(){
 		$this->load->model('Main_model');
 		$tickets = $this->Main_model->get_ticket_counts_supplier_req();
@@ -2603,7 +2641,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-
+	// ADMIN FORM for Employee Request form (PDF ni mam hanna)
 	public function employee_request_form_pdf_view($active_menu = 'employee_request_form_pdf') {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -2633,6 +2671,7 @@ class Main extends CI_Controller {
 		}
 	}
 
+	// JQuery TABS for Employee Request Form
 	public function emp_req_form_JTabs(){
 		$this->load->model('Main_model');
 		$tickets = $this->Main_model->get_ticket_counts_employee_req();
