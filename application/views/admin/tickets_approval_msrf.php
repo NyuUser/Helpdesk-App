@@ -114,6 +114,7 @@
 												<option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
 												<option value="Pending"<?php if ($msrf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
 												<option value="Rejected"<?php if ($msrf['approval_status'] == 'Rejected') echo ' selected'; ?>>Rejected</option>
+												<option value="Returned"<?php if ($msrf['approval_status'] == 'Returned') echo ' selected'; ?>>Returned</option>
 											</select>
 			                            </div>
 			                        </div>

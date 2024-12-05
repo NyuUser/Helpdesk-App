@@ -768,6 +768,9 @@ class Main_model extends CI_Model {
 			} else if ($approval_stat == 'Approved') {
 				$this->db->set('approval_status', 'Approved');
 				$this->db->set('status', 'In Progress');
+			} else if ($approval_stat == 'Returned') {
+				$this->db->set('approval_status', 'Returned');
+				$this->db->set('status', 'Returned');
 			}
 
 			if ($it_approval_stat == 'Resolved'){
@@ -831,6 +834,9 @@ class Main_model extends CI_Model {
 			} else if ($approval_stat == 'Approved') {
 				$this->db->set('approval_status', 'Approved');
 				$this->db->set('status', 'In Progress'); 
+			} else if ($approval_stat == 'Returned') {
+				$this->db->set('approval_status', 'Returned');
+				$this->db->set('status', 'Returned');
 			}
 	
 			
@@ -1317,16 +1323,30 @@ class Main_model extends CI_Model {
 	public function add_employee_request_form_pdf() {
 		$trf_number = $this->input->post('trf_number', true);
 
+		$department_id = $this->input->post('department', true);
+
+		// Fetch the department description from the departments table
+		$this->db->select('dept_desc');
+		$this->db->from('departments');  // Assuming your table name is 'departments'
+		$this->db->where('recid', $department_id);
+		$query = $this->db->get();
+
+		$department_desc = '';
+		if ($query->num_rows() > 0) {
+			$department_desc = $query->row()->dept_desc;  // Get the department description
+		}
+
 		$data = array(
 			'ticket_id' => $trf_number,
 			'requested_by' => $this->input->post('requested_by', true),
 			'name' => $this->input->post('employee_name', true),
-			'department' => $this->input->post('department', true),
+			'department' => $department_id, 
+        	'department_desc' => $department_desc,
 			'position' => $this->input->post('position', true),
 			'address' => $this->input->post('address', true),
 			'tel_no_mob_no' => $this->input->post('tel_mobile_no', true),
 			'tin_no' => $this->input->post('tin_no', true),
-			'contact_no' => $this->input->post('contact_person', true),
+			'contact_person' => $this->input->post('contact_person', true),
 			'created_at' => date("Y-m-d H:i:s"),
 		);
 
@@ -1540,21 +1560,26 @@ class Main_model extends CI_Model {
 	}
 
 
-	public function get_tab_data($condition) {
-		$this->db->select('*');
-		$this->db->from('tracc_req_employee_req_form');
-		$this->db->where('ticket_id', $condition);
-		$query = $this->db->get();
-	
-		// Build the HTML dynamically
-		$output = "<ul>";
-		foreach ($query->result() as $row) {
-			$output .= "<li>" . $row->ticket_id . "</li>"; // Replace 'your_column' with the actual column name
-		}
-		$output .= "</ul>";
-	
-		return $output; // Return the generated HTML
+	public function get_ticket_counts_supplier_req() {
+		$this->db->select('*, COUNT(ticket_id) as count');
+		$this->db->group_by('recid');
+		$query = $this->db->get('tracc_req_supplier_req_form');
+		return $query->result_array();
 	}
+
+	public function get_ticket_checkbox_supplier_req($recid) {
+		$query = $this->db->get_where('tracc_req_supplier_req_form_checkboxes', ['recid' => $recid]);
+		return $query->row_array(); 
+	}
+
+	public function get_ticket_counts_employee_req() {
+		$this->db->select('*, COUNT(ticket_id) as count');
+		$this->db->group_by('recid');
+		$query = $this->db->get('tracc_req_employee_req_form');
+		return $query->result_array();
+	}
+
+	
 	
 }
 ?>

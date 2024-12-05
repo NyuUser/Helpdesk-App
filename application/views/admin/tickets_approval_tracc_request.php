@@ -393,6 +393,7 @@
                                                         <option value="Approved"<?php if ($trf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($trf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
                                                         <option value="Rejected"<?php if ($trf['approval_status'] == 'Rejected') echo ' selected'; ?>>Rejected</option>
+                                                        <option value="Returned"<?php if ($trf['approval_status'] == 'Returned') echo ' selected'; ?>>Returned</option>
                                                     </select>       
                                                 </div>
                                             </div>

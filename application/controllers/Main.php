@@ -101,80 +101,7 @@ class Main extends CI_Controller {
 			$this->load->view('login');
 		}
 	}
-
 	
-	/*public function login() {
-		// Load the necessary helpers and libraries
-		$this->load->helper('form');
-		$this->load->library('session');
-		$this->load->library('form_validation');
-	
-		// Set form validation rules
-		$this->form_validation->set_rules('username', 'Username', 'trim|required');
-		$this->form_validation->set_rules('password', 'Password', 'trim|required');
-	
-		if ($this->form_validation->run() == FALSE) {
-			// Return validation errors in JSON format
-			$response = array(
-				'status' => 'error',
-				'message' => 'Validation failed',
-				'errors' => $this->form_validation->error_array()
-			);
-			echo json_encode($response);
-		} else {
-			// Process login
-			$process = $this->Main_model->login();
-	
-			if ($process[0] == 1 && $process[1]['status'] == 1) {
-				// Successful login
-				$role = $process[1]['role'];
-				$this->session->set_userdata(array('login_data' => $process[1]));
-	
-				// Set redirect URL based on role
-				$redirect_url = ($role == "L2") ? base_url().'sys/admin/dashboard' : base_url().'sys/users/dashboard';
-	
-				// Return success response with redirect URL
-				$response = array(
-					'status' => 'success',
-					'message' => 'Login successful',
-					'redirect_url' => $redirect_url
-				);
-				echo json_encode($response);
-			} else {
-				// Login failed, return error message
-				$response = array(
-					'status' => 'error',
-					'message' => isset($process['message']) ? $process['message'] : 'Invalid login credentials'
-				);
-				echo json_encode($response);
-			}
-		}
-	}*/
-	
-	/*public function registration() {
-		$this->load->helper('form');
-		$this->load->library('session');
-	
-		// Fetch departments data
-		$page_data['get_departments'] = $this->Main_model->get_departments();
-		//print_r($page_data['get_departments']);die;
-
-		if ($this->input->server('REQUEST_METHOD') == 'POST') {
-			$process = $this->Main_model->user_registration();
-	
-			if ($process[0] == 1) {
-				$this->session->set_flashdata('success', $process[1]);
-				redirect(base_url().'sys/registration');
-			} else {
-				$this->session->set_flashdata('error', $process[1]);
-			}
-	
-			redirect('registration');
-		}
-	
-		$this->load->view('registration', $page_data);
-	}*/
-
 	//Registration 
 	public function registration() {
 		$this->load->helper('form');
@@ -407,7 +334,7 @@ class Main extends CI_Controller {
 	}
 
 	//TRACC CONCERN List of Ticket for Admin
-	public function admin_list_tracc_concern(){
+	public function admin_list_tracc_concern($active_menu = 'system_tickets_list'){
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
@@ -542,37 +469,22 @@ class Main extends CI_Controller {
 	
 				$data['active_menu'] = $active_menu;
 	
-				// Process form submission
 				if ($this->input->post()) {
-					// Capture form data
 					$msrf_number = $this->input->post('msrf_number');
 					$approval_stat = $this->input->post('approval_stat');
 					$rejecttix = $this->input->post('rejecttix');
 					
+					$process = $this->Main_model->status_approval_msrf($msrf_number, $approval_stat, $rejecttix);
 					
-					//print_r($_POST); // Add this line to debug POST data
-					// Pass data to the model for processing
-					$process = $this->Main_model->status_approval_msrf($msrf_number, $approval_stat, $rejecttix);  // Update this line in the model
-					//var_dump($process);
-					
-					/*if ($process[0] == 1) {
-						$this->session->set_flashdata('success', 'Tickets Approved');
-					} else {
-						$this->session->set_flashdata('error', 'Update failed.');
-					}*/
-
 					if (isset($process[0]) && $process[0] == 1) {
 						//Tickets Approved
 						$this->session->set_flashdata('success', "Ticket's been Updated");
 					} else {
 						$this->session->set_flashdata('error', 'Update failed.');
 					}
-	
-					// Redirect after form processing
 					redirect(base_url()."sys/admin/list/ticket/msrf");
 				}
 	
-				// Load views
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
 				$this->load->view('admin/tickets_msrf', $data);
@@ -587,49 +499,6 @@ class Main extends CI_Controller {
 			redirect("sys/authentication");
 		}
 	}
-
-	// public function admin_list_tickets() {
-	// 	$this->load->helper('form');
-	// 	$this->load->library('form_validation');
-
-	// 	if ($this->session->userdata('login_data')) {
-	// 		$user_details = $this->Main_model->user_details();
-
-	// 		if ($user_details[0] == "ok"){
-	// 			$sid = $this->session->session_id;
-	// 			$data['user_details'] = $user_details[1];
-
-	// 			$allowed_menus = ['dashboard', 'system_tickets_list', 'open_tickets', 'other_menu'];
-	// 			$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_tickets_list';
-
-	// 			$data['active_menu'] = $active_menu;
-
-	// 			if($this->input->post()) {
-	// 				$msrf_number = $this->input->post('msrf_number');
-	// 				$app_stat = $this->input->post('approval_stat');
-
-	// 				$process = $this->Main_model->status_approval_msrf($msrf_number, $app_stat);
-	// 				print_r($process);
-
-	// 				if (isset($process[0]) && $process[0] == 1) {
-	// 					$this->session->set_flashdata('success', "Tickets been updated");
-	// 				} else {
-	// 					$this->session->set_flashdata('error', "Update Failed");
-	// 				}
-
-	// 				//redirect(base_url()."sys/admin/list/ticket/msrf");
-	// 			}
-	// 			$this->load->view('admin/header', $data);
-	// 			$this->load->view('admin/sidebar', $data);
-	// 			$this->load->view('admin/tickets_msrf', $data);
-	// 			$this->load->view('admin/footer');
-	// 		}
-	// 	} else {
-	// 		$this->session->sess_destroy();
-	// 		$this->session->set_flashdata('error', 'Session expired. Please login again.');
-	// 		redirect("sys/authentication");
-	// 	}
-	// }	
 	
 	//Adding FORM of department for ADMIN
 	public function admin_list_department() {
@@ -674,53 +543,35 @@ class Main extends CI_Controller {
 
 	//Adding FORM Employee in ADMIN
 	public function admin_list_employee() {
-		// Check if the user is logged in by verifying session data
 		if($this->session->userdata('login_data')) {
-			// Fetch user details from the Main_model
 			$user_details = $this->Main_model->user_details();
-			// Fetch department data from the Main_model
 			$department_data = $this->Main_model->getDepartment();
 	
-			// Check if user details were fetched successfully
 			if ($user_details[0] == "ok") {
-				// Get the session ID
 				$sid = $this->session->session_id;
-				// Assign user details to the data array for use in the view
 				$data['user_details'] = $user_details[1];
-				// Assign department data to the data array for use in the view
 				$data['department_data'] = $department_data;
 	
-				// Define the allowed menus
 				$allowed_menus = ['dashboard', 'system_administration', 'users', 'other_menu'];
-				// Get the current menu from the URI segment and ensure it is allowed, defaulting to 'system_administration' if not
 				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_administration';
-	
-				// Set the active menu in the data array for use in the view
 				$data['active_menu'] = $active_menu;
-	
-				// Check if department data was fetched successfully
+
 				if ($department_data[0] == "ok") {
-					// Assign the fetched departments to the data array for use in the view
 					$data['departments'] = $department_data[1];
 				} else {
-					// Handle the case when no departments are found by assigning an empty array
 					$data['departments'] = array();
-					// Output a message for debugging purposes
 					echo "No departments found.";
 				}
 	
-				// Load the views and pass the data array to them
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
 				$this->load->view('admin/add_employee', $data);
 				$this->load->view('admin/footer');
 			} else {
-				// If user details could not be fetched, set an error message and redirect to the authentication page
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");
 			}
 		} else {
-			// If the user is not logged in, destroy the session, set an error message, and redirect to the authentication page
 			$this->session->sess_destroy();
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
@@ -729,79 +580,59 @@ class Main extends CI_Controller {
 	
 	// Adding employee ADMIN
 	public function employee_add() {
-		// Load the form helper and session library
 		$this->load->helper('form');
 		$this->load->library('session');
-	
-		// Set form validation rules for the 'emp_id' field
+
 		$this->form_validation->set_rules('emp_id', 'Employee ID', 'trim|required');
-	
-		// Fetch user details from the Main_model
+
 		$user_details = $this->Main_model->user_details();
 	
-		// Check if the form validation has passed
 		if ($this->form_validation->run() == FALSE) {
-			// If validation fails, return error message in JSON format
 			$response = [
 				'status' => 'error',
-				'message' => validation_errors() // Provide the validation error messages
+				'message' => validation_errors()
 			];
 		} else {
-			// If validation passes, process the addition of the employee
 			$process = $this->Main_model->add_employee();
-	
-			// Check the result of the process
+
 			if ($process[0] == 1) {
-				// If successful, return a success message in JSON format
 				$response = [
 					'status' => 'success',
 					'message' => $process[1]
 				];
 			} else {
-				// If unsuccessful, return an error message in JSON format
 				$response = [
 					'status' => 'error',
-					'message' => $process[1] // Assuming $process[1] contains the error message
+					'message' => $process[1]
 				];
 			}
 		}
-	
-		// Return the JSON response
 		echo json_encode($response);
 	}
 
 	//Updating Employee for ADMIN
 	public function employee_update() {
-		// Load the form helper and form validation library
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 	
 		// Retrieve the employee ID from the submitted form data, with XSS filtering
 		$id = $this->input->post('id', true);
 	
-		// Check if the user is logged in by verifying the session data
 		if ($this->session->userdata('login_data')) {
-			// Retrieve the logged-in user's ID from session data
 			$user_id = $this->session->userdata('login_data')['user_id'];
-	
-			// Fetch detailed information about the user from the model
 			$user_details = $this->Main_model->user_details();
 	
-			// Fetch department data from the model
 			$department_data = $this->Main_model->getDepartment();
 	
-			// Check if the user details were retrieved successfully
 			if ($user_details[0] == "ok") {
-				// Call the model method to update the employee's data
 				$process = $this->Main_model->update_employee();
-	
-				// Return JSON response
+			
 				if ($process[0] == 1) {
 					echo json_encode(array('status' => 'success', 'message' => 'Employee is been updated successfully.'));
 				} else {
 					echo json_encode(array('status' => 'error', 'message' =>  $process[1]));
 				}
-				return; // Prevent loading the view when using AJAX
+				return; 
 			} else {
 				echo json_encode(array('status' => 'error', 'message' => 'Error fetching user information.'));
 				return;
@@ -827,64 +658,46 @@ class Main extends CI_Controller {
 	}
 
 	public function list_update_employee($id) {
-		// Check if the user is logged in by verifying session data
 		if ($this->session->userdata('login_data')) {
-	
-			// Fetch detailed information about the logged-in user from the model
 			$user_details = $this->Main_model->user_details();
-	
-			// Fetch department data from the model
 			$department_data = $this->Main_model->getDepartment();
-	
-			// Fetch details of the specific user to be updated based on the provided ID
 			$users_det = $this->Main_model->users_details_put($id);
-	
-			// Check if the user details were retrieved successfully
+
 			if ($user_details[0] == "ok") {
-	
-				// Get the session ID (though it's not used further in this code)
 				$sid = $this->session->session_id;
 	
-				// Store the user details, department data, and the details of the user to be updated in the $data array
 				$data['user_details'] = $user_details[1];
 				$data['department_data'] = $department_data;
 				$data['users_det'] = $users_det[1];
 	
-				// Define allowed menus for navigation and determine the active menu based on the URI segment
 				$allowed_menus = ['dashboard', 'system_administration', 'users', 'other_menu'];
 				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_administration';
 				$data['active_menu'] = $active_menu;
 	
-				// Check if department data was successfully retrieved
+
 				if ($department_data[0] == "ok") {
-					// If successful, store the department list in the $data array
 					$data['departments'] = $department_data[1];
 				} else {
-					// If not, initialize an empty array and display an error message
 					$data['departments'] = array();
 					echo "No departments found.";
 				}
 	
-				// Load the views for the admin page, passing the $data array to the views
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
 				$this->load->view('admin/update_employee', $data);
 				$this->load->view('admin/footer');
 	
 			} else {
-				// If user details retrieval failed, set an error message and redirect to the authentication page
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");
 			}
 		} else {
-			// If the user is not logged in (session data is missing), destroy the session, set an error message, and redirect to the authentication page
 			$this->session->sess_destroy();
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
 	}
 	
-	// else if
 	// public function admin_approval_list($subject, $id) {
 	// 	if ($this->session->userdata('login_data')) {
 	// 		$user_id = $this->session->userdata('login_data')['user_id'];
@@ -1206,42 +1019,33 @@ class Main extends CI_Controller {
 
 	// Method to handle adding a department
 	public function department_add() {
-		// Load the form helper and form validation library
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 	
-		// Set validation rule for the 'dept_desc' field (Department Name)
 		$this->form_validation->set_rules('dept_desc', 'Department Name', 'trim|required');
 	
-		// Check if the request is AJAX
 		if ($this->input->is_ajax_request()) {
-			// Check if form validation has failed
 			if ($this->form_validation->run() == FALSE) {
-				// Return JSON response with validation errors
 				echo json_encode(array('status' => 'error', 'message' => validation_errors()));
 				return;
 			}
 	
-			// If form validation is successful, proceed with adding the department
 			$process = $this->Main_model->add_department();
 	
-			// Check if the addition was successful
 			if ($process[0] == 1) {
 				echo json_encode(array('status' => 'success', 'message' => 'Department added successfully!'));
 			} else {
 				echo json_encode(array('status' => 'error', 'message' => $process[0]));
 			}
-			return; // Prevent loading the view when using AJAX
+			return; 
 		} else {
-			// Handle non-AJAX requests (standard page load)
 			$user_details = $this->Main_model->user_details();
 			$data['user_details'] = $user_details[1];
 			$allowed_menus = ['dashboard', 'system_administration', 'users', 'other_menu'];
 			$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_administration';
 			$data['active_menu'] = $active_menu;
 	
-			// Load the views with the prepared data
 			$this->load->view('admin/header', $data);
 			$this->load->view('admin/sidebar', $data);
 			$this->load->view('admin/add_department', $data);
@@ -1251,48 +1055,37 @@ class Main extends CI_Controller {
 	
 	//Updating department
 	public function department_update($id) {
-		// Ensure $id is an integer for security
 		$id = (int) $id;
-	
-		// Fetch department details using the provided ID from the model
 		$data['user'] = $this->Main_model->get_department_details($id);
-		// Pass the ID to the view for use in the form action or other purposes
 		$data['recid'] = $id;
-	
-		// Check if the form was submitted via POST request
+
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			// Retrieve form data from POST request
 			$dept_desc = $this->input->post('dept_desc');
 			$manager_id = $this->input->post('manager_id');
 			$sup_id = $this->input->post('sup_id');
 	
-			// Prepare data array to be updated in the database
 			$update_data = array(
 				'dept_desc' => $dept_desc,
 				'manager_id' => $manager_id,
 				'sup_id' => $sup_id,
 			);
 	
-			// Remove empty fields to avoid overwriting with NULL values
 			foreach ($update_data as $key => $value) {
 				if (empty($value)) {
 					unset($update_data[$key]);
 				}
 			}
-	
-			// Call the model's method to update the department record with the new data
+
 			$status = $this->Main_model->update_department($update_data, $id);
 	
-			// Return JSON response
 			if ($status[0] == 1) {
 				echo json_encode(array('status' => 'success', 'message' => $status[1]));
 			} else {
 				echo json_encode(array('status' => 'error', 'message' => $status[1]));
 			}
-			return; // Prevent loading the view when using AJAX
+			return; 
 		}
 	
-		// Load the view for updating department details with the fetched data
 		$this->load->view('admin/update_department', $data);
 	}
 	
@@ -1312,58 +1105,39 @@ class Main extends CI_Controller {
 
 	//Edit Form for department
 	public function list_update_department($id) {
-		// Check if the user is logged in by verifying session data
 		if ($this->session->userdata('login_data')) {
-	
-			// Fetch detailed information about the logged-in user from the model
 			$user_details = $this->Main_model->user_details();
-	
-			// Fetch department data from the model
 			$department_data = $this->Main_model->getDepartment();
-	
-			// Fetch details of the specific department to be updated based on the provided ID
 			$dept_details = $this->Main_model->get_department_details($id);
-	
-	
-			// Check if the user details were retrieved successfully
+
 			if ($user_details[0] == "ok") {
-	
-				// Get the session ID (though it's not used further in this code)
 				$sid = $this->session->session_id;
 	
-				// Store the user details, department data, and the details of the department to be updated in the $data array
 				$data['user_details'] = $user_details[1];
 				$data['department_data'] = $department_data;
 				$data['dept_details'] = $dept_details[1];
 	
-				// Define allowed menus for navigation and determine the active menu based on the URI segment
 				$allowed_menus = ['dashboard', 'system_administration', 'departments', 'other_menu'];
 				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_administration';
 				$data['active_menu'] = $active_menu;
 	
-				// Check if department data was successfully retrieved
 				if ($department_data[0] == "ok") {
-					// If successful, store the department list in the $data array
 					$data['departments'] = $department_data[1];
 				} else {
-					// If not, initialize an empty array and display an error message
 					$data['departments'] = array();
 					echo "No departments found.";
 				}
 	
-				// Load the views for the admin page, passing the $data array to the views
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
 				$this->load->view('admin/update_department', $data);
 				$this->load->view('admin/footer');
 	
 			} else {
-				// If user details retrieval failed, set an error message and redirect to the authentication page
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");
 			}
 		} else {
-			// If the user is not logged in (session data is missing), destroy the session, set an error message, and redirect to the authentication page
 			$this->session->sess_destroy();
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
@@ -1510,30 +1284,23 @@ class Main extends CI_Controller {
 
 	//creation of ticket for tracc concern
 	public function user_creation_tickets_tracc_concern() {
-		// Get the logged-in user's ID from session data
 		$id = $this->session->userdata('login_data')['user_id'];
-	
-		// Load necessary helpers and libraries
+
 		$this->load->helper('form');
 		$this->load->library('session');
 		$this->load->library('upload'); 
 	
-		// Set form validation rules
 		$this->form_validation->set_rules('control_number', 'Control Number', 'trim|required');
-	
-		// Retrieve user details and department information
+
 		$user_details = $this->Main_model->user_details();              
 		$getdepartment = $this->Main_model->GetDepartmentID();          
 		$users_det = $this->Main_model->users_details_put($id);         
-	
-		// Check if form validation failed
+
 		if ($this->form_validation->run() == FALSE) {
-			// Prepare data for the view
 			$data['user_details'] = $user_details[1];                   
 			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();  
 			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();  
 			
-			// Get department information based on the user's department ID
 			$users_department = $users_det[1]['dept_id'];
 			$get_department = $this->Main_model->UsersDepartment($users_department);   
 			$data['get_department'] = $get_department;  
@@ -1551,30 +1318,20 @@ class Main extends CI_Controller {
 				$config['allowed_types'] = 'pdf|jpg|png|doc|docx|jpeg'; 
 				$config['max_size'] = 5048; 
 				$config['file_name'] = time() . '_' . $_FILES['uploaded_photo']['name']; 
-	
-				// Load the upload library with configuration
+
 				$this->upload->initialize($config);
 	
 				if (!$this->upload->do_upload('uploaded_photo')) {
-					// Log the error and redirect back to the form
 					$this->session->set_flashdata('error', $this->upload->display_errors());
 					redirect(base_url().'sys/users/create/tickets/tracc_concern');  
 				} else {
-					// Get file data and store the file name
 					$file_data = $this->upload->data();
 					$file_path = $file_data['file_name']; 
-					//echo 'Uploaded file path: ' . $file_path; // Debugging output
 				}
 			}
-	
-			// Process the form and insert into the database using model function
+
 			$process = $this->Main_model->tracc_concern_add_ticket($file_path);  
 	
-			// Debugging output for the returned process
-			//var_dump($process); 
-			//exit;
-	
-			// Check if the process was successful
 			if ($process[0] == 1) {
 				$this->session->set_flashdata('success', $process[1]);
 				redirect(base_url().'sys/users/list/tickets/tracc_concern');  
@@ -1587,41 +1344,30 @@ class Main extends CI_Controller {
 	
 	//creation of ticket for msrf
 	public function users_creation_tickets_msrf() {
-		// Get the currently logged-in user's ID from session data
 		$id = $this->session->userdata('login_data')['user_id'];
 	
-		// Load the form helper and session library
 		$this->load->helper('form');
 		$this->load->library('session');
 		$this->load->library('upload');
 	
-		// Set form validation rule for 'msrf_number' (must not be empty)
 		$this->form_validation->set_rules('msrf_number', 'Ticket ID', 'trim|required');
+
+		$user_details = $this->Main_model->user_details();        
+		$getdepartment = $this->Main_model->GetDepartmentID();     
+		$users_det = $this->Main_model->users_details_put($id);      
 	
-		// Retrieve user details, department ID, and additional user data
-		$user_details = $this->Main_model->user_details();           // Gets the logged-in user's details
-		$getdepartment = $this->Main_model->GetDepartmentID();       // Retrieves the department ID of the logged-in user
-		$users_det = $this->Main_model->users_details_put($id);      // Gets detailed user info for the user ID
-	
-		// Check if form validation passed or failed
 		if ($this->form_validation->run() == FALSE) {
-			// If validation fails, generate a new MSRF number and gather necessary data to re-display the form
-	
-			// Generate a new MSRF number
 			$msrf = $this->GenerateMSRFNo();
 			
-			// Populate data to be sent to the view
-			$data['msrf'] = $msrf;                                    // Store the generated MSRF number
-			$data['user_details'] = $user_details[1];                 // Store user details (assumed from an array result)
-			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();  // Detailed user information, or empty array if not available
-			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();  // Department info
+			$data['msrf'] = $msrf;                             
+			$data['user_details'] = $user_details[1];                
+			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array(); 
+			$data['getdept'] = isset($getdepartment[1]) ? $getdepartment[1] : array();  
 	
-			// Get the department of the current user
-			$users_department = $users_det[1]['dept_id'];             // Get the department ID from the user details
-			$get_department = $this->Main_model->UsersDepartment($users_department);  // Retrieve department details using department ID
-			$data['get_department'] = $get_department;                // Store the department information
-			
-			// Load the view with the gathered data (this displays the form)
+			$users_department = $users_det[1]['dept_id'];            
+			$get_department = $this->Main_model->UsersDepartment($users_department); 
+			$data['get_department'] = $get_department;              
+
 			$this->load->view('users/header', $data);
 			$this->load->view('users/service_request_form_msrf_creation', $data);
 			$this->load->view('users/footer');
@@ -1639,29 +1385,20 @@ class Main extends CI_Controller {
 				$this->upload->initialize($config);
 	
 				if (!$this->upload->do_upload('uploaded_file')) {
-					// Log the error and redirect back to the form
 					$this->session->set_flashdata('error', $this->upload->display_errors());
 					redirect(base_url().'sys/users/create/tickets/msrf');  
 				} else {
-					// Get file data and store the file name
 					$file_data = $this->upload->data();
 					$file_path = $file_data['file_name']; 
-					echo 'Uploaded file path: ' . $file_path; // Debugging output
+					echo 'Uploaded file path: ' . $file_path; 
 				}
 			}
-
-			// If form validation succeeds, process the form submission (add the MSRF ticket)
-	
-			// Call the model function to add the new MSRF ticket to the database
 			$process = $this->Main_model->msrf_add_ticket($file_path);
 	
-			// Check if the process was successful
 			if ($process[0] == 1) {
-				// If success, set a success message and redirect to the ticket list
 				$this->session->set_flashdata('success', $process[1]);
 				redirect(base_url().'sys/users/list/tickets/msrf');
 			} else {
-				// If an error occurred, set an error message and redirect to the ticket list
 				$this->session->set_flashdata('error', $process[1]);
 				redirect(base_url().'sys/users/list/tickets/msrf');
 			}
@@ -2704,5 +2441,238 @@ class Main extends CI_Controller {
 	}
 	
 	
+	
+			$users_department = $users_det[1]['dept_id'] ?? null;
+			$data['selected_department'] = $users_department;
+	
+			$this->load->view('users/header', $data);
+			$this->load->view('users/trf_supplier_request_form', $data);
+			$this->load->view('users/footer');
+		} else {
+			return;
+		}
+	}
+
+	public function user_creation_supplier_request_form_pdf() {
+		$trf_comp_checkbox_value = isset($_POST['trf_comp_checkbox_value']) ? $_POST['trf_comp_checkbox_value'] : [];
+		$imploded_values = implode(',', $trf_comp_checkbox_value);
+
+		$checkbox_non_vat = isset($_POST['checkbox_non_vat']) ? 1 : 0;
+
+		$checkbox_supplier_req_form = [
+			'local_supplier_grp' => isset($_POST['local_supplier_grp']) ? 1 : 0,
+			'foreign_supplier_grp' => isset($_POST['foreign_supplier_grp']) ? 1 : 0,
+			'supplier_trade' => isset($_POST['supplier_trade']) ? 1 : 0,
+			'supplier_non_trade' => isset($_POST['supplier_non_trade']) ? 1 : 0,
+			'trade_type_goods' => isset($_POST['trade_type_goods']) ? 1 : 0,
+			'trade_type_services' => isset($_POST['trade_type_services']) ? 1 : 0,
+			'trade_type_GoodsServices' => isset($_POST['trade_type_GoodsServices']) ? 1 : 0,
+			'major_grp_local_trade_ven' => isset($_POST['major_grp_local_trade_ven']) ? 1 : 0,
+			'major_grp_local_nontrade_ven' => isset($_POST['major_grp_local_nontrade_ven']) ? 1 : 0,
+			'major_grp_foreign_trade_ven' => isset($_POST['major_grp_foreign_trade_ven']) ? 1 : 0,
+			'major_grp_foreign_nontrade_ven' => isset($_POST['major_grp_foreign_nontrade_ven']) ? 1 : 0,
+			'major_grp_local_broker_forwarder' => isset($_POST['major_grp_local_broker_forwarder']) ? 1 : 0,
+			'major_grp_rental' => isset($_POST['major_grp_rental']) ? 1 : 0,
+			'major_grp_bank' => isset($_POST['major_grp_bank']) ? 1 : 0,
+			'major_grp_one_time_supplier' => isset($_POST['major_grp_one_time_supplier']) ? 1 : 0,
+			'major_grp_government_offices' => isset($_POST['major_grp_government_offices']) ? 1 : 0,
+			'major_grp_insurance' => isset($_POST['major_grp_insurance']) ? 1 : 0,
+			'major_grp_employees' => isset($_POST['major_grp_employees']) ? 1 : 0,
+			'major_grp_subs_affiliates' => isset($_POST['major_grp_subs_affiliates']) ? 1 : 0,
+			'major_grp_utilities' => isset($_POST['major_grp_utilities']) ? 1 : 0,
+		];
+	
+		$process = $this->Main_model->add_supplier_request_form_pdf($imploded_values, $checkbox_non_vat,$checkbox_supplier_req_form);
+
+		if ($process[0] == 1) {
+			$this->session->set_flashdata('success', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_supplier_request_form_tms');  
+		} else {
+			$this->session->set_flashdata('error', $process[1]);
+			redirect(base_url().'sys/users/create/tickets/trf_supplier_request_form_tms');  
+		}
+	}
+
+	public function supplier_request_form_pdf_view($active_menu = 'supplier_request_form_pdf') {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+
+			if($user_details[0] == "ok"){
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+
+				$allowed_menus = ['supplier_request_form_pdf', 'system_administration', 'other_menus'];
+				if(!in_array($active_menu, $allowed_menus)) {
+					$active_menu = 'dashboard';
+				}
+				$data['active_menu'] = $active_menu;
+
+				$this->load->view('admin/header', $data);
+				$this->load->view('admin/sidebar', $data);
+				$this->load->view('admin/pdf_supplier_request_form', $data);
+				$this->load->view('admin/footer');
+			} else {
+				$this->session->setflashdata('error', 'Error fetching user information.');
+				redirect('sys/authentication');
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect('sys/authentication');
+		}
+	}
+
+	// public function sup_req_form_JTabs() {
+	// 	// echo 'testt';
+	// 	// die();
+	// 	$this->load->model('Main_model');
+	// 	$data = $this->Main_model->get_ticket_counts_supplier_req();
+	// 	// echo json_encode($data);
+		
+	// 	if($data){
+	// 		echo json_encode(array('message'=>'success', 'data'=>json_encode($data)));
+	// 	} else {
+	// 		echo json_encode(array('message'=>'failed', 'data'=>''));
+	// 	}
+	// }
+
+
+	public function sup_req_form_JTabs(){
+		$this->load->model('Main_model');
+		$tickets = $this->Main_model->get_ticket_counts_supplier_req();
+
+		if ($tickets) {
+			$data = [];
+
+			foreach ($tickets as $ticket) {
+
+				$companies = explode(',', $ticket['company']);
+
+				$checkbox_data = $this->Main_model->get_ticket_checkbox_supplier_req($ticket['recid']); 
+				
+				$formData = [
+					'recid' => $ticket['recid'],
+					'ticket_id' => $ticket['ticket_id'],
+					'requested_by' => $ticket['requested_by'],
+					'companies' => $companies,
+					'date' => $ticket['date'],
+					'supplier_code' => $ticket['supplier_code'],
+					'supplier_account_group' => $ticket['supplier_account_group'],
+					'supplier_name' => $ticket['supplier_name'],
+					'country_origin' => $ticket['country_origin'],
+					'supplier_address' => $ticket['supplier_address'],
+					'office_tel' => $ticket['office_tel'],
+					'zip_code' => $ticket['zip_code'],
+					'contact_person' => $ticket['contact_person'],
+					'terms' => $ticket['terms'],
+					'tin_no' => $ticket['tin_no'],
+					'pricelist' => $ticket['pricelist'],
+					'ap_account' => $ticket['ap_account'],
+					'ewt' => $ticket['ewt'],
+					'advance_account' => $ticket['advance_account'],
+					'vat' => $ticket['vat'],
+					'non_vat' => $ticket['non_vat'],
+					'payee_1' => $ticket['payee_1'],
+					'payee_2' => $ticket['payee_2'],
+					'payee_3' => $ticket['payee_3'],
+					'driver_name' => $ticket['driver_name'],
+					'driver_contact_no' => $ticket['driver_contact_no'],
+					'driver_fleet' => $ticket['driver_fleet'],
+					'driver_plate_no' => $ticket['driver_plate_no'],
+					'helper_name' => $ticket['helper_name'],
+					'helper_contact_no' => $ticket['helper_contact_no'],
+					'helper_rate_card' => $ticket['helper_rate_card'],
+
+					'checkbox_data' => $checkbox_data,
+				];
+				
+				$formHtml = $this->load->view('admin/trf_supplier_request_form_admin', $formData, TRUE);
+
+				$data[] = [
+					'tab_id' => "tabs-" . $ticket['ticket_id'],
+					'ticket_id' => $ticket['ticket_id'],
+					'count' => $ticket['count'],
+					'recid' => $ticket['recid'],
+					'form_html' => $formHtml,
+				];
+			}
+
+			echo json_encode(['message' => 'success', 'data' => $data]);
+		} else {
+			echo json_encode(['message' => 'failed', 'data' => []]);
+		}
+	}
+
+
+	public function employee_request_form_pdf_view($active_menu = 'employee_request_form_pdf') {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+
+			if($user_details[0] == "ok"){
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+
+				$allowed_menus = ['employee_request_form_pdf', 'system_administration', 'other_menus'];
+				if(!in_array($active_menu, $allowed_menus)) {
+					$active_menu = 'dashboard';
+				}
+				$data['active_menu'] = $active_menu;
+
+				$this->load->view('admin/header', $data);
+				$this->load->view('admin/sidebar', $data);
+				$this->load->view('admin/pdf_employee_request_form', $data);
+				$this->load->view('admin/footer');
+			} else {
+				$this->session->setflashdata('error', 'Error fetching user information.');
+				redirect('sys/authentication');
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect('sys/authentication');
+		}
+	}
+
+	public function emp_req_form_JTabs(){
+		$this->load->model('Main_model');
+		$tickets = $this->Main_model->get_ticket_counts_employee_req();
+
+		if ($tickets) {
+			$data = [];
+
+			foreach ($tickets as $ticket) {
+				
+				$formData = [
+					'recid' => $ticket['recid'],
+					'ticket_id' => $ticket['ticket_id'],
+					'requested_by' => $ticket['requested_by'],
+					'name' => $ticket['name'],
+					'department' => $ticket['department'],
+					'department_desc' => $ticket['department_desc'],
+					'position' => $ticket['position'],
+					'address' => $ticket['address'],
+					'tel_no_mob_no' => $ticket['tel_no_mob_no'],
+					'tin_no' => $ticket['tin_no'],
+					'contact_person' => $ticket['contact_person'],
+					'created_at' => $ticket['created_at'],
+				];
+				
+				$formHtml = $this->load->view('admin/trf_employee_request_form_admin', $formData, TRUE);
+			
+
+				$data[] = [
+					'tab_id' => "tabs-" . $ticket['ticket_id'],
+					'ticket_id' => $ticket['ticket_id'],
+					'count' => $ticket['count'],
+					'recid' => $ticket['recid'],
+					'form_html' => $formHtml,
+				];
+			}
+
+			echo json_encode(['message' => 'success', 'data' => $data]);
+		} else {
+			echo json_encode(['message' => 'failed', 'data' => []]);
+		}
+	}
 	
 }

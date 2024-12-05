@@ -557,26 +557,12 @@ class DataTables extends CI_Controller {
         if (!empty($search)) {
             $search_query = "AND (ticket_id LIKE '%" . $search . "%' OR requestor_name LIKE '%" . $search . "%' OR subject LIKE '%" . $search . "%' OR department LIKE '%" . $search . "%')";
         }
-        // QUERY WITH DATE FILTERS
-        /*$query = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved')";
-
-        if (!empty($startDate) && !empty($endDate)) {
-            $query .= " AND date BETWEEN '$startDate' AND '$endDate'";
-        }
-        if (!empty($statusFilter)) {
-            $query .= " AND status = '$statusFilter'";
-        }*/
-        //$datafilters = $this->db->query($query)->result();
-
-
-        // TOTAL RECORD COUNT
-        // Retrieve the total number of records that match the search and status filters.
-        // Modify the query to exclude 'Closed' tickets if necessary.
-        $count_query = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') " . $search_query . " ORDER BY recid";
+        
+        $count_query = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'Resolved', 'Rejected', 'Approved', 'Returned') " . $search_query . " ORDER BY recid";
         $count_array = $this->db->query($count_query);
         $length_count = $count_array->num_rows();
     
-        $strQry = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND (sup_id = " . $user_id . " OR it_sup_id = '23-0001' OR assigned_it_staff = '" . $emp_id . "') " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length;
+        $strQry = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'Resolved', 'Rejected', 'Approved', 'Returned') AND (sup_id = " . $user_id . " OR it_sup_id = '23-0001' OR assigned_it_staff = '" . $emp_id . "') " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length;
         $data_query = $this->db->query($strQry);
         $data = array();
     
@@ -609,19 +595,16 @@ class DataTables extends CI_Controller {
                         $label_class = 'label-info';
                         break;
                     case 'Closed':
-                        $label_class = 'label-info';
+                        $label_class = 'label-primary';
                         break;
                     case 'Rejected':
                         $label_class = 'label-danger';
-                        break;
-                    case 'On Going':
-                        $label_class = 'label-success';
                         break;
                     case 'Approved':
                         $label_class = 'label-success';
                         break;
                     case 'Returned':
-                        $label_class = 'label-warning';
+                        $label_class = 'label-info';
                         break;
                 }
                 $status_label[] = '<span class="label ' . $label_class . '">' . $rows->status . '</span>';
@@ -967,8 +950,8 @@ class DataTables extends CI_Controller {
         
         $count_array = $this->db->query("
             SELECT * FROM service_request_tracc_concern 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Approved') AND reported_by = " . $user_id . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done', 'Approved')) 
+            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Approved', 'Returned') AND reported_by = " . $user_id . ") 
+            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done', 'Approved', 'Returned')) 
             " . $search_query
         );
         $length_count = $count_array->num_rows();
@@ -977,8 +960,8 @@ class DataTables extends CI_Controller {
         $data = array();
         $strQry = $this->db->query("
             SELECT * FROM service_request_tracc_concern 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Approved') AND reported_by = " . $user_id . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done', 'Approved')) 
+            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Approved', 'Returned') AND reported_by = " . $user_id . ") 
+            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done', 'Approved', 'Returned')) 
             " . $search_query . " 
             ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
         );
@@ -1005,13 +988,16 @@ class DataTables extends CI_Controller {
                         $label_class = 'label-success';
                         break;
                     case 'Closed': 
-                        $label_class = 'label-info';
+                        $label_class = 'label-primary';
                         break;
                     case 'Done':
                         $label_class = 'label-success';
                         break;
                     case 'Approved':
                         $label_class = 'label-success';
+                        break;
+                    case 'Returned':
+                        $label_class = 'label-info';
                         break;
                 }
     
@@ -1046,6 +1032,9 @@ class DataTables extends CI_Controller {
                         break;
                     case 'Rejected':
                         $app_stat_class = 'label-danger';
+                        break;
+                    case 'Returned':
+                        $app_stat_class = 'label-info';
                         break;
                 }
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';
@@ -1169,8 +1158,8 @@ class DataTables extends CI_Controller {
 
         $count_array = $this->db->query("
             SELECT * FROM service_request_tracc_request
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND requested_by = " . $user_id . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected')) 
+            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Returned') AND requested_by = " . $user_id . ") 
+            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Returned')) 
             " . $search_query
         );
         $length_count = $count_array->num_rows();
@@ -1178,8 +1167,8 @@ class DataTables extends CI_Controller {
         $data = array();
         $strQry = $this->db->query("
             SELECT * FROM service_request_tracc_request 
-            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND requested_by = " . $user_id . ") 
-            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected')) 
+            WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Returned') AND requested_by = " . $user_id . ") 
+            OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Returned')) 
             " . $search_query . " 
             ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
         );
@@ -1205,6 +1194,9 @@ class DataTables extends CI_Controller {
                         $label_class = 'label-success';
                         break;
                     case 'Closed':
+                        $label_class = 'label-primary';
+                        break;
+                    case 'Returned':
                         $label_class = 'label-info';
                         break;
                 }
@@ -1220,6 +1212,9 @@ class DataTables extends CI_Controller {
                         break;
                     case 'Rejected':
                         $app_stat_class = 'label-danger';
+                        break;
+                    case 'Returned':
+                        $app_stat_class = 'label-info';
                         break;
                 }
                 $app_stat_label[] = '<span class="label ' . $app_stat_class . '">' . $rows->approval_status . '</span>';

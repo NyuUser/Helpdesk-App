@@ -115,7 +115,7 @@
                                                         <?php if (!empty($departments)): ?>
                                                             <?php foreach ($departments as $dept): ?>
                                                                 <option value="<?= htmlspecialchars($dept['recid'], ENT_QUOTES, 'UTF-8') ?>" 
-                                                                        <?= (isset($departments) && $departments == $dept['recid']) ? 'selected' : '' ?>>
+                                                                    <?= (isset($selectedDepartment) && $selectedDepartment == $dept['recid']) ? 'selected' : '' ?>>
                                                                     <?= htmlspecialchars($dept['dept_desc'], ENT_QUOTES, 'UTF-8') ?>
                                                                 </option>
                                                             <?php endforeach; ?>
