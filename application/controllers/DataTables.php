@@ -211,6 +211,9 @@ class DataTables extends CI_Controller {
         }
 
         $search_query = "";
+        // print_r($string_emp);
+        // die();
+
         if (!empty($search)) {
             $search_query .= "AND (ticket_id LIKE '%" . $search . "%' OR requestor_name LIKE '%" . $search . "%' OR subject LIKE '%" . $search . "%')";
         } 
@@ -224,17 +227,23 @@ class DataTables extends CI_Controller {
        
         $sess_login_data = $this->session->userdata('login_data');
         $role = $sess_login_data['role'];
-
-        if($role === "L1"){
-            $query = "status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Approved') ". $search_query;
+        $department_id = $sess_login_data['dept_id'];
+        // print_r($sess_login_data);
+        // die();
+        
+        if($role === "L1" && intval($department_id) != 1){
+            
+            $query = "status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Approved') ". $search_query = "AND assigned_it_staff =". $string_emp;;
             $select = "recid, status, approval_status, it_approval_status, priority, ticket_id, subject, requestor_name, department, dept_id, date_requested";
             $result_data = $this->Tickets_model->get_data_list("service_request_msrf", $query, 999,0, $select, null, null, null, null);
             $length_count = count($result_data);
         }else{
             // Count total records excluding 'Closed' status
+            // print_r($department_id);
+            // die();
             $count_array = $this->db->query("
                 SELECT * FROM service_request_msrf 
-                WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ") 
+                WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved')
                 OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND requester_id = " . $user_id . ") " 
                 . $search_query
             );
@@ -244,12 +253,12 @@ class DataTables extends CI_Controller {
             $data = array();
             $strQry = $this->db->query("
                 SELECT * FROM service_request_msrf 
-                WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved') AND assigned_it_staff = " . $string_emp . ") 
+                WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved')
                 OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected') AND requester_id = " . $user_id . ") " 
                 . $search_query . 
                 " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
             );
-            $result_data = $strQry->num_rows();
+            $result_data = $strQry->result();
         }
 
     
@@ -264,6 +273,7 @@ class DataTables extends CI_Controller {
         // Check if any records are returned from the query
         $tickets = [];
         $data = [];
+        
         if ($result_data > 0) {
             // Loop through each row of the result set
             foreach ($result_data as $rows) {

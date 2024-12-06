@@ -2,7 +2,7 @@
     $sess_login_data = $this->session->userdata('login_data');
     $role = $sess_login_data['role'];
     $department_id = $sess_login_data['dept_id'];
-    print_r($sess_login_data);
+    // print_r($sess_login_data);
     $disabled = "";
     $readonly = "";
     $btn_label = "Submit Ticket";
@@ -162,7 +162,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>ICT Approval Status</label>
-                                                    <select name="it_approval_stat" id="it_approval_stat" class="form-control select2" <?= $disabled;?>>
+                                                    <select name="it_approval_stat" id="it_approval_stat" class="form-control select2" <?=$disabled?>>
                                                         <option value=""disabled selected></option>
                                                         <option value="Approved"<?php if ($msrf['it_approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($msrf['it_approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -174,7 +174,7 @@
                                             <div class="col-md-12" id="ictassign" style="display:none;">
                                                 <div class="form-group">
                                                     <label>ICT Assign To</label>
-                                                    <select name="assign_to" class="form-control select2" <?= $disabled;?>>
+                                                    <select name="assign_to" class="form-control select2" <?=$disabled?>>
                                                         <option value="" disabled selected>Select ICT</option>
                                                         <option value="ChristianJ" <?php if ($msrf['assigned_it_staff'] == 'ChristianJ') echo ' selected'; ?>>Sir Chinchan</option>
                                                         <option value="Michael" <?php if ($msrf['assigned_it_staff'] == 'Michael') echo ' selected'; ?>>Sir Michael</option>

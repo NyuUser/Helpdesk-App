@@ -1579,7 +1579,17 @@ class Main_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function get_ticket_counts_customer_req() {
+		$this->db->select('*, COUNT(ticket_id) as count');
+		$this->db->group_by('recid');
+		$query = $this->db->get('tracc_req_customer_req_form');
+		return $query->result_array();
+	}
 	
+	public function get_ticket_checkbox_customer_req($recid){
+		$query = $this->db->get_where('tracc_req_customer_req_form_del_days', ['recid' => $recid]);
+		return $query->row_array(); 
+	}
 	
 	public function get_msrf($id) {
 		$data = [];
