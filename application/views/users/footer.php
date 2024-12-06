@@ -370,7 +370,7 @@
 				"autoWidth": false,
 				"lengthChange": false,
 				"dom": 'rltp',
-				"pageLength": 10,
+				"pageLength": 5,
 			});
 			
 			$('#tblConcerns').DataTable({
@@ -394,7 +394,7 @@
 				"autoWidth": false,
 				"lengthChange": false,
 				"dom": 'rltp',
-				"pageLength": 10,
+				"pageLength": 5,
 			});
 
 			$('#tblRequests').DataTable({
@@ -415,7 +415,15 @@
 				"autoWidth": false,
 				"lengthChange": false,
 				"dom": 'rltp',
-				"pageLength": 10,
+				"pageLength": 5,
+			});
+
+			$('#history').DataTable({
+				"searching": false,
+				"paging": false,
+				"info": false,
+				"responsive": true,
+				"scrollY": "115px"
 			});
 			
 			getDate();

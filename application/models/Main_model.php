@@ -1581,5 +1581,61 @@ class Main_model extends CI_Model {
 
 	
 	
+	public function get_msrf($id) {
+		$data = [];
+		$this->db->from('service_request_msrf');
+		$this->db->where('requester_id', $id);
+		$count = $this->db->count_all_results();
+		$data['count'] = $count;
+		$statuses = ['Open', 'In Progress', 'On Going', 'Resolved', 'Closed', 'Rejected', 'Returned'];
+
+		foreach($statuses as $status) {
+			$this->db->from('service_request_msrf');
+			$this->db->where('status', $status);
+			$this->db->where('requester_id', $id);
+			$count = $this->db->count_all_results();
+			$data[$status] = $count;
+		}
+
+		return $data;
+	}
+
+	public function get_tracc_concerns($id) {
+		$data = [];
+		$this->db->from('service_request_tracc_concern');
+		$this->db->where('reported_by_id', $id);
+		$count = $this->db->count_all_results();
+		$data['count'] = $count;
+		$statuses = ['Open', 'Done', 'In Progress', 'Resolved', 'Closed', 'Rejected'];
+
+		foreach($statuses as $status) {
+			$this->db->from('service_request_tracc_concern');
+			$this->db->where('status', $status);
+			$this->db->where('reported_by_id', $id);
+			$count = $this->db->count_all_results();
+			$data[$status] = $count;
+		}
+
+		return $data;
+	}
+
+	public function get_tracc_requests($id) {
+		$data = [];
+		$this->db->from('service_request_tracc_request');
+		$this->db->where('requested_by_id', $id);
+		$count = $this->db->count_all_results();
+		$data['count'] = $count;
+		$statuses = ['Open', 'Approved', 'In Progress', 'Rejected', 'Resolved', 'Closed'];
+
+		foreach($statuses as $status) {
+			$this->db->from('service_request_tracc_request');
+			$this->db->where('status', $status);
+			$this->db->where('requested_by_id', $id);
+			$count = $this->db->count_all_results();
+			$data[$status] = $count;
+		}
+
+		return $data;
+	}
 }
 ?>

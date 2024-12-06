@@ -156,7 +156,7 @@ class Main extends CI_Controller {
 				$data['total_tracc_concern_tickets'] = $this->Main_model->get_total_tracc_concern_ticket();
 				// Fetch total tracc request count
 				// $data['total_tracc_request_tickets'] = $this->Main_model->get_total_tracc_request_ticket();
-
+				
 				$allowed_menus = ['dashboard', 'system_administration', 'other_menu'];
 				if (!in_array($active_menu, $allowed_menus)) {
 		        	$active_menu = 'dashboard';
@@ -1168,11 +1168,17 @@ class Main extends CI_Controller {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 			$getdepartment = $this->Main_model->GetDepartmentID();
+			$msrfTickets = $this->Main_model->get_msrf($user_details[1]['recid']);
+			$traccConcerns = $this->Main_model->get_tracc_concerns($user_details[1]['recid']);
+			$traccRequests = $this->Main_model->get_tracc_requests($user_details[1]['recid']);
 
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
 				$data['getdept'] = $getdepartment[1];
+				$data['msrf'] = $msrfTickets;
+				$data['concerns'] = $traccConcerns;
+				$data['requests'] = $traccRequests;
 
 				$this->load->view('users/header', $data);
 				$this->load->view('users/dashboard', $data);

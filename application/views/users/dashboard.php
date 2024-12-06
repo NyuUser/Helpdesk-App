@@ -13,6 +13,126 @@
 		<section>
 			<table class="dashboard-table">
 				<tr>
+					<td class="table-data" style="padding: 0;">
+						<table class="summary-table">
+							<tr>
+								<td class="summary">
+									<div class="summary-data">
+										<p><b>MSRF</b> <i>Total: <?= $msrf['count']; ?></i></p>
+										Open Tickets: <?= $msrf['Open']; ?><br>
+										In Progress Tickets: <?= $msrf['In Progress']; ?><br>
+										On Going Tickets: <?= $msrf['On Going']; ?><br>
+										Resolved Tickets: <?= $msrf['Resolved']; ?><br>
+										Closed Tickets: <?= $msrf['Closed']; ?><br>
+										Rejected Tickets: <?= $msrf['Rejected']; ?><br>
+										Returned Tickets: <?= $msrf['Returned']; ?><br>
+									</div>
+								</td>
+								<td class="summary">
+									<div class="summary-data">
+										<p><b>Tracc Concerns</b> <i>Total: <?= $concerns['count']; ?></i></p>
+										Open Tickets: <?= $concerns['Open']; ?><br>
+										Done Tickets: <?= $concerns['Done']; ?><br>
+										In Progress Tickets: <?= $concerns['In Progress']; ?><br>
+										Resolved Tickets: <?= $concerns['Resolved']; ?><br>
+										Closed Tickets: <?= $concerns['Closed']; ?><br>
+										Rejected Tickets: <?= $concerns['Rejected']; ?><br>
+									</div>
+								</td>
+								<td class="summary">
+									<div class="summary-data">
+										<p><b>Tracc Requests</b> <i>Total: <?= $requests['count']; ?></i></p>
+										Open Tickets: <?= $requests['Open']; ?><br>
+										Approved Tickets: <?= $requests['Approved']; ?><br>
+										In Progress Tickets: <?= $requests['In Progress']; ?><br>
+										Resolved Tickets: <?= $requests['Resolved']; ?><br>
+										Closed Tickets: <?= $requests['Closed']; ?><br>
+										Rejected Tickets: <?= $requests['Rejected']; ?><br>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="summary" colspan=3>
+									<div class="summary-data">
+										<h4>Ticket Updates</h4>
+										<table id="history" class="table">
+											<thead>
+												<tr>
+													<th>ID</th>
+													<th>Module</th>
+													<th>Status</th>
+													<th>Created Date</th>
+												</tr>
+											</thead>
+											<tbody >
+												<tr>
+													<td>Hello</td>
+													<td>Hello</td>
+													<td>Hello</td>
+													<td>Hello</td>
+												</tr>
+												<tr>
+													<td>Hi</td>
+													<td>Hi</td>
+													<td>Hi</td>
+													<td>Hi</td>
+												</tr>
+												<tr>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+												</tr>
+												<tr>
+													<td>Hi</td>
+													<td>Hi</td>
+													<td>Hi</td>
+													<td>Hi</td>
+												</tr>
+												<tr>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+												</tr>
+												<tr>
+													<td>Hello</td>
+													<td>Hello</td>
+													<td>Hello</td>
+													<td>Hello</td>
+												</tr>
+												<tr>
+													<td>Hi</td>
+													<td>Hi</td>
+													<td>Hi</td>
+													<td>Hi</td>
+												</tr>
+												<tr>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+												</tr>
+												<tr>
+													<td>Hi</td>
+													<td>Hi</td>
+													<td>Hi</td>
+													<td>Hi</td>
+												</tr>
+												<tr>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+													<td>Wazzap</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</td>
+							</tr>
+						</table>
+					
+					</td>
 					<td class="table-data">
 						<div class="table-data-summary">
 							<a href="list/tickets/msrf">
@@ -39,6 +159,8 @@
 							</table>
 						</div>
 					</td>
+				</tr>
+				<tr>
 					<td class="table-data">
 						<div class="table-data-summary">
 							<a href="list/tickets/tracc_concern">
