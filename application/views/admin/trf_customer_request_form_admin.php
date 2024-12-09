@@ -74,21 +74,21 @@
                                     <div class="row">
                                         <div class="col-md-7 text-center" style="margin-top: 15px;">
                                             <div class="form-group d-flex justify-content-center">
-                                                    <div class="checkbox-inline custom-checkbox">
-                                                    <input type="checkbox" name="crf_comp_checkbox_value[]" value="LMI" id="checkbox_lmi">
-                                                    <label for="checkbox_lmi" class="checkbox-label">LMI</label>
-                                                </div>
                                                 <div class="checkbox-inline custom-checkbox">
-                                                    <input type="checkbox" name="crf_comp_checkbox_value[]" value="RGDI" id="checkbox_rgdi">
-                                                    <label for="checkbox_rgdi" class="checkbox-label">RGDI</label>
-                                                </div>
-                                                <div class="checkbox-inline custom-checkbox">
-                                                    <input type="checkbox" name="crf_comp_checkbox_value[]" value="LPI" id="checkbox_lpi">
-                                                    <label for="checkbox_lpi" class="checkbox-label">LPI</label>
-                                                </div>
-                                                <div class="checkbox-inline custom-checkbox">
-                                                    <input type="checkbox" name="crf_comp_checkbox_value[]" value="SV" id="checkbox_sv">
-                                                    <label for="checkbox_sv" class="checkbox-label">SVI</label>
+                                                    <!-- <p style="font-size: 1.7em;">Company Selected: <span style="font-weight: bold;"><?php echo implode(', ', $companies); ?></span></p> -->
+                                                    <?php 
+                                                    $availableCompanies = ['LMI', 'RGDI', 'LPI', 'SV'];
+                                                    echo '<script>';
+                                                    echo 'console.log("Available Companies:", ' . json_encode($availableCompanies) . ');';
+                                                    echo 'console.log("Checked Companies:", ' . json_encode($companies) . ' );';
+                                                    echo '</script>';
+                                                    ?>
+                                                    <?php foreach ($availableCompanies as $company): ?>
+                                                        <div class="checkbox-inline custom-checkbox">
+                                                            <input type="checkbox" name="trf_comp_checkbox_value[]" value="" id="checkbox_<?php echo ($company); ?>"<?php echo in_array($company, $companies) ? 'checked' : ''; ?>>
+                                                            <label for="" class="checkbox-label"><?php echo $company; ?></label>
+                                                        </div>
+                                                    <?php endforeach;?>
                                                 </div>
                                             </div>
                                         </div>

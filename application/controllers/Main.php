@@ -2757,18 +2757,17 @@ class Main extends CI_Controller {
 		if ($tickets) {
 			$data = [];
 
-			// $companies = explode(',', $ticket['company']);
-
 			foreach ($tickets as $ticket) {
+
+				$companies = explode(',', $ticket['company']);
+
 				$checkbox_data = $this->Main_model->get_ticket_checkbox_customer_req($ticket['recid']); 
-				// print_r($checkbox_data);
-				// die();
 
 				$formData = [
 					'recid' => $ticket['recid'],
 					'ticket_id' => $ticket['ticket_id'],
 					'requested_by' => $ticket['requested_by'],
-					'company' => $ticket['company'],
+					'companies' => $companies,
 					'date' => $ticket['date'],
 					'customer_code' => $ticket['customer_code'],
 					'customer_name' => $ticket['customer_name'],
@@ -2805,6 +2804,8 @@ class Main extends CI_Controller {
 					'form_html' => $formHtml,
 				];  	
 			}
+			// print_r($formHtml);
+			// die();
 			echo json_encode(['message' => 'success', 'data' => $data]);
 		} else {
 			echo json_encode(['message' => 'failed', 'data' => []]);
