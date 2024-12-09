@@ -320,7 +320,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Item Sub-Classification</label>
-                                                    <input type="text" name="item_sub_classification" id="positem_sub_classificationtion" value="" class="form-control select2"> 
+                                                    <input type="text" name="item_sub_classification" id="item_sub_classification" value="" class="form-control select2"> 
                                                 </div>
                                             </div>
 

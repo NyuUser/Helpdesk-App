@@ -2847,9 +2847,6 @@ class Main extends CI_Controller {
 	public function cus_ship_setup_JTtabs(){
 		$this->load->model('Main_model');
 		$tickets = $this->Main_model->get_ticket_counts_customer_ship_setup();
-		
-		// print_r($tickets);
-		// die();
 
 		if ($tickets) {
 			$data = [];
@@ -2889,7 +2886,109 @@ class Main extends CI_Controller {
 					'form_html' => $formHtml,
 				];  	
 			}
-			// print_r($formData);
+			echo json_encode(['message' => 'success', 'data' => $data]);
+		} else {
+			echo json_encode(['message' => 'failed', 'data' => []]);
+		}
+	}
+
+	// ADMIN FORM for Item Request form (PDF ni mam hanna)
+	public function item_request_form_pdf_view($active_menu = 'item_request_form_pdf'){
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			
+			if($user_details[0] == "ok"){
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+
+				$allowed_menus = ['item_request_form_pdf', 'system_administration', 'other_menus'];
+				if(!in_array($active_menu, $allowed_menus)) {
+					$active_menu = 'dashboard';
+				}
+				$data['active_menu'] = $active_menu;
+
+				$this->load->view('admin/header', $data);
+				$this->load->view('admin/sidebar', $data);
+				$this->load->view('admin/pdf_item_request_form', $data);
+				$this->load->view('admin/footer');
+			} else {
+				$this->session->setflashdata('error', 'Error fetching user information.');
+				redirect('sys/authentication');
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect('sys/authentication');
+		}
+	}
+
+	// JQuery TABS for Item Request Form 
+	public function item_req_form_JTabs(){
+		$this->load->model('Main_model');
+		$tickets = $this->Main_model->get_ticket_counts_item_req_form();
+
+		if ($tickets) {
+			$data = [];
+
+			foreach ($tickets as $ticket) {
+
+				$companies = explode(',', $ticket['company']);
+
+				$checkbox_data1 = $this->Main_model->get_ticket_checkbox1_item_req_form($ticket['recid']);
+				$checkbox_data2 = $this->Main_model->get_ticket_checkbox2_item_req_form($ticket['ticket_id']);
+				$checkbox_data3 = $this->Main_model->get_ticket_checkbox3_item_req_form($ticket['ticket_id']);
+				// print_r($checkbox_data3);
+				// die();
+				$formData = [
+					'recid' => $ticket['recid'],
+					'ticket_id' => $ticket['ticket_id'],
+					'requested_by' => $ticket['requested_by'],
+					'companies' => $companies,
+					'date' => $ticket['date'],
+					'lmi_item_code' => $ticket['lmi_item_code'],
+					'long_description' => $ticket['long_description'],
+					'short_description' => $ticket['short_description'],
+					'item_classification' => $ticket['item_classification'],
+					'item_sub_classification' => $ticket['item_sub_classification'],
+					'department' => $ticket['department'],
+					'merch_category' => $ticket['merch_category'],
+					'brand' => $ticket['brand'],
+					'supplier_code' => $ticket['supplier_code'],
+					'supplier_name' => $ticket['supplier_name'],
+					'class' => $ticket['class'],
+					'tag' => $ticket['tag'],
+					'source' => $ticket['source'],
+					'hs_code' => $ticket['hs_code'],
+					'unit_cost' => $ticket['unit_cost'],
+					'selling_price' => $ticket['selling_price'],
+					'major_item_group' => $ticket['major_item_group'],
+					'item_sub_group' => $ticket['item_sub_group'],
+					'account_type' => $ticket['account_type'],
+					'sales' => $ticket['sales'],
+					'sales_return' => $ticket['sales_return'],
+					'purchases' => $ticket['purchases'],
+					'purchase_return' => $ticket['purchase_return'],
+					'cgs' => $ticket['cgs'],
+					'inventory' => $ticket['inventory'],
+					'sales_disc' => $ticket['sales_disc'],
+					'gl_department' => $ticket['gl_department'],
+					'capacity_per_pallet' => $ticket['capacity_per_pallet'],
+					'created_at' => $ticket['created_at'],
+					'checkbox_data1' => $checkbox_data1,
+					'checkbox_data2' => $checkbox_data2,
+					'checkbox_data3' => $checkbox_data3,
+				];
+
+				$formHtml = $this->load->view('admin/trf_item_request_form', $formData, TRUE);			
+				$data[] = [
+					'tab_id' => "tabs-" . $ticket['ticket_id'],
+					'ticket_id' => $ticket['ticket_id'],
+					'count' => $ticket['count'],
+					'recid' => $ticket['recid'],
+					'form_html' => $formHtml,
+				];  	
+			}
+			// print_r($checkbox_data2);
 			// die();
 			echo json_encode(['message' => 'success', 'data' => $data]);
 		} else {

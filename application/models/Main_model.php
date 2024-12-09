@@ -1597,6 +1597,32 @@ class Main_model extends CI_Model {
 		$query = $this->db->get('tracc_req_customer_ship_setup');
 		return $query->result_array();
 	}
+
+	public function get_ticket_counts_item_req_form() {
+		$this->db->select('*, COUNT(ticket_id) as count');
+		$this->db->group_by('recid');
+		$query = $this->db->get('tracc_req_item_request_form');
+		return $query->result_array();
+	}
+
+	public function get_ticket_checkbox1_item_req_form($recid) {
+		$query = $this->db->get_where('tracc_req_item_request_form_checkboxes', ['recid' => $recid]);
+		return $query->row_array(); 
+	}
+
+	public function get_ticket_checkbox2_item_req_form($ticket_id) {
+		$this->db->select('*');
+		$this->db->where('ticket_id', $ticket_id); 
+		$query = $this->db->get('tracc_req_item_req_form_gl_setup');
+		return $query->result_array(); 
+	}
+
+	public function get_ticket_checkbox3_item_req_form($ticket_id) {
+		$this->db->select('*');
+		$this->db->where('ticket_id', $ticket_id);
+		$query = $this->db->get('tracc_req_item_req_form_whs_setup');
+		return $query->result_array();
+	}
 	
 	public function get_msrf($id) {
 		$data = [];

@@ -65,7 +65,7 @@ $route['sys/admin/list/ticket/tracc_request'] = 'main/admin_list_tracc_request';
 $route['sys/admin/print'] = 'main/admin_print_report';
 
 
-//--- PDF REPORTS ---//
+//--- PDF REPORTS VIEWING ---//
 $route['sys/admin/customer_request_form_pdf'] = 'main/customer_request_form_pdf_view';
 $route['sys/admin/customer_shipping_setup_pdf'] = 'main/customer_shipping_setup_pdf_view';
 $route['sys/admin/employee_request_form_pdf'] = 'main/employee_request_form_pdf_view';

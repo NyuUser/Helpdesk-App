@@ -38,7 +38,7 @@
 
                     <li class="<?= ($active_menu == 'employee_request_form_pdf') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/employee_request_form_pdf"><i class="fa fa-circle-o"></i> Employee Request Form</a></li>
 
-                    <li class="<?= ($active_menu == 'item_request_form_pdf') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/tracc_request_pdf_forms"><i class="fa fa-circle-o"></i> Item Request Form</a></li>
+                    <li class="<?= ($active_menu == 'item_request_form_pdf') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/item_request_form_pdf"><i class="fa fa-circle-o"></i> Item Request Form</a></li>
 
                     <li class="<?= ($active_menu == 'supplier_request_form_pdf') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/supplier_request_form_pdf"><i class="fa fa-circle-o"></i> Supplier Request Form</a></li>            
                 </ul>
