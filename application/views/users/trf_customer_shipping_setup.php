@@ -125,7 +125,7 @@
                                                             <label for="checkbox_lpi" class="checkbox-label">LPI</label>
                                                         </div>
                                                         <div class="checkbox-inline custom-checkbox">
-                                                            <input type="checkbox" name="crf_comp_checkbox_value[]" value="SV" id="checkbox_sv">
+                                                            <input type="checkbox" name="css_comp_checkbox_value[]" value="SVI" id="checkbox_sv">
                                                             <label for="checkbox_sv" class="checkbox-label">SVI</label>
                                                         </div>
                                                     </div>

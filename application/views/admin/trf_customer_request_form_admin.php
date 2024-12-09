@@ -321,34 +321,43 @@
                                                 <?= isset($checkbox_data['monday']) && $checkbox_data['monday'] == 1 ? 'checked' : ''; ?>> 
                                                 <label class="form-check-label" for="checkbox_monday">Monday</label> 
                                             </div> 
+
                                             <div class="form-check form-check-inline-custom"> 
                                                 <input class="form-check-input" type="checkbox" id="checkbox_tuesday" name="checkbox_tuesday" value="1"
                                                 <?= isset($checkbox_data['tuesday']) && $checkbox_data['tuesday'] == 1 ? 'checked' : ''; ?>> 
                                                 <label class="form-check-label" for="checkbox_tuesday">Tuesday</label> 
-                                            </div> <div class="form-check form-check-inline-custom"> 
+                                            </div>
+
+                                            <div class="form-check form-check-inline-custom"> 
                                                 <input class="form-check-input" type="checkbox" id="checkbox_wednesday" name="checkbox_wednesday" value="1"
                                                 <?= isset($checkbox_data['wednesday']) && $checkbox_data['wednesday'] == 1 ? 'checked' : ''; ?>> 
                                                 <label class="form-check-label" for="checkbox_wednesday">Wednesday</label> 
-                                            </div> <div class="form-check form-check-inline-custom"> 
+                                            </div> 
+
+                                            <div class="form-check form-check-inline-custom"> 
                                                 <input class="form-check-input" type="checkbox" id="checkbox_thursday" name="checkbox_thursday" value="1"
                                                 <?= isset($checkbox_data['thursday']) && $checkbox_data['thursday'] == 1 ? 'checked' : ''; ?>> 
                                                 <label class="form-check-label" for="checkbox_thursday">Thursday</label> 
                                             </div> 
+
                                             <div class="form-check form-check-inline-custom"> 
                                                 <input class="form-check-input" type="checkbox" id="checkbox_friday" name="checkbox_friday" value="1"
                                                 <?= isset($checkbox_data['friday']) && $checkbox_data['friday'] == 1 ? 'checked' : ''; ?>> 
                                                 <label class="form-check-label" for="checkbox_friday">Friday</label> 
                                             </div> 
+
                                             <div class="form-check form-check-inline-custom"> 
                                                 <input class="form-check-input" type="checkbox" id="checkbox_saturday" name="checkbox_saturday" value="1"
                                                 <?= isset($checkbox_data['saturday']) && $checkbox_data['saturday'] == 1 ? 'checked' : ''; ?>> 
                                                 <label class="form-check-label" for="checkbox_saturday">Saturday</label> 
-                                            </div> 
+                                            </div>
+
                                             <div class="form-check form-check-inline-custom"> 
                                                 <input class="form-check-input" type="checkbox" id="checkbox_sunday" name="checkbox_sunday" value="1"
                                                 <?= isset($checkbox_data['sunday']) && $checkbox_data['sunday'] == 1 ? 'checked' : ''; ?>> 
                                                 <label class="form-check-label" for="checkbox_sunday">Sunday</label> 
                                             </div> 
+                                            
                                         </div> 
                                     </div>
 
