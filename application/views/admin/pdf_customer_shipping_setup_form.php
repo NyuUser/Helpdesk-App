@@ -1,7 +1,7 @@
 <div class="content-wrapper">
     <section class="content-header">
 		<h1>
-			List of Customer Request Form
+			List of Customer Shipping Setup Form
 		</h1>
 	</section>
     <section class="content">

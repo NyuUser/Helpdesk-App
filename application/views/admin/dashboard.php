@@ -19,7 +19,7 @@
                         <p>MSRF Total Tickets</p>
                     </div>
                     <div class="icon">
-						<i class="fa-solid fa-ticket"></i>
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
                     </div>
                     <a href="<?= base_url(); ?>sys/admin/list/ticket/msrf" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
@@ -30,6 +30,19 @@
                     <div class="inner">
                         <h3><?= $total_tracc_concern_tickets ?></h3> <!-- Replace with dynamic count -->
                         <p>TRACC Concern Total Tickets</p>
+                    </div>
+                    <div class="icon">
+						<i class="fa-solid fa-ticket"></i>
+                    </div>
+                    <a href="<?= base_url(); ?>sys/admin/list/ticket/tracc_concern" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- Total Tickets TRACC REQUEST -->
+            <div class="col-lg-4 col-xs-6">
+                <div class="small-box bg-maroon">
+                    <div class="inner">
+                        <h3><?= $total_tracc_request_tickets ?></h3> <!-- Replace with dynamic count -->
+                        <p>TRACC Request Total Tickets</p>
                     </div>
                     <div class="icon">
 						<i class="fa-solid fa-ticket"></i>

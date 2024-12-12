@@ -155,7 +155,7 @@ class Main extends CI_Controller {
 				// Fetch total tracc concern count
 				$data['total_tracc_concern_tickets'] = $this->Main_model->get_total_tracc_concern_ticket();
 				// Fetch total tracc request count
-				// $data['total_tracc_request_tickets'] = $this->Main_model->get_total_tracc_request_ticket();
+				$data['total_tracc_request_tickets'] = $this->Main_model->get_total_tracc_request_ticket();
 				
 				$allowed_menus = ['dashboard', 'system_administration', 'other_menu'];
 				if (!in_array($active_menu, $allowed_menus)) {
@@ -348,7 +348,9 @@ class Main extends CI_Controller {
 	
 				$allowed_menus = ['dashboard', 'system_tickets_list', 'open_tickets', 'other_menu'];
 				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_tickets_list';
-	
+				// print_r($active_menu);
+				// die();
+
 				$data['active_menu'] = $active_menu;
 				
 				$data['checkboxes'] = [
@@ -454,7 +456,7 @@ class Main extends CI_Controller {
 	}
 
 	//MSRF List of Ticket for ADMIN
-	public function admin_list_tickets() {
+	public function admin_list_tickets($active_menu = 'system_tickets_list') {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 	
@@ -467,6 +469,8 @@ class Main extends CI_Controller {
 	
 				$allowed_menus = ['dashboard', 'system_tickets_list', 'open_tickets', 'other_menu'];
 				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'system_tickets_list';
+				// print_r($active_menu);
+				// die();
 	
 				$data['active_menu'] = $active_menu;
 	
@@ -1783,6 +1787,7 @@ class Main extends CI_Controller {
 				$data['user_details'] = $user_details[1];
 
 				$process = $this->Main_model->UpdateMSRFAssign($ticket_id, $date_needed, $asset_code, $request_category, $specify, $details_concern);
+
 				if ($process[0] == 1) {
 					$this->session->set_flashdata('success', $process[1]);
 					redirect(base_url()."sys/users/list/tickets/msrf");
@@ -1831,63 +1836,63 @@ class Main extends CI_Controller {
 		}
 	}
 
-	/*public function acknowledge_as_resolved() {
-		$this->load->helper('form');
-		$this->load->library('form_validation');
+	// public function acknowledge_as_resolved() {
+	// 	$this->load->helper('form');
+	// 	$this->load->library('form_validation');
 	
-		// Get the posted data
-		$control_number = $this->input->post('control_number', true);
-		$module_affected = $this->input->post('module_affected', true);
-		$company = $this->input->post('company', true);
-		$concern = $this->input->post('concern', true);
-		$app_stat = $this->input->post('app_stat', true); // Current approval status
+	// 	// Get the posted data
+	// 	$control_number = $this->input->post('control_number', true);
+	// 	$module_affected = $this->input->post('module_affected', true);
+	// 	$company = $this->input->post('company', true);
+	// 	$concern = $this->input->post('concern', true);
+	// 	$app_stat = $this->input->post('app_stat', true); // Current approval status
 	
-		if ($this->session->userdata('login_data')) {
-			$user_id = $this->session->userdata('login_data')['user_id'];
-			$user_details = $this->Main_model->user_details();
+	// 	if ($this->session->userdata('login_data')) {
+	// 		$user_id = $this->session->userdata('login_data')['user_id'];
+	// 		$user_details = $this->Main_model->user_details();
 			
-			if ($user_details[0] == "ok") {
-				$sid = $this->session->session_id;
-				$data['user_details'] = $user_details[1];
+	// 		if ($user_details[0] == "ok") {
+	// 			$sid = $this->session->session_id;
+	// 			$data['user_details'] = $user_details[1];
 				
-				// Check if the app_stat is 'Pending'
-				if ($app_stat == 'Pending' ) {
-					// Update editable fields
-					$update_process = $this->Main_model->update_tracc_concern($control_number, $module_affected, $company, $concern);
+	// 			// Check if the app_stat is 'Pending'
+	// 			if ($app_stat == 'Pending' ) {
+	// 				// Update editable fields
+	// 				$update_process = $this->Main_model->update_tracc_concern($control_number, $module_affected, $company, $concern);
 					
-					if (!$update_process) {
-						// Handle update error
-						$this->session->set_flashdata('error', 'Error updating the ticket.');
-						redirect(base_url() . "sys/users/list/tickets/tracc_concern");
-					}
-				}
+	// 				if (!$update_process) {
+	// 					// Handle update error
+	// 					$this->session->set_flashdata('error', 'Error updating the ticket.');
+	// 					redirect(base_url() . "sys/users/list/tickets/tracc_concern");
+	// 				}
+	// 			}
 
-				$ack_as_res_by = $this->input->post('ack_as_res_by', true); // Missing variable added
-				$ack_as_res_date = $this->input->post('ack_as_res_date', true); // Missing variable added
+	// 			$ack_as_res_by = $this->input->post('ack_as_res_by', true); // Missing variable added
+	// 			$ack_as_res_date = $this->input->post('ack_as_res_date', true); // Missing variable added
 	
-				// If ack_as_res_by and ack_as_res_date are filled, update the status to 'Resolved'
-				if (!empty($ack_as_res_by) && !empty($ack_as_res_date)) {
-					$resolve_process = $this->Main_model->AcknolwedgeAsResolved($control_number);
+	// 			// If ack_as_res_by and ack_as_res_date are filled, update the status to 'Resolved'
+	// 			if (!empty($ack_as_res_by) && !empty($ack_as_res_date)) {
+	// 				$resolve_process = $this->Main_model->AcknolwedgeAsResolved($control_number);
 	
-					if ($resolve_process[0] == 1) {
-						$this->session->set_flashdata('success', $resolve_process[1]);
-					} else {
-						$this->session->set_flashdata('error', $resolve_process[0]);
-					}
-				}
+	// 				if ($resolve_process[0] == 1) {
+	// 					$this->session->set_flashdata('success', $resolve_process[1]);
+	// 				} else {
+	// 					$this->session->set_flashdata('error', $resolve_process[0]);
+	// 				}
+	// 			}
 	
-				// Redirect after processing
-				redirect(base_url() . "sys/users/list/tickets/tracc_concern");
+	// 			// Redirect after processing
+	// 			redirect(base_url() . "sys/users/list/tickets/tracc_concern");
 	
-			} else {
-				$this->session->set_flashdata('error', 'Error fetching user information.');
-				redirect("sys/authentication");
-			}
-		} else {
-			$this->session->set_flashdata('error', 'Session expired. Please login again.');
-			redirect("sys/authentication");
-		}
-	}*/
+	// 		} else {
+	// 			$this->session->set_flashdata('error', 'Error fetching user information.');
+	// 			redirect("sys/authentication");
+	// 		}
+	// 	} else {
+	// 		$this->session->set_flashdata('error', 'Session expired. Please login again.');
+	// 		redirect("sys/authentication");
+	// 	}
+	// }
 
 	public function SendEmail() {
 		// function email
@@ -2993,6 +2998,19 @@ class Main extends CI_Controller {
 			echo json_encode(['message' => 'success', 'data' => $data]);
 		} else {
 			echo json_encode(['message' => 'failed', 'data' => []]);
+		}
+	}
+
+	public function update_crf_ticket_status() {
+		$recid = $this->input->post('recid'); 
+
+		$this->load->model('Main_model');
+		$result = $this->Main_model->update_crf_ticket_status($recid, 'Done'); 
+	
+		if ($result) {
+			echo json_encode(['message' => 'success']);
+		} else {
+			echo json_encode(['message' => 'error', 'error' => 'Database update failed.']);
 		}
 	}
 	

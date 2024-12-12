@@ -8,8 +8,12 @@
     $btn_label = "Submit Ticket";
     if ($role === "L1") {
         $department_head_status = $msrf['approval_status'];
+        
         $status_msrf = $msrf['status'];
-        if(($department_head_status === "Returned" || $department_head_status === "Pending") && ($status_msrf === "Open" || $status_msrf === "Returned")) {
+        // print_r($status_msrf);
+        // die();
+
+        if(($status_msrf === "In Progress" || $status_msrf === 'Approved')) {
             // echo "try";
             // die();
             $disabled = "disabled";
@@ -59,17 +63,17 @@
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>MSRF#</label>
-			                    					<input type="text" name="msrf_number" id="msrf_number" class="form-control" value="<?= $msrf['ticket_id']; ?>" <?=$readonly?>>
+			                    					<input type="text" name="msrf_number" id="msrf_number" class="form-control" value="<?= $msrf['ticket_id']; ?>" readonly>
 			                    				</div>
 			                    			</div>
                                             <div class="col-md-6">
 			                                    <div class="form-group">
 			                                        <label>Requestor</label>
-			                                        <input type="text" name="name" value="<?= htmlentities($msrf['requestor_name']); ?>" class="form-control select2" style="width: 100%;" <?=$readonly?>>
+			                                        <input type="text" name="name" value="<?= htmlentities($msrf['requestor_name']); ?>" class="form-control select2" style="width: 100%;" readonly>
 			                                    </div>
 			                                    <div class="form-group">
 			                                        <label>Department</label>
-			                                        <input type="text" name="department_description" id="department_description" value="<?= htmlentities($msrf['department']); ?>" class="form-control select2" style="width: 100%;" <?=$readonly?>/>
+			                                        <input type="text" name="department_description" id="department_description" value="<?= htmlentities($msrf['department']); ?>" class="form-control select2" style="width: 100%;" readonly/>
 												<input type="hidden" name="dept_id" value="">
 												<input type="hidden" name="sup_id" value="">
 			                                    </div>
@@ -77,7 +81,7 @@
                                             <div class="col-md-6">
 			                                    <div class="form-group">
 			                                        <label>Date Requested</label>
-			                                        <input type="date" name="date_req" id="date_req" class="form-control select2" value="<?= $msrf['date_requested']; ?>" style="width: 100%;" <?=$readonly?>>
+			                                        <input type="date" name="date_req" id="date_req" class="form-control select2" value="<?= $msrf['date_requested']; ?>" style="width: 100%;" readonly>
 			                                    </div>
 			                                    <div class="form-group">
 			                                        <label>Date Needed</label>
@@ -149,7 +153,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Approval Status</label>
-                                                    <select class="form-control select2" name="approval_stat" id="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?>  <?=$disabled?>>
+                                                    <select class="form-control select2" name="approval_stat" id="approval_stat" style="width: 100%;" <?php if ($msrf['approval_status'] == 'Approved' || $msrf['approval_status'] == 'Rejected') echo 'disabled'; ?>  disabled>
                                                         <option value=""disabled selected>Approval Status</option>
                                                         <option value="Approved"<?php if ($msrf['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($msrf['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -162,7 +166,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>ICT Approval Status</label>
-                                                    <select name="it_approval_stat" id="it_approval_stat" class="form-control select2" <?=$disabled?>>
+                                                    <select name="it_approval_stat" id="it_approval_stat" class="form-control select2" disabled>
                                                         <option value=""disabled selected></option>
                                                         <option value="Approved"<?php if ($msrf['it_approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($msrf['it_approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -188,7 +192,7 @@
                                             <div class="col-md-12" id="reason">
                                                 <div class="form-group">
                                                     <label>Reason for Reject Tickets</label>
-                                                    <textarea class="form-control" name="rejecttix" id="rejecttix" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" <?= $disabled;?>><?= $msrf['remarks_ict']; ?></textarea>
+                                                    <textarea class="form-control" name="rejecttix" id="rejecttix" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" readonly><?= $msrf['remarks_ict']; ?></textarea>
                                                 </div>
                                             </div>
                                             <!-- REASON WHY REJECTED in db remarks_ict -->
@@ -318,37 +322,37 @@
         });
     });
 
-    $(document).on('click', '#form-add-submit-button', function(e) {
-        e.preventDefault();
-        var ticket_id = '<?= $this->uri->segment(6)?>';
-        ticket_id = ticket_id.trim();
-        var ict_approval = $('#it_approval_stat').val();
-        var reason_rejected = $('#rejecttix').val();
+    // $(document).on('click', '#form-add-submit-button', function(e) {
+    //     e.preventDefault();
+    //     var ticket_id = '<?= $this->uri->segment(6)?>';
+    //     ticket_id = ticket_id.trim();
+    //     var ict_approval = $('#it_approval_stat').val();
+    //     var reason_rejected = $('#rejecttix').val();
 
-        var data = {
-            ict_approval: ict_approval,
-            reason_rejected: reason_rejected,
-            data_id: ticket_id,
-            module:"msrf"
-        };
+    //     var data = {
+    //         ict_approval: ict_approval,
+    //         reason_rejected: reason_rejected,
+    //         data_id: ticket_id,
+    //         module:"msrf"
+    //     };
 
-        $.ajax({
-            url: base_url + "Main/update_ticket",
-            type: "POST",
-            data: data,
-            success: function(response) {
-                var response = JSON.parse(response);
-                if (response.message === "success") {
-                    location.href = '<?=base_url("sys/users/list/tickets/msrf") ?>';
-                } else {
-                    //change this and add error message or redirect to main listing page
-                    location.href = '<?=base_url("sys/users/list/tickets/msrf") ?>';
-                }
-            },
-            error: function(xhr, status, error) {
-                //console.error("AJAX Error: " + error);
-            }
-        });
-    });
+    //     $.ajax({
+    //         url: base_url + "Main/update_ticket",
+    //         type: "POST",
+    //         data: data,
+    //         success: function(response) {
+    //             var response = JSON.parse(response);
+    //             if (response.message === "success") {
+    //                 location.href = '<?=base_url("sys/users/list/tickets/msrf") ?>';
+    //             } else {
+    //                 //change this and add error message or redirect to main listing page
+    //                 location.href = '<?=base_url("sys/users/list/tickets/msrf") ?>';
+    //             }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             //console.error("AJAX Error: " + error);
+    //         }
+    //     });
+    // });
 
 </script>

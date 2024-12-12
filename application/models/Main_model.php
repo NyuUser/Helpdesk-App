@@ -997,7 +997,7 @@ class Main_model extends CI_Model {
 
 	public function get_total_msrf_ticket(){
 		$this->db->from('service_request_msrf');
-		$this->db->where_in('status', ['In Progress', 'Open']);
+		$this->db->where_in('status', ['In Progress', 'Open', 'Approved']);
 		return $this->db->count_all_results();
 	}
 
@@ -1007,7 +1007,13 @@ class Main_model extends CI_Model {
 
 	public function get_total_tracc_concern_ticket(){
 		$this->db->from('service_request_tracc_concern');
-		$this->db->where_in('status', ['In Progress', 'Open']);
+		$this->db->where_in('status', ['In Progress', 'Open', 'Approved']);
+		return $this->db->count_all_results();
+	}
+
+	public function get_total_tracc_request_ticket(){
+		$this->db->from('service_request_tracc_request');
+		$this->db->where_in('status', ['In Progress', 'Open', 'Approved']);
 		return $this->db->count_all_results();
 	}
 
@@ -1495,6 +1501,7 @@ class Main_model extends CI_Model {
 			'helper_name' => $this->input->post('helper_name', true),
 			'helper_contact_no' => $this->input->post('helper_contact_no', true),
 			'helper_rate_card' => $this->input->post('helper_rate_card', true),
+			'created_at' => date("Y-m-d H:i:s"),
 		);
 	
 		if ($trf_comp_checkbox_value !== null) {
@@ -1579,16 +1586,34 @@ class Main_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	// public function get_ticket_counts_customer_req() {
+	// 	$this->db->select('*, COUNT(ticket_id) as count');
+	// 	$this->db->group_by('recid');
+	// 	$query = $this->db->get('tracc_req_customer_req_form');
+	// 	return $query->result_array();
+	// } 
+
+	// CRF
 	public function get_ticket_counts_customer_req() {
 		$this->db->select('*, COUNT(ticket_id) as count');
-		$this->db->group_by('recid');
-		$query = $this->db->get('tracc_req_customer_req_form');
+		$this->db->from('tracc_req_customer_req_form');
+		$this->db->where('remarks !=', 'Done');
+		$this->db->group_by('recid'); 
+		$query = $this->db->get();
 		return $query->result_array();
 	}
-	
+
+	// CRF
 	public function get_ticket_checkbox_customer_req($recid){
 		$query = $this->db->get_where('tracc_req_customer_req_form_del_days', ['recid' => $recid]);
 		return $query->row_array(); 
+	}
+
+	// CRF
+	public function update_crf_ticket_status($recid, $remarks){
+		$this->db->set('remarks', $remarks); 
+		$this->db->where('recid', $recid); 
+		return $this->db->update('tracc_req_customer_req_form');
 	}
 
 	public function get_ticket_counts_customer_ship_setup() {

@@ -109,21 +109,23 @@
                                                 </div>
                                             </div>
                                             <?php 
-                                                $sess_login_data = $this->session->userdata('login_data');
-                                                $role = $sess_login_data['role'];
-                                                $disabled = "";
-                                                if($role === "L1"){
-                                                    $department_status = $tracc_con['approval_status'];
-                                                    if($department_status === "Rejected" || $department_status === "Returned")
-                                                    $disabled = "disabled";
-                                                }else{
-                                                    $disabled = "";
-                                                }  
+                                                // $sess_login_data = $this->session->userdata('login_data');
+                                                // $role = $sess_login_data['role'];
+                                                // $disabled = "";
+                                                // if($role === "L1"){
+                                                //     $department_status = $tracc_con['approval_status'];
+                                                //     // print_r($department_status);
+                                                //     // die();
+                                                //     if($department_status === "Rejected" || $department_status === "Returned")
+                                                //     $disabled = "disabled";
+                                                // }else{
+                                                //     $disabled = "";
+                                                // }  
                                             ?>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>ICT Approval Status <span style = "color:red;">*</span></label>
-                                                    <select class="form-control select2" name="it_app_stat" id="it_app_stat" <?= $disabled?>>
+                                                    <select class="form-control select2" name="it_app_stat" id="it_app_stat" disabled>
                                                         <option value=""disabled selected>ICT Approval Status</option>
                                                         <option value="Approved"<?php if ($tracc_con['it_approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($tracc_con['it_approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -361,37 +363,37 @@
         $('#tcr_solution').each(autoResizeTextarea);
     });
 
-    $(document).on('click', '#form-add-submit-button', function(e) {
-        e.preventDefault();
-        var control_number = '<?= $this->uri->segment(6)?>';
-        control_number = control_number.trim();
-        var ict_approval = $('#it_app_stat').val();
-        var reason_rejected = $('#reason_rejected').val();
+    // $(document).on('click', '#form-add-submit-button', function(e) {
+    //     e.preventDefault();
+    //     var control_number = '<?= $this->uri->segment(6)?>';
+    //     control_number = control_number.trim();
+    //     var ict_approval = $('#it_app_stat').val();
+    //     var reason_rejected = $('#reason_rejected').val();
 
-        var data = {
-            ict_approval: ict_approval,
-            reason_rejected: reason_rejected,
-            data_id: control_number,
-            module:"tracc-concern"
-        };
+    //     var data = {
+    //         ict_approval: ict_approval,
+    //         reason_rejected: reason_rejected,
+    //         data_id: control_number,
+    //         module:"tracc-concern"
+    //     };
 
-        $.ajax({
-            url: base_url + "Main/update_ticket",
-            type: "POST",
-            data: data,
-            success: function(response) {
-                var response = JSON.parse(response);
-                if (response.message === "success") {
-                    location.href = '<?=base_url("sys/users/list/tickets/tracc_concern") ?>';
-                } else {
-                    //change this and add error message or redirect to main listing page
-                    location.href = '<?=base_url("sys/users/list/tickets/tracc_concern") ?>';
-                }
-            },
-            error: function(xhr, status, error) {
-                //console.error("AJAX Error: " + error);
-            }
-        });
-    });
+    //     $.ajax({
+    //         url: base_url + "Main/update_ticket",
+    //         type: "POST",
+    //         data: data,
+    //         success: function(response) {
+    //             var response = JSON.parse(response);
+    //             if (response.message === "success") {
+    //                 location.href = '<?=base_url("sys/users/list/tickets/tracc_concern") ?>';
+    //             } else {
+    //                 //change this and add error message or redirect to main listing page
+    //                 location.href = '<?=base_url("sys/users/list/tickets/tracc_concern") ?>';
+    //             }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             //console.error("AJAX Error: " + error);
+    //         }
+    //     });
+    // });
 
 </script>

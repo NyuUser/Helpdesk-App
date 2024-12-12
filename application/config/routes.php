@@ -49,16 +49,16 @@ $route['sys/users/create/tickets/trf_supplier_request_form_tms'] = 'main/user_cr
 
 
 //--- ADMIN ROUTES ---//
-//--- DATATABLE of ADMIN TRACC CONCERN
-$route['sys/admin/list/ticket/tracc_concern'] = 'main/admin_list_tracc_concern';
-//--- DATATABLE of ADMIN for EMPLOYEES/USERS
-$route['sys/admin/users'] = 'main/admin_users';
 //--- DATATABLE of ADMIN for MSRF
 $route['sys/admin/list/ticket/msrf'] = 'main/admin_list_tickets'; 
-//--- DATATABLE of ADMIN for DEPARTMENTS
-$route['sys/admin/team'] = 'main/admin_team';
+//--- DATATABLE of ADMIN TRACC CONCERN
+$route['sys/admin/list/ticket/tracc_concern'] = 'main/admin_list_tracc_concern';
 //--- DATATABLE of ADMIN for TRACC REQUEST
 $route['sys/admin/list/ticket/tracc_request'] = 'main/admin_list_tracc_request';
+//--- DATATABLE of ADMIN for EMPLOYEES/USERS
+$route['sys/admin/users'] = 'main/admin_users';
+//--- DATATABLE of ADMIN for DEPARTMENTS
+$route['sys/admin/team'] = 'main/admin_team';
 
 
 //--- ADMIN for PRINT REPORTS

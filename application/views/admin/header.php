@@ -38,10 +38,11 @@
 
 	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
 
-	<!-- JQuery Tabs -->
+	<!-- JQuery Tabs && JQuery UI  -->
+	<link rel="stylesheet" href="<?= base_url(); ?>/assets/dist/dist/css/jquery-ui-1.14.1/jquery-ui.css">
 	<!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css"> -->
-	<link rel="stylesheet" href="<?= base_url(); ?>/assets/dist/dist/css/jquery-ui.css">
 	<!-- <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script> -->
+	<script src="<?= base_url(); ?>/assets/dist/dist/js/external/jquery/jquery.js"></script>
 	<script src="<?= base_url(); ?>/assets/dist/dist/js/jquery-ui.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
 
