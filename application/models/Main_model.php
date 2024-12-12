@@ -1579,19 +1579,22 @@ class Main_model extends CI_Model {
 		return $query->row_array(); 
 	}
 
+	// ERF
 	public function get_ticket_counts_employee_req() {
 		$this->db->select('*, COUNT(ticket_id) as count');
+		$this->db->from('tracc_req_employee_req_form');
+		$this->db->where('remarks !=', 'Done');
 		$this->db->group_by('recid');
-		$query = $this->db->get('tracc_req_employee_req_form');
+		$query = $this->db->get();
 		return $query->result_array();
 	}
 
-	// public function get_ticket_counts_customer_req() {
-	// 	$this->db->select('*, COUNT(ticket_id) as count');
-	// 	$this->db->group_by('recid');
-	// 	$query = $this->db->get('tracc_req_customer_req_form');
-	// 	return $query->result_array();
-	// } 
+	// ERF 
+	public function update_erf_ticket_remarks($recid, $remarks){
+		$this->db->set('remarks', $remarks); 
+		$this->db->where('recid', $recid); 
+		return $this->db->update('tracc_req_employee_req_form');
+	}
 
 	// CRF
 	public function get_ticket_counts_customer_req() {
