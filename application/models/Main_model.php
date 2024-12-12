@@ -1610,17 +1610,27 @@ class Main_model extends CI_Model {
 	}
 
 	// CRF
-	public function update_crf_ticket_status($recid, $remarks){
+	public function update_crf_ticket_remarks($recid, $remarks){
 		$this->db->set('remarks', $remarks); 
 		$this->db->where('recid', $recid); 
 		return $this->db->update('tracc_req_customer_req_form');
 	}
 
+	// CSS
 	public function get_ticket_counts_customer_ship_setup() {
 		$this->db->select('*, COUNT(ticket_id) as count');
+		$this->db->from('tracc_req_customer_ship_setup');
+		$this->db->where('remarks !=', 'Done');
 		$this->db->group_by('recid');
-		$query = $this->db->get('tracc_req_customer_ship_setup');
+		$query = $this->db->get();
 		return $query->result_array();
+	}
+
+	// CSS
+	public function update_css_ticket_remarks($recid, $remarks){
+		$this->db->set('remarks', $remarks); 
+		$this->db->where('recid', $recid); 
+		return $this->db->update('tracc_req_customer_ship_setup');
 	}
 
 	public function get_ticket_counts_item_req_form() {
