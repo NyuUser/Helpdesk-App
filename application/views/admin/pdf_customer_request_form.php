@@ -101,7 +101,7 @@
         $('#tabs').tabs('refresh'); // Refresh the tabs widget
 
         $.ajax({
-            url: base_url + 'main/update_crf_ticket_status', 
+            url: base_url + 'main/update_crf_ticket_remarks', 
             type: 'POST',
             data: { recid: recid }, // Pass the unique recid
             success: function (response) {

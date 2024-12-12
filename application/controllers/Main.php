@@ -3001,11 +3001,24 @@ class Main extends CI_Controller {
 		}
 	}
 
-	public function update_crf_ticket_status() {
+	public function update_crf_ticket_remarks() {
 		$recid = $this->input->post('recid'); 
 
 		$this->load->model('Main_model');
-		$result = $this->Main_model->update_crf_ticket_status($recid, 'Done'); 
+		$result = $this->Main_model->update_crf_ticket_remarks($recid, 'Done'); 
+	
+		if ($result) {
+			echo json_encode(['message' => 'success']);
+		} else {
+			echo json_encode(['message' => 'error', 'error' => 'Database update failed.']);
+		}
+	}
+
+	public function update_css_ticket_remarks() {
+		$recid = $this->input->post('recid'); 
+
+		$this->load->model('Main_model');
+		$result = $this->Main_model->update_css_ticket_remarks($recid, 'Done'); 
 	
 		if ($result) {
 			echo json_encode(['message' => 'success']);
