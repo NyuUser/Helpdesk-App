@@ -55,7 +55,11 @@
 
                          // Create tab entry with ticket_id and recid in the tab title
                         $.each(tickets, function(index, ticket) {
-                            tabsHtml += `<li><a href="#${tabId}">${ticket.ticket_id} (${ticket.recid})</a></li>`;
+                            tabsHtml += `
+                            <li data-recid="${ticket.recid}">
+                                <a href="#tabs-${ticket.recid}">${ticket.ticket_id} (${ticket.recid})</a>
+                                <span class="ui-icon ui-icon-close close-tab-btn" role="presentation" title="Close Tab"></span>
+                            </li>`;
                         });
 
                         // Create content for this tab, which is a group of tickets with the same recid
@@ -85,6 +89,31 @@
                 } else {
                     alert('Failed to load tickets.');
                 }
+            }
+        });
+    });
+
+    $('#tabs').on('click', '.close-tab-btn', function () {
+        const $tab = $(this).closest('li'); // Get the tab element
+        const recid = $tab.data('recid'); 
+        const panelId = $tab.remove().attr('aria-controls'); // Remove the tab
+        $(`#${panelId}`).remove(); // Remove the corresponding content
+        $('#tabs').tabs('refresh'); // Refresh the tabs widget
+
+        $.ajax({
+            url: base_url + 'main/update_srf_ticket_remarks', 
+            type: 'POST',
+            data: { recid: recid }, // Pass the unique recid
+            success: function (response) {
+                const res = JSON.parse(response);
+                if (res.message === 'success') {
+                    console.log(`Form with recid ${recid} marked as "Done".`);
+                } else {
+                    alert(`Failed to update form with recid ${recid}: ${res.error}`);
+                }
+            },
+            error: function () {
+                alert(`An error occurred while updating form with recid ${recid}.`);
             }
         });
     });
