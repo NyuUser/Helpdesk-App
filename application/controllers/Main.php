@@ -3039,5 +3039,18 @@ class Main extends CI_Controller {
 			echo json_encode(['message' => 'error', 'error' => 'Database update failed.']);
 		}
 	}
+
+	public function update_irf_ticket_remarks() {
+		$recid = $this->input->post('recid'); 
+
+		$this->load->model('Main_model');
+		$result = $this->Main_model->update_irf_ticket_remarks($recid, 'Done'); 
+	
+		if ($result) {
+			echo json_encode(['message' => 'success']);
+		} else {
+			echo json_encode(['message' => 'error', 'error' => 'Database update failed.']);
+		}
+	}
 	
 }
