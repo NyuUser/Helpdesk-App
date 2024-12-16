@@ -98,15 +98,22 @@ class Main_model extends CI_Model {
 			$sup_id = $t['sup_id'];
 	        $sid = $this->session->session_id;
 
+			// Check if password matches
 	        if (password_verify($input_pw, $stored_pw)) {
+
+				// If passwords match, the whole row would be retrieved.
 				$query = $this->db->where('username', $username)->get('users')->row();
 
+				// Check 'status' field. If 'status' field equals 0, the account is locked due to brute force password attempt (up to 3 attempts limit).
 				if($query->status == 0) {
-					return array(0, 'message' => 'You Account is Locked.');
+					return array(0, 'message' => 'You Account is Locked. Contact ICT Department for assistance.');
 				} else {
+					// If the 'status' field is 1, the 'failed_attempts' would be reset to 1.
 					$this->db->set('failed_attempts', 1);
 					$this->db->where('username', $username);
 					$this->db->update('users');
+
+					// Return the user details
 					return array(1, array('emp_id' => $emp_id, 'user_id' => $user_id, 'role' => $role, 'status' => 1, 'dept_id' => $dept_id, 'sup_id' => $sup_id));
 				}
 	        } else {
@@ -114,20 +121,25 @@ class Main_model extends CI_Model {
 
 	            if ($query->num_rows() > 0) {
 	                $row = $query->row();
+
+					// Check if the user has 3 failed attempts
 	                if ($row->failed_attempts == 3) {
+
+						// If user has 3 failed attempts, set the 'status' field to 0 to lock the account.
 	                    $this->db->set('status', 0);
 	                    $this->db->where('username', $username);
 	                    $this->db->update('users');
 
-	                    // return array(0, array('user_id' => $user_id, 'role' => $role, 'status' => 1, 'dept_id' => $dept_id, 'sup_id' => $sup_id));
 	                    return array(0, 'message' => "Your Account is Locked.");
-						// return array('status' => 0, 'message' => "Your Account is Locked.");
 	                } else {
+
+						// If user has not yet reached 3 failed attempts, increment 'failed_attempts' field only
 	                	$attempts = $this->db->where('username', $username)->get('users')->row()->failed_attempts;
 	                    $this->db->where('username', $username);
 				        $this->db->set('failed_attempts', ($attempts + 1), FALSE);
 				        $this->db->update('users');
-				        // return array(0, "Your Username or Password is Invalid Please Try Again.");
+
+						// Return "Wrong username/password" message
 				        return array('status' => 0, 'message' => "Your Username/Password is Invalid Please Try Again.");
 	                }
 	            } else {

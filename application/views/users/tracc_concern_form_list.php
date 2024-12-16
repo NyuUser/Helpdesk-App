@@ -1,4 +1,7 @@
 <div class="content-wrapper">
+    <?php if ($this->session->flashdata('checkbox_data')): ?>
+        <p><?= $this->session->flashdata('checkbox_data'); ?></p>
+    <?php endif; ?>
     <div class="container">
         <section class="content-header">
             <h1>
@@ -6,7 +9,7 @@
 				<small>Ticket</small>
 			</h1>
 			<ol class="breadcrumb">
-				<li><a href=""><i class="fa fa-users"></i> Home</a></li>
+                <li><a href=""><i class="fa fa-users"></i> Home</a></li>
 				<li class="active">Concern Tickets</li>
 				<li class="active">List of Tickets</li>
 			</ol>

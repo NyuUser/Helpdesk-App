@@ -426,6 +426,8 @@
 				"scrollY": "115px"
 			});
 			
+			$('#form-alert').delay(1000 * 60 * 5).hide(500);
+			
 			getDate();
 			$('.teststs').click(function() {
             	alert("here");
