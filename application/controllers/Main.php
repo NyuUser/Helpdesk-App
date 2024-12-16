@@ -2115,9 +2115,20 @@ class Main extends CI_Controller {
 			$imploded_values = implode(',', $comp_checkbox_values);
 	
 			$process = $this->Main_model->trf_add_ticket($file_path, $imploded_values, $checkbox_data_newadd, $checkbox_data_update, $checkbox_data_account);
+
+			$newadd = [
+				'Item Request Form' => $checkbox_data_newadd['checkbox_item'],
+				'Customer Request Form' => $checkbox_data_newadd['checkbox_customer'],
+				'Supplier Request Form' => $checkbox_data_newadd['checkbox_supplier'],
+				'Warehouse Request Form' => $checkbox_data_newadd['checkbox_whs'],
+				'Bin Request Form' => $checkbox_data_newadd['checkbox_bin'],
+				'Customer Shipping Setup' => $checkbox_data_newadd['checkbox_cus_ship_setup'],
+				'Employee Request Form' => $checkbox_data_newadd['checkbox_employee_req_form'],
+				'Others' => $checkbox_data_newadd['others_text_newadd'],
+			];
 	
 			if ($process[0] == 1) {
-				$this->session->set_flashdata('success', $process[1]);
+				$this->session->set_flashdata(['success' => $process[1], 'checkbox_data' => $newadd]);
 				redirect(base_url() . 'sys/users/list/tickets/tracc_request');
 			} else {
 				$this->session->set_flashdata('error', $process[1]);
@@ -2708,6 +2719,8 @@ class Main extends CI_Controller {
 				];
 				
 				$formHtml = $this->load->view('admin/trf_employee_request_form_admin', $formData, TRUE);
+				print_r($formData);
+				die();
 			
 
 				$data[] = [

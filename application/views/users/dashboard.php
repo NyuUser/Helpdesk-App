@@ -1,3 +1,84 @@
+<style>
+
+.dashboard-table {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.table-data {
+    padding: 5px;
+    vertical-align: top;
+}
+
+.summary-table {
+    width: 100%;
+    height: 420px;
+}
+
+.summary {
+    padding: 5px;
+}
+
+.summary-data {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px lightgray;
+    transition: 0.5s;
+}
+
+.summary-data:hover {
+    box-shadow: 0px 0px 5px lightgray;
+    transition: 0.3s;
+}
+
+.summary-data-table {
+	width: 100%;
+}
+
+.table-data-summary {
+    background-color: white;
+    padding: 20px;
+    width: 570px;
+    height: 420px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px lightgray;
+    transition: 0.5s;
+}
+
+.table-data-summary:hover {
+    box-shadow: 0px 0px 5px lightgray;
+    transition: 0.3s;
+}
+
+
+.table-data tr:hover {
+    background-color: #ecf0f5;
+}
+
+.status-dropdown {
+    padding: 5px;
+    border-radius: 5px;
+    border-color: lightgray;
+    font-size: 11px;
+}
+
+.status-button {
+    padding: 5px;
+    width: 70px;
+    border-radius: 5px;
+    border-width: 0;
+    background-color: #337ab7;
+    color: white;
+    font-size: 11px;
+}
+
+</style>
+
 <div class="content-wrapper">
     <div class="container">
         <section class="content-header">
@@ -16,16 +97,47 @@
 					<td class="table-data" style="padding: 0;">
 						<table class="summary-table">
 							<tr>
+								<td class="summary" colspan=3>
+									<div class="summary-data">
+										<h3>Hello, <?= $user_details['fname']; ?>!</h3>
+										<p>Today is <?= date("F j, Y, l"); ?></p>
+									</div>
+								</td>
+							</tr>
+							<tr>
 								<td class="summary">
 									<div class="summary-data">
-										<p><b>MSRF</b> <i>Total: <?= $msrf['count']; ?></i></p>
-										Open Tickets: <?= $msrf['Open']; ?><br>
-										In Progress Tickets: <?= $msrf['In Progress']; ?><br>
-										On Going Tickets: <?= $msrf['On Going']; ?><br>
-										Resolved Tickets: <?= $msrf['Resolved']; ?><br>
-										Closed Tickets: <?= $msrf['Closed']; ?><br>
-										Rejected Tickets: <?= $msrf['Rejected']; ?><br>
-										Returned Tickets: <?= $msrf['Returned']; ?><br>
+										<b>MSRF</b>
+										<table class="summary-data-table">
+											<tr>
+												<th>Total:</th>
+												<td align="right"><b><?= $msrf['count']; ?></b></td>
+											</tr>
+											<tr>
+												<td>In Progress Tickets:</td>
+												<td align="right"><?= $msrf['In Progress']; ?></td>
+											</tr>
+											<tr>
+												<td>On Going Tickets:</td>
+												<td align="right"><?= $msrf['On Going']; ?></td>
+											</tr>
+											<tr>
+												<td>Resolved Tickets:</td>
+												<td align="right"><?= $msrf['Resolved']; ?></td>
+											</tr>
+											<tr>
+												<td>Closed Tickets:</td>
+												<td align="right"><?= $msrf['Closed']; ?></td>
+											</tr>
+											<tr>
+												<td>Rejected Tickets:</td>
+												<td align="right"><?= $msrf['Rejected']; ?></td>
+											</tr>
+											<tr>
+												<td>Returned Tickets:</td>
+												<td align="right"><?= $msrf['Returned']; ?></td>
+											</tr>
+										</table>
 									</div>
 								</td>
 								<td class="summary">
@@ -51,7 +163,7 @@
 									</div>
 								</td>
 							</tr>
-							<tr>
+							<!-- <tr>
 								<td class="summary" colspan=3>
 									<div class="summary-data">
 										<h4>Ticket Updates</h4>
@@ -129,7 +241,7 @@
 										</table>
 									</div>
 								</td>
-							</tr>
+							</tr> -->
 						</table>
 					
 					</td>
