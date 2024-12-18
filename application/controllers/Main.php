@@ -2131,7 +2131,7 @@ class Main extends CI_Controller {
 	
 			if ($process[0] == 1) {
 				$this->session->set_flashdata('success', $process[1]);
-				$this->session->set_userdata('data', ['checkbox_data' => $newadd, 'expires_at' => time() + (10)]);
+				$this->session->set_userdata('data', ['checkbox_data' => $newadd, 'expires_at' => time() + (5 * 60)]);
 				redirect(base_url() . 'sys/users/list/tickets/tracc_request');
 			} else {
 				$this->session->set_flashdata('error', $process[1]);
