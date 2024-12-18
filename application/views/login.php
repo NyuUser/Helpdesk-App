@@ -36,7 +36,7 @@
 
         .login-box {
             position: fixed;
-            top: 200px;
+            top: 120px;
             z-index: 1;                  /* Ensure it stays above background */
         }
 

@@ -1703,7 +1703,7 @@ class Main_model extends CI_Model {
 		$this->db->where('requester_id', $id);
 		$count = $this->db->count_all_results();
 		$data['count'] = $count;
-		$statuses = ['Open', 'In Progress', 'On Going', 'Resolved', 'Closed', 'Rejected', 'Returned'];
+		$statuses = ['Open', 'Approved', 'In Progress', 'On Going', 'Resolved', 'Closed', 'Rejected', 'Returned'];
 
 		foreach($statuses as $status) {
 			$this->db->from('service_request_msrf');
@@ -1722,7 +1722,7 @@ class Main_model extends CI_Model {
 		$this->db->where('reported_by_id', $id);
 		$count = $this->db->count_all_results();
 		$data['count'] = $count;
-		$statuses = ['Open', 'Done', 'In Progress', 'Resolved', 'Closed', 'Rejected'];
+		$statuses = ['Open', 'Approved', 'Done', 'In Progress', 'Resolved', 'Closed', 'Rejected', 'Returned'];
 
 		foreach($statuses as $status) {
 			$this->db->from('service_request_tracc_concern');
@@ -1741,7 +1741,7 @@ class Main_model extends CI_Model {
 		$this->db->where('requested_by_id', $id);
 		$count = $this->db->count_all_results();
 		$data['count'] = $count;
-		$statuses = ['Open', 'Approved', 'In Progress', 'Rejected', 'Resolved', 'Closed'];
+		$statuses = ['Open', 'Approved', 'In Progress', 'Rejected', 'Resolved', 'Closed', 'Returned'];
 
 		foreach($statuses as $status) {
 			$this->db->from('service_request_tracc_request');
@@ -1752,6 +1752,13 @@ class Main_model extends CI_Model {
 		}
 
 		return $data;
+	}
+
+	public function get_customer_req_form_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_customer_req_form');
+		return $query->result_array();
 	}
 }
 ?>

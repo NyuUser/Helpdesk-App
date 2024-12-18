@@ -41,19 +41,21 @@
 			</ol>
         </section>
         <div class="alert">
-            <?php if($this->session->flashdata('checkbox_data')): ?>
-                <div class="alert-content" id="form-alert">
-                    <h1>Please fill up the following forms:</h1>
-                    <ul>
-                        <?php foreach($this->session->flashdata('checkbox_data') as $key => $data)
-                        if($data == 1) {
-                            echo '<li>';
-                            echo $key;
-                            echo '</li>';
-                        }
-                        ?>
-                    </ul>
-                </div>
+            <?php
+            $data = $this->session->userdata('data');
+            if($data && time() < $data['expires_at']) : ?>
+            <div class="alert-content" id="form-alert">
+                <h1>Please fill up the following forms:</h1>
+                <ul>
+                    <?php foreach($this->session->userdata('data')['checkbox_data'] as $key => $data)
+                    if($data == 1) {
+                        echo '<li>';
+                        echo $key;
+                        echo '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
             <?php endif; ?>
         </div>
         <section class="content">

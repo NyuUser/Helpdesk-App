@@ -1175,6 +1175,7 @@ class Main extends CI_Controller {
 			$msrfTickets = $this->Main_model->get_msrf($user_details[1]['recid']);
 			$traccConcerns = $this->Main_model->get_tracc_concerns($user_details[1]['recid']);
 			$traccRequests = $this->Main_model->get_tracc_requests($user_details[1]['recid']);
+			$name = $user_details[1]['fname'] . ' ' . $user_details[1]['mname'] . ' ' . $user_details[1]['lname'];
 
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
@@ -2009,6 +2010,10 @@ class Main extends CI_Controller {
 				echo "No departments found.";
 			}
 
+			if(time() > $this->session->userdata('data')['expires_at']) {
+				$this->session->unset_userdata('data');
+			}
+
 			$data['getdept'] = $getdepartment[1];
 
 			$data['trfNumber'] = $trfNumber; 
@@ -2120,15 +2125,13 @@ class Main extends CI_Controller {
 				'Item Request Form' => $checkbox_data_newadd['checkbox_item'],
 				'Customer Request Form' => $checkbox_data_newadd['checkbox_customer'],
 				'Supplier Request Form' => $checkbox_data_newadd['checkbox_supplier'],
-				'Warehouse Request Form' => $checkbox_data_newadd['checkbox_whs'],
-				'Bin Request Form' => $checkbox_data_newadd['checkbox_bin'],
 				'Customer Shipping Setup' => $checkbox_data_newadd['checkbox_cus_ship_setup'],
 				'Employee Request Form' => $checkbox_data_newadd['checkbox_employee_req_form'],
-				'Others' => $checkbox_data_newadd['others_text_newadd'],
 			];
 	
 			if ($process[0] == 1) {
-				$this->session->set_flashdata(['success' => $process[1], 'checkbox_data' => $newadd]);
+				$this->session->set_flashdata('success', $process[1]);
+				$this->session->set_userdata('data', ['checkbox_data' => $newadd, 'expires_at' => time() + (10)]);
 				redirect(base_url() . 'sys/users/list/tickets/tracc_request');
 			} else {
 				$this->session->set_flashdata('error', $process[1]);
@@ -3078,5 +3081,54 @@ class Main extends CI_Controller {
 			echo json_encode(['message' => 'error', 'error' => 'Database update failed.']);
 		}
 	}
+
+	public function customer_request_form_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->Main_model->get_customer_req_form_details($id);
+			$ticket_numbers = $this->Main_model->get_customer_from_tracc_req_mf_new_add();
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['ticket_numbers'] = $ticket_numbers;
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/trf_customer_request_form_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
 	
+	public function user_edit_customer_request_form_pdf() {
+		$crf_comp_checkbox_value = isset($_POST['crf_comp_checkbox_value']) ? $_POST['crf_comp_checkbox_value'] : [];
+		$imploded_values = implode(',', $csrf_comp_checkbox_values);
+
+		$checkbox_cus_req_form_del = [
+			'checkbox_outright' => isset($_POST['checkbox_outright']) ? 1 : 0,
+			'checkbox_consignment' => isset($_POST['checkbox_consignment']) ? 1 : 0,
+			'checkbox_cus_a_supplier' => isset($_POST['checkbox_cus_a_supplier']) ? 1 : 0,
+			'checkbox_online' => isset($_POST['checkbox_online']) ? 1 : 0,
+			'checkbox_walkIn' => isset($_POST['checkbox_walkIn']) ? 1 : 0,
+			'checkbox_monday' => isset($_POST['checkbox_monday']) ? 1 : 0,
+			'checkbox_tuesday' => isset($_POST['checkbox_tuesday']) ? 1 : 0,
+			'checkbox_wednesday' => isset($_POST['checkbox_wednesday']) ? 1 : 0,
+			'checkbox_thursday' => isset($_POST['checkbox_thursday']) ? 1 : 0,
+			'checkbox_friday' => isset($_POST['checkbox_friday']) ? 1 : 0,
+			'checkbox_saturday' => isset($_POST['checkbox_saturday']) ? 1 : 0,
+			'checkbox_sunday' => isset($_POST['checkbox_sunday']) ? 1 : 0,
+		];
+
+		$process = $this->Main_model->edit_customer_request_form_pdf($imploded_values, $checkbox_cus_req_form_del);
+	}
 }

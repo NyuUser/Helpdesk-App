@@ -1,8 +1,13 @@
 <style>
 
 #report_box {
-    width: auto;
-    margin-left: 35%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 10px;
 }
 
@@ -35,14 +40,28 @@
     background-color: lightgreen;
 }
 
+.dt-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-contnet: center;
+    margin: auto;
+    width: 100%;
+}
+
+.dt-button {
+    display: inline;
+    margin: 5px;
+}
+
 </style>
 
 <div class="content-wrapper">
-    <section class="content-header" style="margin-left: 35%;">
+    <section class="content-header">
         </section>
         <section class="content">
             <div class="row">
-                <div class="col-xs-6" id="report_box">
+                <div class="col-xs-12" id="report_box">
                     <h1>Generate Reports</h1>
                     <div class="box" id="report_filter_box">
 
@@ -89,7 +108,7 @@
                     
                 </div>
 
-                <div class="box-body" id="tblMsrfBox">
+                <div class="box-body" id="tblMsrfBox" style="display: none">
                     <table id="tblTicketsPrint" class="table table-bordered table-striped" style="display: none">
                         <thead>
                             <tr>

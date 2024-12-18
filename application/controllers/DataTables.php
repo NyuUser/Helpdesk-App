@@ -2254,4 +2254,45 @@ class DataTables extends CI_Controller {
         echo json_encode($output);
         exit();
     }
+
+    public function get_customer_request_form() {
+        $user_id = $this->session->userdata('login_data')['user_id'];
+
+        $this->db->select('fname, mname, lname');
+        $this->db->where('recid', $user_id);
+        $this->db->from('users');
+        $user_data = $this->db->get()->result_array();
+
+        $name = $user_data[0]['fname'] . ' ' . $user_data[0]['mname'] . ' ' . $user_data[0]['lname'];
+        
+        $draw = intval($this->input->post('draw'));
+        $start = intval($this->input->post('start'));
+        $length = intval($this->input->post('length'));
+
+        $this->db->select('recid, ticket_id, remarks');
+        $this->db->from('tracc_req_customer_req_form');
+        $this->db->where('requested_by', $name);
+        $this->db->order_by('created_at', 'desc');
+
+        $totalRecords = $this->db->count_all_results('', false);
+
+        $this->db->limit($length, $start);
+        $data = $this->db->get()->result_array();
+
+        $formattedData = [];
+        foreach($data as $row) {
+            $row['ticket_id'] = "<a href='" . base_url() . "sys/users/details/concern/customer_req/" . $row['recid'] . "'>" . $row['ticket_id'] . "</a>";
+            $formattedData[] = $row;
+        }
+
+        $output = array(
+            'draw' => $draw,
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $formattedData,
+        );
+
+        echo json_encode($output);
+        exit();
+    }
 }

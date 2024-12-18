@@ -418,12 +418,25 @@
 				"pageLength": 5,
 			});
 
-			$('#history').DataTable({
-				"searching": false,
-				"paging": false,
-				"info": false,
+			$('#tblTR').DataTable({
+				"serverSide": true,
+				"processing": true,
+				"ajax": {
+					"url": "<?= base_url(); ?>DataTables/get_customer_request_form",
+					"type": "POST",
+					"data": function(d) {
+						d.status = $('#trStatus').val();
+					}
+				},
+				"columns": [
+					{ "data": "ticket_id" },
+					{ "data": "remarks" }
+				],
 				"responsive": true,
-				"scrollY": "115px"
+				"autoWidth": false,
+				"lengthChange": false,
+				"dom": 'rltp',
+				"pageLength": 5,
 			});
 			
 			$('#form-alert').delay(1000 * 60 * 5).hide(500);

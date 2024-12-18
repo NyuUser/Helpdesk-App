@@ -21,6 +21,7 @@ $route['sys/users/details/concern/tracc_concern/(:any)'] = 'main/tracc_concern_f
 //clickable link to the details page, tracc request
 $route['sys/users/details/concern/tracc_request/(:any)'] = 'main/tracc_request_form_details/$1';
 
+$route['sys/users/details/concern/customer_req/(:any)'] = 'main/customer_request_form_details/$1';
 
 //--- DATATABLE of USER in TRACC CONCERN
 $route['sys/users/list/tickets/tracc_concern'] = 'main/service_form_tracc_concern_list';
