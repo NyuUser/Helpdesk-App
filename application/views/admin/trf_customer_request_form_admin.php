@@ -70,7 +70,8 @@
                     <div class="tab-pane active" id="msrf">
                         <section id="new">
                             <div class="row">
-                                <form action="<?= site_url('Main/'); ?>" method="POST">
+                                <form action="<?= site_url('Main/approve_crf'); ?>" method="POST">
+                                    <input type="hidden" name="recid" id="recid" value="<?php echo $recid; ?>">
                                     <div class="row">
                                         <div class="col-md-7 text-center" style="margin-top: 15px;">
                                             <div class="form-group d-flex justify-content-center">
@@ -357,7 +358,6 @@
                                                 <?= isset($checkbox_data['sunday']) && $checkbox_data['sunday'] == 1 ? 'checked' : ''; ?>> 
                                                 <label class="form-check-label" for="checkbox_sunday">Sunday</label> 
                                             </div> 
-                                            
                                         </div> 
                                     </div>
 
@@ -365,6 +365,25 @@
                                         <div class="form-group">
                                             <label>Requested By</label>
                                             <input type="text" name="requested_by" id="requested_by" value="<?php echo $requested_by; ?>" class="form-control select2" required readonly> 
+                                        </div>
+                                    </div>
+
+                                    <?php 
+                                    $role = $this->session->userdata('login_data')['role'];
+                                    ?>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Approved By</label>
+                                            <input type="text" name="approved_by" id="approved_by" value="<?php echo $approved_by ?>" class="form-control select2" <?php echo ($role === 'L2') ? 'readonly' : ''; ?> required> 
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="box-body pad">
+                                                <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?php echo ($role === 'L2') ? 'disabled' : ''; ?>>Approved</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -377,7 +396,7 @@
     </div>
 </section>
 
-<p><strong>RECID:</strong> <?php echo $recid; ?></p> 
+<!-- <p><strong>RECID:</strong> <?php echo $recid; ?></p> 
 <p><strong>Ticket ID:</strong> <?php echo $ticket_id; ?></p> 
-<p><strong>Requestor Name:</strong> <?php echo $requested_by; ?></p> 
+<p><strong>Requestor Name:</strong> <?php echo $requested_by; ?></p>  -->
 

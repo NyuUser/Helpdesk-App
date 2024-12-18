@@ -1,3 +1,43 @@
+<?php 
+    $sess_login_data = $this->session->userdata('login_data');
+    $role = $sess_login_data['role'];
+    $department_id = $sess_login_data['dept_id'];
+    // print_r($sess_login_data);
+    $disabled = "";
+    $readonly = "";
+    $btn_label = "Submit Ticket";
+    if ($role === "L1") {
+        $department_head_status = $tracc_con['approval_status'];
+        
+        $status_tcf = $tracc_con['status'];
+        // print_r($status_tcf);
+        // die();
+
+        if(($status_tcf === "In Progress" || $status_tcf === 'Approved')) {
+            // echo "try";
+            // die();
+            $disabled = "disabled";
+            $readonly = "readonly";
+            $btn_label = "Update Ticket";
+        } else {
+            $disabled = "";
+            $readonly = "";
+        }
+            
+        // if($status_tcf )
+        
+    }
+    // if($role === "L1" && $department_id === "1"){
+    //     $department_status = $msrf['approval_status'];
+    //         if($department_status === "Rejected" || $department_status === "Returned", || $department_status === "Approved"){
+    //             $disabled = "disabled";
+    //         }
+    // }else{
+    //     $disabled = "";
+    // }
+    
+?>
+
 <div class="content-wrapper">
     <div class="container">
         <section class="content-header">
@@ -32,13 +72,13 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
 			                    					<label>Module Affected</label>
-                                                    <input type="text" name="module_affected" id="module_affected" class="form-control" value="<?= $tracc_con['module_affected']; ?>" readonly>
+                                                    <input type="text" name="module_affected" id="module_affected" class="form-control" value="<?= $tracc_con['module_affected']; ?>" <?=$readonly?>>
 			                    				</div>                                                
 			                                </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
 			                    					<label>Company</label>
-                                                    <select class="form-control select2" name="company" id="company" disabled>
+                                                    <select class="form-control select2" name="company" id="company" <?=$disabled?>>
                                                         <option value=""disabled selected>Company Category</option>
                                                         <option value="lmi"<?php if ($tracc_con['company'] == 'LMI') echo ' selected'; ?>>LMI</option>
                                                         <option value="rgdi"<?php if ($tracc_con['company'] == 'RGDI') echo ' selected'; ?>>RGDI</option>
@@ -51,7 +91,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Details Concern</label>
-                                                        <textarea class="form-control" name="concern" id="concern" placeholder="Place the details concern here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" disabled><?= $tracc_con['tcr_details']; ?></textarea>
+                                                        <textarea class="form-control" name="concern" id="concern" placeholder="Place the details concern here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" <?=$readonly?>><?= $tracc_con['tcr_details']; ?></textarea>
                                                 </div>
                                             </div>
 
@@ -108,20 +148,7 @@
                                                     </select>       
                                                 </div>
                                             </div>
-                                            <?php 
-                                                // $sess_login_data = $this->session->userdata('login_data');
-                                                // $role = $sess_login_data['role'];
-                                                // $disabled = "";
-                                                // if($role === "L1"){
-                                                //     $department_status = $tracc_con['approval_status'];
-                                                //     // print_r($department_status);
-                                                //     // die();
-                                                //     if($department_status === "Rejected" || $department_status === "Returned")
-                                                //     $disabled = "disabled";
-                                                // }else{
-                                                //     $disabled = "";
-                                                // }  
-                                            ?>
+                                            
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>ICT Approval Status <span style = "color:red;">*</span></label>
@@ -202,14 +229,14 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
 			                    					<label>Acknowledge as resolved by</label>
-                                                    <input type="text" name="ack_as_res_by" id="ack_as_res_by" class="form-control" value="<?= $tracc_con['ack_as_resolved']; ?>" required>
+                                                    <input type="text" name="ack_as_res_by" id="ack_as_res_by" class="form-control" value="<?= $tracc_con['ack_as_resolved']; ?>">
 			                    				</div>                                                
 			                                </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Acknowledge as Resolved Date</label>
-                                                    <input type="date" name="ack_as_res_date" id="ack_as_res_date" class="form-control select2" value="<?= $tracc_con['ack_as_resolved_date']; ?>" style="width: 100%;" required>
+                                                    <input type="date" name="ack_as_res_date" id="ack_as_res_date" class="form-control select2" value="<?= $tracc_con['ack_as_resolved_date']; ?>" style="width: 100%;">
                                                 </div>
                                             </div>
 
@@ -277,10 +304,13 @@
                                                 </div>
                                             </div>
 
+                                            <input type="hidden" name="action" value="edit">
+
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">
-                                                        <button id="form-add-submit-button" class="btn btn-primary">Submit Tickets</button>
+                                                        <button type="submit" class="btn btn-primary" name="edit">Update Changes</button>
+                                                        <button type="submit" class="btn btn-success" name="acknowledge" onclick="setAcknowledgeFieldsRequired(); document.querySelector('[name=action]').value='acknowledge';">Acknowledge as Resolved</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -395,5 +425,15 @@
     //         }
     //     });
     // });
+
+    function setAcknowledgeFieldsRequired() {
+        // Get the acknowledge fields
+        var ackAsResBy = document.getElementById('ack_as_res_by');
+        var ackAsResDate = document.getElementById('ack_as_res_date');
+
+        // Set both fields as required
+        ackAsResBy.setAttribute('required', 'required');
+        ackAsResDate.setAttribute('required', 'required');
+    }
 
 </script>

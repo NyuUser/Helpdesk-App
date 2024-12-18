@@ -82,7 +82,8 @@
                     <div class="tab-pane active" id="msrf">
                         <section id="new">
                             <div class="row">
-                                <form action="<?= site_url('Main/'); ?>" method="POST">
+                                <form action="<?= site_url('Main/approve_erf'); ?>" method="POST">
+                                <input type="hidden" name="recid" id="recid" value="<?php echo $recid; ?>">
                                     <div class="col-md-12" style="margin-top: 20px;">
                                         <div class="form-group">
                                             <label>Name</label>
@@ -148,6 +149,24 @@
                                         </div>
                                     </div>
 
+                                    <?php 
+                                    $role = $this->session->userdata('login_data')['role'];
+                                    ?>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Approved By</label>
+                                            <input type="text" name="approved_by" id="approved_by" value="<?php echo $approved_by; ?>" class="form-control select2" <?php echo ($role === 'L2') ? 'readonly' : ''; ?>> 
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="box-body pad">
+                                                <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?php echo ($role === 'L2') ? 'disabled' : ''; ?>>Approved</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </form>
                             </div>
                         </section>
@@ -158,7 +177,7 @@
     </div>
 </section>
 
-<p><strong>RECID:</strong> <?php echo $recid; ?></p> 
+<!-- <p><strong>RECID:</strong> <?php echo $recid; ?></p> 
 <p><strong>Ticket ID:</strong> <?php echo $ticket_id; ?></p> 
-<p><strong>Requestor Name:</strong> <?php echo $requested_by; ?></p> 
+<p><strong>Requestor Name:</strong> <?php echo $requested_by; ?></p>  -->
 

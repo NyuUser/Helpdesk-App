@@ -10,7 +10,7 @@
         $department_head_status = $msrf['approval_status'];
         
         $status_msrf = $msrf['status'];
-        // print_r($status_msrf);
+        // print_r($department_head_status);
         // die();
 
         if(($status_msrf === "In Progress" || $status_msrf === 'Approved')) {
@@ -201,7 +201,7 @@
                                                 <div class="form-group">
                                                     <div class="box-body pad">
                                                         <!-- style="display:none;" -->
-                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?=$disabled?>;><?=$btn_label?></button>
+                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?=$disabled?>><?=$btn_label?></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -221,51 +221,6 @@
 <script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
 
 <script>
-    /*$(document).ready(function() {
-        $('#it_approval_stat').change(function() {
-            var status = $(this).val();
-            if (status === 'Rejected') {
-                $('#reason').show();
-                $('#rejecttix').prop('disabled', false);
-            } else {
-                $('#reason').hide();
-                $('#rejecttix').prop('disabled', true);
-            }
-        });
-        
-        $('#it_approval_stat').trigger('change');
-    });*/
-
-    /*$(document).ready(function() {
-        $('#it_approval_stat').change(function() {
-            var status = $(this).val();
-            if (status === 'Approved') {
-                $('#assigned-it-container').show();
-            }else{
-                $('#assigned-it-container').hide();
-            }
-        });
-
-        $('#it_approval_stat').trigger('change');
-    });*/
-
-    /*$(document).ready(function() {
-        // Temporarily enable the disabled dropdown
-        $('#category').prop('disabled', false);
-        $('#category').change(function() {
-            var status = $(this).val();
-            
-            if (status === 'others') {  
-                $('#specify-container').show();
-            } else {
-                $('#specify-container').hide();
-            }
-        });
-
-        $('#category').trigger('change');
-        $('#category').prop('disabled', true);
-    });*/
-
     $(document).ready(function() {
 		$("#reason").hide();
 
@@ -274,18 +229,16 @@
 			var approvalStatus = $('#approval_stat').val();
 
 			if (itApprovalStatus === 'Rejected' || approvalStatus === 'Rejected') {
-				$("#reason").show();  // Show the reason textarea
+				$("#reason").show();  
 			} else {
-				$("#reason").hide();  // Hide the reason textarea
+				$("#reason").hide();  
 			}
 		}
 
-		// Trigger the change event to handle the case where the page is loaded with "Rejected" already selected
 		$('#it_approval_stat, #approval_stat').on('change', function() {
 			toggleReasonField();
 		});
 
-		// Call the function on page load to check the initial state
 		toggleReasonField();
 	});
 

@@ -9,6 +9,7 @@ class Main extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('Main_model');
 	}
+	
 	// code ni sir gilbert
 	/*public function login() {
 		$this->load->helper('form');
@@ -138,7 +139,7 @@ class Main extends CI_Controller {
 	
 	
 	// ADMIN Dashboard, Viewing of ADMIN Dashboard
-	public function admin_dashboard($active_menu = 'dashboard') {
+	/* public function admin_dashboard($active_menu = 'dashboard') {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 
@@ -180,10 +181,10 @@ class Main extends CI_Controller {
         	$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
-	}
+	} */
 
 	// VIEWING of ADMIN for GENERATING REPORTS
-	public function admin_print_report($active_menu = 'print') {
+	/* public function admin_print_report($active_menu = 'print') {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 
@@ -212,10 +213,10 @@ class Main extends CI_Controller {
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect('sys/authentication');
 		}
-	}
+	} */
 
 	//VIEWING of USERS/EMPLOYEES for ADMIN Datatable
-	public function admin_users() {
+	/* public function admin_users() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 
@@ -241,10 +242,10 @@ class Main extends CI_Controller {
         	$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
-	}
+	} */
 
 	//VIEWING of DEPARTMENT for ADMIN Datatable
-	public function admin_team() {
+	/* public function admin_team() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 
@@ -270,9 +271,9 @@ class Main extends CI_Controller {
         	$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
-	}
+	} */
 
-	//NOT WORKING, locking of users
+	// Locking of Users
 	public function lock_users() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -303,7 +304,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//NOT WORKING, unlocking of users
+	// Unlocking of Users
 	public function unlock_users() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -506,7 +507,7 @@ class Main extends CI_Controller {
 	}
 	
 	//ADDING FORM of DEPARTMENT for ADMIN
-	public function admin_list_department() {
+	/* public function admin_list_department() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 			$department_data = $this->Main_model->getDepartment();
@@ -543,11 +544,11 @@ class Main extends CI_Controller {
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
-	}
+	} */
 
 
 	//ADDING FORM Employee in ADMIN
-	public function admin_list_employee() {
+	/* public function admin_list_employee() {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 			$department_data = $this->Main_model->getDepartment();
@@ -581,10 +582,10 @@ class Main extends CI_Controller {
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
-	}
+	} */
 	
 	// Adding employee FUNCTION ADMIN
-	public function employee_add() {
+	/* public function employee_add() {
 		$this->load->helper('form');
 		$this->load->library('session');
 
@@ -613,10 +614,10 @@ class Main extends CI_Controller {
 			}
 		}
 		echo json_encode($response);
-	}
+	} */
 
 	//Updating Employee FUNCTION for ADMIN
-	public function employee_update() {
+	/* public function employee_update() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 	
@@ -646,10 +647,10 @@ class Main extends CI_Controller {
 			echo json_encode(array('status' => 'error', 'message' => 'Session expired. Please login again.'));
 			return;
 		}
-	}
+	} */
 
-	//Deleting Employee FUCNTION for ADMIN
-	public function employee_delete($id){
+	// Deleting Employee FUCNTION for ADMIN
+	/* public function employee_delete($id){
 		if (is_numeric($id)){
 			$status = $this->Main_model->delete_employee($id);
 				if($status){
@@ -660,10 +661,10 @@ class Main extends CI_Controller {
 		}else{
 			echo json_encode(['status' => 'error', 'message' => 'Invalid Employee ID.']);
 		}
-	}
+	} */
 
 	// FORM of Updating Details of a employee/users FOR ADMIN
-	public function list_update_employee($id) {
+	/* public function list_update_employee($id) {
 		if ($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 			$department_data = $this->Main_model->getDepartment();
@@ -702,119 +703,119 @@ class Main extends CI_Controller {
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
-	}
+	} */
 	
-	// public function admin_approval_list($subject, $id) {
-	// 	if ($this->session->userdata('login_data')) {
-	// 		$user_id = $this->session->userdata('login_data')['user_id'];
-	// 		$user_role = $this->session->userdata('login_data')['role'];
-	// 		$user_dept = $this->session->userdata('login_data')['sup_id'];
-	// 		$dept_id = $this->session->userdata('login_data')['dept_id'];
-	// 		$user_details = $this->Main_model->user_details();
-	// 		$msrf_tickets = $this->Main_model->getTicketsMSRF($id);
-	// 		$getTraccCon = $this->Main_model->getTraccConcernByID($id);
-	// 		$trf_tickets = $this->Main_model->getTicketsTRF($id);
-	// 		$checkbox_newadd = $this->Main_model->getCheckboxDataNewAdd($id);
-	// 		$checkbox_update = $this->Main_model->getCheckboxDataUpdate($id);
-	// 		$checkbox_account = $this->Main_model->getCheckboxDataAccount($id);
+	/* public function admin_approval_list($subject, $id) {
+		if ($this->session->userdata('login_data')) {
+			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_role = $this->session->userdata('login_data')['role'];
+			$user_dept = $this->session->userdata('login_data')['sup_id'];
+			$dept_id = $this->session->userdata('login_data')['dept_id'];
+			$user_details = $this->Main_model->user_details();
+			$msrf_tickets = $this->Main_model->getTicketsMSRF($id);
+			$getTraccCon = $this->Main_model->getTraccConcernByID($id);
+			$trf_tickets = $this->Main_model->getTicketsTRF($id);
+			$checkbox_newadd = $this->Main_model->getCheckboxDataNewAdd($id);
+			$checkbox_update = $this->Main_model->getCheckboxDataUpdate($id);
+			$checkbox_account = $this->Main_model->getCheckboxDataAccount($id);
 
-	// 		$ict = $this->Main_model->GetICTSupervisor();
+			$ict = $this->Main_model->GetICTSupervisor();
 
-	// 		if ($user_details[0] == "ok") {
-	// 			$sid = $this->session->session_id;
-	// 			$data['user_details'] = $user_details[1];
-	// 			$data['msrf'] = $msrf_tickets[1];
-	// 			$data['tracc_con'] = $getTraccCon[1];
-	// 			$data['trf'] = $trf_tickets[1];
-	// 			$data['ict'] = $ict;
-	// 			$data['checkbox_newadd'] = $checkbox_newadd;
-	// 			$data['checkbox_update'] = $checkbox_update;
-	// 			$data['checkbox_account'] = $checkbox_account;
-	// 			$emp_id = $user_details[1]["emp_id"];
-	// 			$getTeam = $this->Main_model->GetTeam($dept_id);
-	// 			$data['pages'] = 'tickets';
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['msrf'] = $msrf_tickets[1];
+				$data['tracc_con'] = $getTraccCon[1];
+				$data['trf'] = $trf_tickets[1];
+				$data['ict'] = $ict;
+				$data['checkbox_newadd'] = $checkbox_newadd;
+				$data['checkbox_update'] = $checkbox_update;
+				$data['checkbox_account'] = $checkbox_account;
+				$emp_id = $user_details[1]["emp_id"];
+				$getTeam = $this->Main_model->GetTeam($dept_id);
+				$data['pages'] = 'tickets';
 
-	// 			$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
-	// 			$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';
+				$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
+				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';
 
-	// 			$data['active_menu'] = $active_menu;
+				$data['active_menu'] = $active_menu;
 
-	// 			// Handle TRACC Concern data
-	// 			if ($subject == "TRACC_CONCERN") {
-	// 				if ($getTraccCon[0] == "ok") {
-	// 					// Access control_number safely
-	// 					$control_number = $getTraccCon[1]['control_number'];
-	// 					$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
-	// 					$data['tracc_con'] = $getTraccCon[1]; // Store TRACC concern data
-	// 				} else {
-	// 					// Handle the case where no TRACC Concern data was found
-	// 					$data['checkboxes'] = []; // Set to empty array if no data
-	// 					$data['tracc_con'] = []; // Set to empty array if no data
-	// 					$this->session->set_flashdata('error', $getTraccCon[1]); // Use the error message returned
-	// 				}
+				// Handle TRACC Concern data
+				if ($subject == "TRACC_CONCERN") {
+					if ($getTraccCon[0] == "ok") {
+						// Access control_number safely
+						$control_number = $getTraccCon[1]['control_number'];
+						$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
+						$data['tracc_con'] = $getTraccCon[1]; // Store TRACC concern data
+					} else {
+						// Handle the case where no TRACC Concern data was found
+						$data['checkboxes'] = []; // Set to empty array if no data
+						$data['tracc_con'] = []; // Set to empty array if no data
+						$this->session->set_flashdata('error', $getTraccCon[1]); // Use the error message returned
+					}
 	
-	// 				// Load TRACC Concern views
-	// 				$this->load->view('admin/header', $data);
-	// 				$this->load->view('admin/tickets_approval_tracc_concern', $data);
-	// 				$this->load->view('admin/sidebar', $data);
-	// 				$this->load->view('admin/footer');
+					// Load TRACC Concern views
+					$this->load->view('admin/header', $data);
+					$this->load->view('admin/tickets_approval_tracc_concern', $data);
+					$this->load->view('admin/sidebar', $data);
+					$this->load->view('admin/footer');
 	
-	// 			} else if ($subject == "MSRF") {
-	// 				$this->load->view('admin/header', $data);
-	// 				$this->load->view('admin/tickets_approval_msrf', $data);
-	// 				$this->load->view('admin/sidebar', $data);
-	// 				$this->load->view('admin/footer');
+				} else if ($subject == "MSRF") {
+					$this->load->view('admin/header', $data);
+					$this->load->view('admin/tickets_approval_msrf', $data);
+					$this->load->view('admin/sidebar', $data);
+					$this->load->view('admin/footer');
 
-	// 			} else if ($subject == "TRACC_REQUEST"){
-	// 				$checkbox_lmi = 0;
-	// 				$checkbox_rgdi = 0;
-	// 				$checkbox_lpi = 0;
-	// 				$checkbox_sv = 0;
+				} else if ($subject == "TRACC_REQUEST"){
+					$checkbox_lmi = 0;
+					$checkbox_rgdi = 0;
+					$checkbox_lpi = 0;
+					$checkbox_sv = 0;
 
-	// 				if (isset($trf_tickets[1]['company'])) {
-	// 					// Check if 'company' is a string and explode it into an array
-	// 					$company_values = (is_string($trf_tickets[1]['company'])) ? explode(',', $trf_tickets[1]['company']) : $trf_tickets[1]['company'];
+					if (isset($trf_tickets[1]['company'])) {
+						// Check if 'company' is a string and explode it into an array
+						$company_values = (is_string($trf_tickets[1]['company'])) ? explode(',', $trf_tickets[1]['company']) : $trf_tickets[1]['company'];
 			
-	// 					// Ensure that $company_values is an array
-	// 					if (is_array($company_values)) {
-	// 						$checkbox_lmi = in_array('LMI', $company_values) ? 1 : 0;
-	// 						$checkbox_rgdi = in_array('RGDI', $company_values) ? 1 : 0;
-	// 						$checkbox_lpi = in_array('LPI', $company_values) ? 1 : 0;
-	// 						$checkbox_sv = in_array('SV', $company_values) ? 1 : 0;
-	// 					}
-	// 				}
-	// 				// Passing data to view
-	// 				$data['checkbox_lmi'] = $checkbox_lmi;
-	// 				$data['checkbox_rgdi'] = $checkbox_rgdi;
-	// 				$data['checkbox_lpi'] = $checkbox_lpi;
-	// 				$data['checkbox_sv'] = $checkbox_sv;
+						// Ensure that $company_values is an array
+						if (is_array($company_values)) {
+							$checkbox_lmi = in_array('LMI', $company_values) ? 1 : 0;
+							$checkbox_rgdi = in_array('RGDI', $company_values) ? 1 : 0;
+							$checkbox_lpi = in_array('LPI', $company_values) ? 1 : 0;
+							$checkbox_sv = in_array('SV', $company_values) ? 1 : 0;
+						}
+					}
+					// Passing data to view
+					$data['checkbox_lmi'] = $checkbox_lmi;
+					$data['checkbox_rgdi'] = $checkbox_rgdi;
+					$data['checkbox_lpi'] = $checkbox_lpi;
+					$data['checkbox_sv'] = $checkbox_sv;
 
-	// 				$data['checkbox_newadd'] = $checkbox_newadd;
-	// 				$data['checkbox_update'] = $checkbox_update;
-	// 				$data['checkbox_account'] = $checkbox_account;
+					$data['checkbox_newadd'] = $checkbox_newadd;
+					$data['checkbox_update'] = $checkbox_update;
+					$data['checkbox_account'] = $checkbox_account;
 
-	// 				$this->load->view('admin/header', $data);
-	// 				$this->load->view('admin/tickets_approval_tracc_request', $data);
-	// 				$this->load->view('admin/sidebar', $data);
-	// 				$this->load->view('admin/footer');
-	// 			}
+					$this->load->view('admin/header', $data);
+					$this->load->view('admin/tickets_approval_tracc_request', $data);
+					$this->load->view('admin/sidebar', $data);
+					$this->load->view('admin/footer');
+				}
 
 
-	// 			if ($user_role == "L2") {
-	// 				$data['getTeam'] = $getTeam[1];
-	// 			}
+				if ($user_role == "L2") {
+					$data['getTeam'] = $getTeam[1];
+				}
 
-	// 		} else {
-	// 			$this->session->set_flashdata('error', 'Error fetching user information.');
-	// 			redirect("sys/authentication");
-	// 		}
-	// 	} else {
-	// 		$this->session->set_flashdata('error', 'Error fetching user information');
-    //         redirect("sys/authentication");
-	// 	}
-	// }
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Error fetching user information');
+            redirect("sys/authentication");
+		}
+	} */
    	
-	//ADMIN APPROVAL for ALL TICKETS
+	// ADMIN APPROVAL for ALL TICKETS
 	public function admin_approval_list($subject, $id) {
 		if ($this->session->userdata('login_data')) {
 			$user_id = $this->session->userdata('login_data')['user_id'];
@@ -925,7 +926,7 @@ class Main extends CI_Controller {
 	}
 	
 
-	/*public function admin_approval_list($subject, $id) {
+	/* public function admin_approval_list($subject, $id) {
 		if ($this->session->userdata('login_data')) {
 			$user_id = $this->session->userdata('login_data')['user_id'];
 			$user_role = $this->session->userdata('login_data')['role'];
@@ -990,7 +991,7 @@ class Main extends CI_Controller {
 			$this->session->set_flashdata('error', 'Error fetching user information');
 			redirect("sys/authentication");
 		}
-	}*/
+	} */
 
 	// DI PA ALAM FUNCTION
 	public function dept_supervisor_approval() {
@@ -1024,7 +1025,7 @@ class Main extends CI_Controller {
 	}
 
 	// ADDING Department FUNCTION
-	public function department_add() {
+	/* public function department_add() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->load->library('session');
@@ -1057,10 +1058,10 @@ class Main extends CI_Controller {
 			$this->load->view('admin/add_department', $data);
 			$this->load->view('admin/footer');
 		}
-	}
+	} */
 	
 	// UPDATING Department FUNCTION
-	public function department_update($id) {
+	/* public function department_update($id) {
 		$id = (int) $id;
 		$data['user'] = $this->Main_model->get_department_details($id);
 		$data['recid'] = $id;
@@ -1093,10 +1094,10 @@ class Main extends CI_Controller {
 		}
 	
 		$this->load->view('admin/update_department', $data);
-	}
+	} */
 	
 	// DELETING Department FUNCTION
-	public function department_delete($id) {
+	/* public function department_delete($id) {
 		if (is_numeric($id)) {
 			$status = $this->Main_model->delete_department($id);
 				if ($status) {
@@ -1107,10 +1108,10 @@ class Main extends CI_Controller {
 			} else {
 				echo json_encode(['status' => 'error', 'message' => 'Invalid department ID.']);
 			}
-	}
+	} */
 
-	//EDIT FORM for Department ADMIN
-	public function list_update_department($id) {
+	// UPDATING FORM for Department ADMIN
+	/* public function list_update_department($id) {
 		if ($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 			$department_data = $this->Main_model->getDepartment();
@@ -1148,24 +1149,24 @@ class Main extends CI_Controller {
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
-	}
+	} */
 
 
-	// public function details_tickets_list() {
-	// 	if($this->session->userdata('login_data')) {
-	// 		$user_details = $this->Main_model->user_details();
+	/* public function details_tickets_list() {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
 
-	// 		$this->load->view('admin/header', $data);
-	// 		$this->load->view('admin/sidebar', $data);
-	// 		$this->load->view('admin/tickets_msrf');
-	// 		$this->load->view('admin/footer');
+			$this->load->view('admin/header', $data);
+			$this->load->view('admin/sidebar', $data);
+			$this->load->view('admin/tickets_msrf');
+			$this->load->view('admin/footer');
 
-	// 	} else {
-	// 		$this->session->sess_destroy();
-    //     	$this->session->set_flashdata('error', 'Session expired. Please login again.');
-	// 		redirect("sys/authentication");
-	// 	}
-	// }
+		} else {
+			$this->session->sess_destroy();
+        	$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	} */
 
 	// Users Dashboard
 	public function users_dashboard() {
@@ -1769,6 +1770,65 @@ class Main extends CI_Controller {
 		}
 	}*/
 
+	public function update_status_tracc_request(){
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		$trf_number = $this->input->post('trf_number', true);
+		$date_need = $this->input->post('date_need', true);
+		$complete_details = $this->input->post('complete_details', true);
+		$selected_companies = $this->input->post('comp_checkbox_value', true);
+
+		$new_add_data = [
+			'item' 							=> $this->input->post('checkbox_item', true) ? 1 : 0,
+			'customer' 						=> $this->input->post('checkbox_customer', true) ? 1 : 0,
+			'supplier' 						=> $this->input->post('checkbox_supplier', true) ? 1 : 0,
+			'warehouse' 					=> $this->input->post('checkbox_whs', true) ? 1 : 0,
+			'bin_number' 					=> $this->input->post('checkbox_bin', true) ? 1 : 0,
+			'customer_shipping_setup' 		=> $this->input->post('checkbox_cus_ship_setup', true) ? 1 : 0,
+			'employee_request_form' 		=> $this->input->post('checkbox_employee_req_form', true) ? 1 : 0,
+			'others' 						=> $this->input->post('checkbox_others_newadd', true) ? 1 : 0,
+			'others_description_add' 		=> $this->input->post('others_text_newadd', true),
+		];
+
+		$data_update = [
+			'system_date_lock'				=> $this->input->post('checkbox_system_date_lock', true) ? 1 : 0,
+			'user_file_access'				=> $this->input->post('checkbox_user_file_access', true) ? 1 : 0,
+			'item_details'					=> $this->input->post('checkbox_item_dets', true) ? 1 : 0,
+			'customer_details'				=> $this->input->post('checkbox_customer_dets', true) ? 1 : 0,
+			'supplier_details'				=> $this->input->post('checkbox_supplier_dets', true) ? 1 : 0,
+			'employee_details'				=> $this->input->post('checkbox_employee_dets', true) ? 1 : 0,
+			'others'						=> $this->input->post('checkbox_others_update', true) ? 1 : 0,
+			'others_description_update'		=> $this->input->post('others_text_update', true),
+		];
+
+		$data_account = [
+			'tracc_orientation'				=> $this->input->post('checkbox_tracc_orien', true) ? 1 : 0,
+			'lmi'							=> $this->input->post('checkbox_create_lmi', true) ? 1 : 0,
+			'rgdi'							=> $this->input->post('checkbox_create_rgdi', true) ? 1 : 0,
+			'lpi'							=> $this->input->post('checkbox_create_lpi', true) ? 1 : 0,
+			'sv'							=> $this->input->post('checkbox_create_sv', true) ? 1 : 0,
+			'gps_account'					=> $this->input->post('checkbox_gps_account', true) ? 1 : 0,
+			'others'						=> $this->input->post('checkbox_others', true) ? 1 : 0,
+			'others_description_acc'		=> $this->input->post('others_text_acc', true),
+			
+		];
+
+		$process = $this->Main_model->UpdateTraccReq($trf_number, $date_need, $complete_details, $selected_companies);
+		$process1 = $this->Main_model->UpdateTRNewAdd($trf_number, $new_add_data);
+		$process2 = $this->Main_model->UpdateTRUpdate($trf_number, $data_update);
+		$process3 = $this->Main_model->UpdateTRAccount($trf_number, $data_account);
+		// print_r($process1);
+		// die();
+
+		if ($process[0] == 1 || $process1[0] == 1 || $process2[0] == 1 || $process3[0] == 1) {
+			$this->session->set_flashdata('success', $process[1]);
+			redirect(base_url()."sys/users/list/tickets/tracc_request");
+		} else {
+			$this->session->set_flashdata('error', $process[0]);
+			redirect(base_url()."sys/users/list/tickets/tracc_request");
+		}
+	}
+
 	public function update_status_msrf_assign() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -1807,25 +1867,86 @@ class Main extends CI_Controller {
 	}
 
 	//Acknowledging the form as resolved
+	// public function acknowledge_as_resolved() {
+	// 	$this->load->helper('form');
+	// 	$this->load->library('form_validation');
+	// 	$control_number = $this->input->post('control_number', true);
+	// 	if ($this->session->userdata('login_data')){
+	// 		$user_id = $this->session->userdata('login_data')['user_id'];
+	// 		$user_details = $this->Main_model->user_details();
+
+	// 		if ($user_details[0] == "ok"){
+	// 			$sid = $this->session->session_id;
+	// 			$data['user_details'] = $user_details[1];
+
+	// 			$process = $this->Main_model->AcknolwedgeAsResolved($control_number);
+	// 			if ($process[0] == 1){
+	// 				$this->session->set_flashdata('success', $process[1]);
+	// 				redirect(base_url()."sys/users/list/tickets/tracc_concern");
+	// 			} else {
+	// 				$this->session->set_flashdata('error', $process[0]);
+	// 				redirect(base_url()."sys/users/list/tickets/tracc_concern");
+	// 			}
+	// 		} else {
+	// 			$this->session->set_flashdata('error', 'Error fetching user information.');
+	// 			redirect("sys/authentication");
+	// 		}
+	// 	} else {
+	// 		$this->session->set_flashdata('error', 'Error fetching user information');
+	// 		redirect(base_url()."admin/login");
+	// 	}
+	// }
+
 	public function acknowledge_as_resolved() {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
+	
 		$control_number = $this->input->post('control_number', true);
-		if ($this->session->userdata('login_data')){
+		$action = $this->input->post('action', true); // Get the action (edit or acknowledge)
+	
+		if ($this->session->userdata('login_data')) {
 			$user_id = $this->session->userdata('login_data')['user_id'];
 			$user_details = $this->Main_model->user_details();
-
-			if ($user_details[0] == "ok"){
+	
+			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
-				$data['user_details'] = $user_details[1];
-
-				$process = $this->Main_model->AcknolwedgeAsResolved($control_number);
-				if ($process[0] == 1){
-					$this->session->set_flashdata('success', $process[1]);
-					redirect(base_url()."sys/users/list/tickets/tracc_concern");
+	
+				if ($action == 'edit') {
+					// Logic to update fields without closing the ticket
+					$edit_data = [
+						'module_affected' => $this->input->post('module_affected', true),
+						'company' => $this->input->post('company', true),
+						'tcr_details' => $this->input->post('concern', true)
+					];
+	
+					$update_process = $this->Main_model->update_tracc_concern($control_number, $edit_data);
+	
+					if ($update_process[0] == 1) {
+						$this->session->set_flashdata('success', 'Data updated successfully.');
+					} else {
+						$this->session->set_flashdata('error', 'Failed to update data.');
+					}
+	
+					redirect(base_url() . "sys/users/list/tickets/tracc_concern");
+	
+				} elseif ($action == 'acknowledge') {
+					$acknowledge_data = [
+						'ack_as_resolved' => $this->input->post('ack_as_res_by', true),
+						'ack_as_resolved_date' => $this->input->post('ack_as_res_date', true)
+					];
+	
+					$acknowledge_process = $this->Main_model->AcknolwedgeAsResolved($control_number, $acknowledge_data);
+	
+					if ($acknowledge_process[0] == 1) {
+						$this->session->set_flashdata('success', 'Ticket successfully acknowledged as resolved.');
+					} else {
+						$this->session->set_flashdata('error', 'Failed to acknowledge ticket as resolved.');
+					}
+	
+					redirect(base_url() . "sys/users/list/tickets/tracc_concern");
 				} else {
-					$this->session->set_flashdata('error', $process[0]);
-					redirect(base_url()."sys/users/list/tickets/tracc_concern");
+					$this->session->set_flashdata('error', 'Invalid action.');
+					redirect(base_url() . "sys/users/list/tickets/tracc_concern");
 				}
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -1833,67 +1954,68 @@ class Main extends CI_Controller {
 			}
 		} else {
 			$this->session->set_flashdata('error', 'Error fetching user information');
-			redirect(base_url()."admin/login");
+			redirect(base_url() . "admin/login");
 		}
 	}
+	
 
-	// public function acknowledge_as_resolved() {
-	// 	$this->load->helper('form');
-	// 	$this->load->library('form_validation');
+	/* public function acknowledge_as_resolved() {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
 	
-	// 	// Get the posted data
-	// 	$control_number = $this->input->post('control_number', true);
-	// 	$module_affected = $this->input->post('module_affected', true);
-	// 	$company = $this->input->post('company', true);
-	// 	$concern = $this->input->post('concern', true);
-	// 	$app_stat = $this->input->post('app_stat', true); // Current approval status
+		// Get the posted data
+		$control_number = $this->input->post('control_number', true);
+		$module_affected = $this->input->post('module_affected', true);
+		$company = $this->input->post('company', true);
+		$concern = $this->input->post('concern', true);
+		$app_stat = $this->input->post('app_stat', true); // Current approval status
 	
-	// 	if ($this->session->userdata('login_data')) {
-	// 		$user_id = $this->session->userdata('login_data')['user_id'];
-	// 		$user_details = $this->Main_model->user_details();
+		if ($this->session->userdata('login_data')) {
+			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_details = $this->Main_model->user_details();
 			
-	// 		if ($user_details[0] == "ok") {
-	// 			$sid = $this->session->session_id;
-	// 			$data['user_details'] = $user_details[1];
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
 				
-	// 			// Check if the app_stat is 'Pending'
-	// 			if ($app_stat == 'Pending' ) {
-	// 				// Update editable fields
-	// 				$update_process = $this->Main_model->update_tracc_concern($control_number, $module_affected, $company, $concern);
+				// Check if the app_stat is 'Pending'
+				if ($app_stat == 'Pending' ) {
+					// Update editable fields
+					$update_process = $this->Main_model->update_tracc_concern($control_number, $module_affected, $company, $concern);
 					
-	// 				if (!$update_process) {
-	// 					// Handle update error
-	// 					$this->session->set_flashdata('error', 'Error updating the ticket.');
-	// 					redirect(base_url() . "sys/users/list/tickets/tracc_concern");
-	// 				}
-	// 			}
+					if (!$update_process) {
+						// Handle update error
+						$this->session->set_flashdata('error', 'Error updating the ticket.');
+						redirect(base_url() . "sys/users/list/tickets/tracc_concern");
+					}
+				}
 
-	// 			$ack_as_res_by = $this->input->post('ack_as_res_by', true); // Missing variable added
-	// 			$ack_as_res_date = $this->input->post('ack_as_res_date', true); // Missing variable added
+				$ack_as_res_by = $this->input->post('ack_as_res_by', true); // Missing variable added
+				$ack_as_res_date = $this->input->post('ack_as_res_date', true); // Missing variable added
 	
-	// 			// If ack_as_res_by and ack_as_res_date are filled, update the status to 'Resolved'
-	// 			if (!empty($ack_as_res_by) && !empty($ack_as_res_date)) {
-	// 				$resolve_process = $this->Main_model->AcknolwedgeAsResolved($control_number);
+				// If ack_as_res_by and ack_as_res_date are filled, update the status to 'Resolved'
+				if (!empty($ack_as_res_by) && !empty($ack_as_res_date)) {
+					$resolve_process = $this->Main_model->AcknolwedgeAsResolved($control_number);
 	
-	// 				if ($resolve_process[0] == 1) {
-	// 					$this->session->set_flashdata('success', $resolve_process[1]);
-	// 				} else {
-	// 					$this->session->set_flashdata('error', $resolve_process[0]);
-	// 				}
-	// 			}
+					if ($resolve_process[0] == 1) {
+						$this->session->set_flashdata('success', $resolve_process[1]);
+					} else {
+						$this->session->set_flashdata('error', $resolve_process[0]);
+					}
+				}
 	
-	// 			// Redirect after processing
-	// 			redirect(base_url() . "sys/users/list/tickets/tracc_concern");
+				// Redirect after processing
+				redirect(base_url() . "sys/users/list/tickets/tracc_concern");
 	
-	// 		} else {
-	// 			$this->session->set_flashdata('error', 'Error fetching user information.');
-	// 			redirect("sys/authentication");
-	// 		}
-	// 	} else {
-	// 		$this->session->set_flashdata('error', 'Session expired. Please login again.');
-	// 		redirect("sys/authentication");
-	// 	}
-	// }
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	} */
 
 	public function SendEmail() {
 		// function email
@@ -1955,6 +2077,7 @@ class Main extends CI_Controller {
 	}
 
 	//checking the size of storage for upload files
+	// DONE for admindashboardcontroller
 	public function check_upload_size(){
 		$dirs = ['uploads/tracc_concern', 'uploads/msrf', 'uploads/tracc_request']; // Directories to check
 		$total_size = 0;
@@ -2601,6 +2724,7 @@ class Main extends CI_Controller {
 
 	// JQuery TABS for Supplier Request Form
 	public function sup_req_form_JTabs(){
+		$user_role = $this->session->userdata('login_data')['role'];
 		$this->load->model('Main_model');
 		$tickets = $this->Main_model->get_ticket_counts_supplier_req();
 
@@ -2614,55 +2738,56 @@ class Main extends CI_Controller {
 				$checkbox_data = $this->Main_model->get_ticket_checkbox_supplier_req($ticket['recid']); 
 				
 				$formData = [
-					'recid' => $ticket['recid'],
-					'ticket_id' => $ticket['ticket_id'],
-					'requested_by' => $ticket['requested_by'],
-					'companies' => $companies,
-					'date' => $ticket['date'],
-					'supplier_code' => $ticket['supplier_code'],
-					'supplier_account_group' => $ticket['supplier_account_group'],
-					'supplier_name' => $ticket['supplier_name'],
-					'country_origin' => $ticket['country_origin'],
-					'supplier_address' => $ticket['supplier_address'],
-					'office_tel' => $ticket['office_tel'],
-					'zip_code' => $ticket['zip_code'],
-					'contact_person' => $ticket['contact_person'],
-					'terms' => $ticket['terms'],
-					'tin_no' => $ticket['tin_no'],
-					'pricelist' => $ticket['pricelist'],
-					'ap_account' => $ticket['ap_account'],
-					'ewt' => $ticket['ewt'],
-					'advance_account' => $ticket['advance_account'],
-					'vat' => $ticket['vat'],
-					'non_vat' => $ticket['non_vat'],
-					'payee_1' => $ticket['payee_1'],
-					'payee_2' => $ticket['payee_2'],
-					'payee_3' => $ticket['payee_3'],
-					'driver_name' => $ticket['driver_name'],
-					'driver_contact_no' => $ticket['driver_contact_no'],
-					'driver_fleet' => $ticket['driver_fleet'],
-					'driver_plate_no' => $ticket['driver_plate_no'],
-					'helper_name' => $ticket['helper_name'],
-					'helper_contact_no' => $ticket['helper_contact_no'],
-					'helper_rate_card' => $ticket['helper_rate_card'],
-
-					'checkbox_data' => $checkbox_data,
+					'recid' 						=> $ticket['recid'],
+					'ticket_id' 					=> $ticket['ticket_id'],
+					'requested_by' 					=> $ticket['requested_by'],
+					'companies' 					=> $companies,
+					'date' 							=> $ticket['date'],
+					'supplier_code' 				=> $ticket['supplier_code'],
+					'supplier_account_group' 		=> $ticket['supplier_account_group'],
+					'supplier_name' 				=> $ticket['supplier_name'],
+					'country_origin' 				=> $ticket['country_origin'],
+					'supplier_address' 				=> $ticket['supplier_address'],
+					'office_tel'	 				=> $ticket['office_tel'],
+					'zip_code' 						=> $ticket['zip_code'],
+					'contact_person' 				=> $ticket['contact_person'],
+					'terms' 						=> $ticket['terms'],
+					'tin_no' 						=> $ticket['tin_no'],
+					'pricelist' 					=> $ticket['pricelist'],
+					'ap_account' 					=> $ticket['ap_account'],
+					'ewt' 							=> $ticket['ewt'],
+					'advance_account' 				=> $ticket['advance_account'],
+					'vat' 							=> $ticket['vat'],
+					'non_vat' 						=> $ticket['non_vat'],
+					'payee_1' 						=> $ticket['payee_1'],
+					'payee_2' 						=> $ticket['payee_2'],
+					'payee_3' 						=> $ticket['payee_3'],
+					'driver_name' 					=> $ticket['driver_name'],
+					'driver_contact_no' 			=> $ticket['driver_contact_no'],
+					'driver_fleet' 					=> $ticket['driver_fleet'],
+					'driver_plate_no' 				=> $ticket['driver_plate_no'],
+					'helper_name' 					=> $ticket['helper_name'],
+					'helper_contact_no' 			=> $ticket['helper_contact_no'],
+					'helper_rate_card'		 		=> $ticket['helper_rate_card'],
+					'approved_by'					=> $ticket['approved_by'],
+					'approved_date'  				=> $ticket['approved_date'],
+					'checkbox_data' 				=> $checkbox_data,
 				];
 				
 				$formHtml = $this->load->view('admin/trf_supplier_request_form_admin', $formData, TRUE);
 
 				$data[] = [
-					'tab_id' => "tabs-" . $ticket['ticket_id'],
-					'ticket_id' => $ticket['ticket_id'],
-					'count' => $ticket['count'],
-					'recid' => $ticket['recid'],
-					'form_html' => $formHtml,
+					'tab_id' 						=> "tabs-" . $ticket['ticket_id'],
+					'ticket_id' 					=> $ticket['ticket_id'],
+					'count' 						=> $ticket['count'],
+					'recid' 						=> $ticket['recid'],
+					'form_html' 					=> $formHtml,
 				];
 			}
 
-			echo json_encode(['message' => 'success', 'data' => $data]);
+			echo json_encode(['message' => 'success', 'data' => $data, 'user_role' => $user_role]);
 		} else {
-			echo json_encode(['message' => 'failed', 'data' => []]);
+			echo json_encode(['message' => 'failed', 'data' => [], 'user_role' => $user_role]);
 		}
 	}
 
@@ -2698,6 +2823,7 @@ class Main extends CI_Controller {
 
 	// JQuery TABS for Employee Request Form
 	public function emp_req_form_JTabs(){
+		$user_role = $this->session->userdata('login_data')['role'];
 		$this->load->model('Main_model');
 		$tickets = $this->Main_model->get_ticket_counts_employee_req();
 
@@ -2707,37 +2833,39 @@ class Main extends CI_Controller {
 			foreach ($tickets as $ticket) {
 				
 				$formData = [
-					'recid' => $ticket['recid'],
-					'ticket_id' => $ticket['ticket_id'],
-					'requested_by' => $ticket['requested_by'],
-					'name' => $ticket['name'],
-					'department' => $ticket['department'],
-					'department_desc' => $ticket['department_desc'],
-					'position' => $ticket['position'],
-					'address' => $ticket['address'],
-					'tel_no_mob_no' => $ticket['tel_no_mob_no'],
-					'tin_no' => $ticket['tin_no'],
-					'contact_person' => $ticket['contact_person'],
-					'created_at' => $ticket['created_at'],
+					'recid' 					=> $ticket['recid'],
+					'ticket_id' 				=> $ticket['ticket_id'],
+					'requested_by' 				=> $ticket['requested_by'],
+					'name' 						=> $ticket['name'],
+					'department' 				=> $ticket['department'],
+					'department_desc' 			=> $ticket['department_desc'],
+					'position' 					=> $ticket['position'],
+					'address' 					=> $ticket['address'],
+					'tel_no_mob_no' 			=> $ticket['tel_no_mob_no'],
+					'tin_no' 					=> $ticket['tin_no'],
+					'contact_person' 			=> $ticket['contact_person'],
+					'created_at' 				=> $ticket['created_at'],
+					'approved_by' 				=> $ticket['approved_by'],
+					'approved_date' 			=> $ticket['approved_date'],
 				];
 				
 				$formHtml = $this->load->view('admin/trf_employee_request_form_admin', $formData, TRUE);
-				print_r($formData);
-				die();
+				// print_r($formData);
+				// die();
 			
 
 				$data[] = [
-					'tab_id' => "tabs-" . $ticket['ticket_id'],
-					'ticket_id' => $ticket['ticket_id'],
-					'count' => $ticket['count'],
-					'recid' => $ticket['recid'],
-					'form_html' => $formHtml,
+					'tab_id' 					=> "tabs-" . $ticket['ticket_id'],
+					'ticket_id' 				=> $ticket['ticket_id'],
+					'count' 					=> $ticket['count'],
+					'recid' 					=> $ticket['recid'],
+					'form_html' 				=> $formHtml,
 				];
 			}
 
-			echo json_encode(['message' => 'success', 'data' => $data]);
+			echo json_encode(['message' => 'success', 'data' => $data, 'user_role' => $user_role]);
 		} else {
-			echo json_encode(['message' => 'failed', 'data' => []]);
+			echo json_encode(['message' => 'failed', 'data' => [], 'user_role' => $user_role]);
 		}
 	}
 
@@ -2773,6 +2901,7 @@ class Main extends CI_Controller {
 
 	// JQuery TABS for Customer Request Form
 	public function cus_req_form_JTabs(){
+		$user_role = $this->session->userdata('login_data')['role'];
 		$this->load->model('Main_model');
 		$tickets = $this->Main_model->get_ticket_counts_customer_req();
 
@@ -2786,51 +2915,50 @@ class Main extends CI_Controller {
 				$checkbox_data = $this->Main_model->get_ticket_checkbox_customer_req($ticket['recid']); 
 
 				$formData = [
-					'recid' => $ticket['recid'],
-					'ticket_id' => $ticket['ticket_id'],
-					'requested_by' => $ticket['requested_by'],
-					'companies' => $companies,
-					'date' => $ticket['date'],
-					'customer_code' => $ticket['customer_code'],
-					'customer_name' => $ticket['customer_name'],
-					'tin_no' => $ticket['tin_no'],
-					'terms' => $ticket['terms'],
-					'customer_address' => $ticket['customer_address'],
-					'contact_person' => $ticket['contact_person'],
-					'office_tel_no' => $ticket['office_tel_no'],
-					'pricelist' => $ticket['pricelist'],
-					'payment_group' => $ticket['payment_group'],
-					'contact_no' => $ticket['contact_no'],
-					'territory' => $ticket['territory'],
-					'salesman' => $ticket['salesman'], 
-					'business_style' => $ticket['business_style'], 
-					'email' => $ticket['email'],
-					'shipping_code' => $ticket['shipping_code'],
-					'route_code' => $ticket['route_code'],
-					'customer_shipping_address' => $ticket['customer_shipping_address'],
-					'landmark' => $ticket['landmark'],
-					'window_time_start' => $ticket['window_time_start'],
-					'window_time_end' => $ticket['window_time_end'],
-					'special_instruction' => $ticket['special_instruction'],
-					'created_at' => $ticket['created_at'],
-					
-					'checkbox_data' => $checkbox_data,
+					'recid' 						=> $ticket['recid'],
+					'ticket_id'						=> $ticket['ticket_id'],
+					'requested_by' 					=> $ticket['requested_by'],
+					'companies' 					=> $companies,
+					'date' 							=> $ticket['date'],
+					'customer_code' 				=> $ticket['customer_code'],
+					'customer_name' 				=> $ticket['customer_name'],
+					'tin_no' 						=> $ticket['tin_no'],
+					'terms' 						=> $ticket['terms'],
+					'customer_address' 				=> $ticket['customer_address'],
+					'contact_person' 				=> $ticket['contact_person'],
+					'office_tel_no' 				=> $ticket['office_tel_no'],
+					'pricelist' 					=> $ticket['pricelist'],
+					'payment_group' 				=> $ticket['payment_group'],
+					'contact_no' 					=> $ticket['contact_no'],
+					'territory'			 			=> $ticket['territory'],
+					'salesman' 						=> $ticket['salesman'], 
+					'business_style' 				=> $ticket['business_style'], 
+					'email' 						=> $ticket['email'],
+					'shipping_code' 				=> $ticket['shipping_code'],
+					'route_code' 					=> $ticket['route_code'],
+					'customer_shipping_address' 	=> $ticket['customer_shipping_address'],
+					'landmark' 						=> $ticket['landmark'],
+					'window_time_start' 			=> $ticket['window_time_start'],
+					'window_time_end' 				=> $ticket['window_time_end'],
+					'special_instruction' 			=> $ticket['special_instruction'],
+					'created_at' 					=> $ticket['created_at'],
+					'approved_by' 					=> $ticket['approved_by'],
+					'approved_date' 				=> $ticket['approved_date'],
+					'checkbox_data'		 			=> $checkbox_data,
 				];
 
 				$formHtml = $this->load->view('admin/trf_customer_request_form_admin', $formData, TRUE);			
 				$data[] = [
-					'tab_id' => "tabs-" . $ticket['ticket_id'],
-					'ticket_id' => $ticket['ticket_id'],
-					'count' => $ticket['count'],
-					'recid' => $ticket['recid'],
-					'form_html' => $formHtml,
+					'tab_id' 						=> "tabs-" . $ticket['ticket_id'],
+					'ticket_id' 					=> $ticket['ticket_id'],
+					'count' 						=> $ticket['count'],
+					'recid'							=> $ticket['recid'],
+					'form_html'	 					=> $formHtml,
 				];  	
 			}
-			// print_r($formHtml);
-			// die();
-			echo json_encode(['message' => 'success', 'data' => $data]);
+			echo json_encode(['message' => 'success', 'data' => $data, 'user_role' => $user_role]);
 		} else {
-			echo json_encode(['message' => 'failed', 'data' => []]);
+			echo json_encode(['message' => 'failed', 'data' => [], 'user_role' => $user_role]);
 		}
 	}
 
@@ -2866,6 +2994,7 @@ class Main extends CI_Controller {
 
 	// JQuery TABS for Customer Shipping Setup
 	public function cus_ship_setup_JTtabs(){
+		$user_role = $this->session->userdata('login_data')['role'];
 		$this->load->model('Main_model');
 		$tickets = $this->Main_model->get_ticket_counts_customer_ship_setup();
 
@@ -2877,39 +3006,41 @@ class Main extends CI_Controller {
 				$companies = explode(',', $ticket['company']);
 
 				$formData = [
-					'recid' => $ticket['recid'],
-					'ticket_id' => $ticket['ticket_id'],
-					'requested_by' => $ticket['requested_by'],
-					'companies' => $companies,
-					'shipping_code' => $ticket['shipping_code'],
-					'route_code' => $ticket['route_code'],
-					'customer_address' => $ticket['customer_address'],
-					'landmark' => $ticket['landmark'],
-					'window_time_start' => $ticket['window_time_start'],
-					'window_time_end' => $ticket['window_time_end'],
-					'special_instruction' => $ticket['special_instruction'],
-					'monday' => $ticket['monday'],
-					'tuesday' => $ticket['tuesday'],
-					'wednesday' => $ticket['wednesday'],
-					'thursday' => $ticket['thursday'],
-					'friday' => $ticket['friday'],
-					'saturday' => $ticket['saturday'],
-					'sunday' => $ticket['sunday'],
-					'created_at' => $ticket['created_at'],
+					'recid' 					=> $ticket['recid'],
+					'ticket_id' 				=> $ticket['ticket_id'],
+					'requested_by'	 			=> $ticket['requested_by'],
+					'companies' 				=> $companies,
+					'shipping_code' 			=> $ticket['shipping_code'],
+					'route_code' 				=> $ticket['route_code'],
+					'customer_address' 			=> $ticket['customer_address'],
+					'landmark' 					=> $ticket['landmark'],
+					'window_time_start' 		=> $ticket['window_time_start'],
+					'window_time_end' 			=> $ticket['window_time_end'],
+					'special_instruction' 		=> $ticket['special_instruction'],
+					'monday' 					=> $ticket['monday'],
+					'tuesday' 					=> $ticket['tuesday'],
+					'wednesday' 				=> $ticket['wednesday'],
+					'thursday' 					=> $ticket['thursday'],
+					'friday' 					=> $ticket['friday'],
+					'saturday' 					=> $ticket['saturday'],
+					'sunday'					=> $ticket['sunday'],
+					'created_at' 				=> $ticket['created_at'],
+					'approved_by' 				=> $ticket['approved_by'],
+					'approved_date' 			=> $ticket['approved_date'],
 				];
 
 				$formHtml = $this->load->view('admin/trf_customer_shipping_setup_form_admin', $formData, TRUE);			
 				$data[] = [
-					'tab_id' => "tabs-" . $ticket['ticket_id'],
-					'ticket_id' => $ticket['ticket_id'],
-					'count' => $ticket['count'],
-					'recid' => $ticket['recid'],
-					'form_html' => $formHtml,
+					'tab_id' 					=> "tabs-" . $ticket['ticket_id'],
+					'ticket_id' 				=> $ticket['ticket_id'],
+					'count' 					=> $ticket['count'],
+					'recid' 					=> $ticket['recid'],
+					'form_html' 				=> $formHtml,
 				];  	
 			}
-			echo json_encode(['message' => 'success', 'data' => $data]);
+			echo json_encode(['message' => 'success', 'data' => $data, 'user_role' => $user_role]);
 		} else {
-			echo json_encode(['message' => 'failed', 'data' => []]);
+			echo json_encode(['message' => 'failed', 'data' => [], 'user_role' => $user_role]);
 		}
 	}
 
@@ -2945,6 +3076,7 @@ class Main extends CI_Controller {
 
 	// JQuery TABS for Item Request Form 
 	public function item_req_form_JTabs(){
+		$user_role = $this->session->userdata('login_data')['role'];
 		$this->load->model('Main_model');
 		$tickets = $this->Main_model->get_ticket_counts_item_req_form();
 
@@ -2961,59 +3093,61 @@ class Main extends CI_Controller {
 				// print_r($checkbox_data3);
 				// die();
 				$formData = [
-					'recid' => $ticket['recid'],
-					'ticket_id' => $ticket['ticket_id'],
-					'requested_by' => $ticket['requested_by'],
-					'companies' => $companies,
-					'date' => $ticket['date'],
-					'lmi_item_code' => $ticket['lmi_item_code'],
-					'long_description' => $ticket['long_description'],
-					'short_description' => $ticket['short_description'],
-					'item_classification' => $ticket['item_classification'],
-					'item_sub_classification' => $ticket['item_sub_classification'],
-					'department' => $ticket['department'],
-					'merch_category' => $ticket['merch_category'],
-					'brand' => $ticket['brand'],
-					'supplier_code' => $ticket['supplier_code'],
-					'supplier_name' => $ticket['supplier_name'],
-					'class' => $ticket['class'],
-					'tag' => $ticket['tag'],
-					'source' => $ticket['source'],
-					'hs_code' => $ticket['hs_code'],
-					'unit_cost' => $ticket['unit_cost'],
-					'selling_price' => $ticket['selling_price'],
-					'major_item_group' => $ticket['major_item_group'],
-					'item_sub_group' => $ticket['item_sub_group'],
-					'account_type' => $ticket['account_type'],
-					'sales' => $ticket['sales'],
-					'sales_return' => $ticket['sales_return'],
-					'purchases' => $ticket['purchases'],
-					'purchase_return' => $ticket['purchase_return'],
-					'cgs' => $ticket['cgs'],
-					'inventory' => $ticket['inventory'],
-					'sales_disc' => $ticket['sales_disc'],
-					'gl_department' => $ticket['gl_department'],
-					'capacity_per_pallet' => $ticket['capacity_per_pallet'],
-					'created_at' => $ticket['created_at'],
-					'checkbox_data1' => $checkbox_data1,
-					'checkbox_data2' => $checkbox_data2,
-					'checkbox_data3' => $checkbox_data3,
+					'recid' 						=> $ticket['recid'],
+					'ticket_id' 					=> $ticket['ticket_id'],
+					'requested_by' 					=> $ticket['requested_by'],
+					'companies' 					=> $companies,
+					'date' 							=> $ticket['date'],
+					'lmi_item_code' 				=> $ticket['lmi_item_code'],
+					'long_description' 				=> $ticket['long_description'],
+					'short_description' 			=> $ticket['short_description'],
+					'item_classification' 			=> $ticket['item_classification'],
+					'item_sub_classification' 		=> $ticket['item_sub_classification'],
+					'department' 					=> $ticket['department'],
+					'merch_category' 				=> $ticket['merch_category'],
+					'brand' 						=> $ticket['brand'],
+					'supplier_code' 				=> $ticket['supplier_code'],
+					'supplier_name' 				=> $ticket['supplier_name'],
+					'class' 						=> $ticket['class'],
+					'tag' 							=> $ticket['tag'],
+					'source' 						=> $ticket['source'],
+					'hs_code' 						=> $ticket['hs_code'],
+					'unit_cost' 					=> $ticket['unit_cost'],
+					'selling_price' 				=> $ticket['selling_price'],
+					'major_item_group' 				=> $ticket['major_item_group'],
+					'item_sub_group' 				=> $ticket['item_sub_group'],
+					'account_type' 					=> $ticket['account_type'],
+					'sales' 						=> $ticket['sales'],
+					'sales_return' 					=> $ticket['sales_return'],
+					'purchases' 					=> $ticket['purchases'],
+					'purchase_return' 				=> $ticket['purchase_return'],
+					'cgs' 							=> $ticket['cgs'],
+					'inventory' 					=> $ticket['inventory'],
+					'sales_disc' 					=> $ticket['sales_disc'],
+					'gl_department' 				=> $ticket['gl_department'],
+					'capacity_per_pallet' 			=> $ticket['capacity_per_pallet'],
+					'created_at' 					=> $ticket['created_at'],
+					'approved_by' 					=> $ticket['approved_by'],
+					'approved_date' 				=> $ticket['approved_date'],
+					'checkbox_data1' 				=> $checkbox_data1,
+					'checkbox_data2' 				=> $checkbox_data2,
+					'checkbox_data3' 				=> $checkbox_data3,
 				];
 
-				$formHtml = $this->load->view('admin/trf_item_request_form', $formData, TRUE);			
+				$formHtml = $this->load->view('admin/trf_item_request_form_admin', $formData, TRUE);			
 				$data[] = [
-					'tab_id' => "tabs-" . $ticket['ticket_id'],
-					'ticket_id' => $ticket['ticket_id'],
-					'count' => $ticket['count'],
-					'recid' => $ticket['recid'],
-					'form_html' => $formHtml,
+					'tab_id' 						=> "tabs-" . $ticket['ticket_id'],
+					'ticket_id' 					=> $ticket['ticket_id'],
+					'count' 						=> $ticket['count'],
+					'recid' 						=> $ticket['recid'],
+					'form_html' 					=> $formHtml,
 				];  	
 			}
 			// print_r($checkbox_data2);
 			// die();
-			echo json_encode(['message' => 'success', 'data' => $data]);
+			echo json_encode(['message' => 'success', 'data' => $data, 'user_role' => $user_role]);
 		} else {
-			echo json_encode(['message' => 'failed', 'data' => []]);
+			echo json_encode(['message' => 'failed', 'data' => [], 'user_role' => $user_role]);
 		}
 	}
 
@@ -3130,5 +3264,74 @@ class Main extends CI_Controller {
 		];
 
 		$process = $this->Main_model->edit_customer_request_form_pdf($imploded_values, $checkbox_cus_req_form_del);
+	}
+	public function approve_crf(){			
+		$approved_by = $this->input->post('approved_by');
+		$recid = $this->input->post('recid');
+
+		$process = $this->Main_model->approve_crf($approved_by, $recid);
+		
+		if (isset($process[0]) && $process[0] == 1) {
+			$this->session->set_flashdata('success', "It's Approved");
+		} else {
+			$this->session->set_flashdata('error', 'Update failed.');
+		}
+		redirect(base_url()."sys/admin/customer_request_form_pdf");
+	}
+
+	public function approve_css(){
+		$approved_by = $this->input->post('approved_by');
+		$recid = $this->input->post('recid');
+
+		$process = $this->Main_model->approve_css($approved_by, $recid);
+
+		if (isset($process[0]) && $process[0] == 1) {
+			$this->session->set_flashdata('success', "It's Approved");
+		} else {
+			$this->session->set_flashdata('error', 'Update failed.');
+		}
+		redirect(base_url()."sys/admin/customer_shipping_setup_pdf");
+	}
+
+	public function approve_erf(){
+		$approved_by = $this->input->post('approved_by');
+		$recid = $this->input->post('recid');
+
+		$process = $this->Main_model->approve_erf($approved_by, $recid);
+
+		if (isset($process[0]) && $process[0] == 1) {
+			$this->session->set_flashdata('success', "It's Approved");
+		} else {
+			$this->session->set_flashdata('error', 'Update failed.');
+		}
+		redirect(base_url()."sys/admin/employee_request_form_pdf");
+	}
+
+	public function approve_irf(){
+		$approved_by = $this->input->post('approved_by');
+		$recid = $this->input->post('recid');
+
+		$process = $this->Main_model->approve_irf($approved_by, $recid);
+
+		if (isset($process[0]) && $process[0] == 1) {
+			$this->session->set_flashdata('success', "It's Approved");
+		} else {
+			$this->session->set_flashdata('error', 'Update failed.');
+		}
+		redirect(base_url()."sys/admin/item_request_form_pdf");
+	}
+
+	public function approve_srf(){
+		$approved_by = $this->input->post('approved_by');
+		$recid = $this->input->post('recid');
+
+		$process = $this->Main_model->approve_srf($approved_by, $recid);
+
+		if (isset($process[0]) && $process[0] == 1) {
+			$this->session->set_flashdata('success', "It's Approved");
+		} else {
+			$this->session->set_flashdata('error', 'Update failed.');
+		}
+		redirect(base_url()."sys/admin/supplier_request_form_pdf");
 	}
 }

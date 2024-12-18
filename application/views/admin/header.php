@@ -23,8 +23,8 @@
 	<!-- Font Awesome CDN -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-	<script href="<?php echo site_url();?>/assets/toast/jqm.js"></script>
-	<script href="<?php echo site_url();?>/assets/toast/toast.js"></script>
+	<script href="<?= base_url(); ?>/assets/toast/jqm.js"></script>
+	<script href="<?= base_url(); ?>>/assets/toast/toast.js"></script>
 
 	<!-- SweetAlert CSS -->
 	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"> -->
@@ -45,6 +45,8 @@
 	<script src="<?= base_url(); ?>/assets/dist/dist/js/jquery-ui.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
 
+	<!-- for sweetalert in JQuery Tabs -->
+	<link rel="stylesheet" href="<?= base_url(); ?>assets/dist/dist/css/custom-popup.css">
 </head>
 <body class="hold-transition skin-red sidebar-mini">
 	<div class="wrapper">

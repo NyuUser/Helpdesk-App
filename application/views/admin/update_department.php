@@ -17,7 +17,7 @@
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                 </div>
             </div>
-            <form id="updateDepartmentForm" action="<?php echo base_url('Main/department_update/' . $dept_details['recid']) ?>" method="POST">
+            <form id="updateDepartmentForm" action="<?php echo base_url('AdminDeptController/department_update/' . $dept_details['recid']) ?>" method="POST">
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">

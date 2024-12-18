@@ -17,7 +17,7 @@
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                 </div>
             </div>
-            <form id="departmentAddForm" action="<?= site_url('Main/department_add'); ?>" method="POST">
+            <form id="departmentAddForm" action="<?= site_url('AdminDeptController/department_add'); ?>" method="POST">
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">

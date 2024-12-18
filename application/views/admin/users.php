@@ -93,67 +93,61 @@
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="UsersDeleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document" style="
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    height: 100vh; /* Full viewport height */
-    margin: auto; /* Centers the modal horizontally */
-  ">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this Employee?
-      </div>
-      <div class="modal-footer">      
-        <a href="#" id="confirmDeleteBtn" class="btn btn-danger">Delete</a>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
+	<div class="modal-dialog modal-dialog-centered" role="document" style="display: flex; align-items: center; justify-content: center; height: 100vh; margin: auto;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Are you sure you want to delete this Employee?
+			</div>
+			<div class="modal-footer">      
+				<a href="#" id="confirmDeleteBtn" class="btn btn-danger">Delete</a>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 
 <style>
 	/* Popup: Overall container */
-.swal-custom-popup {
-    padding: 20px; /* Adjust padding */
-}
+	.swal-custom-popup {
+		padding: 20px; /* Adjust padding */
+	}
 
-/* Title: Customize font size and weight */
-.swal-custom-title {
-    font-size: 2em; /* Larger title */
-    font-weight: bold; /* Make the title bold */
-}
+	/* Title: Customize font size and weight */
+	.swal-custom-title {
+		font-size: 2em; /* Larger title */
+		font-weight: bold; /* Make the title bold */
+	}
 
-/* Content: Customize font size and line spacing */
-.swal-custom-content {
-    font-size: 5.5em; /* Larger content text */
-    line-height: 1.6; /* Adjust line spacing */
-}
+	/* Content: Customize font size and line spacing */
+	.swal-custom-content {
+		font-size: 5.5em; /* Larger content text */
+		line-height: 1.6; /* Adjust line spacing */
+	}
 
-/* Confirm Button: Customize size and padding */
-.swal-custom-confirm-btn {
-    font-size: 1.6em; /* Larger button text */
-    padding: 10px 20px; /* Adjust padding for the button */
-}
+	/* Confirm Button: Customize size and padding */
+	.swal-custom-confirm-btn {
+		font-size: 1.6em; /* Larger button text */
+		padding: 10px 20px; /* Adjust padding for the button */
+	}
 
-/* Optional: Increase button border radius and background color */
-.swal-custom-confirm-btn, .swal-custom-cancel-btn {
-    border-radius: 8px; /* Make the buttons more rounded */
-    background-color: #007bff; /* Change button color */
-    color: #fff; /* Ensure text is white */
-}
+	/* Optional: Increase button border radius and background color */
+	.swal-custom-confirm-btn, .swal-custom-cancel-btn {
+		border-radius: 8px; /* Make the buttons more rounded */
+		background-color: #007bff; /* Change button color */
+		color: #fff; /* Ensure text is white */
+	}
 
-.swal-custom-confirm-btn:hover, .swal-custom-cancel-btn:hover {
-    background-color: #0056b3; /* Darker color on hover */
-}
+	.swal-custom-confirm-btn:hover, .swal-custom-cancel-btn:hover {
+		background-color: #0056b3; /* Darker color on hover */
+	}
 </style>
 
 <!-- jQuery -->
@@ -164,7 +158,7 @@ $(document).ready(function() {
     $('#UsersDeleteModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var recid = button.data('id');
-        var deleteUrl = "<?= base_url('main/employee_delete/'); ?>" + recid;
+        var deleteUrl = "<?= base_url('AdminUsersController/employee_delete/'); ?>" + recid;
 
         var confirmBtn = $(this).find('#confirmDeleteBtn');
         confirmBtn.off('click').on('click', function(e) {

@@ -147,52 +147,207 @@
 
                                             <hr class="divider">
                                             
-                                            <div class="col-md-12" style="margin-top: 10px; margin-left: 50px;">
+                                            <div class="col-md-12">
+                                                <table class="table" style ="border: none">
+                                                    <thead>
+                                                        <tr>
+                                                            <td colspan="2" class="text-center" style="font-size: 20px; font-weight: bold;">Supplier Group:</td>
+                                                            <td colspan="2" class="text-center" style="width: 100px"></td>
+                                                            <td colspan="2" class="text-center" style="width: 150px"></td>
+                                                            <td colspan="2" class="text-center" style="font-size: 20px; font-weight: bold;">Major Group:</td>
+                                                            <td colspan="2" class="text-center" style="width: 100px"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="2" class="text-start">01 - Local</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" name="local_supplier_grp" id="local_supplier_grp" value="1">
+                                                            </td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">001 - Local Trade Vendors</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_local_trade_ven" id="major_grp_local_trade_ven" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-start">02 - Foreign</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" name="foreign_supplier_grp" id="foreign_supplier_grp" value="1">
+                                                            </td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">002 - Local Non-Trade Vendors</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_local_nontrade_ven" id="major_grp_local_nontrade_ven" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-start"></td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">003 - Foreign Trade Vendors</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_foreign_trade_ven" id="major_grp_foreign_trade_ven" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-center" style="font-size: 20px; font-weight: bold;">Supplier:</td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">004 - Foreign Non-Trade Vendors</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_foreign_nontrade_ven" id="major_grp_foreign_nontrade_ven" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-start">01 - Trade</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" name="supplier_trade" id="supplier_trade" value="1">
+                                                            </td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">005 - Local-Broker/Forwarder</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_local_broker_forwarder" id="major_grp_local_broker_forwarder" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-start">02 - Non-Trade</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" name="supplier_non_trade" id="supplier_non_trade" value="1">
+                                                            </td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">006 - Rental</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_rental" id="major_grp_rental" value="1">
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            <td colspan="2" class="text-start"></td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">007 - Bank</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_bank" id="major_grp_bank" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-center" style="font-size: 20px; font-weight: bold;">Trade Type:</td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">008 - One Time Supplier</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_one_time_supplier" id="major_grp_one_time_supplier" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-start">01 - Goods</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" name="trade_type_goods" id="trade_type_goods" value="1">
+                                                            </td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">009 - Government Offices</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_government_offices" id="major_grp_government_offices" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-start">02 - Services</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" name="trade_type_services" id="trade_type_services" value="1">
+                                                            </td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">010 - Insurance</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_insurance" id="major_grp_insurance" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-start">03 - Goods/Services</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" name="trade_type_GoodsServices" id="trade_type_GoodsServices" value="1">
+                                                            </td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">011 - Employees</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_employees" id="major_grp_employees" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">012 - Sub/Affiliates/Intercompany</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_subs_affiliates" id="major_grp_subs_affiliates" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="2" class="text-center" style="font-size: 20px;"></td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-center"></td>
+                                                            <td colspan="2" class="text-start">013 - Utilities</td>
+                                                            <td colspan="2" class="text-center">
+                                                                <input type="checkbox" class="ms-auto" name="major_grp_utilities" id="major_grp_utilities" value="1">
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                            <!-- <div class="col-md-12" style="margin-top: 10px; margin-left: 50px;">
                                                 <div class="form-group">
                                                     <label for="supplier_group" class="custom-label" style="font-size: 20px;">Supplier Group:</label>
                                                     <div class="d-flex flex-column">
-                                                        <!-- Local Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="local_supplier_grp" class="mb-0 supplier-group-label checkbox-label-sup">01 - Local</label>
                                                             <input type="checkbox" name="local_supplier_grp" id="local_supplier_grp" value="1">
                                                         </div>
-                                                        <!-- Foreign Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="foreign_supplier_grp" class="mb-0 supplier-group-label checkbox-label-sup">02 - Foreign</label>
                                                             <input type="checkbox" name="foreign_supplier_grp" id="foreign_supplier_grp" value="1">
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
-                                            <div class="col-md-12" style="margin-top: 10px; margin-left: 50px;">
+                                            <!-- <div class="col-md-12" style="margin-top: 10px; margin-left: 50px;">
                                                 <div class="form-group">
                                                     <label for="" class="custom-label" style="font-size: 20px;">Supplier:</label>
                                                     <div class="d-flex flex-column">
-                                                        <!-- Local Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="supplier_trade" class="mb-0 supplier-group-label checkbox-label-sup">01 - Trade</label>
                                                             <input type="checkbox" name="supplier_trade" id="supplier_trade" value="1">
                                                         </div>
-                                                        <!-- Foreign Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="supplier_non_trade" class="mb-0 supplier-group-label checkbox-label-sup">02 - Non-Trade</label>
                                                             <input type="checkbox" name="supplier_non_trade" id="supplier_non_trade" value="1">
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
-                                            <div class="col-md-12" style="margin-top: 10px; margin-left: 50px;">
+                                            <!-- <div class="col-md-12" style="margin-top: 10px; margin-left: 50px;">
                                                 <div class="form-group">
                                                     <label for="" class="custom-label" style="font-size: 20px;">Trade Type:</label>
                                                     <div class="d-flex flex-column">
-                                                        <!-- Local Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="trade_type_goods" class="mb-0 supplier-group-label checkbox-label-sup">01 - Goods</label>
                                                             <input type="checkbox" name="trade_type_goods" id="trade_type_goods" value="1">
                                                         </div>
-                                                        <!-- Foreign Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-sup">
                                                             <label for="trade_type_services" class="mb-0 supplier-group-label checkbox-label-sup">02 - Services</label>
                                                             <input type="checkbox" name="trade_type_services" id="trade_type_services" value="1">
@@ -203,19 +358,16 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
-                                            <div class="col-md-12" style="margin-top: -370px; margin-left: 600px;">
+                                            <!-- <div class="col-md-12" style="margin-top: -370px; margin-left: 600px;">
                                                 <div class="form-group">
-                                                    <!-- Align label to the right -->
                                                     <label for="supplier_group" class="custom-label text-end d-block" style="font-size: 20px;">Major Group:</label>
                                                     <div class="d-flex flex-column">
-                                                        <!-- Local Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_local_trade_ven" class="mb-0 major-group-label">001 - Local Trade Vendors</label>
                                                             <input type="checkbox" class="ms-auto" name="major_grp_local_trade_ven" id="major_grp_local_trade_ven" value="1">
                                                         </div>
-                                                        <!-- Foreign Supplier -->
                                                         <div class="d-flex justify-content-between align-items-center custom-checkbox-major-grp">
                                                             <label for="major_grp_local_nontrade_ven" class="mb-0 major-group-label">002 - Local Non-Trade Vendors</label>
                                                             <input type="checkbox" class="ms-auto" name="major_grp_local_nontrade_ven" id="major_grp_local_nontrade_ven" value="1">
@@ -266,7 +418,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             
                                             <div class="col-md-6">
                                                 <div class="form-group">

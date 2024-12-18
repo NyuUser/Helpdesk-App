@@ -131,14 +131,14 @@
 			                    				</div>                                               
 			                    			</div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="display: none;">
                                                 <div class="form-group">
                                                     <label>Requested_by</label>
                                                     <input type="text" name="name" value="<?= $trf['requested_by'] ?>" class="form-control select2" readonly>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="display: none;">
                                                 <div class="form-group">
                                                     <label>Date Requested</label>
                                                     <input type="date" name="date_requested" id="date_requested" class="form-control select2" value="<?= $trf['date_requested'] ?>" style="width: 100%;" readonly>
@@ -367,6 +367,20 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Acknowledge By</label>
+                                                    <input type="text" name="acknowledge_by" id="acknowledge_by" class="form-control" value="<?= $trf['acknowledge_by']; ?>" style="width: 100%;" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Acknowledge By/Date</label>
+                                                    <input type="date" name="acknowledge_by_date" id="acknowledge_by_date" class="form-control select2" value="<?= $trf['acknowledge_by_date']; ?>" style="width: 100%;" readonly>
+                                                </div>
+                                            </div>
+
                                             <div class="col-md-12">
                                                 <div class="form-group">
 			                    					<label>Priority</label>
@@ -439,7 +453,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <!-- <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Acknowledge by <span style = "color:red;">*</span></label>
                                                     <select class="form-control select2" name="acknowledge_by" id="acknowledge_by" <?= $is_disabled?>>
@@ -458,7 +472,7 @@
                                                     <label>Acknowledge by Date <span style = "color:red;">*</span></label>
                                                     <input type="date" name="ack_by_date" id="ack_by_date" class="form-control select2" value="<?= $trf['acknowledge_by_date']; ?>" style="width: 100%;" <?= $is_disabled?>>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             
                                             <div class="col-md-12">
                                                 <div class="form-group">

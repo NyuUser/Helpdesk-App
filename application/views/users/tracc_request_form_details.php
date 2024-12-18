@@ -1,3 +1,40 @@
+<?php 
+    $sess_login_data = $this->session->userdata('login_data');
+    $role = $sess_login_data['role'];
+    $department_id = $sess_login_data['dept_id'];
+    // print_r($sess_login_data);
+    $disabled = "";
+    $readonly = "";
+    $btn_label = "Submit Ticket";
+    if ($role === "L1") {
+        $department_head_status = $trf['approval_status'];
+        
+        $status_trf = $trf['status'];
+        // print_r($status_trf);
+        // die();
+
+        if(($status_trf === "In Progress" || $status_trf === 'Approved')) {
+            // echo "try";
+            // die();
+            $disabled = "disabled";
+            $readonly = "readonly";
+            $btn_label = "Update Ticket";
+        } else {
+            $disabled = "";
+            $readonly = "";
+        }
+    }
+    // if($role === "L1" && $department_id === "1"){
+    //     $department_status = $msrf['approval_status'];
+    //         if($department_status === "Rejected" || $department_status === "Returned", || $department_status === "Approved"){
+    //             $disabled = "disabled";
+    //         }
+    // }else{
+    //     $disabled = "";
+    // }
+    
+?>
+
 <style>
     .custom-checkbox {
         display: inline-flex;
@@ -123,7 +160,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/'); ?>" method="POST">
+                                        <form action="<?= site_url('Main/update_status_tracc_request'); ?>" method="POST">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>TRF#</label>
@@ -157,26 +194,26 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
 			                                        <label>Date Needed</label>
-			                                        <input type="date" name="date_need" id="date_need" value="<?= $trf['date_needed']; ?>" class="form-control select2" style="width: 100%;" readonly>
+			                                        <input type="date" name="date_need" id="date_need" value="<?= $trf['date_needed']; ?>" class="form-control select2" style="width: 100%;" <?=$readonly?>>
 			                                    </div>
                                             </div>
 
                                             <div class="col-md-12 text-center">
                                                 <div class="form-group d-flex justify-content-center">
                                                     <div class="checkbox-inline custom-checkbox">
-                                                        <input type="checkbox"  name="comp_checkbox_value[]" id="checkbox_lmi" value="LMI" <?php echo (in_array('LMI', $selected_companies)) ? 'checked' : ''; ?>>
+                                                        <input type="checkbox"  name="comp_checkbox_value[]" id="checkbox_lmi" value="LMI" <?php echo (in_array('LMI', $selected_companies)) ? 'checked' : ''; ?> <?=$disabled?>>
                                                         <label for="checkbox_lmi" class="checkbox-label">LMI</label>
                                                     </div>
                                                     <div class="checkbox-inline custom-checkbox">
-                                                        <input type="checkbox" name="comp_checkbox_value[]" id="checkbox_rgdi" value="RGDI" <?php echo (in_array('RGDI', $selected_companies)) ? 'checked' : ''; ?>>
+                                                        <input type="checkbox" name="comp_checkbox_value[]" id="checkbox_rgdi" value="RGDI" <?php echo (in_array('RGDI', $selected_companies)) ? 'checked' : ''; ?> <?=$disabled?>>
                                                         <label for="checkbox_rgdi" class="checkbox-label">RGDI</label>
                                                     </div>
                                                     <div class="checkbox-inline custom-checkbox">
-                                                        <input type="checkbox" name="comp_checkbox_value[]" id="checkbox_lpi" value="LPI" <?php echo (in_array('LPI', $selected_companies)) ? 'checked' : ''; ?>>
+                                                        <input type="checkbox" name="comp_checkbox_value[]" id="checkbox_lpi" value="LPI" <?php echo (in_array('LPI', $selected_companies)) ? 'checked' : ''; ?> <?=$disabled?>>
                                                         <label for="checkbox_lpi" class="checkbox-label">LPI</label>
                                                     </div>
                                                     <div class="checkbox-inline custom-checkbox">
-                                                        <input type="checkbox" name="comp_checkbox_value[]" id="checkbox_sv" value="SV" <?php echo (in_array('SV', $selected_companies)) ? 'checked' : ''; ?>>
+                                                        <input type="checkbox" name="comp_checkbox_value[]" id="checkbox_sv" value="SV" <?php echo (in_array('SV', $selected_companies)) ? 'checked' : ''; ?> <?=$disabled?>>
                                                         <label for="checkbox_sv" class="checkbox-label">SV</label>
                                                     </div>
                                                 </div>
@@ -196,38 +233,38 @@
                                                     <div class="form-group d-flex flex-column align-items-center" style="margin-left: 80px;">
                                                         <label for="" style="font-size: 21px;">New/Add</label>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_item" id="checkbox_item" <?php echo isset($checkbox_data_newadd['item']) && $checkbox_data_newadd['item'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_item" id="checkbox_item" <?php echo isset($checkbox_data_newadd['item']) && $checkbox_data_newadd['item'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_item">Item</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_customer" id="checkbox_customer" <?php echo isset($checkbox_data_newadd['customer']) && $checkbox_data_newadd['customer'] == 1 ? 'checked' : ''; ?>> 
+                                                            <input type="checkbox" name="checkbox_customer" id="checkbox_customer" <?php echo isset($checkbox_data_newadd['customer']) && $checkbox_data_newadd['customer'] == 1 ? 'checked' : ''; ?> <?=$disabled?>> 
                                                             <label for="checkbox_customer">Customer</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_supplier" id="checkbox_supplier" <?php echo isset($checkbox_data_newadd['supplier']) && $checkbox_data_newadd['supplier'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_supplier" id="checkbox_supplier" <?php echo isset($checkbox_data_newadd['supplier']) && $checkbox_data_newadd['supplier'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_supplier">Supplier</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_whs" id="checkbox_whs" <?php echo isset($checkbox_data_newadd['warehouse']) && $checkbox_data_newadd['warehouse'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_whs" id="checkbox_whs" <?php echo isset($checkbox_data_newadd['warehouse']) && $checkbox_data_newadd['warehouse'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_whs">Warehouse</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_bin" id="checkbox_bin" <?php echo isset($checkbox_data_newadd['bin_number']) && $checkbox_data_newadd['bin_number'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_bin" id="checkbox_bin" <?php echo isset($checkbox_data_newadd['bin_number']) && $checkbox_data_newadd['bin_number'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_bin">Bin No.</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_cus_ship_setup" id="checkbox_cus_ship_setup" <?php echo isset($checkbox_data_newadd['customer_shipping_setup']) && $checkbox_data_newadd['customer_shipping_setup'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_cus_ship_setup" id="checkbox_cus_ship_setup" <?php echo isset($checkbox_data_newadd['customer_shipping_setup']) && $checkbox_data_newadd['customer_shipping_setup'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_cus_ship_setup">Customer Shipping Setup</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_employee_req_form" id="checkbox_employee_req_form" <?php echo isset($checkbox_data_newadd['employee_request_form']) && $checkbox_data_newadd['employee_request_form'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_employee_req_form" id="checkbox_employee_req_form" <?php echo isset($checkbox_data_newadd['employee_request_form']) && $checkbox_data_newadd['employee_request_form'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_employee_req_form">Employee Request Form</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2 d-flex align-items-center">
                                                             <input type="checkbox" name="checkbox_others_newadd" id="checkbox_others_newadd" <?php echo isset($checkbox_data_newadd['others']) && $checkbox_data_newadd['others'] == 1 ? 'checked' : ''; ?>>
                                                             <label for="checkbox_others_newadd">Others</label><br>
 
-                                                            <input type="text" name="others_text_newadd" id="others_text_newadd" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_data_newadd['others_description_add'] ?>">
+                                                            <input type="text" name="others_text_newadd" id="others_text_newadd" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_data_newadd['others_description_add'] ?>" <?=$disabled?>>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -236,34 +273,34 @@
                                                     <div class="form-group d-flex flex-column align-items-center">
                                                         <label for="" style="font-size: 21px;">Update</label>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_system_date_lock" id="checkbox_system_date_lock" <?php echo isset($checkbox_data_update['system_date_lock']) && $checkbox_data_update['system_date_lock'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_system_date_lock" id="checkbox_system_date_lock" <?php echo isset($checkbox_data_update['system_date_lock']) && $checkbox_data_update['system_date_lock'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_system_date_lock">System Date Lock</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_user_file_access" id="checkbox_user_file_access" <?php echo isset($checkbox_data_update['user_file_access']) && $checkbox_data_update['user_file_access'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_user_file_access" id="checkbox_user_file_access" <?php echo isset($checkbox_data_update['user_file_access']) && $checkbox_data_update['user_file_access'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_user_file_access">User File Access</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_item_dets" id="checkbox_item_dets" <?php echo isset($checkbox_data_update['item_details']) && $checkbox_data_update['item_details'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_item_dets" id="checkbox_item_dets" <?php echo isset($checkbox_data_update['item_details']) && $checkbox_data_update['item_details'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_item_dets">Item Details</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_customer_dets" id="checkbox_customer_dets" <?php echo isset($checkbox_data_update['customer_details']) && $checkbox_data_update['customer_details'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_customer_dets" id="checkbox_customer_dets" <?php echo isset($checkbox_data_update['customer_details']) && $checkbox_data_update['customer_details'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_customer_dets">Customer Details</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_supplier_dets" id="checkbox_supplier_dets" <?php echo isset($checkbox_data_update['supplier_details']) && $checkbox_data_update['supplier_details'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_supplier_dets" id="checkbox_supplier_dets" <?php echo isset($checkbox_data_update['supplier_details']) && $checkbox_data_update['supplier_details'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_supplier_dets">Supplier Details</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_employee_dets" id="checkbox_employee_dets" <?php echo isset($checkbox_data_update['employee_details']) && $checkbox_data_update['employee_details'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_employee_dets" id="checkbox_employee_dets" <?php echo isset($checkbox_data_update['employee_details']) && $checkbox_data_update['employee_details'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_employee_dets">Employee Details</label>
                                                         </div>
                                                         <div class="circle-checkbox mb-2 d-flex align-items-center">
                                                             <input type="checkbox" name="checkbox_others_update" id="checkbox_others_update" <?php echo isset($checkbox_data_update['others']) && $checkbox_data_update['others'] == 1 ? 'checked' : ''; ?>>
                                                             <label for="checkbox_others_update">Others</label><br>
 
-                                                            <input type="text" name="others_text_update" id="others_text_update" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_data_update['others_description_update'] ?>">
+                                                            <input type="text" name="others_text_update" id="others_text_update" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_data_update['others_description_update'] ?>" <?=$disabled?>>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -271,7 +308,7 @@
                                                 <div class="col-md-4 text-left" style="margin-left: -250px;">
                                                     <div class="form-group d-flex flex-column align-items-start">
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_tracc_orien" id="checkbox_tracc_orien" <?php echo isset($checkbox_data_account['tracc_orientation']) && $checkbox_data_account['tracc_orientation'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_tracc_orien" id="checkbox_tracc_orien" <?php echo isset($checkbox_data_account['tracc_orientation']) && $checkbox_data_account['tracc_orientation'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_tracc_orien">Tracc Orientation</label>
                                                         </div>
                                                         <label for="" style="font-size: 21px;">Create TRACC Account</label>
@@ -279,30 +316,30 @@
                                                         <!-- Use CSS Grid for precise alignment -->
                                                         <div class="d-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; width: 100%;">
                                                             <div class="circle-checkbox mb-2">
-                                                                <input type="checkbox" name="checkbox_create_lmi" id="checkbox_create_lmi" <?php echo isset($checkbox_data_account['lmi']) && $checkbox_data_account['lmi'] == 1 ? 'checked' : ''; ?>>
+                                                                <input type="checkbox" name="checkbox_create_lmi" id="checkbox_create_lmi" <?php echo isset($checkbox_data_account['lmi']) && $checkbox_data_account['lmi'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                                 <label for="checkbox_create_lmi">LMI</label>
                                                             </div>
                                                             <div class="circle-checkbox mb-2">
-                                                                <input type="checkbox" name="checkbox_create_lpi" id="checkbox_create_lpi" <?php echo isset($checkbox_data_account['lpi']) && $checkbox_data_account['lpi'] == 1 ? 'checked' : ''; ?>>
+                                                                <input type="checkbox" name="checkbox_create_lpi" id="checkbox_create_lpi" <?php echo isset($checkbox_data_account['lpi']) && $checkbox_data_account['lpi'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                                 <label for="checkbox_create_lpi">LPI</label>
                                                             </div>
                                                             <div class="circle-checkbox mb-2">
-                                                                <input type="checkbox" name="checkbox_create_rgdi" id="checkbox_create_rgdi" <?php echo isset($checkbox_data_account['rgdi']) && $checkbox_data_account['rgdi'] == 1 ? 'checked' : ''; ?>>
+                                                                <input type="checkbox" name="checkbox_create_rgdi" id="checkbox_create_rgdi" <?php echo isset($checkbox_data_account['rgdi']) && $checkbox_data_account['rgdi'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                                 <label for="checkbox_create_rgdi">RGDI</label>
                                                             </div>
                                                             <div class="circle-checkbox mb-2">
-                                                                <input type="checkbox" name="checkbox_create_sv" id="checkbox_create_sv" <?php echo isset($checkbox_data_account['sv']) && $checkbox_data_account['sv'] == 1 ? 'checked' : ''; ?>> 
+                                                                <input type="checkbox" name="checkbox_create_sv" id="checkbox_create_sv" <?php echo isset($checkbox_data_account['sv']) && $checkbox_data_account['sv'] == 1 ? 'checked' : ''; ?> <?=$disabled?>> 
                                                                 <label for="checkbox_create_sv">SV</label>
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="circle-checkbox mb-2">
-                                                            <input type="checkbox" name="checkbox_gps_account" id="checkbox_gps_account" <?php echo isset($checkbox_data_account['gps_account']) && $checkbox_data_account['gps_account'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_gps_account" id="checkbox_gps_account" <?php echo isset($checkbox_data_account['gps_account']) && $checkbox_data_account['gps_account'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_gps_account">GPS Account</label>
                                                         </div>
                                                         
                                                         <div class="circle-checkbox mb-2 d-flex align-items-center">
-                                                            <input type="checkbox" name="checkbox_others" id="checkbox_others"  <?php echo isset($checkbox_data_account['others']) && $checkbox_data_account['others'] == 1 ? 'checked' : ''; ?>>
+                                                            <input type="checkbox" name="checkbox_others" id="checkbox_others"  <?php echo isset($checkbox_data_account['others']) && $checkbox_data_account['others'] == 1 ? 'checked' : ''; ?> <?=$disabled?>>
                                                             <label for="checkbox_others">Others</label><br>
 
                                                             <input type="text" name="others_text_acc" id="others_text_acc" placeholder="" style="border: none; border-bottom: 1px solid #000; background: none; min-width: 150px;" oninput="resizeInput(this);" value="<?= $checkbox_data_account['others_description_acc'] ?>">
@@ -323,7 +360,7 @@
                                                 <div class="form-group position-relative">
                                                     <label>Indicate all the details needed</label>
                                                     <div class="textarea-wrapper">
-                                                        <textarea class="form-control" name="complete_details" id="complete_details" placeholder="" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" disabled><?= $trf['complete_details']; ?></textarea>
+                                                        <textarea class="form-control" name="complete_details" id="complete_details" placeholder="" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" <?=$readonly?>><?= $trf['complete_details']; ?></textarea>
                                                         <span class="placeholder-text">Please attach file if needed</span>
                                                     </div>
                                                 </div>
@@ -342,6 +379,20 @@
                                                             <i class="fa fa-exclamation-circle"></i> No file uploaded.
                                                         </div>
                                                     <?php endif; ?>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Acknowledge By</label>
+                                                    <input type="text" name="acknowledge_by" id="acknowledge_by" class="form-control" value="<?= $trf['acknowledge_by']; ?>" style="width: 100%;" required <?=$readonly?>>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Acknowledge By/Date</label>
+                                                    <input type="date" name="acknowledge_by_date" id="acknowledge_by_date" class="form-control select2" value="<?= $trf['acknowledge_by_date']; ?>" style="width: 100%;" required <?=$readonly?>>
                                                 </div>
                                             </div>
 
@@ -368,18 +419,7 @@
                                                     </select>       
                                                 </div>
                                             </div>
-                                            <?php 
-                                                // $sess_login_data = $this->session->userdata('login_data');
-                                                // $role = $sess_login_data['role'];
-                                                // $disabled = "";
-                                                // if($role === "L1"){
-                                                //     $department_status = $trf['approval_status'];
-                                                //     if($department_status === "Rejected" || $department_status === "Returned")
-                                                //     $disabled = "disabled";
-                                                // }else{
-                                                //     $disabled = "";
-                                                // }  
-                                            ?>
+            
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>ICT Approval Status <span style = "color:red;">*</span></label>
@@ -421,32 +461,11 @@
                                                     <input type="date" name="accomplished_by_date" id="accomplished_by_date" class="form-control select2" value="<?= $trf['accomplished_by_date']; ?>" style="width: 100%;" readonly>
                                                 </div>
                                             </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Acknowledge by <span style = "color:red;">*</span></label>
-                                                    <select class="form-control select2" name="acknowledge_by" id="acknowledge_by" disabled>
-                                                        <option value=""disabled selected>Acknowledge By</option>
-                                                        <option value="HANNA" <?php if ($trf['acknowledge_by'] == 'HANNA') echo ' selected'; ?>>Ms. Hanna</option>
-                                                        <option value="DAN" <?php if ($trf['acknowledge_by'] == 'DAN') echo ' selected'; ?>>Sir. Dan</option>
-                                                        <option value="CK" <?php if ($trf['acknowledge_by'] == 'CK') echo ' selected'; ?>>Sir. CK</option>
-                                                        <option value="ERIC" <?php if ($trf['acknowledge_by'] == 'ERIC') echo ' selected'; ?>>Sir. Eric</option>
-                                                        
-                                                    </select>  
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Acknowledge by Date <span style = "color:red;">*</span></label>
-                                                    <input type="date" name="ack_by_date" id="ack_by_date" class="form-control select2" value="<?= $trf['acknowledge_by_date']; ?>" style="width: 100%;" readonly>
-                                                </div>
-                                            </div>
                                             
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">
-                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary">Submit Tickets</button>
+                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?=$disabled?>>Submit Tickets</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -503,19 +522,32 @@
         
     });
 
-    $(document).ready(function() {
-        // Initially hide the input field if the checkbox is unchecked
-        if ($('#checkbox_others_newadd').prop('checked') === false) {
-            $('#others_text_newadd').hide();
+    $(document).ready(function () {
+        // Function to toggle visibility of related input fields
+        function toggleInputField(checkbox, inputField) {
+            if ($(checkbox).is(':checked')) {
+                $(inputField).show();
+            } else {
+                $(inputField).hide();
+            }
         }
 
-        // When the checkbox state changes
-        $('#checkbox_others_newadd').change(function() {
-            if (this.checked) {
-                $('#others_text_newadd').show(); // Show the input field when checked
-            } else {
-                $('#others_text_newadd').hide(); // Hide the input field when unchecked
-            }
+        // Initially toggle visibility based on checkbox states
+        toggleInputField('#checkbox_others_newadd', '#others_text_newadd');
+        toggleInputField('#checkbox_others_update', '#others_text_update');
+        toggleInputField('#checkbox_others', '#others_text_acc');
+
+        // Event listeners for each checkbox
+        $('#checkbox_others_newadd').change(function () {
+            toggleInputField(this, '#others_text_newadd');
+        });
+
+        $('#checkbox_others_update').change(function () {
+            toggleInputField(this, '#others_text_update');
+        });
+
+        $('#checkbox_others').change(function () {
+            toggleInputField(this, '#others_text_acc');
         });
     });
 

@@ -44,21 +44,21 @@ class Main_model extends CI_Model {
 			}
 	
 			$data = array(
-				"emp_id" => $this->input->post('employee_id'),
-				"fname" => $this->input->post('firstname'),
-				"mname" => $this->input->post('middlename'),
-				"lname" => $this->input->post('lastname'),
-				"email" => $this->input->post('email'),
-				"dept_id" => $dept_id,
-            	"department_description" => $department_description,
-				"position" => $this->input->post('position'),
-				"username" => $this->input->post('username'),
-				"password" => $hashed_password,
-				"api_password" => $hashed_password,
-				"role" => 'L1',
-				'status' => 1,
-				'failed_attempts' => 1,
-				'created_at' => date("Y-m-d H:i:s")
+				"emp_id" 						=> $this->input->post('employee_id'),
+				"fname" 						=> $this->input->post('firstname'),
+				"mname" 						=> $this->input->post('middlename'),
+				"lname" 						=> $this->input->post('lastname'),
+				"email" 						=> $this->input->post('email'),
+				"dept_id" 						=> $dept_id,
+            	"department_description" 		=> $department_description,
+				"position" 						=> $this->input->post('position'),
+				"username" 						=> $this->input->post('username'),
+				"password" 						=> $hashed_password,
+				"api_password" 					=> $hashed_password,
+				"role" 							=> 'L1',
+				'status' 						=> 1,
+				'failed_attempts' 				=> 1,
+				'created_at' 					=> date("Y-m-d H:i:s")
 			);
 
 			$this->db->insert('users', $data);
@@ -176,17 +176,6 @@ class Main_model extends CI_Model {
 			return array("ok", $query->row_array());
 		} else {
 			return array("error", "No data was fetched.");
-		}
-	}
-
-	public function delete_employee($id) {
-		$this->db->where('recid', $id);
-		$this->db->delete('users');
-
-		if($this->db->affected_rows() >= 0){
-			return array(1, "Employee deleted successfully.");
-		}else{
-			return array(0, "No changes were made to the Employee.");
 		}
 	}
 
@@ -387,7 +376,7 @@ class Main_model extends CI_Model {
 		}
 	}
 
-	public function add_department(){		
+	/* public function add_department(){		
 		$this->db->trans_begin();
 	
 		$dept_desc = $this->input->post('dept_desc', true);
@@ -409,7 +398,7 @@ class Main_model extends CI_Model {
 			$this->db->trans_commit();  
 			return array(1, "Successfully added department."); 
 		}
-	}
+	} */
 
 	public function get_department_details($id) {
 		$id = (int) $id;
@@ -423,7 +412,42 @@ class Main_model extends CI_Model {
 			return array("error", "No data found.");
 		}
 	}
+
+	/* public function update_department($data, $id) {
+		$id = (int) $id;
+
+		if (empty($data)) {
+			return array(0, "No data provided for update.");
+		}
+
+		$this->db->where('recid', $id);
+		$this->db->update('departments', $data);
 	
+		if ($this->db->affected_rows() > 0) {
+			return array(1, "Department updated successfully.");
+		} else {
+			$this->db->where('recid', $id);
+			$query = $this->db->get('departments');
+			
+			if ($query->num_rows() > 0) {
+				return array(0, "No changes were made.");
+			} else {
+				return array(0, "Department not found.");
+			}
+		}
+	} */
+	
+	/* public function delete_employee($id) {
+		$this->db->where('recid', $id);
+		$this->db->delete('users');
+
+		if($this->db->affected_rows() >= 0){
+			return array(1, "Employee deleted successfully.");
+		}else{
+			return array(0, "No changes were made to the Employee.");
+		}
+	} */
+
 	public function update_department_status($data_module, $id, $data_remarks, $data_status) {
 	    $id = (int) $id;  
 	    
@@ -464,7 +488,7 @@ class Main_model extends CI_Model {
         }
     }
 	
-	public function add_employee() {
+	/* public function add_employee() {
 		$emp_id = $this->input->post('emp_id', true);
 		$fname = $this->input->post('fname', true);
 		$mname = $this->input->post('mname', true);
@@ -524,7 +548,7 @@ class Main_model extends CI_Model {
 			$this->db->trans_rollback();  
 			return array(0, "Error adding employee. Please try again."); 
 		}
-	}
+	} */
 	
 	public function update_employee() {
 		$id = $this->input->post('id', true);
@@ -760,8 +784,6 @@ class Main_model extends CI_Model {
 		$ticket_id = $this->input->post('trf_number', true);
 		$accomplished_by = $this->input->post('accomplished_by', true);
 		$accomplished_by_date = $this->input->post('accomplished_by_date', true);
-		$acknowledge_by = $this->input->post('acknowledge_by', true);
-		$acknowledge_by_date =$this->input->post('ack_by_date', true);
 		$it_approval_stat = $this->input->post('it_app_stat', true);
 		$approval_stat = $this->input->post('app_stat', true);
 		$reject_reason = $this->input->post('reason_rejected', true);
@@ -807,8 +829,6 @@ class Main_model extends CI_Model {
 
 			$this->db->set('accomplished_by', $accomplished_by);
 			$this->db->set('accomplished_by_date', $accomplished_by_date);
-			$this->db->set('acknowledge_by', $acknowledge_by);
-			$this->db->set('acknowledge_by_date', $acknowledge_by_date);
 			$this->db->set('reason_reject_ticket', $reject_reason);
 
 			$this->db->where('ticket_id', $ticket_id);
@@ -947,13 +967,119 @@ class Main_model extends CI_Model {
 
 	}
 
+	public function update_tracc_concern($control_number, $data){
+		$this->db->where('control_number', $control_number);
+		$this->db->update('service_request_tracc_concern', $data);
+
+		if ($this->db->affected_rows() > 0) {
+			return [1, "Data updated successfully"];
+		} else {
+			return [0, "No changes were made or update failed"];
+		}
+	}
+
+	public function UpdateTraccReq($trf_number, $date_need, $complete_details, $selected_companies){
+		$user_id = $this->session->userdata('login_data')['user_id'];
+
+		$qry = $this->db->query('SELECT * FROM service_request_tracc_request WHERE ticket_id = ?', [$trf_number]);
+
+		if ($qry->num_rows() > 0){
+			$row = $qry->row();
+
+			$this->db->set('date_needed', $date_need);
+			$this->db->set('complete_details', $complete_details);
+
+			if (!empty($selected_companies)) {
+				$this->db->set('company', implode(',', $selected_companies));
+			} else {
+				$this->db->set('company', null); // Clear the value if no checkbox is selected
+			}
+
+			$this->db->where('ticket_id', $trf_number);
+			$this->db->update('service_request_tracc_request');
+
+			if ($this->db->affected_rows() > 0) {
+				$this->db->trans_commit();
+				return array(1, "Successfully Updating Tickets: " . $trf_number);
+			} else {
+				$this->db->trans_rollback();
+				return array(0, "Successfully Updating Tickets: " . $trf_number);
+			}
+		} else {
+			return array(0, "Service request not found for ticket: " . $trf_number);
+		}
+	}
+
+	public function UpdateTRNewAdd($trf_number, $new_add_data){
+		$user_id = $this->session->userdata('login_data')['user_id'];
+		
+		$qry = $this->db->get_where('tracc_req_mf_new_add', ['ticket_id' => $trf_number]);
+
+		if ($qry->num_rows() > 0) {
+			$this->db->where('ticket_id', $trf_number);
+			$this->db->update('tracc_req_mf_new_add', $new_add_data);
+
+			if ($this->db->affected_rows() > 0) {
+				$this->db->trans_commit();
+				return array(1, "Successfully Updating Tickets: " . $trf_number);
+			} else {
+				$this->db->trans_rollback();
+				return array(0, "Successfully Updating Tickets: " . $trf_number);
+			}
+		} else {
+			return [0, "No existing 'New/Add' data found for ticket: " . $trf_number];
+		}
+	}
+
+	public function UpdateTRUpdate($trf_number, $data_update){
+		$user_id = $this->session->userdata('login_data')['user_id'];
+
+		$qry = $this->db->get_where('tracc_req_mf_update', ['ticket_id' => $trf_number]);
+
+		if ($qry->num_rows() > 0) {
+			$this->db->where('ticket_id', $trf_number);
+			$this->db->update('tracc_req_mf_update', $data_update);
+
+			if ($this->db->affected_rows() > 0) {
+				$this->db->trans_commit();
+				return array(1, "Successfully Updating Tickets: " . $trf_number);
+			} else {
+				$this->db->trans_rollback();
+				return array(0, "Successfully Updating Tickets: " . $trf_number);
+			}
+		} else {
+			return [0, "No existing 'New/Add' data found for ticket: " . $trf_number];
+		}
+	}
+
+	public function UpdateTRAccount($trf_number, $data_account){
+		$user_id = $this->session->userdata('login_data')['user_id'];
+
+		$qry = $this->db->get_where('tracc_req_mf_account', ['ticket_id' => $trf_number]);
+
+		if ($qry->num_rows() > 0) {
+			$this->db->where('ticket_id', $trf_number);
+			$this->db->update('tracc_req_mf_account', $data_account);
+
+			if ($this->db->affected_rows() > 0) {
+				$this->db->trans_commit();
+				return array(1, "Successfully Updating Tickets: " . $trf_number);
+			} else {
+				$this->db->trans_rollback();
+				return array(0, "Successfully Updating Tickets: " . $trf_number);
+			}
+		} else {
+			return [0, "No existing 'New/Add' data found for ticket: " . $trf_number];
+		}
+	}
+	
 	public function UpdateMSRFAssign($ticket_id, $date_needed, $asset_code, $request_category, $specify, $details_concern) {
 		$user_id = $this->session->userdata('login_data')['user_id'];
 		$status = $this->input->post('it_status', true);
 		$status_users = $this->input->post('status_users', true);
 		$status_requestor = $this->input->post('status_requestor', true);
 		
-		$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE ticket_id = ?', [$ticket_id]); // Make sure to check by ticket_id
+		$qry = $this->db->query('SELECT * FROM service_request_msrf WHERE ticket_id = ?', [$ticket_id]);
 	
 		if ($qry->num_rows() > 0) {
 			$row = $qry->row();
@@ -1003,31 +1129,31 @@ class Main_model extends CI_Model {
 		return $query->row_array();  // Return the result as an array
 	}*/
 
-	public function get_total_users(){
-		return $this->db->count_all('users');
-	}
+	// public function get_total_users(){
+	// 	return $this->db->count_all('users');
+	// }
 
-	public function get_total_msrf_ticket(){
-		$this->db->from('service_request_msrf');
-		$this->db->where_in('status', ['In Progress', 'Open', 'Approved']);
-		return $this->db->count_all_results();
-	}
+	// public function get_total_msrf_ticket(){
+	// 	$this->db->from('service_request_msrf');
+	// 	$this->db->where_in('status', ['In Progress', 'Open', 'Approved']);
+	// 	return $this->db->count_all_results();
+	// }
 
-	public function get_total_departments(){
-		return $this->db->count_all('departments');
-	}
+	// public function get_total_departments(){
+	// 	return $this->db->count_all('departments');
+	// }
 
-	public function get_total_tracc_concern_ticket(){
-		$this->db->from('service_request_tracc_concern');
-		$this->db->where_in('status', ['In Progress', 'Open', 'Approved']);
-		return $this->db->count_all_results();
-	}
+	// public function get_total_tracc_concern_ticket(){
+	// 	$this->db->from('service_request_tracc_concern');
+	// 	$this->db->where_in('status', ['In Progress', 'Open', 'Approved']);
+	// 	return $this->db->count_all_results();
+	// }
 
-	public function get_total_tracc_request_ticket(){
-		$this->db->from('service_request_tracc_request');
-		$this->db->where_in('status', ['In Progress', 'Open', 'Approved']);
-		return $this->db->count_all_results();
-	}
+	// public function get_total_tracc_request_ticket(){
+	// 	$this->db->from('service_request_tracc_request');
+	// 	$this->db->where_in('status', ['In Progress', 'Open', 'Approved']);
+	// 	return $this->db->count_all_results();
+	// }
 
 	public function tracc_concern_add_ticket($file_path = null){
 		$user_id = $this->session->userdata('login_data')['user_id'];
@@ -1084,6 +1210,8 @@ class Main_model extends CI_Model {
 		$date_requested = $this->input->post('date_req', true);
 		$date_needed = $this->input->post('date_needed', true);
 		$complete_details = $this->input->post('complete_details', true);
+		$acknowledge_by = $this->input->post('acknowledge_by', true);
+		$acknowledge_by_date = $this->input->post('acknowledge_by_date', true);
 	
 		$query = $this->db->select('ticket_id')
 					->where('ticket_id', $trf_number)
@@ -1092,19 +1220,21 @@ class Main_model extends CI_Model {
 			return array(0, "Data is Existing");
 		} else {
 			$data = array(
-				'ticket_id' => $trf_number,
-				'subject' => 'TRACC_REQUEST',
-				'requested_by' => $fullname,
-				'department' => $department_description,
-				'department_id' => $department_id,
-				'date_requested' => $date_requested,
-				'date_needed' => $date_needed,
-				'requested_by_id' => $user_id,
-				'complete_details' => $complete_details,
-				'status' => 'Open',
-				'approval_status' => 'Pending',
-				'it_approval_status' => 'Pending',
-				'created_at' => date("Y-m-d H:i:s")
+				'ticket_id' 				=> $trf_number,
+				'subject' 					=> 'TRACC_REQUEST',
+				'requested_by' 				=> $fullname,
+				'department' 				=> $department_description,
+				'department_id' 			=> $department_id,
+				'date_requested'		 	=> $date_requested,
+				'date_needed' 				=> $date_needed,
+				'requested_by_id' 			=> $user_id,
+				'complete_details' 			=> $complete_details,
+				'acknowledge_by' 			=> $acknowledge_by,
+				'acknowledge_by_date'		=> $acknowledge_by_date,
+				'status' 					=> 'Open',
+				'approval_status' 			=> 'Pending',
+				'it_approval_status' 		=> 'Pending',
+				'created_at' 				=> date("Y-m-d H:i:s")
 			);
 	
 			if ($file_path !== null) {
@@ -1759,6 +1889,76 @@ class Main_model extends CI_Model {
 		$this->db->where('recid', $id);
 		$query = $this->db->get('tracc_req_customer_req_form');
 		return $query->result_array();
+	}
+
+	public function approve_crf($approved_by, $recid){
+		$data = [
+			'approved_by' 		=> $approved_by,
+			'approved_date' 	=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_customer_req_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	public function approve_css($approved_by, $recid){
+		$data = [
+			'approved_by' 		=> $approved_by,
+			'approved_date' 	=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_customer_ship_setup', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	public function approve_erf($approved_by, $recid){
+		$data = [
+			'approved_by'		=> $approved_by,
+			'approved_date'		=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_employee_req_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	public function approve_irf($approved_by, $recid){
+		$data = [
+			'approved_by'		=> $approved_by,
+			'approved_date'		=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_item_request_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	public function approve_srf($approved_by, $recid){
+		$data = [
+			'approved_by'		=> $approved_by,
+			'approved_date'		=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_supplier_req_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
 	}
 }
 ?>

@@ -17,7 +17,7 @@
             		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           		</div>
 			</div>
-			<form id="employeeUpdateForm" action="<?= site_url('Main/employee_update'); ?>" method="POST">
+			<form id="employeeUpdateForm" action="<?= site_url('AdminUsersController/employee_update'); ?>" method="POST">
 				<input type="hidden" name="id" value="<?php echo $users_det['recid']; ?>">
 				<div class="box-body">
 					<div class="row">

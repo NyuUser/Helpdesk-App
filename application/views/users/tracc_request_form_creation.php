@@ -132,14 +132,14 @@
 			                    				</div>                                               
 			                    			</div>
                                             <!-- -->
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="display: none;">
                                                 <div class="form-group">
                                                     <label>Requested by</label>
                                                     <input type="text" name="name" value="<?php echo htmlspecialchars($user_details['fname']. " " . $user_details['mname']. " ". $user_details['lname']); ?>" class="form-control select2" readonly>
                                                 </div>
                                             </div>
                                             <!-- -->
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="display: none;">
                                                 <div class="form-group">
                                                     <label>Date Requested</label>
                                                     <input type="date" name="date_req" id="date_req" class="form-control select2" value="" style="width: 100%;" readonly>
@@ -335,6 +335,20 @@
                                                 <div class="form-group">
                                                     <label>Upload File</label>
                                                     <input type="file" name="uploaded_files" id="uploaded_files" class="form-control" accept="image/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Acknowledge By</label>
+                                                    <input type="text" name="acknowledge_by" id="acknowledge_by" class="form-control" value="" style="width: 100%;" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Acknowledge By/Date</label>
+                                                    <input type="date" name="acknowledge_by_date" id="acknowledge_by_date" class="form-control select2" value="" style="width: 100%;" required>
                                                 </div>
                                             </div>
                                             

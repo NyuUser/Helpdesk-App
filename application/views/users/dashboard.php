@@ -1,130 +1,130 @@
 <style>
 
-.content {
-	margin-bottom: 80px;
-}
+	.content {
+		margin-bottom: 80px;
+	}
 
-.col-lg-6 {
-	margin: -20px;
-	margin-top: 30px;
-}
+	.col-lg-6 {
+		margin: -20px;
+		margin-top: 30px;
+	}
 
-.col-xs-6 {
-	padding: 0px;
-	padding-right: 20px;
-}
+	.col-xs-6 {
+		padding: 0px;
+		padding-right: 20px;
+	}
 
-.col-lg-4 {
-	margin-top: 10px;
-}
+	.col-lg-4 {
+		margin-top: 10px;
+	}
 
-.table-data {
-    padding: 5px;
-    vertical-align: top;
-}
+	.table-data {
+		padding: 5px;
+		vertical-align: top;
+	}
 
-.summary-table {
-    width: 100%;
-    height: 420px;
-	padding: 0px;
-}
+	.summary-table {
+		width: 100%;
+		height: 420px;
+		padding: 0px;
+	}
 
-.summary {
-    padding: 5px;
-}
+	.summary {
+		padding: 5px;
+	}
 
-.summary-data {
-    background-color: white;
-    height: 100%;
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    transition: 0.5s;
-}
+	.summary-data {
+		background-color: white;
+		height: 100%;
+		width: 100%;
+		padding: 10px;
+		border-radius: 5px;
+		transition: 0.5s;
+	}
 
-.summary-data:hover {
-    box-shadow: 0px 0px 5px lightgray;
-    transition: 0.3s;
-}
+	.summary-data:hover {
+		box-shadow: 0px 0px 5px lightgray;
+		transition: 0.3s;
+	}
 
-.summary-data-table {
-	width: 100%;
-}
+	.summary-data-table {
+		width: 100%;
+	}
 
-.table-data-summary {
-    background-color: white;
-    padding: 20px;
-    height: 420px;
-    border-radius: 5px;
-    transition: 0.5s;
-}
+	.table-data-summary {
+		background-color: white;
+		padding: 20px;
+		height: 420px;
+		border-radius: 5px;
+		transition: 0.5s;
+	}
 
-.table-data-summary:hover {
-    box-shadow: 0px 0px 5px lightgray;
-    transition: 0.3s;
-}
+	.table-data-summary:hover {
+		box-shadow: 0px 0px 5px lightgray;
+		transition: 0.3s;
+	}
 
 
-.table-data tr:hover {
-    background-color: #ecf0f5;
-}
+	.table-data tr:hover {
+		background-color: #ecf0f5;
+	}
 
-.status-dropdown {
-    padding: 5px;
-    border-radius: 5px;
-    border-color: lightgray;
-    font-size: 11px;
-}
+	.status-dropdown {
+		padding: 5px;
+		border-radius: 5px;
+		border-color: lightgray;
+		font-size: 11px;
+	}
 
-.status-button {
-    padding: 5px;
-    width: 70px;
-    border-radius: 5px;
-    border-width: 0;
-    background-color: #337ab7;
-    color: white;
-    font-size: 11px;
-}
+	.status-button {
+		padding: 5px;
+		width: 70px;
+		border-radius: 5px;
+		border-width: 0;
+		background-color: #337ab7;
+		color: white;
+		font-size: 11px;
+	}
 
-.links {
-	background-color: white;
-	height: 100%;
-	width: 100%;
-	text-align: center;
-	padding-top: 5px;
-	padding-bottom: 21px;
-	border-radius: 5px;
-	transition: 0.5s;
-}
+	.links {
+		background-color: white;
+		height: 100%;
+		width: 100%;
+		text-align: center;
+		padding-top: 5px;
+		padding-bottom: 21px;
+		border-radius: 5px;
+		transition: 0.5s;
+	}
 
-.links:hover {
-	box-shadow: 0px 0px 5px lightgray;
-	transition: 0.3s;
-}
+	.links:hover {
+		box-shadow: 0px 0px 5px lightgray;
+		transition: 0.3s;
+	}
 
-.link-text {
-	text-decoration: underline;
-}
+	.link-text {
+		text-decoration: underline;
+	}
 
-.link {
-	display: block;
-	margin-bottom: 15px;
-	font-size: 25px;
-	text-align: center;
-	padding: 10px;
-	border-radius: 10px;
-	border: 1px solid #72afd2;
-	transition: 0.2s;
-}
+	.link {
+		display: block;
+		margin-bottom: 15px;
+		font-size: 25px;
+		text-align: center;
+		padding: 10px;
+		border-radius: 10px;
+		border: 1px solid #72afd2;
+		transition: 0.2s;
+	}
 
-.link:hover {
-	background-color: #72afd2;
-	color: white;
-}
+	.link:hover {
+		background-color: #72afd2;
+		color: white;
+	}
 
-.col-lg-6 {
-	margin-left: 0px;
-}
+	.col-lg-6 {
+		margin-left: 0px;
+	}
 
 </style>
 
@@ -169,10 +169,6 @@
 								<td align="right"><?= $msrf['In Progress']; ?></td>
 							</tr>
 							<tr>
-								<td>On Going Tickets:</td>
-								<td align="right"><?= $msrf['On Going']; ?></td>
-							</tr>
-							<tr>
 								<td>Resolved Tickets:</td>
 								<td align="right"><?= $msrf['Resolved']; ?></td>
 							</tr>
@@ -192,6 +188,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="col-lg-6 col-xs-12">
 					<div class="summary-data">
