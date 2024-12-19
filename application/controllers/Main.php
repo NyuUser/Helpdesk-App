@@ -2150,7 +2150,7 @@ class Main extends CI_Controller {
 		$getdepartment = $this->Main_model->GetDepartmentID();
 		$users_det = $this->Main_model->users_details_put($id);
 		$ticket_numbers = $this->Main_model->get_customer_from_tracc_req_mf_new_add();
-	
+
 		if ($this->form_validation->run() == FALSE) {
 			$data['user_details'] = $user_details[1];
 			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
@@ -3088,13 +3088,16 @@ class Main extends CI_Controller {
 			$getdepartment = $this->Main_model->GetDepartmentID();
 			$customerReqForm = $this->Main_model->get_customer_req_form_details($id);
 			$ticket_numbers = $this->Main_model->get_customer_from_tracc_req_mf_new_add();
+			$form_del_days = $this->Main_model->get_ticket_checkbox_customer_req($id);
 			
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
 				$data['getdept'] = $getdepartment[1];
 				$data['reqForm'] = $customerReqForm[0];
-				$data['ticket_numbers'] = $ticket_numbers;
+				$data['ticket_numbers'] = $ticket_numbers[0];
+				$data['companies'] = explode(',', $customerReqForm[0]['company']);
+				$data['del_days'] = $form_del_days;
 
 				$this->load->view('users/header', $data);
 				$this->load->view('users/trf_customer_request_form_details', $data);
@@ -3110,9 +3113,10 @@ class Main extends CI_Controller {
 		}
 	}
 	
-	public function user_edit_customer_request_form_pdf() {
-		$crf_comp_checkbox_value = isset($_POST['crf_comp_checkbox_value']) ? $_POST['crf_comp_checkbox_value'] : [];
-		$imploded_values = implode(',', $csrf_comp_checkbox_values);
+	// Edit function (with Bug)
+	public function user_edit_customer_request_form_pdf($id) {
+		$trf_comp_checkbox_value = isset($_POST['trf_comp_checkbox_value']) ? $_POST['trf_comp_checkbox_value'] : [];
+		$imploded_values = implode(',', $trf_comp_checkbox_value);
 
 		$checkbox_cus_req_form_del = [
 			'checkbox_outright' => isset($_POST['checkbox_outright']) ? 1 : 0,
@@ -3129,6 +3133,9 @@ class Main extends CI_Controller {
 			'checkbox_sunday' => isset($_POST['checkbox_sunday']) ? 1 : 0,
 		];
 
-		$process = $this->Main_model->edit_customer_request_form_pdf($imploded_values, $checkbox_cus_req_form_del);
+		$process = $this->Main_model->edit_customer_request_form_pdf($imploded_values, $checkbox_cus_req_form_del, $id);
+
+		$this->session->set_flashdata('editTR', $process[1]);
+		redirect(base_url() . 'sys/users/dashboard');
 	}
 }
