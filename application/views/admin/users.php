@@ -158,7 +158,7 @@ $(document).ready(function() {
     $('#UsersDeleteModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var recid = button.data('id');
-        var deleteUrl = "<?= base_url('AdminUsersController/employee_delete/'); ?>" + recid;
+        var deleteUrl = "<?= base_url('AdminUsers_controller/employee_delete/'); ?>" + recid;
 
         var confirmBtn = $(this).find('#confirmDeleteBtn');
         confirmBtn.off('click').on('click', function(e) {

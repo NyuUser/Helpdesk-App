@@ -23,7 +23,7 @@
 
     <!-- SweetAlert JS -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script> -->
-    <link rel="stylesheet" href="<?= base_url(); ?>/assets/dist/dist/js/sweetalert2.all.min.js">
+    <script src="<?= base_url(); ?>/assets/dist/dist/js/sweetalert2.all.min.js"></script>
 
     <style>
         .swal2-container {

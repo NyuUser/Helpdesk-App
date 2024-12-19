@@ -1,58 +1,58 @@
 <style>
 
-#report_box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-}
+    #report_box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+    }
 
-#report_filter_box {
-    width: 440px;
-    padding: 20px;
-}
+    #report_filter_box {
+        width: 440px;
+        padding: 20px;
+    }
 
-.report_filter_form {
-    height: 300px;
-    width: 400px;
-}
+    .report_filter_form {
+        height: 300px;
+        width: 400px;
+    }
 
-.report_label {
-    font-size: 18px;
-}
+    .report_label {
+        font-size: 18px;
+    }
 
-.report_input {
-    border-width: 0;
-    padding: 7px;
-    border-radius: 15px;
-    width: 100%;
-}
+    .report_input {
+        border-width: 0;
+        padding: 7px;
+        border-radius: 15px;
+        width: 100%;
+    }
 
-.report_button {
-    padding: 7px;
-    width: 100%;
-    border-radius: 15px;
-    border-width: 0;
-    background-color: lightgreen;
-}
+    .report_button {
+        padding: 7px;
+        width: 100%;
+        border-radius: 15px;
+        border-width: 0;
+        background-color: lightgreen;
+    }
 
-.dt-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-contnet: center;
-    margin: auto;
-    width: 100%;
-}
+    .dt-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-contnet: center;
+        margin: auto;
+        width: 100%;
+    }
 
-.dt-button {
-    display: inline;
-    margin: 5px;
-}
+    .dt-button {
+        display: inline;
+        margin: 5px;
+    }
 
 </style>
 

@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AdminUsersController extends CI_Controller {
+class AdminUsers_controller extends CI_Controller {
     public function __construct() {
 		parent::__construct();
 		$this->load->library('upload'); // Load the upload library
     	$this->load->helper('form'); // Load form helper
 		$this->load->library('session');
-        $this->load->model('AdminUsersModel');
+        $this->load->model('AdminUsers_model');
 	}
 
     //VIEWING of USERS/EMPLOYEES for ADMIN Datatable
@@ -91,7 +91,7 @@ class AdminUsersController extends CI_Controller {
 				'message' => validation_errors()
 			];
 		} else {
-			$process = $this->AdminUsersModel->add_employee();
+			$process = $this->AdminUsers_model->add_employee();
 
 			if ($process[0] == 1) {
 				$response = [
@@ -123,7 +123,7 @@ class AdminUsersController extends CI_Controller {
 			$department_data = $this->Main_model->getDepartment();
 	
 			if ($user_details[0] == "ok") {
-				$process = $this->AdminUsersModel->update_employee();
+				$process = $this->AdminUsers_model->update_employee();
 			
 				if ($process[0] == 1) {
 					echo json_encode(array('status' => 'success', 'message' => 'Employee is been updated successfully.'));
@@ -186,7 +186,7 @@ class AdminUsersController extends CI_Controller {
     //Deleting Employee FUCNTION for ADMIN
 	public function employee_delete($id){
 		if (is_numeric($id)){
-			$status = $this->AdminUsersModel->delete_employee($id);
+			$status = $this->AdminUsers_model->delete_employee($id);
 				if($status){
 					echo json_encode(['status' => 'success', 'message' => 'Succesfully Deleted']);
 				} else {

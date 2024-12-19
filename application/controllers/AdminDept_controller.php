@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AdminDeptController extends CI_Controller {
+class AdminDept_controller extends CI_Controller {
     public function __construct() {
 		parent::__construct();
 		$this->load->library('upload'); // Load the upload library
     	$this->load->helper('form'); // Load form helper
 		$this->load->library('session');
-        $this->load->model('AdminDeptModel');
+        $this->load->model('AdminDept_model');
 	}
 
     //VIEWING of DEPARTMENT for ADMIN Datatable
@@ -93,7 +93,7 @@ class AdminDeptController extends CI_Controller {
 				return;
 			}
 	
-			$process = $this->AdminDeptModel->add_department();
+			$process = $this->AdminDept_model->add_department();
 	
 			if ($process[0] == 1) {
 				echo json_encode(array('status' => 'success', 'message' => 'Department added successfully!'));
@@ -138,7 +138,7 @@ class AdminDeptController extends CI_Controller {
 				}
 			}
 
-			$status = $this->AdminDeptModel->update_department($update_data, $id);
+			$status = $this->AdminDept_model->update_department($update_data, $id);
 	
 			if ($status[0] == 1) {
 				echo json_encode(array('status' => 'success', 'message' => $status[1]));
@@ -195,7 +195,7 @@ class AdminDeptController extends CI_Controller {
 	// DELETING Department FUNCTION
 	public function department_delete($id) {
 		if (is_numeric($id)) {
-			$status = $this->AdminDeptModel->delete_department($id);
+			$status = $this->AdminDept_model->delete_department($id);
 				if ($status) {
 					echo json_encode(['status' => 'success', 'message' => 'Successfully Deleted']);
 				} else {

@@ -17,7 +17,7 @@
             		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           		</div>
 			</div>
-			<form id="employeeAddForm" action="<?= site_url('AdminUsersController/employee_add'); ?>" method="POST">
+			<form id="employeeAddForm" action="<?= site_url('AdminUsers_controller/employee_add'); ?>" method="POST">
 				<div class="box-body">
 					<div class="row">
 						<div class="col-md-6">

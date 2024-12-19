@@ -8,7 +8,7 @@ $route['sys/registration'] = 'main/registration';
 
 //--- DASHBOARDS
 //ADMIN Dashboard
-$route['sys/admin/dashboard'] = 'AdminDashboardController/admin_dashboard';
+$route['sys/admin/dashboard'] = 'AdminDashboard_controller/admin_dashboard';
 //USER Dashboard
 $route['sys/users/dashboard'] = 'main/users_dashboard';
 
@@ -57,13 +57,13 @@ $route['sys/admin/list/ticket/tracc_concern'] = 'main/admin_list_tracc_concern';
 //--- DATATABLE of ADMIN for TRACC REQUEST
 $route['sys/admin/list/ticket/tracc_request'] = 'main/admin_list_tracc_request';
 //--- DATATABLE of ADMIN for EMPLOYEES/USERS
-$route['sys/admin/users'] = 'AdminUsersController/admin_users';
+$route['sys/admin/users'] = 'AdminUsers_controller/admin_users';
 //--- DATATABLE of ADMIN for DEPARTMENTS
-$route['sys/admin/team'] = 'AdminDeptController/admin_team';
+$route['sys/admin/team'] = 'AdminDept_controller/admin_team';
 
 
 //--- ADMIN for PRINT REPORTS
-$route['sys/admin/print'] = 'AdminGenerateReportController/admin_print_report';
+$route['sys/admin/print'] = 'AdminGenerateReport_controller/admin_print_report';
 
 
 //--- PDF REPORTS VIEWING ---//
@@ -79,19 +79,19 @@ $route['sys/admin/approved/(:any)/(:any)'] = 'main/admin_approval_list/$1/$2';
 
 
 //--- Admin CREATION of EMPLOYEE
-$route['sys/admin/add/employee'] = 'AdminUsersController/admin_list_employee';
+$route['sys/admin/add/employee'] = 'AdminUsers_controller/admin_list_employee';
 //--- Admin UPDATING of EMPLOYEE
-$route['sys/admin/update/employee/(:any)'] = 'AdminUsersController/list_update_employee/$1';
+$route['sys/admin/update/employee/(:any)'] = 'AdminUsers_controller/list_update_employee/$1';
 //--- Admin DELETING of EMPLOYEE
-$route['sys/admin/delete/employee/(:any)'] = 'AdminUsersController/employee_delete/$1';
+$route['sys/admin/delete/employee/(:any)'] = 'AdminUsers_controller/employee_delete/$1';
 
 
 //--- Admin CREATION of DEPARTMENTS
-$route['sys/admin/add/department'] = 'AdminDeptController/admin_list_department';
+$route['sys/admin/add/department'] = 'AdminDept_controller/admin_list_department';
 //--- Admin UPDATING of DEPARTMENTS
-$route['sys/admin/update/department/(:num)'] = 'AdminDeptController/list_update_department/$1';
+$route['sys/admin/update/department/(:num)'] = 'AdminDept_controller/list_update_department/$1';
 //--- Admin DELETING of DEPARTMENTS
-$route['sys/admin/delete/department/(:any)'] = 'main/department_delete/$1';
+$route['sys/admin/delete/department/(:any)'] = 'AdminDept_controller/department_delete/$1';
 
 //
 $route['Main/download_file/(:any)'] = 'Main/download_file/$1';

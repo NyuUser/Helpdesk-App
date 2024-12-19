@@ -17,7 +17,7 @@
             		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           		</div>
 			</div>
-			<form id="employeeUpdateForm" action="<?= site_url('AdminUsersController/employee_update'); ?>" method="POST">
+			<form id="employeeUpdateForm" action="<?= site_url('AdminUsers_controller/employee_update'); ?>" method="POST">
 				<input type="hidden" name="id" value="<?php echo $users_det['recid']; ?>">
 				<div class="box-body">
 					<div class="row">
@@ -107,47 +107,47 @@
 
 <style>
 	/* Popup: Overall container */
-.swal-custom-popup {
-    padding: 20px; /* Adjust padding */
-}
+	.swal-custom-popup {
+		padding: 20px; /* Adjust padding */
+	}
 
-/* Title: Customize font size and weight */
-.swal-custom-title {
-    font-size: 3em; /* Larger title */
-    font-weight: bold; /* Make the title bold */
-}
+	/* Title: Customize font size and weight */
+	.swal-custom-title {
+		font-size: 3em; /* Larger title */
+		font-weight: bold; /* Make the title bold */
+	}
 
-/* Content: Customize font size and line spacing */
-.swal-custom-content {
-    font-size: 5.5em; /* Larger content text */
-    line-height: 1.6; /* Adjust line spacing */
-}
+	/* Content: Customize font size and line spacing */
+	.swal-custom-content {
+		font-size: 5.5em; /* Larger content text */
+		line-height: 1.6; /* Adjust line spacing */
+	}
 
-/* Confirm Button: Customize size and padding */
-.swal-custom-confirm-btn {
-    font-size: 1.6em; /* Larger button text */
-    padding: 10px 20px; /* Adjust padding for the button */
-}
+	/* Confirm Button: Customize size and padding */
+	.swal-custom-confirm-btn {
+		font-size: 1.6em; /* Larger button text */
+		padding: 10px 20px; /* Adjust padding for the button */
+	}
 
-/* Optional: Increase button border radius and background color */
-.swal-custom-confirm-btn, .swal-custom-cancel-btn {
-    border-radius: 8px; /* Make the buttons more rounded */
-    background-color: #007bff; /* Change button color */
-    color: #fff; /* Ensure text is white */
-}
+	/* Optional: Increase button border radius and background color */
+	.swal-custom-confirm-btn, .swal-custom-cancel-btn {
+		border-radius: 8px; /* Make the buttons more rounded */
+		background-color: #007bff; /* Change button color */
+		color: #fff; /* Ensure text is white */
+	}
 
-.swal-custom-confirm-btn:hover, .swal-custom-cancel-btn:hover {
-    background-color: #0056b3; /* Darker color on hover */
-}
+	.swal-custom-confirm-btn:hover, .swal-custom-cancel-btn:hover {
+		background-color: #0056b3; /* Darker color on hover */
+	}
 
-.swal-custom-text {
-    font-size: 2em; /* Adjust the size as needed */
-}
+	.swal-custom-text {
+		font-size: 2em; /* Adjust the size as needed */
+	}
 
-/* Optional: To ensure the custom styles are applied correctly */
-.swal2-html-container {
-    font-size: 2em !important; /* Use !important if necessary to override defaults */
-}
+	/* Optional: To ensure the custom styles are applied correctly */
+	.swal2-html-container {
+		font-size: 2em !important; /* Use !important if necessary to override defaults */
+	}
 </style>
 
 <script>

@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AdminGenerateReportController extends CI_Controller {
+class AdminGenerateReport_controller extends CI_Controller {
     public function __construct() {
 		parent::__construct();
 		$this->load->library('upload'); // Load the upload library
     	$this->load->helper('form'); // Load form helper
 		$this->load->library('session');
-        $this->load->model('AdminGenerateReportModel');
+        $this->load->model('AdminGenerateReport_model');
 	}
 
     // VIEWING of ADMIN for GENERATING REPORTS

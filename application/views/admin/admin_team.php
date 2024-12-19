@@ -43,13 +43,7 @@
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document" style="
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    height: 100vh; /* Full viewport height */
-    margin: auto; /* Centers the modal horizontally */
-  ">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="display: flex; align-items: center; justify-content: center; height: 100vh; margin: auto;">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
@@ -123,7 +117,7 @@ $(document).ready(function() {
     $('#deleteModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var recid = button.data('id');
-        var deleteUrl = "<?= base_url('AdminDeptController/department_delete/'); ?>" + recid;
+        var deleteUrl = "<?= base_url('AdminDept_controller/department_delete/'); ?>" + recid;
 
         var confirmBtn = $(this).find('#confirmDeleteBtn');
         confirmBtn.off('click').on('click', function(e) {

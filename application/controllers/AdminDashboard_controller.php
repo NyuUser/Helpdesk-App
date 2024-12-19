@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AdminDashboardController extends CI_Controller {
+class AdminDashboard_controller extends CI_Controller {
     public function __construct() {
 		parent::__construct();
 		$this->load->library('upload'); // Load the upload library
     	$this->load->helper('form'); // Load form helper
 		$this->load->library('session');
-        $this->load->model('AdminDashboardModel');
+        $this->load->model('AdminDashboard_model');
 	}
 
     // ADMIN Dashboard, Viewing of ADMIN Dashboard
@@ -20,15 +20,15 @@ class AdminDashboardController extends CI_Controller {
 				$data['user_details'] = $user_details[1];
 
 				// Fetch total users count
-				$data['total_users'] = $this->AdminDashboardModel->get_total_users();
+				$data['total_users'] = $this->AdminDashboard_model->get_total_users();
 				// Fetch total msrf ticket count
-				$data['total_msrf_tickets'] = $this->AdminDashboardModel->get_total_msrf_ticket();
+				$data['total_msrf_tickets'] = $this->AdminDashboard_model->get_total_msrf_ticket();
 				// Fetch total departments count
-				$data['total_departments'] = $this->AdminDashboardModel->get_total_departments();
+				$data['total_departments'] = $this->AdminDashboard_model->get_total_departments();
 				// Fetch total tracc concern count
-				$data['total_tracc_concern_tickets'] = $this->AdminDashboardModel->get_total_tracc_concern_ticket();
+				$data['total_tracc_concern_tickets'] = $this->AdminDashboard_model->get_total_tracc_concern_ticket();
 				// Fetch total tracc request count
-				$data['total_tracc_request_tickets'] = $this->AdminDashboardModel->get_total_tracc_request_ticket();
+				$data['total_tracc_request_tickets'] = $this->AdminDashboard_model->get_total_tracc_request_ticket();
 				
 				$allowed_menus = ['dashboard', 'system_administration', 'other_menu'];
 				if (!in_array($active_menu, $allowed_menus)) {
