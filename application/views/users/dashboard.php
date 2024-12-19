@@ -277,6 +277,13 @@
 				<div class="col-lg-6 col-xs-12">
 					<div class="table-data-summary">
 						<a class="link">Customer Request Form Status</a>
+						<?php
+							if($this->session->flashdata('editTR')) {
+								echo "<p><b>";
+								echo $this->session->flashdata('editTR');
+								echo "</b></p>";
+							}
+						?>
 						<table id="tblTR" class="table">
 							<thead>
 								<tr>

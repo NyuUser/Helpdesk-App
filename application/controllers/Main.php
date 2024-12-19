@@ -1866,36 +1866,36 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//Acknowledging the form as resolved
-	// public function acknowledge_as_resolved() {
-	// 	$this->load->helper('form');
-	// 	$this->load->library('form_validation');
-	// 	$control_number = $this->input->post('control_number', true);
-	// 	if ($this->session->userdata('login_data')){
-	// 		$user_id = $this->session->userdata('login_data')['user_id'];
-	// 		$user_details = $this->Main_model->user_details();
+	// Acknowledging the form as resolved
+	/* public function acknowledge_as_resolved() {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		$control_number = $this->input->post('control_number', true);
+		if ($this->session->userdata('login_data')){
+			$user_id = $this->session->userdata('login_data')['user_id'];
+			$user_details = $this->Main_model->user_details();
 
-	// 		if ($user_details[0] == "ok"){
-	// 			$sid = $this->session->session_id;
-	// 			$data['user_details'] = $user_details[1];
+			if ($user_details[0] == "ok"){
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
 
-	// 			$process = $this->Main_model->AcknolwedgeAsResolved($control_number);
-	// 			if ($process[0] == 1){
-	// 				$this->session->set_flashdata('success', $process[1]);
-	// 				redirect(base_url()."sys/users/list/tickets/tracc_concern");
-	// 			} else {
-	// 				$this->session->set_flashdata('error', $process[0]);
-	// 				redirect(base_url()."sys/users/list/tickets/tracc_concern");
-	// 			}
-	// 		} else {
-	// 			$this->session->set_flashdata('error', 'Error fetching user information.');
-	// 			redirect("sys/authentication");
-	// 		}
-	// 	} else {
-	// 		$this->session->set_flashdata('error', 'Error fetching user information');
-	// 		redirect(base_url()."admin/login");
-	// 	}
-	// }
+				$process = $this->Main_model->AcknolwedgeAsResolved($control_number);
+				if ($process[0] == 1){
+					$this->session->set_flashdata('success', $process[1]);
+					redirect(base_url()."sys/users/list/tickets/tracc_concern");
+				} else {
+					$this->session->set_flashdata('error', $process[0]);
+					redirect(base_url()."sys/users/list/tickets/tracc_concern");
+				}
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Error fetching user information');
+			redirect(base_url()."admin/login");
+		}
+	} */
 
 	public function acknowledge_as_resolved() {
 		$this->load->helper('form');
@@ -1957,71 +1957,12 @@ class Main extends CI_Controller {
 			redirect(base_url() . "admin/login");
 		}
 	}
-	
-
-	/* public function acknowledge_as_resolved() {
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-	
-		// Get the posted data
-		$control_number = $this->input->post('control_number', true);
-		$module_affected = $this->input->post('module_affected', true);
-		$company = $this->input->post('company', true);
-		$concern = $this->input->post('concern', true);
-		$app_stat = $this->input->post('app_stat', true); // Current approval status
-	
-		if ($this->session->userdata('login_data')) {
-			$user_id = $this->session->userdata('login_data')['user_id'];
-			$user_details = $this->Main_model->user_details();
-			
-			if ($user_details[0] == "ok") {
-				$sid = $this->session->session_id;
-				$data['user_details'] = $user_details[1];
-				
-				// Check if the app_stat is 'Pending'
-				if ($app_stat == 'Pending' ) {
-					// Update editable fields
-					$update_process = $this->Main_model->update_tracc_concern($control_number, $module_affected, $company, $concern);
-					
-					if (!$update_process) {
-						// Handle update error
-						$this->session->set_flashdata('error', 'Error updating the ticket.');
-						redirect(base_url() . "sys/users/list/tickets/tracc_concern");
-					}
-				}
-
-				$ack_as_res_by = $this->input->post('ack_as_res_by', true); // Missing variable added
-				$ack_as_res_date = $this->input->post('ack_as_res_date', true); // Missing variable added
-	
-				// If ack_as_res_by and ack_as_res_date are filled, update the status to 'Resolved'
-				if (!empty($ack_as_res_by) && !empty($ack_as_res_date)) {
-					$resolve_process = $this->Main_model->AcknolwedgeAsResolved($control_number);
-	
-					if ($resolve_process[0] == 1) {
-						$this->session->set_flashdata('success', $resolve_process[1]);
-					} else {
-						$this->session->set_flashdata('error', $resolve_process[0]);
-					}
-				}
-	
-				// Redirect after processing
-				redirect(base_url() . "sys/users/list/tickets/tracc_concern");
-	
-			} else {
-				$this->session->set_flashdata('error', 'Error fetching user information.');
-				redirect("sys/authentication");
-			}
-		} else {
-			$this->session->set_flashdata('error', 'Session expired. Please login again.');
-			redirect("sys/authentication");
-		}
-	} */
 
 	public function SendEmail() {
 		// function email
 	}
 
-	//logout
+	// logout
 	public function logout() {
 		if ($this->session->userdata('login_data')) {
 			$this->session->unset_userdata('login_data');
@@ -2032,7 +1973,7 @@ class Main extends CI_Controller {
 		}
 	}
 
-	//download file 
+	// download file 
 	public function download_file($file_name) {
 		// Path to the file
 		$file_path = FCPATH . 'uploads/tracc_con/' . $file_name;
@@ -2273,7 +2214,7 @@ class Main extends CI_Controller {
 		$getdepartment = $this->Main_model->GetDepartmentID();
 		$users_det = $this->Main_model->users_details_put($id);
 		$ticket_numbers = $this->Main_model->get_customer_from_tracc_req_mf_new_add();
-	
+
 		if ($this->form_validation->run() == FALSE) {
 			$data['user_details'] = $user_details[1];
 			$data['users_det'] = isset($users_det[1]) ? $users_det[1] : array();
@@ -3222,13 +3163,16 @@ class Main extends CI_Controller {
 			$getdepartment = $this->Main_model->GetDepartmentID();
 			$customerReqForm = $this->Main_model->get_customer_req_form_details($id);
 			$ticket_numbers = $this->Main_model->get_customer_from_tracc_req_mf_new_add();
+			$form_del_days = $this->Main_model->get_ticket_checkbox_customer_req($id);
 			
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
 				$data['user_details'] = $user_details[1];
 				$data['getdept'] = $getdepartment[1];
 				$data['reqForm'] = $customerReqForm[0];
-				$data['ticket_numbers'] = $ticket_numbers;
+				$data['ticket_numbers'] = $ticket_numbers[0];
+				$data['companies'] = explode(',', $customerReqForm[0]['company']);
+				$data['del_days'] = $form_del_days;
 
 				$this->load->view('users/header', $data);
 				$this->load->view('users/trf_customer_request_form_details', $data);
@@ -3244,9 +3188,10 @@ class Main extends CI_Controller {
 		}
 	}
 	
-	public function user_edit_customer_request_form_pdf() {
-		$crf_comp_checkbox_value = isset($_POST['crf_comp_checkbox_value']) ? $_POST['crf_comp_checkbox_value'] : [];
-		$imploded_values = implode(',', $csrf_comp_checkbox_values);
+	// Edit function (with Bug)
+	public function user_edit_customer_request_form_pdf($id) {
+		$trf_comp_checkbox_value = isset($_POST['trf_comp_checkbox_value']) ? $_POST['trf_comp_checkbox_value'] : [];
+		$imploded_values = implode(',', $trf_comp_checkbox_value);
 
 		$checkbox_cus_req_form_del = [
 			'checkbox_outright' => isset($_POST['checkbox_outright']) ? 1 : 0,
@@ -3263,7 +3208,10 @@ class Main extends CI_Controller {
 			'checkbox_sunday' => isset($_POST['checkbox_sunday']) ? 1 : 0,
 		];
 
-		$process = $this->Main_model->edit_customer_request_form_pdf($imploded_values, $checkbox_cus_req_form_del);
+		$process = $this->Main_model->edit_customer_request_form_pdf($imploded_values, $checkbox_cus_req_form_del, $id);
+
+		$this->session->set_flashdata('editTR', $process[1]);
+		redirect(base_url() . 'sys/users/dashboard');
 	}
 	public function approve_crf(){			
 		$approved_by = $this->input->post('approved_by');

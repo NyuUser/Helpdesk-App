@@ -124,7 +124,6 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 	<script>
 		var dept_id = <?php echo json_encode($user_details['dept_id']); ?>;
-		console.log(dept_id);
 	</script>
 	<script>
 
