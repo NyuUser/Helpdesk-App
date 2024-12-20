@@ -40,19 +40,30 @@
         background-color: lightgreen;
     }
 
-    .dt-buttons {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-contnet: center;
-        margin: auto;
-        width: 100%;
-    }
+#tblMsrfBox,
+#tblTraccBox,
+#tblTraccRequest {
+    width: 440px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-    .dt-button {
-        display: inline;
-        margin: 5px;
-    }
+.dt-buttons {
+    width: 440px;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-export {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 15px;
+    background-color: #e04c3c;
+    border: none;
+    color: white;
+}
 
 </style>
 

@@ -1719,6 +1719,15 @@ class Main_model extends CI_Model {
 	}
 
 	// SRF
+	public function get_ticket_checkbox_supplier_req_by_ticket_id($ticket_id) {
+		$this->db->select('*, COUNT(ticket_id) as count');
+		$this->db->from('tracc_req_supplier_req_form_checkboxes');
+		$this->db->where('ticket_id', $ticket_id);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	// SRF
 	public function get_ticket_checkbox_supplier_req($recid) {
 		$query = $this->db->get_where('tracc_req_supplier_req_form_checkboxes', ['recid' => $recid]);
 		return $query->row_array(); 
@@ -1884,10 +1893,108 @@ class Main_model extends CI_Model {
 		return $data;
 	}
 
-	public function get_customer_req_form_details($id) {
+	public function get_customer_req_form_rf_details($id) {
 		$this->db->select('*');
 		$this->db->where('recid', $id);
 		$query = $this->db->get('tracc_req_customer_req_form');
+		return $query->result_array();
+	}
+
+	public function get_customer_req_form_ss_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_customer_ship_setup');
+		return $query->result_array();
+	}
+	public function approve_crf($approved_by, $recid){
+		$data = [
+			'approved_by' 		=> $approved_by,
+			'approved_date' 	=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_customer_req_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	public function approve_css($approved_by, $recid){
+		$data = [
+			'approved_by' 		=> $approved_by,
+			'approved_date' 	=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_customer_ship_setup', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	public function approve_erf($approved_by, $recid){
+		$data = [
+			'approved_by'		=> $approved_by,
+			'approved_date'		=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_employee_req_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	public function approve_irf($approved_by, $recid){
+		$data = [
+			'approved_by'		=> $approved_by,
+			'approved_date'		=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_item_request_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	public function approve_srf($approved_by, $recid){
+		$data = [
+			'approved_by'		=> $approved_by,
+			'approved_date'		=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_supplier_req_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+
+	public function get_customer_req_form_ir_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_item_request_form');
+		return $query->result_array();
+	}
+
+	public function get_customer_req_form_er_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_employee_req_form');
+		return $query->result_array();
+	}
+
+	public function get_customer_req_form_sr_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_supplier_req_form');
 		return $query->result_array();
 	}
 
@@ -1962,74 +2069,145 @@ class Main_model extends CI_Model {
 	}
 
 	// Edit function (with Bug)
-	public function edit_customer_request_form_pdf($trf_comp_checkbox_values = null, $checkbox_cus_req_form_del, $id) {
+	// public function edit_customer_request_form_pdf($trf_comp_checkbox_values = null, $checkbox_cus_req_form_del, $id) {
 
-		$data = array(
-			'ticket_id' => $this->input->post('trf_number', true),
-			'requested_by' => $this->input->post('requested_by', true),
-			'date' => $this->input->post('date', true),
-			'customer_code' => $this->input->post('customer_code', true),
-			'customer_name' => $this->input->post('customer_name', true),
-			'tin_no' => $this->input->post('tin_no', true),
-			'terms' => $this->input->post('terms', true),
-			'customer_address' => $this->input->post('customer_address', true),
-			'contact_person' => $this->input->post('contact_person', true),
-			'office_tel_no' => $this->input->post('office_tel_no', true),
-			'pricelist' => $this->input->post('pricelist', true),
-			'payment_group' => $this->input->post('payment_grp', true),
-			'contact_no' => $this->input->post('contact_no', true),
-			'territory' => $this->input->post('territory', true),
-			'salesman' => $this->input->post('salesman', true),
-			'business_style' => $this->input->post('business_style', true),
-			'email' => $this->input->post('email', true),
-			'shipping_code' => $this->input->post('shipping_code', true),
-			'route_code' => $this->input->post('route_code', true),
-			'customer_shipping_address' => $this->input->post('customer_shipping_address', true),
-			'landmark' => $this->input->post('landmark', true),
-			'window_time_start' => $this->input->post('window_time_start', true),
-			'window_time_end' => $this->input->post('window_time_end', true),
-			'special_instruction' => $this->input->post('special_instruction', true),
-			'created_at' => date("Y-m-d H:i:s"),
-		);
+	// 	$data = array(
+	// 		'ticket_id' => $this->input->post('trf_number', true),
+	// 		'requested_by' => $this->input->post('requested_by', true),
+	// 		'date' => $this->input->post('date', true),
+	// 		'customer_code' => $this->input->post('customer_code', true),
+	// 		'customer_name' => $this->input->post('customer_name', true),
+	// 		'tin_no' => $this->input->post('tin_no', true),
+	// 		'terms' => $this->input->post('terms', true),
+	// 		'customer_address' => $this->input->post('customer_address', true),
+	// 		'contact_person' => $this->input->post('contact_person', true),
+	// 		'office_tel_no' => $this->input->post('office_tel_no', true),
+	// 		'pricelist' => $this->input->post('pricelist', true),
+	// 		'payment_group' => $this->input->post('payment_grp', true),
+	// 		'contact_no' => $this->input->post('contact_no', true),
+	// 		'territory' => $this->input->post('territory', true),
+	// 		'salesman' => $this->input->post('salesman', true),
+	// 		'business_style' => $this->input->post('business_style', true),
+	// 		'email' => $this->input->post('email', true),
+	// 		'shipping_code' => $this->input->post('shipping_code', true),
+	// 		'route_code' => $this->input->post('route_code', true),
+	// 		'customer_shipping_address' => $this->input->post('customer_shipping_address', true),
+	// 		'landmark' => $this->input->post('landmark', true),
+	// 		'window_time_start' => $this->input->post('window_time_start', true),
+	// 		'window_time_end' => $this->input->post('window_time_end', true),
+	// 		'special_instruction' => $this->input->post('special_instruction', true),
+	// 		'created_at' => date("Y-m-d H:i:s"),
+	// 	);
 
-		if($trf_comp_checkbox_values !== null) {
-			$data['company'] = $trf_comp_checkbox_values;
-		}
+	// 	if($trf_comp_checkbox_values !== null) {
+	// 		$data['company'] = $trf_comp_checkbox_values;
+	// 	}
 
-		$this->db->trans_start();
-		$this->db->where('recid', $id);
-		$this->db->update('tracc_req_customer_req_form', $data);
+	// 	$this->db->trans_start();
+	// 	$this->db->where('recid', $id);
+	// 	$this->db->update('tracc_req_customer_req_form', $data);
 
-		if ($this->db->affected_rows() > 0) {
-			$checkbox_cus_req_form_del_days = [
-				'ticket_id' => $this->input->post('trf_number', true),
-				'outright' => isset($checkbox_cus_req_form_del['checkbox_outright']) ? $checkbox_cus_req_form_del['checkbox_outright'] : 0,
-				'consignment' => isset($checkbox_cus_req_form_del['checkbox_consignment']) ? $checkbox_cus_req_form_del['checkbox_consignment'] : 0,
-				'customer_is_also_a_supplier' =>  isset($checkbox_cus_req_form_del['checkbox_cus_a_supplier']) ? $checkbox_cus_req_form_del['checkbox_cus_a_supplier'] : 0,
-				'online' => isset($checkbox_cus_req_form_del['checkbox_online']) ? $checkbox_cus_req_form_del['checkbox_online'] : 0,
-				'walk_in' => isset($checkbox_cus_req_form_del['checkbox_walkIn']) ? $checkbox_cus_req_form_del['checkbox_walkIn'] : 0,
-				'monday' => isset($checkbox_cus_req_form_del['checkbox_monday']) ? $checkbox_cus_req_form_del['checkbox_monday'] : 0,
-				'tuesday' => isset($checkbox_cus_req_form_del['checkbox_tuesday']) ? $checkbox_cus_req_form_del['checkbox_tuesday'] : 0,
-				'wednesday' => isset($checkbox_cus_req_form_del['checkbox_wednesday']) ? $checkbox_cus_req_form_del['checkbox_wednesday'] : 0,
-				'thursday' => isset($checkbox_cus_req_form_del['checkbox_thursday']) ? $checkbox_cus_req_form_del['checkbox_thursday'] : 0,
-				'friday' => isset($checkbox_cus_req_form_del['checkbox_friday']) ? $checkbox_cus_req_form_del['checkbox_friday'] : 0,
-				'saturday' => isset($checkbox_cus_req_form_del['checkbox_saturday']) ? $checkbox_cus_req_form_del['checkbox_saturday'] : 0,
-				'sunday' => isset($checkbox_cus_req_form_del['checkbox_sunday']) ? $checkbox_cus_req_form_del['checkbox_sunday'] : 0,
-				'created_at' => date("Y-m-d H:i:s"),
-			];
-			$this->db->update('tracc_req_customer_req_form_del_days', $checkbox_cus_req_form_del_days);
+	// 	if ($this->db->affected_rows() > 0) {
+	// 		$checkbox_cus_req_form_del_days = [
+	// 			'ticket_id' => $this->input->post('trf_number', true),
+	// 			'outright' => isset($checkbox_cus_req_form_del['checkbox_outright']) ? $checkbox_cus_req_form_del['checkbox_outright'] : 0,
+	// 			'consignment' => isset($checkbox_cus_req_form_del['checkbox_consignment']) ? $checkbox_cus_req_form_del['checkbox_consignment'] : 0,
+	// 			'customer_is_also_a_supplier' =>  isset($checkbox_cus_req_form_del['checkbox_cus_a_supplier']) ? $checkbox_cus_req_form_del['checkbox_cus_a_supplier'] : 0,
+	// 			'online' => isset($checkbox_cus_req_form_del['checkbox_online']) ? $checkbox_cus_req_form_del['checkbox_online'] : 0,
+	// 			'walk_in' => isset($checkbox_cus_req_form_del['checkbox_walkIn']) ? $checkbox_cus_req_form_del['checkbox_walkIn'] : 0,
+	// 			'monday' => isset($checkbox_cus_req_form_del['checkbox_monday']) ? $checkbox_cus_req_form_del['checkbox_monday'] : 0,
+	// 			'tuesday' => isset($checkbox_cus_req_form_del['checkbox_tuesday']) ? $checkbox_cus_req_form_del['checkbox_tuesday'] : 0,
+	// 			'wednesday' => isset($checkbox_cus_req_form_del['checkbox_wednesday']) ? $checkbox_cus_req_form_del['checkbox_wednesday'] : 0,
+	// 			'thursday' => isset($checkbox_cus_req_form_del['checkbox_thursday']) ? $checkbox_cus_req_form_del['checkbox_thursday'] : 0,
+	// 			'friday' => isset($checkbox_cus_req_form_del['checkbox_friday']) ? $checkbox_cus_req_form_del['checkbox_friday'] : 0,
+	// 			'saturday' => isset($checkbox_cus_req_form_del['checkbox_saturday']) ? $checkbox_cus_req_form_del['checkbox_saturday'] : 0,
+	// 			'sunday' => isset($checkbox_cus_req_form_del['checkbox_sunday']) ? $checkbox_cus_req_form_del['checkbox_sunday'] : 0,
+	// 			'created_at' => date("Y-m-d H:i:s"),
+	// 		];
+	// 		$this->db->update('tracc_req_customer_req_form_del_days', $checkbox_cus_req_form_del_days);
 
-			if ($this->db->affected_rows() > 0) {
-				$this->db->trans_commit();
-				return array(1, "Successfully Edited Customer Request Form for: " . $data['ticket_id']);
-			} else {
-				$this->db->trans_rollback();
-				return array(0, "Error: Could not edit delivery days data.");
-			}
-		} else {
-			$this->db->trans_rollback();
-			return array(0, "Error: Could not edit data. Please try again.");
-		}
-	}
+	// 		if ($this->db->affected_rows() > 0) {
+	// 			$this->db->trans_commit();
+	// 			return array(1, "Successfully Edited Customer Request Form for: " . $data['ticket_id']);
+	// 		} else {
+	// 			$this->db->trans_rollback();
+	// 			return array(0, "Error: Could not edit delivery days data.");
+	// 		}
+	// 	} else {
+	// 		$this->db->trans_rollback();
+	// 		return array(0, "Error: Could not edit data. Please try again.");
+	// 	}
+	// }
+
+	// // Edit function (with Bug)
+	// public function edit_customer_request_form_pdf($trf_comp_checkbox_values = null, $checkbox_cus_req_form_del, $id) {
+
+	// 	$data = array(
+	// 		'ticket_id' => $this->input->post('trf_number', true),
+	// 		'requested_by' => $this->input->post('requested_by', true),
+	// 		'date' => $this->input->post('date', true),
+	// 		'customer_code' => $this->input->post('customer_code', true),
+	// 		'customer_name' => $this->input->post('customer_name', true),
+	// 		'tin_no' => $this->input->post('tin_no', true),
+	// 		'terms' => $this->input->post('terms', true),
+	// 		'customer_address' => $this->input->post('customer_address', true),
+	// 		'contact_person' => $this->input->post('contact_person', true),
+	// 		'office_tel_no' => $this->input->post('office_tel_no', true),
+	// 		'pricelist' => $this->input->post('pricelist', true),
+	// 		'payment_group' => $this->input->post('payment_grp', true),
+	// 		'contact_no' => $this->input->post('contact_no', true),
+	// 		'territory' => $this->input->post('territory', true),
+	// 		'salesman' => $this->input->post('salesman', true),
+	// 		'business_style' => $this->input->post('business_style', true),
+	// 		'email' => $this->input->post('email', true),
+	// 		'shipping_code' => $this->input->post('shipping_code', true),
+	// 		'route_code' => $this->input->post('route_code', true),
+	// 		'customer_shipping_address' => $this->input->post('customer_shipping_address', true),
+	// 		'landmark' => $this->input->post('landmark', true),
+	// 		'window_time_start' => $this->input->post('window_time_start', true),
+	// 		'window_time_end' => $this->input->post('window_time_end', true),
+	// 		'special_instruction' => $this->input->post('special_instruction', true),
+	// 		'created_at' => date("Y-m-d H:i:s"),
+	// 	);
+
+	// 	if($trf_comp_checkbox_values !== null) {
+	// 		$data['company'] = $trf_comp_checkbox_values;
+	// 	}
+
+	// 	$this->db->trans_start();
+	// 	$this->db->where('recid', $id);
+	// 	$this->db->update('tracc_req_customer_req_form', $data);
+
+	// 	if ($this->db->affected_rows() > 0) {
+	// 		$checkbox_cus_req_form_del_days = [
+	// 			'ticket_id' => $this->input->post('trf_number', true),
+	// 			'outright' => isset($checkbox_cus_req_form_del['checkbox_outright']) ? $checkbox_cus_req_form_del['checkbox_outright'] : 0,
+	// 			'consignment' => isset($checkbox_cus_req_form_del['checkbox_consignment']) ? $checkbox_cus_req_form_del['checkbox_consignment'] : 0,
+	// 			'customer_is_also_a_supplier' =>  isset($checkbox_cus_req_form_del['checkbox_cus_a_supplier']) ? $checkbox_cus_req_form_del['checkbox_cus_a_supplier'] : 0,
+	// 			'online' => isset($checkbox_cus_req_form_del['checkbox_online']) ? $checkbox_cus_req_form_del['checkbox_online'] : 0,
+	// 			'walk_in' => isset($checkbox_cus_req_form_del['checkbox_walkIn']) ? $checkbox_cus_req_form_del['checkbox_walkIn'] : 0,
+	// 			'monday' => isset($checkbox_cus_req_form_del['checkbox_monday']) ? $checkbox_cus_req_form_del['checkbox_monday'] : 0,
+	// 			'tuesday' => isset($checkbox_cus_req_form_del['checkbox_tuesday']) ? $checkbox_cus_req_form_del['checkbox_tuesday'] : 0,
+	// 			'wednesday' => isset($checkbox_cus_req_form_del['checkbox_wednesday']) ? $checkbox_cus_req_form_del['checkbox_wednesday'] : 0,
+	// 			'thursday' => isset($checkbox_cus_req_form_del['checkbox_thursday']) ? $checkbox_cus_req_form_del['checkbox_thursday'] : 0,
+	// 			'friday' => isset($checkbox_cus_req_form_del['checkbox_friday']) ? $checkbox_cus_req_form_del['checkbox_friday'] : 0,
+	// 			'saturday' => isset($checkbox_cus_req_form_del['checkbox_saturday']) ? $checkbox_cus_req_form_del['checkbox_saturday'] : 0,
+	// 			'sunday' => isset($checkbox_cus_req_form_del['checkbox_sunday']) ? $checkbox_cus_req_form_del['checkbox_sunday'] : 0,
+	// 			'created_at' => date("Y-m-d H:i:s"),
+	// 		];
+	// 		$this->db->update('tracc_req_customer_req_form_del_days', $checkbox_cus_req_form_del_days);
+
+	// 		if ($this->db->affected_rows() > 0) {
+	// 			$this->db->trans_commit();
+	// 			return array(1, "Successfully Edited Customer Request Form for: " . $data['ticket_id']);
+	// 		} else {
+	// 			$this->db->trans_rollback();
+	// 			return array(0, "Error: Could not edit delivery days data.");
+	// 		}
+	// 	} else {
+	// 		$this->db->trans_rollback();
+	// 		return array(0, "Error: Could not edit data. Please try again.");
+	// 	}
+	// }
 }
 ?>

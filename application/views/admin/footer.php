@@ -549,7 +549,7 @@
                         {
                             // Export table to a PDF document.
                             text: 'PDF',
-                            className: 'btn btn-danger',
+                            className: 'btn-export',
                             action: function () {
                                 // Instantiate jsPDF.
                                 var doc = new jsPDF();
@@ -611,14 +611,14 @@
                                 });
                                 
                                 // Open the document to another window.
-                                //doc.output('dataurlnewwindow', 'MSRF Concern ' + '(' + dateRange + ')');
+                                doc.output('dataurlnewwindow', 'MSRF Concern ' + '(' + dateRange + ')');
                                 doc.save('MSRF Concern ' + '(' + dateRange + ')');
                             }
                         },
                         {
                             // Export table to an Excel document.
                             text: 'Excel',
-                            className: 'btn btn-danger',
+                            className: 'btn-export',
                             extend: 'excel',
                             filename: '(' + formatDate(date) + ') MSRF Concern (' + dateRange + ')',
                             title: 'Open MSRF Tickets (' + dateRange + ')',
@@ -626,7 +626,7 @@
                         {
                             // Export table to a CSV document.
                             text: 'CSV',
-                            className: 'btn btn-danger',
+                            className: 'btn-export',
                             extend: 'csv',
                             filename: '(' + formatDate(date) + ') MSRF Concern (' + dateRange + ')',
                             customize: function(csv) {
@@ -637,7 +637,7 @@
 
                                 return rows.join('\n');
                             }
-                        } 
+                        }
                     ]
                 });
 
@@ -677,7 +677,7 @@
                         {
                             // Export the table to a PDF document.
                             text: 'PDF',
-                            className: 'btn btn-danger',
+                            className: 'btn-export',
                             action: function () {
 
                                 // Instantiate the jsPDF class.
@@ -737,14 +737,14 @@
                                     }
                                 });
                                 
-                                //doc.output('dataurlnewwindow', 'Tracc Concern ' + '(' + dateRange + ')');
+                                doc.output('dataurlnewwindow', 'Tracc Concern ' + '(' + dateRange + ')');
                                 doc.save('Tracc Concern ' + '(' + dateRange + ')');
                             }
                         },
                         {
                             // Export the table to an Excel document.
                             text: 'Excel',
-                            className: 'btn btn-danger',
+                            className: 'btn-export',
                             extend: 'excel',
                             filename: '(' + formatDate(date) + ') Tracc Concern (' + dateRange + ')',
                             title: 'Open Tracc Concern Tickets (' + dateRange + ')'
@@ -752,7 +752,7 @@
                         {
                             // Export the table to a CSV file.
                             text: 'CSV',
-                            className: 'btn btn-danger',
+                            className: 'btn-export',
                             extend: 'csv',
                             filename: '(' + formatDate(date) + ') Tracc Concern (' + dateRange + ')',
                             title: 'Open Tracc Concern Tickets (' + dateRange + ')',
@@ -806,7 +806,7 @@
                         {
                             // Exports the table to a pdf document.
                             text: 'PDF',
-                            className: 'btn btn-danger',
+                            className: 'btn-export',
                             action: function () {
                                 // Instantiate jsPDF.
                                 var doc = new jsPDF();
@@ -868,14 +868,14 @@
                                 });
 
                                 // Open a new tab to view the pdf document.
-                                //doc.output('dataurlnewwindow', 'Tracc Request ' + '(' + dateRange + ')');
+                                doc.output('dataurlnewwindow', 'Tracc Request ' + '(' + dateRange + ')');
                                 doc.save('Tracc Request ' + '(' + dateRange + ')');
                             }
                         },
                         {
                             // Export the table to xlsx
                             text: 'Excel',
-                            className: 'btn btn-danger',
+                            className: 'btn-export',
                             extend: 'excel',
                             filename: '(' + formatDate(date) + ') Tracc Request (' + dateRange + ')',
                             title: 'Open Tracc Requests (' + dateRange + ')',
@@ -883,7 +883,7 @@
                         {
                             // Export the table to csv
                             text: 'CSV',
-                            className: 'btn btn-danger',
+                            className: 'btn-export',
                             extend: 'csv',
                             filename: '(' + formatDate(date) + ') Tracc Request (' + dateRange + ')',
                             customize: function(csv) {
