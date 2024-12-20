@@ -670,7 +670,7 @@ class Main_model extends CI_Model {
 		}
 	}
 
-	public function status_approval_tracc_concern() {
+	/* public function status_approval_tracc_concern() {
 		$control_number = $this->input->post('control_number', true);
 		$received_by = $this->input->post('received_by', true);
 		$noted_by = $this->input->post('noted_by', true);
@@ -749,10 +749,10 @@ class Main_model extends CI_Model {
 		} else {
 			return array(0, "Tracc Concern can not found for ticket: " . $control_number);
 		}
-	}
+	} */
 	
 
-	public function insert_checkbox_data($checkbox_data) {
+	/* public function insert_checkbox_data($checkbox_data) {
 		$this->db->where('control_number', $checkbox_data['control_number']);
 		$existing_data = $this->db->get('filled_by_mis');
 
@@ -762,7 +762,7 @@ class Main_model extends CI_Model {
 		} else {
 			return $this->db->insert('filled_by_mis', $checkbox_data);
 		}
-	}
+	} */
 
 	public function get_checkbox_values($control_number){
 		$this->db->where('control_number', $control_number);
@@ -780,7 +780,7 @@ class Main_model extends CI_Model {
 		}
 	}
 
-	public function status_approval_trf() {
+	/* public function status_approval_trf() {
 		$ticket_id = $this->input->post('trf_number', true);
 		$accomplished_by = $this->input->post('accomplished_by', true);
 		$accomplished_by_date = $this->input->post('accomplished_by_date', true);
@@ -844,9 +844,9 @@ class Main_model extends CI_Model {
 		} else {
 			return array(0, "Service request not found for ticket: " . $ticket_id);
 		}
-	}
+	} */
 	
-	public function status_approval_msrf() {
+	/* public function status_approval_msrf() {
 		$ticket_id = $this->input->post('msrf_number', true);
 		$it_approval_stat = $this->input->post('it_approval_stat', true);
 		$assign_staff = $this->input->post('assign_to', true);
@@ -901,7 +901,7 @@ class Main_model extends CI_Model {
 		} else {
 			return array(0, "Service request not found for ticket: " . $ticket_id);
 		}
-	}
+	} */
 	
 
 	public function GetICTSupervisor() {

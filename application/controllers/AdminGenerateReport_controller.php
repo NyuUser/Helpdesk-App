@@ -28,7 +28,7 @@ class AdminGenerateReport_controller extends CI_Controller {
 
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/reports_table', $data);
+				$this->load->view('admin/admin_GReports/reports_table', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->setflashdata('error', 'Error fetching user information.');

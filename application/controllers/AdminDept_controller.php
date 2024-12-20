@@ -26,7 +26,7 @@ class AdminDept_controller extends CI_Controller {
 
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/admin_team', $data);
+				$this->load->view('admin/admin_Department/admin_team', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -66,7 +66,7 @@ class AdminDept_controller extends CI_Controller {
 
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/add_department', $data);
+				$this->load->view('admin/admin_Department/add_department', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -178,7 +178,7 @@ class AdminDept_controller extends CI_Controller {
 	
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/update_department', $data);
+				$this->load->view('admin/admin_Department/update_department', $data);
 				$this->load->view('admin/footer');
 	
 			} else {

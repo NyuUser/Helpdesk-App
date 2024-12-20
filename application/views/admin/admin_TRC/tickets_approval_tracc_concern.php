@@ -1,3 +1,9 @@
+<?php
+    $user_role = $this->session->userdata('user_role'); 
+    $is_disabled_forL3 = ($user_role == 'L3') ? 'disabled' : ''; 
+    $is_disable_forL2 = ($user_role == 'L2') ? 'disabled' : '';
+?>
+
 <div class="content-wrapper">
     <div class="container">
         <section class="content-header">
@@ -22,7 +28,7 @@
                             <div class="tab-pane active" id="tracc_concern">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/admin_list_tracc_concern'); ?>" method="POST">
+                                        <form action="<?= site_url('AdminTraccCon_controller/admin_list_tracc_concern'); ?>" method="POST">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>Control Number</label>
@@ -97,16 +103,11 @@
                                                 </div>
                                             </div>
 
-                                            <?php
-                                            $user_role = $this->session->userdata('user_role'); // Fetch user role from session
-                                            $is_disabled = ($user_role == 'L3') ? 'disabled' : ''; // Set disabled attribute if role is l3
-                                            $is_disable = ($user_role == 'L2') ? 'disabled' : '';
-                                            ?>
-
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Approval Status</label>
-                                                    <select class="form-control select2" name="app_stat" id="app_stat" <?php if ($tracc_con['approval_status'] == 'Approved' || $tracc_con['approval_status'] == 'Rejected') echo 'disabled'; ?> <?= $is_disable?>>
+                                                    <select class="form-control select2" name="app_stat" id="app_stat"  <?=$is_disable_forL2?>>
+                                                    <?php if ($tracc_con['approval_status'] == 'Approved' || $tracc_con['approval_status'] == 'Rejected') echo 'disabled'; ?>
                                                         <option value=""disabled selected>Approval Status</option>
                                                         <option value="Approved"<?php if ($tracc_con['approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($tracc_con['approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -119,7 +120,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>ICT Approval Status</label>
-                                                    <select class="form-control select2" name="it_app_stat" id="it_app_stat" <?= $is_disabled; ?> >
+                                                    <select class="form-control select2" name="it_app_stat" id="it_app_stat" <?= $is_disabled_forL3; ?> >
                                                         <option value=""disabled selected>ICT Approval Status</option>
                                                         <option value="Approved"<?php if ($tracc_con['it_approval_status'] == 'Approved') echo ' selected'; ?>>Approved</option>
                                                         <option value="Pending"<?php if ($tracc_con['it_approval_status'] == 'Pending') echo ' selected'; ?>>Pending</option>
@@ -140,7 +141,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Received by</label>
-                                                    <select class="form-control select2" name="received_by" id="received_by" <?= $is_disabled; ?>>
+                                                    <select class="form-control select2" name="received_by" id="received_by" <?= $is_disabled_forL3; ?>>
                                                         <option value=""disabled selected>Received By</option>
                                                         <option value="ERIC" <?php if ($tracc_con['received_by'] == 'ERIC') echo ' selected'; ?>>Sir. Eric</option>
                                                         <option value="CK" <?php if ($tracc_con['received_by'] == 'CK') echo ' selected'; ?>>Sir. CK</option>
@@ -153,7 +154,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Noted by</label>
-                                                    <select class="form-control select2" name="noted_by" id="noted_by" <?= $is_disabled; ?>>
+                                                    <select class="form-control select2" name="noted_by" id="noted_by" <?= $is_disabled_forL3; ?>>
                                                         <option value=""disabled selected>Noted By</option>
                                                         <option value="ERIC" <?php if ($tracc_con['noted_by'] == 'ERIC') echo ' selected'; ?>>Sir. Eric</option>
                                                         <option value="CK" <?php if ($tracc_con['noted_by'] == 'CK') echo ' selected'; ?>>Sir. CK</option>
@@ -166,14 +167,14 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Solution/Details</label>
-                                                    <textarea class="form-control" id="tcr_solution" name="tcr_solution" placeholder="Place the details concern here" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" <?= $is_disabled; ?>><?= isset($tracc_con['tcr_solution']) ? htmlspecialchars($tracc_con['tcr_solution']) : ''; ?></textarea>
+                                                    <textarea class="form-control" id="tcr_solution" name="tcr_solution" placeholder="Place the details concern here" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; resize: vertical;" <?= $is_disabled_forL3; ?>><?= isset($tracc_con['tcr_solution']) ? htmlspecialchars($tracc_con['tcr_solution']) : ''; ?></textarea>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Resolved by</label>
-                                                    <select class="form-control select2" name="resolved_by" id="resolved_by" <?= $is_disabled; ?>>
+                                                    <select class="form-control select2" name="resolved_by" id="resolved_by" <?= $is_disabled_forL3; ?>>
                                                         <option value=""disabled selected>Resolved By</option>
                                                         <option value="ERIC" <?php if ($tracc_con['resolved_by'] == 'ERIC') echo ' selected'; ?>>Sir. Eric</option>
                                                         <option value="CK" <?php if ($tracc_con['resolved_by'] == 'CK') echo ' selected'; ?>>Sir. CK</option>
@@ -186,7 +187,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Resolved Date</label>
-                                                    <input type="date" name="res_date" id="res_date" class="form-control select2" value="<?= $tracc_con['resolved_date']; ?>" style="width: 100%;" <?= $is_disabled; ?>>
+                                                    <input type="date" name="res_date" id="res_date" class="form-control select2" value="<?= $tracc_con['resolved_date']; ?>" style="width: 100%;" <?= $is_disabled_forL3; ?>>
                                                 </div>
                                             </div>
 
@@ -255,7 +256,7 @@
                                                             <div class="checkbox">
                                                                 <label>
                                                                     <input type="checkbox" name="checkbox_mis" id="checkbox_mis" value="1"
-                                                                    <?= isset($checkboxes['for_mis_concern']) && $checkboxes['for_mis_concern'] ? 'checked' : ''; ?> <?= $is_disabled; ?>> 
+                                                                    <?= isset($checkboxes['for_mis_concern']) && $checkboxes['for_mis_concern'] ? 'checked' : ''; ?> <?= $is_disabled_forL3; ?>> 
                                                                     For MIS Concern
                                                                 </label>
                                                             </div>
@@ -264,7 +265,7 @@
                                                             <div class="checkbox">
                                                                 <label>
                                                                     <input type="checkbox" name="checkbox_lst" id="checkbox_lst" value="1" onclick="toggleLstFields()"
-                                                                    <?= isset($checkboxes['for_lst_concern']) && $checkboxes['for_lst_concern'] ? 'checked' : ''; ?> <?= $is_disabled; ?>> 
+                                                                    <?= isset($checkboxes['for_lst_concern']) && $checkboxes['for_lst_concern'] ? 'checked' : ''; ?> <?= $is_disabled_forL3; ?>> 
                                                                     For LST Concern
                                                                 </label>
                                                             </div>
@@ -273,7 +274,7 @@
                                                             <div class="checkbox">
                                                                 <label>
                                                                     <input type="checkbox" name="checkbox_system_error" id="checkbox_system_error" value="1"
-                                                                    <?= isset($checkboxes['system_error']) && $checkboxes['system_error'] ? 'checked' : ''; ?> <?= $is_disabled; ?>> 
+                                                                    <?= isset($checkboxes['system_error']) && $checkboxes['system_error'] ? 'checked' : ''; ?> <?= $is_disabled_forL3; ?>> 
                                                                     System Error
                                                                 </label>
                                                             </div>
@@ -282,7 +283,7 @@
                                                             <div class="checkbox">
                                                                 <label>
                                                                     <input type="checkbox" name="checkbox_user_error" id="checkbox_user_error" value="1"
-                                                                    <?= isset($checkboxes['user_error']) && $checkboxes['user_error'] ? 'checked' : ''; ?> <?= $is_disabled; ?>> User Error
+                                                                    <?= isset($checkboxes['user_error']) && $checkboxes['user_error'] ? 'checked' : ''; ?> <?= $is_disabled_forL3; ?>> User Error
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -299,16 +300,9 @@
                                             <div class="col-md-6">                            
                                                 <div class="form-group">
                                                     <label>Others</label>
-                                                    <input type="text" name="others" id="others" value="<?= $tracc_con['others']; ?>" class="form-control select2" placeholder="Please Specify" <?= $is_disabled; ?>>
+                                                    <input type="text" name="others" id="others" value="<?= $tracc_con['others']; ?>" class="form-control select2" placeholder="Please Specify" <?= $is_disabled_forL3; ?>>
                                                 </div>
                                             </div>
-
-                                            <!--<div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Date</label>
-                                                    <input type="date" name="date_lst" value="" class="form-control select2">
-                                                </div>
-                                            </div>-->
 
                                             <div class="col-md-6" id="date_section">
                                                 <div class="form-group">
@@ -351,32 +345,28 @@
             var today = new Date().toISOString().split('T')[0];
             $('#res_date').val(today);
         }
-    });
 
-    //checking of checkbox if it has a value
-    function toggleLstFields() {
-        var lstCheckbox = $('#checkbox_lst');
-        var receivedBySection = $('#received_by_lst_section');
-        var dateSection = $('#date_section');
+        // Checking of Checkbox if it has value (FOR LST CONCERN) - start
+        function toggleLstFields() {
+            var lstCheckbox = $('#checkbox_lst');
+            var receivedBySection = $('#received_by_lst_section');
+            var dateSection = $('#date_section');
 
-        if (lstCheckbox.is(':checked')) {
-            receivedBySection.show();
-            dateSection.show();
-        } else {
-            receivedBySection.hide();
-            dateSection.hide();
+            if (lstCheckbox.is(':checked')) {
+                receivedBySection.show();
+                dateSection.show();
+            } else {
+                receivedBySection.hide();
+                dateSection.hide();
+            }
         }
-    }
 
-    $(document).ready(function() {
         toggleLstFields(); 
-
         $('#checkbox_lst').change(toggleLstFields);
-    });
+        // Checking of Checkbox if it has value (FOR LST CONCERN) - end
 
 
-    // showing of rejected ticket
-    $(document).ready(function() {
+        // Showing of Rejected Ticket - start
         $("#reason_rejected_ticket").hide();
         
         function checkApprovalStatus() {
@@ -391,36 +381,29 @@
         }
 
         $('#it_app_stat, #app_stat').on('change', checkApprovalStatus);
-
         checkApprovalStatus();
-        
-    });
+        // Showing of Rejected Ticket - end
 
-    //dynamic rezising of the tcr_solution
-    $(document).ready(function() {
+
+        // Dynamic Rezising of tcr_solution - start
         function autoResizeTextarea() {
-            $(this).css('height', 'auto'); // Reset the height to auto to calculate new height
-            $(this).height(this.scrollHeight); // Set height based on content
+            $(this).css('height', 'auto'); 
+            $(this).height(this.scrollHeight); 
         }
-        
-        // Apply the resize function to the textarea on input
-        //$('#reason_rejected').on('input', autoResizeTextarea);
+    
         $('#tcr_solution').on('input', autoResizeTextarea);
-
-        // Trigger the resize on page load if there's existing content in the textarea
-        //$('#reason_rejected').each(autoResizeTextarea);
         $('#tcr_solution').each(autoResizeTextarea);
-    });
+        // Dynamic Rezising of tcr_solution - end 
+   
 
-     
-    $(document).ready(function() { 
+        // ICT Approval Disable field - start
         function ICTApproval() {
-            var ictApprovalStatus = $('#it_app_stat').val(); // Get the value of the ICT Approval Status dropdown
+            var ictApprovalStatus = $('#it_app_stat').val(); 
             
             if (ictApprovalStatus === 'Approved') {
-                $('#received_by').prop('disabled', false); // Enable Received by field
-                $('#noted_by').prop('disabled', false); // Enable Noted by field
-                $('#tcr_solution').prop('readonly', false); // Enable Solution/Details textarea
+                $('#received_by').prop('disabled', false);
+                $('#noted_by').prop('disabled', false);
+                $('#tcr_solution').prop('readonly', false);
                 $('#resolved_by').prop('disabled', false);
                 $('#res_date').prop('disabled', false);
                 $('#others').prop('disabled', false);
@@ -428,10 +411,12 @@
                 $('#checkbox_lst').prop('disabled', false);
                 $('#checkbox_system_error').prop('disabled', false);
                 $('#checkbox_user_error').prop('disabled', false);
+                $('#received_by_lst').prop('disabled', false);
+                $('#date_lst').prop('disabled', false);
             } else {
-                $('#received_by').prop('disabled', true);  // Disable Received by field
-                $('#noted_by').prop('disabled', true);  // Disable Noted by field
-                $('#tcr_solution').prop('readonly', true); // Make Solution/Details textarea readonly
+                $('#received_by').prop('disabled', true); 
+                $('#noted_by').prop('disabled', true);  
+                $('#tcr_solution').prop('readonly', true); 
                 $('#resolved_by').prop('disabled', true);
                 $('#res_date').prop('disabled', true);
                 $('#others').prop('disabled', true);
@@ -439,16 +424,16 @@
                 $('#checkbox_lst').prop('disabled', true);
                 $('#checkbox_system_error').prop('disabled', true);
                 $('#checkbox_user_error').prop('disabled', true);
+                $('#received_by_lst').prop('disabled', true);
+                $('#date_lst').prop('disabled', true);
             }
         }
 
-        // Call the function when the page loads to check the initial state
         ICTApproval();
+        $('#it_app_stat').on('change', ICTApproval);
+        // ICT Approval Disable field - end
 
-        // Bind the change event to the ICT Approval Status dropdown
-        $('#it_app_stat').on('change', function() {
-            ICTApproval(); // Toggle the fields based on the new ICT Approval Status selection
-        });
     });
+        
 
 </script>

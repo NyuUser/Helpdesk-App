@@ -1,3 +1,4 @@
+<!-- Dummy Code -->
 <div class="content-wrapper">
     <section class="content-header">
 		<h1>

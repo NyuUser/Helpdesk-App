@@ -21,7 +21,7 @@
                     <div class="tab-pane active" id="msrf">
 			            <section id="new">
 			                <div class="row">
-			                    <form action="<?= site_url('Main/admin_list_tickets'); ?>" method="POST">
+			                    <form action="<?= site_url('AdminMSRF_controller/admin_list_tickets'); ?>" method="POST">
 			                    	<div class="col-md-12">
 			                    		<div class="form-group">
 			                    			<label>MSRF#</label>

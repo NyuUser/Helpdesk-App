@@ -26,7 +26,7 @@ class AdminUsers_controller extends CI_Controller {
 
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/users', $data);
+				$this->load->view('admin/admin_Users/users', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -63,7 +63,7 @@ class AdminUsers_controller extends CI_Controller {
 	
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/add_employee', $data);
+				$this->load->view('admin/admin_Users/add_employee', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -169,7 +169,7 @@ class AdminUsers_controller extends CI_Controller {
 	
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/update_employee', $data);
+				$this->load->view('admin/admin_Users/update_employee', $data);
 				$this->load->view('admin/footer');
 	
 			} else {

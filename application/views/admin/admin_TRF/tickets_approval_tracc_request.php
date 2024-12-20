@@ -123,7 +123,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/admin_list_tracc_request'); ?>" method="POST">
+                                        <form action="<?= site_url('AdminTraccReq_controller/admin_list_tracc_request'); ?>" method="POST">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>TRF#</label>

@@ -1,12 +1,12 @@
 <div class="content-wrapper">
 	<section class="content-header">
 		<h1>
-			Form Update Employee
-			<small>Update Details employee</small>
+			Form Add Employee
+			<small>Add employee</small>
 		</h1>
 		<ol class="breadcrumb">
 			<li><a href=""><i class="fa fa-dashboard"></i> Home</a></li>
-			<li class="active">Update Details Employee</li>
+			<li class="active">Add Employee</li>
 		</ol>
 	</section>
 	<section class="content">
@@ -17,72 +17,67 @@
             		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           		</div>
 			</div>
-			<form id="employeeUpdateForm" action="<?= site_url('AdminUsers_controller/employee_update'); ?>" method="POST">
-				<input type="hidden" name="id" value="<?php echo $users_det['recid']; ?>">
+			<form id="employeeAddForm" action="<?= site_url('AdminUsers_controller/employee_add'); ?>" method="POST">
 				<div class="box-body">
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Employee No.</label>
-								<input type="text" name="emp_id" id="emp_id" value="<?php echo $users_det['emp_id']; ?>" class="form-control" readonly>
+								<input type="text" name="emp_id" id="emp_id" class="form-control" required>
 							</div>
 							<div class="form-group">
 								<label>Firstname</label>
-								<input type="text" name="fname" id="fname" value="<?php echo htmlentities($users_det['fname']); ?>" class="form-control">
+								<input type="text" name="fname" id="fname" class="form-control" required>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Middlename</label>
-								<input type="text" name="mname" id="mname" value="<?php echo htmlentities($users_det['mname']); ?>" class="form-control">
+								<input type="text" name="mname" id="mname" class="form-control">
 							</div>
 							<div class="form-group">
 								<label>Lastname</label>
-								<input type="text" name="lname" id="lname" value="<?php echo htmlentities($users_det['lname']); ?>" class="form-control">
+								<input type="text" name="lname" id="lname" class="form-control" required>
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="form-group">
 								<label>Company Email</label>
-								<input type="email" name="email" id="email" value="<?php echo $users_det['email']; ?>" class="form-control">
+								<input type="email" name="email" id="email" class="form-control">
 							</div>
 							<div class="form-group">
 								<label>Department</label>
-								<select name="department" class="form-control">
-							        <option value="">Please select department</option>
-							        <?php foreach ($department_data[1] as $department): ?>
-							        	<?php if ($users_det['dept_id'] == $department['recid']): ?>
-								            <option value="<?php echo $department['recid']; ?>" selected><?php echo $department['dept_desc']; ?></option>
-								        <?php else: ?>
-								            <option value="<?php echo $department['recid']; ?>"><?php echo $department['dept_desc']; ?></option>
-								        <?php endif; ?>
-							        <?php endforeach; ?>
-							    </select>
+								<select name="department" class="form-control" required>
+                                    <option value="" disabled selected>Please select department</option>
+                                    <?php foreach ($department_data[1] as $department): ?>
+                                        <option value="<?php echo $department['recid']; ?>"><?php echo $department['dept_desc']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
 							</div>
 							<div class="form-group">
 								<label>Position</label>
-								<input type="text" name="position" id="position" value="<?php echo htmlentities($users_det['position']); ?>" class="form-control">
+								<input type="text" name="position" id="position" class="form-control">
 							</div>
 							<div class="form-group">
 								<label>Role</label>
 								<select name="role" id="role" class="form-control" required>
-									<option value="" disabled <?php echo ($users_det['role'] == '') ? 'selected' : ''; ?>>Please choose the designated role</option>
-									<option value="L1" <?php echo ($users_det['role'] == 'L1') ? 'selected' : ''; ?>>L1 (Regular Employees)</option>
-									<option value="L2" <?php echo ($users_det['role'] == 'L2') ? 'selected' : ''; ?>>L2 (Supervisor/Admin)</option>
-									<option value="L3" <?php echo ($users_det['role'] == 'L3') ? 'selected' : ''; ?>>L3 (Department Head)</option>
-								</select>
+                                    <option value="" disabled selected>Please choose the designated role</option>
+									<option value="L1">L1 (Regular Employees)</option>
+									<option value="L2">L2 (Supervisor/Admin)</option>	
+									<option value="L3">L3 (Head)</option>
+                                </select>
 							</div>
 							<div class="form-group">
 								<label>Username</label>
-								<input type="text" name="username" id="username" value="<?php echo htmlentities($users_det['username']); ?>" class="form-control">
+								<input type="text" name="username" id="username" class="form-control" required>
 							</div>
 							<div class="form-group">
-								<label>Password</label> <span style="font-size: 12px;">(Leave blank if you don't need to update your password)</span>
-								<input type="password" name="password" id="password" class="form-control">
+								<label>Password</label>
+								<input type="password" name="password" id="password" class="form-control" required>
 							</div>
 							<div class="form-group">
-								<label>Confirm Password</label> <span style="font-size: 12px;">(Leave blank if you don't need to update your password)</span>
-								<input type="password" name="cpassword" id="cpassword" class="form-control">
+								<label>Confirm Password</label>
+								<input type="password" name="cpassword" id="cpassword" class="form-control" required>
 							</div>
 							<div class="form-group">
 								<label>
@@ -103,7 +98,7 @@
 </div>
 
 <!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
 
 <style>
 	/* Popup: Overall container */
@@ -152,18 +147,19 @@
 
 <script>
 $(document).ready(function() {
-    $('#employeeUpdateForm').on('submit', function(e) {
+    $('#employeeAddForm').on('submit', function(e) {
         e.preventDefault(); // Prevent default form submission
+
         $.ajax({
             url: $(this).attr('action'), // Form action URL
             type: 'POST',
             data: $(this).serialize(), // Serialize form data
-            dataType: 'json',
+            dataType: 'json', // Expect a JSON response
             success: function(response) {
+                console.log(response); // Debugging: Check the response in the console
                 if (response.status === 'success') {
-                    // Success alert
                     Swal.fire({
-                        title: 'Successfully Updated!',
+                        title: 'Success!',
                         text: response.message,
                         icon: 'success',
                         confirmButtonText: 'OK',
@@ -178,13 +174,13 @@ $(document).ready(function() {
                             confirmButton: 'swal-custom-confirm-btn'
                         }
                     }).then(() => {
+                        // Redirect or perform other actions after success
                         window.location.href = '<?= base_url("sys/admin/users"); ?>';
                     });
                 } else {
-                    // Error alert
                     Swal.fire({
-                        title: 'Update Failed!',
-                        text:  response.message,
+                        title: 'Error!',
+                        text: response.message,
                         icon: 'error',
                         confirmButtonText: 'OK',
                         width: '30%',
@@ -192,26 +188,35 @@ $(document).ready(function() {
                         timer: 2000,
 						customClass: {
 							popup: 'swal-custom-popup',
-							title: 'swal-custom-title',
-							htmlContainer: 'swal-custom-text',
-							content: 'swal-custom-content',
-							confirmButton: 'swal-custom-confirm-btn'
-						}
+                            title: 'swal-custom-title',
+							text: 'swal-custom-text',
+                            content: 'swal-custom-content',
+                            confirmButton: 'swal-custom-confirm-btn'
+                        }
                     });
                 }
             },
-            error: function() {
-                // Handle unexpected errors
+            error: function(xhr, status, error) {
+                console.error("Error:", error); // Debugging: Log the error to the console
                 Swal.fire({
                     title: 'Error!',
                     text: 'An unexpected error occurred.',
                     icon: 'error',
                     confirmButtonText: 'OK',
                     width: '30%',
-                    heightAuto: false
+                    heightAuto: false,
+                    timer: 2000,
+					customClass: {
+                        popup: 'swal-custom-popup',
+                        title: 'swal-custom-title',
+						text: 'swal-custom-text',
+                        content: 'swal-custom-content',
+                        confirmButton: 'swal-custom-confirm-btn'
+					}
                 });
             }
         });
     });
 });
+
 </script>

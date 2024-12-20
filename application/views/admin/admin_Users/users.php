@@ -26,17 +26,6 @@
                                     <th>Action</th>
 								</tr>
 							</thead>
-							<tfoot>
-								<tr>
-									<th>Employee ID</th>
-                                    <th>Employee Name</th>
-                                    <th>Email</th>
-                                    <th>Position</th>
-                                    <th>Username</th>
-									<th>Role</th>
-                                    <th>Action</th>
-								</tr>
-							</tfoot>
 						</table>
 					</div>
 				</div>

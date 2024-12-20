@@ -42,32 +42,26 @@ class Main extends CI_Controller {
 	
 	// LOGIN 
 	public function login() {
-		// Load helpers and libraries
 		$this->load->helper('form');
 		$this->load->library('session');
 		$this->load->library('form_validation');
 		
-		// Check if the request is a POST request
 		if ($this->input->server('REQUEST_METHOD') === 'POST') {
-			// Set validation rules
 			$this->form_validation->set_rules('username', 'Username', 'trim|required');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 	
 			if ($this->form_validation->run() == FALSE) {
-				// Return validation errors in JSON format if validation fails
 				$response = array(
 					'status' => 'error',
 					'message' => 'Validation failed',
 					'errors' => $this->form_validation->error_array()
 				);
 				echo json_encode($response);
-				exit; // Ensure no further code execution
+				exit;
 			} else {
-				// Process login
 				$process = $this->Main_model->login();
 	
 				if ($process[0] == 1 && $process[1]['status'] == 1) {
-					// Successful login
 					$role = $process[1]['role'];
 					$this->session->set_userdata(array('login_data' => $process[1]));
 	
@@ -80,7 +74,6 @@ class Main extends CI_Controller {
 					} else {
 						$redirect_url = base_url().'sys/users/dashboard';
 					}
-					// Return success response with redirect URL
 					$response = array(
 						'status' => 'success',
 						'message' => 'Login successful',
@@ -88,17 +81,15 @@ class Main extends CI_Controller {
 					);
 					echo json_encode($response);
 				} else {
-					// Login failed, return error message
 					$response = array(
 						'status' => 'error',
 						'message' => isset($process['message']) ? $process['message'] : 'Invalid Login Credentials'
 					);
 					echo json_encode($response);
 				}
-				exit; // Ensure no further code execution
+				exit;
 			}
 		} else {
-			// If not a POST request, load the login view (initial page load)
 			$this->load->view('login');
 		}
 	}
@@ -108,32 +99,25 @@ class Main extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('session');
 	
-		// Fetch departments data
 		$page_data['get_departments'] = $this->Main_model->get_departments();
 	
 		if ($this->input->server('REQUEST_METHOD') == 'POST') {
 			$process = $this->Main_model->user_registration();
 	
 			if ($process[0] == 1) {
-				// Successful registration
 				$response = array(
 					'status' => 'success',
 					'message' => $process[1]
 				);
 			} else {
-				// Registration failed
 				$response = array(
 					'status' => 'error',
 					'message' => $process[1]
 				);
 			}
-	
-			// Return JSON response
 			echo json_encode($response);
-			exit; // Prevent loading the view after response
+			exit; 
 		}
-	
-		// If not POST request, load the registration view
 		$this->load->view('registration', $page_data);
 	}
 	
@@ -336,7 +320,7 @@ class Main extends CI_Controller {
 	}
 
 	//TRACC CONCERN List of Ticket for ADMIN
-	public function admin_list_tracc_concern($active_menu = 'system_tickets_list'){
+	/* public function admin_list_tracc_concern($active_menu = 'system_tickets_list'){
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
@@ -410,10 +394,10 @@ class Main extends CI_Controller {
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
-	}
+	} */
 
 	//TRACC REQUEST List of Ticket for ADMIN
-	public function admin_list_tracc_request(){
+	/* public function admin_list_tracc_request(){
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
@@ -446,7 +430,7 @@ class Main extends CI_Controller {
 				}
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/tickets_tracc_request', $data);
+				$this->load->view('admin/admin_TRF/tickets_tracc_request', $data);
 				$this->load->view('admin/footer');
 			}
 		} else {
@@ -454,10 +438,10 @@ class Main extends CI_Controller {
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
-	}
+	} */
 
 	//MSRF List of Ticket for ADMIN
-	public function admin_list_tickets($active_menu = 'system_tickets_list') {
+	/* public function admin_list_tickets($active_menu = 'system_tickets_list') {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 	
@@ -504,7 +488,7 @@ class Main extends CI_Controller {
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
 			redirect("sys/authentication");
 		}
-	}
+	} */
 	
 	//ADDING FORM of DEPARTMENT for ADMIN
 	/* public function admin_list_department() {
@@ -882,14 +866,14 @@ class Main extends CI_Controller {
 							$this->session->set_flashdata('error', $getTraccCon[1]);
 						}
 						$this->load->view('admin/header', $data);
-						$this->load->view('admin/tickets_approval_tracc_concern', $data);
+						$this->load->view('admin/admin_TRC/tickets_approval_tracc_concern', $data);
 						$this->load->view('admin/sidebar', $data);
 						$this->load->view('admin/footer');
 						break;
 	
 					case "MSRF":
 						$this->load->view('admin/header', $data);
-						$this->load->view('admin/tickets_approval_msrf', $data);
+						$this->load->view('admin/admin_MSRF/tickets_approval_msrf', $data);
 						$this->load->view('admin/sidebar', $data);
 						$this->load->view('admin/footer');
 						break;
@@ -901,7 +885,7 @@ class Main extends CI_Controller {
 						$data['checkbox_account'] = $checkbox_account;
 	
 						$this->load->view('admin/header', $data);
-						$this->load->view('admin/tickets_approval_tracc_request', $data);
+						$this->load->view('admin/admin_TRF/tickets_approval_tracc_request', $data);
 						$this->load->view('admin/sidebar', $data);
 						$this->load->view('admin/footer');
 						break;
@@ -924,74 +908,6 @@ class Main extends CI_Controller {
 			redirect("sys/authentication");
 		}
 	}
-	
-
-	/* public function admin_approval_list($subject, $id) {
-		if ($this->session->userdata('login_data')) {
-			$user_id = $this->session->userdata('login_data')['user_id'];
-			$user_role = $this->session->userdata('login_data')['role'];
-			$user_dept = $this->session->userdata('login_data')['sup_id'];
-			$dept_id = $this->session->userdata('login_data')['dept_id'];
-			$user_details = $this->Main_model->user_details();
-			$msrf_tickets = $this->Main_model->getTicketsMSRF($id);
-			$getTraccCon = $this->Main_model->getTraccConcernByID($id);
-			$ict = $this->Main_model->GetICTSupervisor();
-	
-			if ($user_details[0] == "ok") {
-				$sid = $this->session->session_id;
-				$data['user_details'] = $user_details[1];
-				$data['msrf'] = $msrf_tickets[1];
-				$data['ict'] = $ict;
-				$emp_id = $user_details[1]["emp_id"];
-				$getTeam = $this->Main_model->GetTeam($dept_id);
-				$data['pages'] = 'tickets';
-	
-				// Handle the active menu logic
-				$allowed_menus = ['dashboard', 'approved_tickets', 'users', 'other_menu'];
-				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'approved_tickets';
-				$data['active_menu'] = $active_menu;
-	
-				// Handle TRACC Concern data
-				if ($subject == "TRACC_CONCERN") {
-					if ($getTraccCon[0] == "ok") {
-						// Access control_number safely
-						$control_number = $getTraccCon[1]['control_number'];
-						$data['checkboxes'] = $this->Main_model->get_checkbox_values($control_number);
-						$data['tracc_con'] = $getTraccCon[1]; // Store TRACC concern data
-					} else {
-						// Handle the case where no TRACC Concern data was found
-						$data['checkboxes'] = []; // Set to empty array if no data
-						$data['tracc_con'] = []; // Set to empty array if no data
-						$this->session->set_flashdata('error', $getTraccCon[1]); // Use the error message returned
-					}
-	
-					// Load TRACC Concern views
-					$this->load->view('admin/header', $data);
-					$this->load->view('admin/tickets_approval_tracc_concern', $data);
-					$this->load->view('admin/sidebar', $data);
-					$this->load->view('admin/footer');
-	
-				} else if ($subject == "MSRF") {
-					$this->load->view('admin/header', $data);
-					$this->load->view('admin/tickets_approval_msrf', $data);
-					$this->load->view('admin/sidebar', $data);
-					$this->load->view('admin/footer');
-				}
-	
-				// Other logic for L2 user role if applicable
-				if ($user_role == "L2") {
-					$data['getTeam'] = $getTeam[1];
-				}
-	
-			} else {
-				$this->session->set_flashdata('error', 'Error fetching user information.');
-				redirect("sys/authentication");
-			}
-		} else {
-			$this->session->set_flashdata('error', 'Error fetching user information');
-			redirect("sys/authentication");
-		}
-	} */
 
 	// DI PA ALAM FUNCTION
 	public function dept_supervisor_approval() {
@@ -2650,7 +2566,7 @@ class Main extends CI_Controller {
 
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/pdf_supplier_request_form', $data);
+				$this->load->view('admin/admin_TRF_pdf/pdf_supplier_request_form', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->setflashdata('error', 'Error fetching user information.');
@@ -2715,7 +2631,7 @@ class Main extends CI_Controller {
 					'checkbox_data' 				=> $checkbox_data,
 				];
 				
-				$formHtml = $this->load->view('admin/trf_supplier_request_form_admin', $formData, TRUE);
+				$formHtml = $this->load->view('admin/admin_TRF_pdf/trf_supplier_request_form_admin', $formData, TRUE);
 
 				$data[] = [
 					'tab_id' 						=> "tabs-" . $ticket['ticket_id'],
@@ -2749,7 +2665,7 @@ class Main extends CI_Controller {
 
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/pdf_employee_request_form', $data);
+				$this->load->view('admin/admin_TRF_pdf/pdf_employee_request_form', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->setflashdata('error', 'Error fetching user information.');
@@ -2790,7 +2706,7 @@ class Main extends CI_Controller {
 					'approved_date' 			=> $ticket['approved_date'],
 				];
 				
-				$formHtml = $this->load->view('admin/trf_employee_request_form_admin', $formData, TRUE);
+				$formHtml = $this->load->view('admin/admin_TRF_pdf/trf_employee_request_form_admin', $formData, TRUE);
 				// print_r($formData);
 				// die();
 			
@@ -2827,7 +2743,7 @@ class Main extends CI_Controller {
 
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/pdf_customer_request_form', $data);
+				$this->load->view('admin/admin_TRF_pdf/pdf_customer_request_form', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->setflashdata('error', 'Error fetching user information.');
@@ -2888,7 +2804,7 @@ class Main extends CI_Controller {
 					'checkbox_data'		 			=> $checkbox_data,
 				];
 
-				$formHtml = $this->load->view('admin/trf_customer_request_form_admin', $formData, TRUE);			
+				$formHtml = $this->load->view('admin/admin_TRF_pdf/trf_customer_request_form_admin', $formData, TRUE);			
 				$data[] = [
 					'tab_id' 						=> "tabs-" . $ticket['ticket_id'],
 					'ticket_id' 					=> $ticket['ticket_id'],
@@ -2920,7 +2836,7 @@ class Main extends CI_Controller {
 
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/pdf_customer_shipping_setup_form', $data);
+				$this->load->view('admin/admin_TRF_pdf/pdf_customer_shipping_setup_form', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->setflashdata('error', 'Error fetching user information.');
@@ -2970,7 +2886,7 @@ class Main extends CI_Controller {
 					'approved_date' 			=> $ticket['approved_date'],
 				];
 
-				$formHtml = $this->load->view('admin/trf_customer_shipping_setup_form_admin', $formData, TRUE);			
+				$formHtml = $this->load->view('admin/admin_TRF_pdf/trf_customer_shipping_setup_form_admin', $formData, TRUE);			
 				$data[] = [
 					'tab_id' 					=> "tabs-" . $ticket['ticket_id'],
 					'ticket_id' 				=> $ticket['ticket_id'],
@@ -3002,7 +2918,7 @@ class Main extends CI_Controller {
 
 				$this->load->view('admin/header', $data);
 				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/pdf_item_request_form', $data);
+				$this->load->view('admin/admin_TRF_pdf/pdf_item_request_form', $data);
 				$this->load->view('admin/footer');
 			} else {
 				$this->session->setflashdata('error', 'Error fetching user information.');
@@ -3075,7 +2991,7 @@ class Main extends CI_Controller {
 					'checkbox_data3' 				=> $checkbox_data3,
 				];
 
-				$formHtml = $this->load->view('admin/trf_item_request_form_admin', $formData, TRUE);			
+				$formHtml = $this->load->view('admin/admin_TRF_pdf/trf_item_request_form_admin', $formData, TRUE);			
 				$data[] = [
 					'tab_id' 						=> "tabs-" . $ticket['ticket_id'],
 					'ticket_id' 					=> $ticket['ticket_id'],

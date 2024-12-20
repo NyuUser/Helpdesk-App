@@ -24,15 +24,6 @@
 									<th>Action</th>
 								</tr>
 							</thead>
-							<tfoot>
-								<tr>	
-									<th>Department ID</th>
-									<th>Department</th>
-									<th>Manager ID</th>
-									<th>Support ID</th>
-									<th>Action</th>
-								</tr>
-							</tfoot>
 						</table>
 					</div>
 				</div>
@@ -43,23 +34,23 @@
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document" style="display: flex; align-items: center; justify-content: center; height: 100vh; margin: auto;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this department?
-      </div>
-      <div class="modal-footer">      
-        <a href="#" id="confirmDeleteBtn" class="btn btn-danger">Delete</a>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-      </div>
+    <div class="modal-dialog modal-dialog-centered" role="document" style="display: flex; align-items: center; justify-content: center; height: 100vh; margin: auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this department?
+            </div>
+            <div class="modal-footer">      
+                <a href="#" id="confirmDeleteBtn" class="btn btn-danger">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
