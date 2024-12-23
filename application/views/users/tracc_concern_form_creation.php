@@ -22,7 +22,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/user_creation_tickets_tracc_concern'); ?>" method="POST" enctype="multipart/form-data">
+                                        <form action="<?= site_url('UsersTraccCon_controller/user_creation_tickets_tracc_concern'); ?>" method="POST" enctype="multipart/form-data">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>Control Number</label>
