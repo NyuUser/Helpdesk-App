@@ -1,4 +1,7 @@
 <style>
+	.content {
+		margin-bottom: 80px;
+	}
 
 	.content {
 		margin-bottom: 80px;
@@ -64,6 +67,9 @@
 		transition: 0.3s;
 	}
 
+	.table-data tr:hover {
+		background-color: #ecf0f5;
+	}
 
 	.table-data tr:hover {
 		background-color: #ecf0f5;
@@ -143,8 +149,8 @@
 		<section class="content">
 			<div class="row">
 				<div class="col-lg-6 col-xs-12">
-					<div class="links">
-						<h3>Hello, <?= $user_details['fname']; ?>!</h3>
+					<div class="summary-data" style="height: 200px; text-align: center;">
+						<h3 style="margin-top: 50px; font-size: 30px; font-weight: bold;">Hello, <?= $user_details['fname']; ?>!</h3>
 						<p>Today is <?= date("F j, Y, l"); ?></p>
 					</div>
 				</div>
@@ -292,6 +298,62 @@
 								</tr>
 							</thead>
 						</table>
+						
+						<div id="rf">
+							<h1>Request Form</h1>
+							<table id="tblTRRF" class="table">
+								<thead>
+									<tr>
+										<th>Ticket ID</th>
+										<th>Remarks</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="ss">
+							<h1>Shipping Setup</h1>
+							<table id="tblTRSS" class="table">
+								<thead>
+									<tr>
+										<th>Ticket ID</th>
+										<th>Remarks</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="ir">
+							<h1>Item Request</h1>
+							<table id="tblTRIR" class="table">
+								<thead>
+									<tr>
+										<th>Ticket ID</th>
+										<th>Remarks</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="er">
+							<h1>Employee Request</h1>
+							<table id="tblTRER" class="table">
+								<thead>
+									<tr>
+										<th>Ticket ID</th>
+										<th>Remarks</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="sr">
+							<h1>Supplier Request</h1>
+							<table id="tblTRSR" class="table">
+								<thead>
+									<tr>
+										<th>Ticket ID</th>
+										<th>Remarks</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="col-lg-6 col-xs-12">
@@ -372,3 +434,20 @@
 		</section>
     </div>
 </div>
+
+<script type="text/javascript">
+	$('#filterMsrf').click(function() {
+		status = $('#msrfStatus').val();
+		$('#tblMsrf').DataTable().ajax.reload();
+	});
+
+	$('#filterConcern').click(function() {
+		status = $('#concernStatus').val();
+		$('#tblConcerns').DataTable().ajax.reload();
+	});
+
+	$('#filterRequest').click(function() {
+		status = $('#requestStatus').val();
+		$('#tblRequests').DataTable().ajax.reload();
+	})
+</script>

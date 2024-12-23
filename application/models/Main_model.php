@@ -1719,6 +1719,15 @@ class Main_model extends CI_Model {
 	}
 
 	// SRF
+	public function get_ticket_checkbox_supplier_req_by_ticket_id($ticket_id) {
+		$this->db->select('*, COUNT(ticket_id) as count');
+		$this->db->from('tracc_req_supplier_req_form_checkboxes');
+		$this->db->where('ticket_id', $ticket_id);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	// SRF
 	public function get_ticket_checkbox_supplier_req($recid) {
 		$query = $this->db->get_where('tracc_req_supplier_req_form_checkboxes', ['recid' => $recid]);
 		return $query->row_array(); 
@@ -1884,10 +1893,19 @@ class Main_model extends CI_Model {
 		return $data;
 	}
 
-	public function get_customer_req_form_details($id) {
+	public function get_customer_req_form_rf_details($id) {
 		$this->db->select('*');
 		$this->db->where('recid', $id);
 		$query = $this->db->get('tracc_req_customer_req_form');
+
+		$formattedData = array();
+		$data = $query->result_array();
+		foreach($data as $row) {
+			// if ($row['remarks'] == 'Done') {
+			// 	$row['remarks'] == "<p style='background-color: black;'>" . $row['remarks']; . "</p>";
+			// }
+		}
+
 		return $query->result_array();
 	}
 
