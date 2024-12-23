@@ -282,7 +282,7 @@
 						?>
 						<table style="width: 100%;">
 							<tr>
-								<td><button id="rfbutton">Request Form</button></td>
+								<td><button id="rfbutton">Customer Request</button></td>
 								<td><button id="ssbutton">Shipping Setup</button></td>
 								<td><button id="irbutton">Item Request</button></td>
 								<td><button id="erbutton">Employee Request</button></td>
@@ -291,7 +291,7 @@
 						</table>
 						
 						<div id="rf">
-							<h1>Request Form</h1>
+							<h1>Customer Request</h1>
 							<table id="tblTRRF" class="table">
 								<thead>
 									<tr>

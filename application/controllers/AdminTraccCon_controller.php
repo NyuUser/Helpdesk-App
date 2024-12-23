@@ -87,5 +87,29 @@ class AdminTraccCon_controller extends CI_Controller {
 			redirect("sys/authentication");
 		}
 	}
+
+	public function admin_closed_tickets($active_menu = 'closed_tickets_list') {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		if ($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+
+			if($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+
+				$allowed_menus = ['dashboard', 'closed_tickets_list', 'open_tickets', 'other_menu'];
+				$active_menu = ($this->uri->segment(3) && in_array($this->uri->segment(3), $allowed_menus)) ? $this->uri->segment(3) : 'closed_tickets_list';
+
+				$data['active_menu'] = $active_menu;
+
+				$this->load->view('admin/header', $data);
+				$this->load->view('admin/sidebar', $data);
+				$this->load->view('admin/admin_TRC/closed_tracc_concern', $data);
+				$this->load->view('admin/footer');
+			}
+		}
+	}
 }
 ?>

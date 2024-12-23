@@ -2466,15 +2466,104 @@ class DataTables extends CI_Controller {
         exit();
     }
 
+    
     public function get_closed_msrf() {
         $user_id = $this->session->userdata('login_data')['user_id'];
 
         $draw = intval($this->input->post('draw'));
         $start = intval($this->input->post('start'));
         $length = intval($this->input->post('length'));
+        $search = $this->input->post('search');
+        $search = $this->db->escape_str($search['value']);
 
         $this->db->select('*');
         $this->db->from('service_request_msrf');
+        $this->db->where('status', 'Closed');
+        
+        if (!empty($search)) {
+            $this->db->group_start();
+            $this->db->like('ticket_id', $search);
+            $this->db->or_like('requestor_name', $search);
+            $this->db->or_like('priority', $search);
+            $this->db->or_like('approval_status', $search);
+            $this->db->group_end();
+        }
+
+        $totalRecords = $this->db->count_all_results('', false);
+
+        $this->db->limit($length, $start);
+        $data = $this->db->get()->result_array();
+
+        $output = array(
+            'draw' => $draw,
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $data
+        );
+
+        echo json_encode($output);
+        exit();
+    }
+
+    public function get_closed_tracc_concern() {
+        $user_id = $this->session->userdata('login_data')['user_id'];
+
+        $draw = intval($this->input->post('draw'));
+        $start = intval($this->input->post('start'));
+        $length = intval($this->input->post('length'));
+        $search = $this->input->post('search');
+        $search = $this->db->escape_str($search['value']);
+
+        $this->db->select('*');
+        $this->db->from('service_request_tracc_concern');
+        $this->db->where('status', 'Closed');
+        
+        if (!empty($search)) {
+            $this->db->group_start();
+            $this->db->like('control_number', $search);
+            $this->db->or_like('reported_by', $search);
+            $this->db->or_like('priority', $search);
+            $this->db->or_like('approval_status', $search);
+            $this->db->group_end();
+        }
+
+        $totalRecords = $this->db->count_all_results('', false);
+
+        $this->db->limit($length, $start);
+        $data = $this->db->get()->result_array();
+
+        $output = array(
+            'draw' => $draw,
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $data
+        );
+
+        echo json_encode($output);
+        exit();
+    }
+
+    public function get_closed_tracc_request() {
+        $user_id = $this->session->userdata('login_data')['user_id'];
+
+        $draw = intval($this->input->post('draw'));
+        $start = intval($this->input->post('start'));
+        $length = intval($this->input->post('length'));
+        $search = $this->input->post('search');
+        $search = $this->db->escape_str($search['value']);
+
+        $this->db->select('*');
+        $this->db->from('service_request_tracc_request');
+        $this->db->where('status', 'Closed');
+        
+        if (!empty($search)) {
+            $this->db->group_start();
+            $this->db->like('ticket_id', $search);
+            $this->db->or_like('requested_id', $search);
+            $this->db->or_like('priority', $search);
+            $this->db->or_like('approval_status', $search);
+            $this->db->group_end();
+        }
 
         $totalRecords = $this->db->count_all_results('', false);
 
