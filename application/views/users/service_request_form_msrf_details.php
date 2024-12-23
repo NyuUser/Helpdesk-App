@@ -13,7 +13,7 @@
         // print_r($department_head_status);
         // die();
 
-        if(($status_msrf === "In Progress" || $status_msrf === 'Approved')) {
+        if(($status_msrf === "In Progress" || $status_msrf === 'Approved' || $status_msrf === 'Closed')) {
             // echo "try";
             // die();
             $disabled = "disabled";
@@ -59,7 +59,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/update_status_msrf_assign'); ?>" method="POST">
+                                        <form action="<?= site_url('UsersMSRF_controller/update_status_msrf_assign'); ?>" method="POST">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>MSRF#</label>
