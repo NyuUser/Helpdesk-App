@@ -1909,6 +1909,12 @@ class Main_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function get_customer_req_form_ss_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_customer_ship_setup');
+		return $query->result_array();
+	}
 	public function approve_crf($approved_by, $recid){
 		$data = [
 			'approved_by' 		=> $approved_by,
@@ -1977,6 +1983,28 @@ class Main_model extends CI_Model {
 		} else {
 			return [0];
 		}
+	}
+
+
+	public function get_customer_req_form_ir_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_item_request_form');
+		return $query->result_array();
+	}
+
+	public function get_customer_req_form_er_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_employee_req_form');
+		return $query->result_array();
+	}
+
+	public function get_customer_req_form_sr_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_supplier_req_form');
+		return $query->result_array();
 	}
 
 	// Edit function (with Bug)
@@ -2049,5 +2077,6 @@ class Main_model extends CI_Model {
 			return array(0, "Error: Could not edit data. Please try again.");
 		}
 	}
+
 }
 ?>

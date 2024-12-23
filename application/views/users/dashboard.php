@@ -3,10 +3,6 @@
 		margin-bottom: 80px;
 	}
 
-	.content {
-		margin-bottom: 80px;
-	}
-
 	.col-lg-6 {
 		margin: -20px;
 		margin-top: 30px;
@@ -92,22 +88,6 @@
 		font-size: 11px;
 	}
 
-	.links {
-		background-color: white;
-		height: 100%;
-		width: 100%;
-		text-align: center;
-		padding-top: 5px;
-		padding-bottom: 21px;
-		border-radius: 5px;
-		transition: 0.5s;
-	}
-
-	.links:hover {
-		box-shadow: 0px 0px 5px lightgray;
-		transition: 0.3s;
-	}
-
 	.link-text {
 		text-decoration: underline;
 	}
@@ -130,6 +110,17 @@
 
 	.col-lg-6 {
 		margin-left: 0px;
+	}
+
+	#rfbutton,
+	#ssbutton,
+	#irbutton,
+	#erbutton,
+	#srbutton {
+		font-size: 14px;
+		width: 100%;
+		background-color: white;
+		border: 0px;
 	}
 
 </style>
@@ -282,7 +273,6 @@
 			<div class="row">
 				<div class="col-lg-6 col-xs-12">
 					<div class="table-data-summary">
-						<a class="link">Customer Request Form Status</a>
 						<?php
 							if($this->session->flashdata('editTR')) {
 								echo "<p><b>";
@@ -290,13 +280,14 @@
 								echo "</b></p>";
 							}
 						?>
-						<table id="tblTR" class="table">
-							<thead>
-								<tr>
-									<th>Ticket ID</th>
-									<th>Remarks</th>
-								</tr>
-							</thead>
+						<table style="width: 100%;">
+							<tr>
+								<td><button id="rfbutton">Request Form</button></td>
+								<td><button id="ssbutton">Shipping Setup</button></td>
+								<td><button id="irbutton">Item Request</button></td>
+								<td><button id="erbutton">Employee Request</button></td>
+								<td><button id="srbutton">Supplier Request</button></td>
+							</tr>
 						</table>
 						
 						<div id="rf">
