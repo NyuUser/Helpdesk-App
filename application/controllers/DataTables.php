@@ -398,6 +398,7 @@ class DataTables extends CI_Controller {
             foreach ($data_query->result() as $rows) {
                 $bid[] = $rows->recid;
                 $ticket[] = $rows->ticket_id;
+                $date_requested[] = date('M-d-Y', strtotime($rows->date_requested));
                 $name[] = $rows->requestor_name;
                 $subject[] = $rows->subject;
                 $status[] = $rows->status; 
@@ -493,6 +494,7 @@ class DataTables extends CI_Controller {
             for ($i = 0; $i < count($bid); $i++) {
                 $data[] = array(
                     $tickets[$i],
+                    $date_requested[$i],
                     $name[$i],
                     $subject[$i],
                     $prio_label[$i],
@@ -880,6 +882,7 @@ class DataTables extends CI_Controller {
                 $tickets[] = "<a href='" . base_url() . "sys/admin/approved/" . $rows->subject . "/" . $rows->control_number . "'>" . $rows->control_number . "</a>";
                 $name[] = $rows->reported_by;
                 $subject[] = $rows->subject;
+                $reported_date[] = date('M-d-Y', strtotime($rows->reported_date));
 
                 if($rows->approval_status === "Pending" || $rows->approval_status === "Returned"){
                     $action[] = '<span class="label">' . '<a class="approve-ticket" data-id="'.$rows->recid.'" data-reported-by="'.$rows->reported_by.'" data-concern="'.$rows->tcr_details.'"><i class="fa fa-check"></i></a>' . '</span>';
@@ -890,7 +893,8 @@ class DataTables extends CI_Controller {
     
             for ($i = 0; $i < count($tickets); $i++) {
                 $data[] = array(
-                    $tickets[$i],     
+                    $tickets[$i],
+                    $reported_date[$i],     
                     $name[$i],          
                     $subject[$i],     
                     $priority_label[$i],
@@ -1234,6 +1238,7 @@ class DataTables extends CI_Controller {
                 $tickets[] = "<a href='" . base_url() . "sys/admin/approved/" . $rows->subject . "/" . $rows->ticket_id . "'>" . $rows->ticket_id ."</a>";
                 $name[] = $rows->requested_by;
                 $subject[] = $rows->subject;
+                $date_requested[] = date('M-d-Y', strtotime($rows->date_requested));
 
                 if($rows->approval_status === "Pending" || $rows->approval_status === "Returned"){
                     $action[] = '<span class="label">' . '<a class="approve-ticket" data-id="'.$rows->recid.'" data-requestor="'.$rows->requested_by.'" data-department="'.$rows->department.'" data-concern="'.$rows->complete_details.'"><i class="fa fa-check"></i></a>' . '</span>';
@@ -1245,6 +1250,7 @@ class DataTables extends CI_Controller {
             for ($i = 0; $i < count($tickets); $i++){
                 $data[] = array(
                     $tickets[$i],
+                    $date_requested[$i],
                     $name[$i],
                     $subject[$i],
                     $priority_label[$i],
@@ -1866,7 +1872,7 @@ class DataTables extends CI_Controller {
             $this->db->like('ticket_id', $search);
             $this->db->or_like('requestor_name', $search);
             $this->db->or_like('priority', $search);
-            $this->db->or_like('approval_status', $search);
+            $this->db->or_like('status', $search);
             $this->db->group_end();
         }
 

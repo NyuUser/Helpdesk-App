@@ -53,7 +53,20 @@ $(document).ready(function() {
             { "data": "requested_by" },
             { "data": "priority" },
             { "data": "approval_status" },
-            { "data": "accomplished_by_date" }
+            { "data": "accomplished_by_date",
+                "render": function(data, type, row) {
+                    if (data) {
+                        let date = new Date(data);
+                        let formattedDate = date.toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: '2-digit',
+                            year: 'numeric'
+                        });
+                        return formattedDate;
+                    }
+                    return ""; // Return empty string if no date
+                }
+            }
         ],
         "responsive": true,
         "autoWidth": false,

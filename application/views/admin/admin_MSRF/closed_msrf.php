@@ -24,7 +24,7 @@
                                     <th>Ticket ID</th>
                                     <th>Requestor Name</th>
                                     <th>Priority</th>
-                                    <th>Dept. Head Approval Status</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                         </table>
@@ -51,7 +51,7 @@ $(document).ready(function() {
             { "data": "ticket_id" },
             { "data": "requestor_name" },
             { "data": "priority" },
-            { "data": "approval_status" }
+            { "data": "status" }
         ],
         "responsive": true,
         "autoWidth": false,

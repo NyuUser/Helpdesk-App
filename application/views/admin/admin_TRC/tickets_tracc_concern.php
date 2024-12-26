@@ -18,6 +18,7 @@
                             <thead>
 								<tr>
 									<th>Control Number</th>
+									<th>Date Reported</th>
 									<th>Reported By</th>
 									<th>Subject</th>
 									<th>Priority</th>
