@@ -18,6 +18,7 @@
                             <thead>
 								<tr>
 									<th>Ticket ID</th>
+									<th>Date Requested</th>
 									<th>Requestor Name</th>
 									<th>Subject</th>
 									<th>Priority</th>
