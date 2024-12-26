@@ -1709,66 +1709,66 @@ class Main extends CI_Controller {
 	// }
 
 	// Acknowledging the form as resolved
-	public function acknowledge_as_resolved() {
-		$this->load->helper('form');
-		$this->load->library('form_validation');
+	// public function acknowledge_as_resolved() {
+	// 	$this->load->helper('form');
+	// 	$this->load->library('form_validation');
 	
-		$control_number = $this->input->post('control_number', true);
-		$action = $this->input->post('action', true); // Get the action (edit or acknowledge)
+	// 	$control_number = $this->input->post('control_number', true);
+	// 	$action = $this->input->post('action', true); // Get the action (edit or acknowledge)
 	
-		if ($this->session->userdata('login_data')) {
-			$user_id = $this->session->userdata('login_data')['user_id'];
-			$user_details = $this->Main_model->user_details();
+	// 	if ($this->session->userdata('login_data')) {
+	// 		$user_id = $this->session->userdata('login_data')['user_id'];
+	// 		$user_details = $this->Main_model->user_details();
 	
-			if ($user_details[0] == "ok") {
-				$sid = $this->session->session_id;
+	// 		if ($user_details[0] == "ok") {
+	// 			$sid = $this->session->session_id;
 	
-				if ($action == 'edit') {
-					// Logic to update fields without closing the ticket
-					$edit_data = [
-						'module_affected' => $this->input->post('module_affected', true),
-						'company' => $this->input->post('company', true),
-						'tcr_details' => $this->input->post('concern', true)
-					];
+	// 			if ($action == 'edit') {
+	// 				// Logic to update fields without closing the ticket
+	// 				$edit_data = [
+	// 					'module_affected' => $this->input->post('module_affected', true),
+	// 					'company' => $this->input->post('company', true),
+	// 					'tcr_details' => $this->input->post('concern', true)
+	// 				];
 	
-					$update_process = $this->Main_model->update_tracc_concern($control_number, $edit_data);
+	// 				$update_process = $this->Main_model->update_tracc_concern($control_number, $edit_data);
 	
-					if ($update_process[0] == 1) {
-						$this->session->set_flashdata('success', 'Data updated successfully.');
-					} else {
-						$this->session->set_flashdata('error', 'Failed to update data.');
-					}
+	// 				if ($update_process[0] == 1) {
+	// 					$this->session->set_flashdata('success', 'Data updated successfully.');
+	// 				} else {
+	// 					$this->session->set_flashdata('error', 'Failed to update data.');
+	// 				}
 	
-					redirect(base_url() . "sys/users/list/tickets/tracc_concern");
+	// 				redirect(base_url() . "sys/users/list/tickets/tracc_concern");
 	
-				} elseif ($action == 'acknowledge') {
-					$acknowledge_data = [
-						'ack_as_resolved' => $this->input->post('ack_as_res_by', true),
-						'ack_as_resolved_date' => $this->input->post('ack_as_res_date', true)
-					];
+	// 			} elseif ($action == 'acknowledge') {
+	// 				$acknowledge_data = [
+	// 					'ack_as_resolved' => $this->input->post('ack_as_res_by', true),
+	// 					'ack_as_resolved_date' => $this->input->post('ack_as_res_date', true)
+	// 				];
 	
-					$acknowledge_process = $this->Main_model->AcknolwedgeAsResolved($control_number, $acknowledge_data);
+	// 				$acknowledge_process = $this->Main_model->AcknolwedgeAsResolved($control_number, $acknowledge_data);
 	
-					if ($acknowledge_process[0] == 1) {
-						$this->session->set_flashdata('success', 'Ticket successfully acknowledged as resolved.');
-					} else {
-						$this->session->set_flashdata('error', 'Failed to acknowledge ticket as resolved.');
-					}
+	// 				if ($acknowledge_process[0] == 1) {
+	// 					$this->session->set_flashdata('success', 'Ticket successfully acknowledged as resolved.');
+	// 				} else {
+	// 					$this->session->set_flashdata('error', 'Failed to acknowledge ticket as resolved.');
+	// 				}
 	
-					redirect(base_url() . "sys/users/list/tickets/tracc_concern");
-				} else {
-					$this->session->set_flashdata('error', 'Invalid action.');
-					redirect(base_url() . "sys/users/list/tickets/tracc_concern");
-				}
-			} else {
-				$this->session->set_flashdata('error', 'Error fetching user information.');
-				redirect("sys/authentication");
-			}
-		} else {
-			$this->session->set_flashdata('error', 'Error fetching user information');
-			redirect(base_url() . "admin/login");
-		}
-	}
+	// 				redirect(base_url() . "sys/users/list/tickets/tracc_concern");
+	// 			} else {
+	// 				$this->session->set_flashdata('error', 'Invalid action.');
+	// 				redirect(base_url() . "sys/users/list/tickets/tracc_concern");
+	// 			}
+	// 		} else {
+	// 			$this->session->set_flashdata('error', 'Error fetching user information.');
+	// 			redirect("sys/authentication");
+	// 		}
+	// 	} else {
+	// 		$this->session->set_flashdata('error', 'Error fetching user information');
+	// 		redirect(base_url() . "admin/login");
+	// 	}
+	// }
 
 	public function SendEmail() {
 		// function email
