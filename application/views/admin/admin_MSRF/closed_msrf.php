@@ -23,8 +23,11 @@
                                 <tr>
                                     <th>Ticket ID</th>
                                     <th>Requestor Name</th>
+                                    <th>Subject</th>
                                     <th>Priority</th>
                                     <th>Status</th>
+                                    <th>Dept. Head Approval Status</th>
+                                    <th>ICT Approval Status</th>
                                 </tr>
                             </thead>
                         </table>
@@ -50,8 +53,11 @@ $(document).ready(function() {
         "columns": [
             { "data": "ticket_id" },
             { "data": "requestor_name" },
+            { "data": "subject" },
             { "data": "priority" },
-            { "data": "status" }
+            { "data": "status" },
+            { "data": "approval_status" },
+            { "data": "it_approval_status" }
         ],
         "responsive": true,
         "autoWidth": false,

@@ -23,8 +23,11 @@
                                 <tr>
                                     <th>Ticket ID</th>
                                     <th>Requested By</th>
+                                    <th>Subject</th>
                                     <th>Priority</th>
+                                    <th>Status</th>
                                     <th>Dept. Head Approval Status</th>
+                                    <th>ICT Approval Status</th>
                                     <th>Accomplished Date</th>
                                 </tr>
                             </thead>
@@ -51,8 +54,11 @@ $(document).ready(function() {
         "columns": [
             { "data": "ticket_id" },
             { "data": "requested_by" },
+            { "data": "subject" },
             { "data": "priority" },
+            { "data": "status" },
             { "data": "approval_status" },
+            { "data": "it_approval_status" },
             { "data": "accomplished_by_date",
                 "render": function(data, type, row) {
                     if (data) {
