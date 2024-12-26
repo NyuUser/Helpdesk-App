@@ -1915,6 +1915,7 @@ class Main_model extends CI_Model {
 		$query = $this->db->get('tracc_req_customer_ship_setup');
 		return $query->result_array();
 	}
+	
 	public function approve_crf($approved_by, $recid){
 		$data = [
 			'approved_by' 		=> $approved_by,

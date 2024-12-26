@@ -2974,7 +2974,7 @@ class Main extends CI_Controller {
 			$user_details = $this->Main_model->user_details();
 			$getdepartment = $this->Main_model->GetDepartmentID();
 			$customerReqForm = $this->Main_model->get_customer_req_form_rf_details($id);
-			$ticket_numbers = $this->Main_model->get_customer_from_tracc_req_mf_new_add();
+			$ticket_numbers = $this->UsersTraccReq_model->get_customer_from_tracc_req_details();
 			$form_del_days = $this->Main_model->get_ticket_checkbox_customer_req($id);
 			
 			if ($user_details[0] == "ok") {

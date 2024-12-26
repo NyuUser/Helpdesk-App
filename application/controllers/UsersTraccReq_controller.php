@@ -636,5 +636,157 @@ class UsersTraccReq_controller extends CI_Controller {
 			redirect(base_url().'sys/users/create/tickets/trf_supplier_request_form_tms');  
 		}
 	}
+
+	// Retrieve customer request form details
+	public function customer_request_form_rf_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->UsersTraccReq_model->get_customer_req_form_rf_details($id);
+			$ticket_numbers = $this->UsersTraccReq_model->get_customer_from_tracc_req_details();
+			$form_del_days = $this->Main_model->get_ticket_checkbox_customer_req($id);
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['ticket_numbers'] = $ticket_numbers[0];
+				$data['companies'] = explode(',', $customerReqForm[0]['company']);
+				$data['del_days'] = $form_del_days;
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/trf_customer_request_form_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	public function customer_request_form_ss_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->UsersTraccReq_model->get_customer_req_form_ss_details($id);
+			$ticket_numbers = $this->UsersTraccReq_model->get_customer_shipping_setup_from_tracc_req_mf_new_add();
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['ticket_numbers'] = $ticket_numbers[0];
+				$data['companies'] = explode(',', $customerReqForm[0]['company']);
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/trf_customer_shipping_setup_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	public function customer_request_form_ir_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->UsersTraccReq_model->get_customer_req_form_ir_details($id);
+			$checkboxes = $this->Main_model->get_ticket_checkbox1_item_req_form($id);
+			$checkboxes2 = $this->Main_model->get_ticket_checkbox2_item_req_form($customerReqForm[0]['ticket_id']);
+			$checkboxes3 = $this->Main_model->get_ticket_checkbox3_item_req_form($customerReqForm[0]['ticket_id']);
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['companies'] = explode(',', $customerReqForm[0]['company']);
+				$data['checkboxes'] = $checkboxes;
+				$data['checkboxes2'] = $checkboxes2;
+				$data['checkboxes3'] = $checkboxes3;	
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/trf_item_request_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	public function customer_request_form_er_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->UsersTraccReq_model->get_customer_req_form_er_details($id);
+			$departments_result = $this->Main_model->getDepartment();
+			$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['departments'] = $departments;
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/trf_employee_request_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	public function customer_request_form_sr_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->UsersTraccReq_model->get_customer_req_form_sr_details($id);
+			$checkboxes = $this->Main_model->get_ticket_checkbox_supplier_req_by_ticket_id($customerReqForm[0]['ticket_id']);
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['companies'] = explode(',', $customerReqForm[0]['company']);
+				$data['checkboxes'] = $checkboxes[0];
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/trf_supplier_request_form_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
 }
 ?>

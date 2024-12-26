@@ -22,19 +22,6 @@ $route['sys/users/create/tickets/msrf'] = 'UsersMSRF_controller/users_creation_t
 $route['sys/users/details/concern/msrf/(:any)'] = 'UsersMSRF_controller/service_form_msrf_details/$1';
 
 
-
-$route['sys/users/details/concern/customer_req_form/(:any)'] = 'main/customer_request_form_rf_details/$1';
-
-$route['sys/users/details/concern/customer_req_ship_setup/(:any)'] = 'main/customer_request_form_ss_details/$1';
-
-$route['sys/users/details/concern/customer_req_item_req/(:any)'] = 'main/customer_request_form_ir_details/$1';
-
-$route['sys/users/details/concern/customer_req_employee_req/(:any)'] = 'main/customer_request_form_er_details/$1';
-
-$route['sys/users/details/concern/customer_req_supplier_req/(:any)'] = 'main/customer_request_form_sr_details/$1';
-
-
-
 //--- DATATABLE of USER in TRACC CONCERN
 $route['sys/users/list/tickets/tracc_concern'] = 'UsersTraccCon_controller/service_form_tracc_concern_list';
 //--- TICKET CREATION of USER for TRACC CONCERN
@@ -115,6 +102,17 @@ $route['sys/admin/delete/department/(:any)'] = 'AdminDept_controller/department_
 
 //
 $route['Main/download_file/(:any)'] = 'Main/download_file/$1';
+
+
+$route['sys/users/details/concern/customer_req_form/(:any)'] = 'UsersTraccReq_controller/customer_request_form_rf_details/$1';
+
+$route['sys/users/details/concern/customer_req_ship_setup/(:any)'] = 'UsersTraccReq_controller/customer_request_form_ss_details/$1';
+
+$route['sys/users/details/concern/customer_req_item_req/(:any)'] = 'UsersTraccReq_controller/customer_request_form_ir_details/$1';
+
+$route['sys/users/details/concern/customer_req_employee_req/(:any)'] = 'UsersTraccReq_controller/customer_request_form_er_details/$1';
+
+$route['sys/users/details/concern/customer_req_supplier_req/(:any)'] = 'UsersTraccReq_controller/customer_request_form_sr_details/$1';
 
 
 //--- System LOGOUT

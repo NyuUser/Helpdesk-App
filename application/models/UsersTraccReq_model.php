@@ -421,13 +421,13 @@ class UsersTraccReq_model extends CI_Model {
 		}
 	}
 
-    // public function get_customer_from_tracc_req_mf_new_add() {
-	// 	$this->db->select('*');
-	// 	$this->db->from('tracc_req_mf_new_add');
-	// 	$this->db->where('customer', 1); 
-	// 	$query = $this->db->get();
-	// 	return $query->result_array();
-	// }
+    public function get_customer_from_tracc_req_details() {
+		$this->db->select('*');
+		$this->db->from('tracc_req_mf_new_add');
+		$this->db->where('customer', 1); 
+		$query = $this->db->get();
+		return $query->result_array();
+	}
 
     public function get_customer_from_tracc_req_mf_new_add() {
         $this->db->select('tracc_req_mf_new_add.ticket_id');
@@ -525,5 +525,44 @@ class UsersTraccReq_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
+
+	public function get_customer_req_form_rf_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_customer_req_form');
+
+		$formattedData = array();
+		$data = $query->result_array();
+
+		return $query->result_array();
+	}
+
+	public function get_customer_req_form_ss_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_customer_ship_setup');
+		return $query->result_array();
+	}
+
+	public function get_customer_req_form_ir_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_item_request_form');
+		return $query->result_array();
+	}
+
+	public function get_customer_req_form_er_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_employee_req_form');
+		return $query->result_array();
+	}
+
+	public function get_customer_req_form_sr_details($id) {
+		$this->db->select('*');
+		$this->db->where('recid', $id);
+		$query = $this->db->get('tracc_req_supplier_req_form');
+		return $query->result_array();
+	}
 }
 ?>
