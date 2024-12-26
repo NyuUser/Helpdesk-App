@@ -1995,35 +1995,26 @@ class Main extends CI_Controller {
 	// 		$comp_checkbox_values = isset($_POST['comp_checkbox_value']) ? $_POST['comp_checkbox_value'] : [];
 	// 		$imploded_values = implode(',', $comp_checkbox_values);
 	
-<<<<<<< Updated upstream
 	// 		$process = $this->Main_model->trf_add_ticket($file_path, $imploded_values, $checkbox_data_newadd, $checkbox_data_update, $checkbox_data_account);
-=======
-			$process = $this->Main_model->trf_add_ticket($file_path, $imploded_values, $checkbox_data_newadd, $checkbox_data_update, $checkbox_data_account);
 
-			$newadd = [
-				'Item Request Form' => $checkbox_data_newadd['checkbox_item'],
-				'Customer Request Form' => $checkbox_data_newadd['checkbox_customer'],
-				'Supplier Request Form' => $checkbox_data_newadd['checkbox_supplier'],
-				'Customer Shipping Setup' => $checkbox_data_newadd['checkbox_cus_ship_setup'],
-				'Employee Request Form' => $checkbox_data_newadd['checkbox_employee_req_form'],
-			];
-
-			$to_fill_up = 0;
-			foreach($newadd as $key => $value) {
-				$to_fill_up += $value;
-			}
+	// 		$newadd = [
+	// 			'Item Request Form' => $checkbox_data_newadd['checkbox_item'],
+	// 			'Customer Request Form' => $checkbox_data_newadd['checkbox_customer'],
+	// 			'Supplier Request Form' => $checkbox_data_newadd['checkbox_supplier'],
+	// 			'Customer Shipping Setup' => $checkbox_data_newadd['checkbox_cus_ship_setup'],
+	// 			'Employee Request Form' => $checkbox_data_newadd['checkbox_employee_req_form'],
+	// 		];
 	
-			if ($process[0] == 1) {
-				$this->session->set_flashdata('success', $process[1]);
-				$this->session->set_userdata('data', ['checkbox_data' => $newadd, 'expires_at' => time() + (5 * 60), 'to_fill_up' => $to_fill_up]);
-				redirect(base_url() . 'sys/users/list/tickets/tracc_request');
-			} else {
-				$this->session->set_flashdata('error', $process[1]);
-				redirect(base_url() . 'sys/users/create/tickets/tracc_request');
-			}
-		}
-	}
->>>>>>> Stashed changes
+	// 		if ($process[0] == 1) {
+	// 			$this->session->set_flashdata('success', $process[1]);
+	// 			$this->session->set_userdata('data', ['checkbox_data' => $newadd, 'expires_at' => time() + (5 * 60)]);
+	// 			redirect(base_url() . 'sys/users/list/tickets/tracc_request');
+	// 		} else {
+	// 			$this->session->set_flashdata('error', $process[1]);
+	// 			redirect(base_url() . 'sys/users/create/tickets/tracc_request');
+	// 		}
+	// 	}
+	// }
 
 	// USER CREATION FORM of CUSTOMER REQUEST FORM TMS (pdf ni mam hanna)
 	// public function user_creation_tickets_customer_request_forms_tms() {
