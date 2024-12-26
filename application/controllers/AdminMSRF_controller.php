@@ -82,6 +82,9 @@ class AdminMSRF_controller extends CI_Controller {
 				$this->load->view('admin/admin_MSRF/closed_msrf', $data);
 				$this->load->view('admin/footer');
 			}
+		} else {
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
 		}
 	}
 }

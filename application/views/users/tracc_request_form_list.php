@@ -43,7 +43,7 @@
         <div class="alert">
             <?php
             $data = $this->session->userdata('data');
-            if($data && time() < $data['expires_at']) : ?>
+            if($data['to_fill_up'] > 0 && time() < $data['expires_at']) : ?>
             <div class="alert-content" id="form-alert">
                 <h1>Please fill up the following forms:</h1>
                 <ul>

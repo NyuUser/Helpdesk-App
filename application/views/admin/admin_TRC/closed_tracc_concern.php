@@ -26,6 +26,7 @@
                                     <th>Priority</th>
                                     <th>Company</th>
                                     <th>Dept. Head Approval Status</th>
+                                    <th>Resolved Date</th>
                                 </tr>
                             </thead>
                         </table>
@@ -53,7 +54,8 @@ $(document).ready(function() {
             { "data": "reported_by" },
             { "data": "priority" },
             { "data": "company" },
-            { "data": "approval_status" }
+            { "data": "approval_status" },
+            { "data": "resolved_date" }
         ],
         "responsive": true,
         "autoWidth": false,

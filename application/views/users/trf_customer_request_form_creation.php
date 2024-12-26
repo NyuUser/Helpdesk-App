@@ -84,7 +84,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/user_creation_customer_request_form_pdf'); ?>" method="POST">
+                                        <form action="<?= site_url('UsersTraccReq_controller/user_creation_customer_request_form_pdf'); ?>" method="POST">
                                             <div class="col-md-12">
                                                 <select name="trf_number" id="trf_number" class="form-control" required>
                                                     <option value="" disabled selected>Select Ticket Number</option>
@@ -382,7 +382,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Special Instruction</label>
-                                                    <input type="text" name="special_instruction" id="special_instruction" value="" class="form-control select2" required>
+                                                    <input type="text" name="special_instruction" id="special_instruction" value="" class="form-control select2">
                                                 </div>
                                             </div>
                                             

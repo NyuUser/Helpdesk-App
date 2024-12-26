@@ -22,7 +22,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/users_creation_tickets_msrf'); ?>" method="POST" enctype="multipart/form-data">
+                                        <form action="<?= site_url('UsersMSRF_controller/users_creation_tickets_msrf'); ?>" method="POST" enctype="multipart/form-data">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>MSR#</label>

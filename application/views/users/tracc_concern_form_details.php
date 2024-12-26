@@ -7,13 +7,12 @@
     $readonly = "";
     $btn_label = "Submit Ticket";
     if ($role === "L1") {
-        $department_head_status = $tracc_con['approval_status'];
-        
+        $department_head_status = $tracc_con['approval_status'];    
         $status_tcf = $tracc_con['status'];
         // print_r($status_tcf);
         // die();
 
-        if(($status_tcf === "In Progress" || $status_tcf === 'Approved')) {
+        if(($status_tcf === "In Progress" || $status_tcf === 'Approved' || $status_tcf === 'Done' || $status_tcf === 'Open')) {
             // echo "try";
             // die();
             $disabled = "disabled";
@@ -23,9 +22,6 @@
             $disabled = "";
             $readonly = "";
         }
-            
-        // if($status_tcf )
-        
     }
     // if($role === "L1" && $department_id === "1"){
     //     $department_status = $msrf['approval_status'];
@@ -62,7 +58,7 @@
                             <div class="tab-pane active" id="tracc_concern">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/acknowledge_as_resolved'); ?>" method="POST">
+                                        <form action="<?= site_url('UsersTraccCon_controller/acknowledge_as_resolved'); ?>" method="POST">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>Control Number</label>
@@ -309,8 +305,8 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">
-                                                        <button type="submit" class="btn btn-primary" name="edit">Update Changes</button>
-                                                        <button type="submit" class="btn btn-success" name="acknowledge" onclick="setAcknowledgeFieldsRequired(); document.querySelector('[name=action]').value='acknowledge';">Acknowledge as Resolved</button>
+                                                        <button type="submit" class="btn btn-primary" name="edit" <?=$disabled?>>Update Changes</button>
+                                                        <button type="submit" class="btn btn-success" name="acknowledge" onclick="setAcknowledgeFieldsRequired(); document.querySelector('[name=action]').value='acknowledge';" <?= $status_tcf === 'Open' ? 'disabled' : '' ?>>Acknowledge as Resolved</button>
                                                     </div>
                                                 </div>
                                             </div>
