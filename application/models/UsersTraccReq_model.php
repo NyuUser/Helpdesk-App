@@ -526,6 +526,7 @@ class UsersTraccReq_model extends CI_Model {
         return $query->result_array();
     }
 
+	// Kevin: Query customer request form details by ID
 	public function get_customer_req_form_rf_details($id) {
 		$this->db->select('*');
 		$this->db->where('recid', $id);
@@ -537,6 +538,7 @@ class UsersTraccReq_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	// Kevin: Query shipping setup details by ID
 	public function get_customer_req_form_ss_details($id) {
 		$this->db->select('*');
 		$this->db->where('recid', $id);
@@ -544,6 +546,7 @@ class UsersTraccReq_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	// Kevin: Query item request details by ID
 	public function get_customer_req_form_ir_details($id) {
 		$this->db->select('*');
 		$this->db->where('recid', $id);
@@ -551,6 +554,7 @@ class UsersTraccReq_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	// Kevin: Query employee request details by ID
 	public function get_customer_req_form_er_details($id) {
 		$this->db->select('*');
 		$this->db->where('recid', $id);
@@ -558,6 +562,50 @@ class UsersTraccReq_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function update_er($id) {
+		$department_id = $this->input->post('department', true);
+
+		$this->db->select('*');
+		$this->db->from('tracc_req_employee_req_form');
+		$this->db->where('recid', $id);
+		$remark = $this->db->get()->row()->remarks;
+
+		$this->db->select('dept_desc');
+		$this->db->from('departments');
+		$this->db->where('recid', $department_id);
+		$department_description = $this->db->get()->row()->dept_desc;
+
+		if($remark == "Done") {
+			return array(0, "Error: Could not update data.");
+		} else {
+			$data = array(
+				'ticket_id'	=> $this->input->post('trf_number', true),
+				'name' => $this->input->post('employee_name', true),
+				'department' => $department_id,
+				'department_desc' => $department_description,
+				'position' => $this->input->post('position', true),
+				'address' => $this->input->post('address', true),
+				'tel_no_mob_no' => $this->input->post('tel_mobile_no', true),
+				'tin_no' => $this->input->post('tin_no', true),
+				'contact_person' => $this->input->post('contact_person', true),
+				'created_at' => date("Y-m-d H:i:s"),
+			 );
+	
+			$this->db->trans_begin();
+	
+			$this->db->update('tracc_req_employee_req_form', $data, ['recid' => $id]);
+	
+			if($this->db->affected_rows() > 0) {
+				$this->db->trans_commit();
+				return array(1, "Successfully Updated Employee Request Form for: " . $data['ticket_id']);
+			} else {
+				$this->db->trans_rollback();
+				return array(0, "Error: Could not update data. Please try again.");
+			}
+		}
+	}
+
+	// Kevin: Query supplier request details by ID
 	public function get_customer_req_form_sr_details($id) {
 		$this->db->select('*');
 		$this->db->where('recid', $id);

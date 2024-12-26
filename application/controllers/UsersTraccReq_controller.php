@@ -637,7 +637,7 @@ class UsersTraccReq_controller extends CI_Controller {
 		}
 	}
 
-	// Retrieve customer request form details
+	// Kevin: Render customer request form details
 	public function customer_request_form_rf_details($id) {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -669,6 +669,7 @@ class UsersTraccReq_controller extends CI_Controller {
 		}
 	}
 
+	// Kevin: Render shipping setup details
 	public function customer_request_form_ss_details($id) {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -698,6 +699,7 @@ class UsersTraccReq_controller extends CI_Controller {
 		}
 	}
 
+	// Kevin: Render item request details
 	public function customer_request_form_ir_details($id) {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -731,6 +733,7 @@ class UsersTraccReq_controller extends CI_Controller {
 		}
 	}
 
+	// Kevin: Render employee request details
 	public function customer_request_form_er_details($id) {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
@@ -760,6 +763,37 @@ class UsersTraccReq_controller extends CI_Controller {
 		}
 	}
 
+	public function update_employee_request($id) {	
+		if($this->session->userdata('login_data')) {
+			$process = $this->UsersTraccReq_model->update_er($id);
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->UsersTraccReq_model->get_customer_req_form_er_details($id);
+			$departments_result = $this->Main_model->getDepartment();
+			$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['departments'] = $departments;
+				
+				$this->session->set_flashdata('message', $process[1]);
+
+				redirect("sys/users/details/concern/customer_req_employee_req/" . $id);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	// Kevin: Render supplier request details
 	public function customer_request_form_sr_details($id) {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();

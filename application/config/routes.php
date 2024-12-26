@@ -114,6 +114,8 @@ $route['sys/admin/delete/department/(:any)'] = 'AdminDept_controller/department_
 //
 $route['Main/download_file/(:any)'] = 'Main/download_file/$1';
 
+//
+$route['sys/users/details/concern/customer_req_employee_req/5/update/(:any)'] = 'UsersTraccReq_controller/update_employee_request/$1';
 
 //--- System LOGOUT
 $route['sys/logout'] = 'main/logout';
