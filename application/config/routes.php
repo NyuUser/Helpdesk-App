@@ -21,6 +21,20 @@ $route['sys/users/create/tickets/msrf'] = 'UsersMSRF_controller/users_creation_t
 //clickable link to the details page, msrf
 $route['sys/users/details/concern/msrf/(:any)'] = 'UsersMSRF_controller/service_form_msrf_details/$1';
 
+
+
+$route['sys/users/details/concern/customer_req_form/(:any)'] = 'main/customer_request_form_rf_details/$1';
+
+$route['sys/users/details/concern/customer_req_ship_setup/(:any)'] = 'main/customer_request_form_ss_details/$1';
+
+$route['sys/users/details/concern/customer_req_item_req/(:any)'] = 'main/customer_request_form_ir_details/$1';
+
+$route['sys/users/details/concern/customer_req_employee_req/(:any)'] = 'main/customer_request_form_er_details/$1';
+
+$route['sys/users/details/concern/customer_req_supplier_req/(:any)'] = 'main/customer_request_form_sr_details/$1';
+
+
+
 //--- DATATABLE of USER in TRACC CONCERN
 $route['sys/users/list/tickets/tracc_concern'] = 'UsersTraccCon_controller/service_form_tracc_concern_list';
 //--- TICKET CREATION of USER for TRACC CONCERN
@@ -60,6 +74,11 @@ $route['sys/admin/users'] = 'AdminUsers_controller/admin_users';
 //--- DATATABLE of ADMIN for DEPARTMENTS
 $route['sys/admin/team'] = 'AdminDept_controller/admin_team';
 
+$route['sys/admin/list/ticket/msrf_closed'] = 'AdminMSRF_controller/admin_closed_tickets';
+
+$route['sys/admin/list/ticket/tracc_concerns_closed'] = 'AdminTraccCon_controller/admin_closed_tickets';
+
+$route['sys/admin/list/ticket/tracc_request_closed'] = 'AdminTraccReq_controller/admin_closed_tickets';
 
 //--- ADMIN for PRINT REPORTS
 $route['sys/admin/print'] = 'AdminGenerateReport_controller/admin_print_report';

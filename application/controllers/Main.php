@@ -2969,11 +2969,11 @@ class Main extends CI_Controller {
 		}
 	}
 
-	public function customer_request_form_details($id) {
+	public function customer_request_form_rf_details($id) {
 		if($this->session->userdata('login_data')) {
 			$user_details = $this->Main_model->user_details();
 			$getdepartment = $this->Main_model->GetDepartmentID();
-			$customerReqForm = $this->Main_model->get_customer_req_form_details($id);
+			$customerReqForm = $this->Main_model->get_customer_req_form_rf_details($id);
 			$ticket_numbers = $this->Main_model->get_customer_from_tracc_req_mf_new_add();
 			$form_del_days = $this->Main_model->get_ticket_checkbox_customer_req($id);
 			
@@ -2999,26 +2999,146 @@ class Main extends CI_Controller {
 			redirect("sys/authentication");
 		}
 	}
+
+	public function customer_request_form_ss_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->Main_model->get_customer_req_form_ss_details($id);
+			$ticket_numbers = $this->Main_model->get_customer_shipping_setup_from_tracc_req_mf_new_add();
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['ticket_numbers'] = $ticket_numbers[0];
+				$data['companies'] = explode(',', $customerReqForm[0]['company']);
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/trf_customer_shipping_setup_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	public function customer_request_form_ir_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->Main_model->get_customer_req_form_ir_details($id);
+			$checkboxes = $this->Main_model->get_ticket_checkbox1_item_req_form($id);
+			$checkboxes2 = $this->Main_model->get_ticket_checkbox2_item_req_form($customerReqForm[0]['ticket_id']);
+			$checkboxes3 = $this->Main_model->get_ticket_checkbox3_item_req_form($customerReqForm[0]['ticket_id']);
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['companies'] = explode(',', $customerReqForm[0]['company']);
+				$data['checkboxes'] = $checkboxes;
+				$data['checkboxes2'] = $checkboxes2;
+				$data['checkboxes3'] = $checkboxes3;	
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/trf_item_request_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	public function customer_request_form_er_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->Main_model->get_customer_req_form_er_details($id);
+			$departments_result = $this->Main_model->getDepartment();
+			$departments = ($departments_result[0] == "ok") ? $departments_result[1] : [];
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['departments'] = $departments;
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/trf_employee_request_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	public function customer_request_form_sr_details($id) {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+			$getdepartment = $this->Main_model->GetDepartmentID();
+			$customerReqForm = $this->Main_model->get_customer_req_form_sr_details($id);
+			$checkboxes = $this->Main_model->get_ticket_checkbox_supplier_req_by_ticket_id($customerReqForm[0]['ticket_id']);
+			
+			if ($user_details[0] == "ok") {
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+				$data['getdept'] = $getdepartment[1];
+				$data['reqForm'] = $customerReqForm[0];
+				$data['companies'] = explode(',', $customerReqForm[0]['company']);
+				$data['checkboxes'] = $checkboxes[0];
+
+				$this->load->view('users/header', $data);
+				$this->load->view('users/trf_supplier_request_form_details', $data);
+				$this->load->view('users/footer', $data);
+			} else {
+				$this->session->set_flashdata('error', 'Error fetching user information.');
+				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
 	
 	// Edit function (with Bug)
 	public function user_edit_customer_request_form_pdf($id) {
 		$trf_comp_checkbox_value = isset($_POST['trf_comp_checkbox_value']) ? $_POST['trf_comp_checkbox_value'] : [];
 		$imploded_values = implode(',', $trf_comp_checkbox_value);
 
-		$checkbox_cus_req_form_del = [
-			'checkbox_outright' => isset($_POST['checkbox_outright']) ? 1 : 0,
-			'checkbox_consignment' => isset($_POST['checkbox_consignment']) ? 1 : 0,
-			'checkbox_cus_a_supplier' => isset($_POST['checkbox_cus_a_supplier']) ? 1 : 0,
-			'checkbox_online' => isset($_POST['checkbox_online']) ? 1 : 0,
-			'checkbox_walkIn' => isset($_POST['checkbox_walkIn']) ? 1 : 0,
-			'checkbox_monday' => isset($_POST['checkbox_monday']) ? 1 : 0,
-			'checkbox_tuesday' => isset($_POST['checkbox_tuesday']) ? 1 : 0,
-			'checkbox_wednesday' => isset($_POST['checkbox_wednesday']) ? 1 : 0,
-			'checkbox_thursday' => isset($_POST['checkbox_thursday']) ? 1 : 0,
-			'checkbox_friday' => isset($_POST['checkbox_friday']) ? 1 : 0,
-			'checkbox_saturday' => isset($_POST['checkbox_saturday']) ? 1 : 0,
-			'checkbox_sunday' => isset($_POST['checkbox_sunday']) ? 1 : 0,
-		];
+	// 	$checkbox_cus_req_form_del = [
+	// 		'checkbox_outright' => isset($_POST['checkbox_outright']) ? 1 : 0,
+	// 		'checkbox_consignment' => isset($_POST['checkbox_consignment']) ? 1 : 0,
+	// 		'checkbox_cus_a_supplier' => isset($_POST['checkbox_cus_a_supplier']) ? 1 : 0,
+	// 		'checkbox_online' => isset($_POST['checkbox_online']) ? 1 : 0,
+	// 		'checkbox_walkIn' => isset($_POST['checkbox_walkIn']) ? 1 : 0,
+	// 		'checkbox_monday' => isset($_POST['checkbox_monday']) ? 1 : 0,
+	// 		'checkbox_tuesday' => isset($_POST['checkbox_tuesday']) ? 1 : 0,
+	// 		'checkbox_wednesday' => isset($_POST['checkbox_wednesday']) ? 1 : 0,
+	// 		'checkbox_thursday' => isset($_POST['checkbox_thursday']) ? 1 : 0,
+	// 		'checkbox_friday' => isset($_POST['checkbox_friday']) ? 1 : 0,
+	// 		'checkbox_saturday' => isset($_POST['checkbox_saturday']) ? 1 : 0,
+	// 		'checkbox_sunday' => isset($_POST['checkbox_sunday']) ? 1 : 0,
+	// 	];
 
 		$process = $this->Main_model->edit_customer_request_form_pdf($imploded_values, $checkbox_cus_req_form_del, $id);
 
