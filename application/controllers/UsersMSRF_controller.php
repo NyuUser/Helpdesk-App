@@ -63,7 +63,7 @@ class UsersMSRF_controller extends CI_Controller {
 
 			$data['msrfNumber'] = $msrfNumber; 
 			$this->load->view('users/header', $data); 
-			$this->load->view('users/service_request_form_msrf_list', $data); 
+			$this->load->view('users/users_MSRF/service_request_form_msrf_list', $data); 
 			$this->load->view('users/footer', $data); 
 	
 		} else { 
@@ -107,7 +107,7 @@ class UsersMSRF_controller extends CI_Controller {
 			$data['get_department'] = $get_department;              
 
 			$this->load->view('users/header', $data);
-			$this->load->view('users/service_request_form_msrf_creation', $data);
+			$this->load->view('users/users_MSRF/service_request_form_msrf_creation', $data);
 			$this->load->view('users/footer');
 	
 		} else {
@@ -157,7 +157,7 @@ class UsersMSRF_controller extends CI_Controller {
 				$data['msrf'] = $getMsrf[1];
 
 				$this->load->view('users/header', $data);
-				$this->load->view('users/service_request_form_msrf_details', $data);
+				$this->load->view('users/users_MSRF/service_request_form_msrf_details', $data);
 				$this->load->view('users/footer', $data);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');

@@ -87,7 +87,7 @@ class UsersTraccCon_controller extends CI_Controller {
 			$data['get_department'] = $get_department;  
 
 			$this->load->view('users/header', $data);  
-			$this->load->view('users/tracc_concern_form_creation', $data);  
+			$this->load->view('users/users_TRC/tracc_concern_form_creation', $data);  
 			$this->load->view('users/footer');  
 		} else {
 			// Check if file is uploaded
@@ -146,7 +146,7 @@ class UsersTraccCon_controller extends CI_Controller {
 				}
 				// Load the views and pass the data
 				$this->load->view('users/header', $data);
-				$this->load->view('users/tracc_concern_form_details', $data);
+				$this->load->view('users/users_TRC/tracc_concern_form_details', $data);
 				$this->load->view('users/footer', $data);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -182,7 +182,7 @@ class UsersTraccCon_controller extends CI_Controller {
 						'tcr_details' => $this->input->post('concern', true)
 					];
 	
-					$update_process = $this->Main_model->update_tracc_concern($control_number, $edit_data);
+					$update_process = $this->UsersTraccCon_model->update_tracc_concern($control_number, $edit_data);
 	
 					if ($update_process[0] == 1) {
 						$this->session->set_flashdata('success', 'Data updated successfully.');
@@ -198,7 +198,7 @@ class UsersTraccCon_controller extends CI_Controller {
 						'ack_as_resolved_date' => $this->input->post('ack_as_res_date', true)
 					];
 	
-					$acknowledge_process = $this->Main_model->AcknolwedgeAsResolved($control_number, $acknowledge_data);
+					$acknowledge_process = $this->UsersTraccCon_model->AcknolwedgeAsResolved($control_number, $acknowledge_data);
 	
 					if ($acknowledge_process[0] == 1) {
 						$this->session->set_flashdata('success', 'Ticket successfully acknowledged as resolved.');

@@ -12,7 +12,7 @@
         // print_r($status_tcf);
         // die();
 
-        if(($status_tcf === "In Progress" || $status_tcf === 'Approved' || $status_tcf === 'Done' || $status_tcf === 'Open')) {
+        if(($status_tcf === "In Progress" || $status_tcf === 'Approved' || $status_tcf === 'Done' || $status_tcf === 'Open' || $status_tcf === 'Rejected')) {
             // echo "try";
             // die();
             $disabled = "disabled";
@@ -306,7 +306,7 @@
                                                 <div class="form-group">
                                                     <div class="box-body pad">
                                                         <button type="submit" class="btn btn-primary" name="edit" <?=$disabled?>>Update Changes</button>
-                                                        <button type="submit" class="btn btn-success" name="acknowledge" onclick="setAcknowledgeFieldsRequired(); document.querySelector('[name=action]').value='acknowledge';" <?= $status_tcf === 'Open' ? 'disabled' : '' ?>>Acknowledge as Resolved</button>
+                                                        <button type="submit" class="btn btn-success" name="acknowledge" onclick="setAcknowledgeFieldsRequired(); document.querySelector('[name=action]').value='acknowledge';" <?= ($status_tcf === 'Open' || $status_tcf === 'Rejected') ? 'disabled' : '' ?>>Acknowledge as Resolved</button>
                                                     </div>
                                                 </div>
                                             </div>

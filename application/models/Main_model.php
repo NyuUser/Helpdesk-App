@@ -943,40 +943,40 @@ class Main_model extends CI_Model {
 		}
 	}
 
-	public function AcknolwedgeAsResolved($control_number){
-		$user_id = $this->session->userdata('login_data')['user_id'];
-		$ack_resolved = $this->input->post('ack_as_res_by', true);
-		$ack_resolved_date = $this->input->post('ack_as_res_date', true);
+	// public function AcknolwedgeAsResolved($control_number){
+	// 	$user_id = $this->session->userdata('login_data')['user_id'];
+	// 	$ack_resolved = $this->input->post('ack_as_res_by', true);
+	// 	$ack_resolved_date = $this->input->post('ack_as_res_date', true);
 
-		$data = array(
-			'ack_as_resolved' => $ack_resolved,
-			'ack_as_resolved_date' => $ack_resolved_date,
-			'status' => 'Resolved'
-		);
+	// 	$data = array(
+	// 		'ack_as_resolved' => $ack_resolved,
+	// 		'ack_as_resolved_date' => $ack_resolved_date,
+	// 		'status' => 'Resolved'
+	// 	);
 
-		$this->db->where('control_number', $control_number);
-		$this->db->update('service_request_tracc_concern', $data);
+	// 	$this->db->where('control_number', $control_number);
+	// 	$this->db->update('service_request_tracc_concern', $data);
 
-		if ($this->db->affected_rows() > 0) {
-			$this->session->set_flashdata('success', 'Ticket acknolwedge as resolved.');
-		} else {
-			$this->session->set_flashdata('error', 'Error acknowledging ticket as resolved.');
-		}
+	// 	if ($this->db->affected_rows() > 0) {
+	// 		$this->session->set_flashdata('success', 'Ticket acknolwedge as resolved.');
+	// 	} else {
+	// 		$this->session->set_flashdata('error', 'Error acknowledging ticket as resolved.');
+	// 	}
 
-		redirect(base_url(). "sys/users/list/tickets/tracc_concern");
+	// 	redirect(base_url(). "sys/users/list/tickets/tracc_concern");
 
-	}
+	// }
 
-	public function update_tracc_concern($control_number, $data){
-		$this->db->where('control_number', $control_number);
-		$this->db->update('service_request_tracc_concern', $data);
+	// public function update_tracc_concern($control_number, $data){
+	// 	$this->db->where('control_number', $control_number);
+	// 	$this->db->update('service_request_tracc_concern', $data);
 
-		if ($this->db->affected_rows() > 0) {
-			return [1, "Data updated successfully"];
-		} else {
-			return [0, "No changes were made or update failed"];
-		}
-	}
+	// 	if ($this->db->affected_rows() > 0) {
+	// 		return [1, "Data updated successfully"];
+	// 	} else {
+	// 		return [0, "No changes were made or update failed"];
+	// 	}
+	// }
 
 	public function UpdateTraccReq($trf_number, $date_need, $complete_details, $selected_companies){
 		$user_id = $this->session->userdata('login_data')['user_id'];

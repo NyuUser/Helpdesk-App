@@ -48,6 +48,17 @@ $route['sys/users/create/tickets/trf_item_request_form'] = 'UsersTraccReq_contro
 //---
 $route['sys/users/create/tickets/trf_supplier_request_form_tms'] = 'UsersTraccReq_controller/user_creation_tickets_supplier_request_form_tms';
 
+//--- DETAILS FORM of USER for TRACC REQUEST FORM PDF
+$route['sys/users/details/concern/customer_req_form/(:any)'] = 'UsersTraccReq_controller/customer_request_form_rf_details/$1';
+
+$route['sys/users/details/concern/customer_req_ship_setup/(:any)'] = 'UsersTraccReq_controller/customer_request_form_ss_details/$1';
+
+$route['sys/users/details/concern/customer_req_item_req/(:any)'] = 'UsersTraccReq_controller/customer_request_form_ir_details/$1';
+
+$route['sys/users/details/concern/customer_req_employee_req/(:any)'] = 'UsersTraccReq_controller/customer_request_form_er_details/$1';
+
+$route['sys/users/details/concern/customer_req_supplier_req/(:any)'] = 'UsersTraccReq_controller/customer_request_form_sr_details/$1';
+
 
 //--- ADMIN ROUTES ---//
 //--- DATATABLE of ADMIN for MSRF
@@ -102,17 +113,6 @@ $route['sys/admin/delete/department/(:any)'] = 'AdminDept_controller/department_
 
 //
 $route['Main/download_file/(:any)'] = 'Main/download_file/$1';
-
-
-$route['sys/users/details/concern/customer_req_form/(:any)'] = 'UsersTraccReq_controller/customer_request_form_rf_details/$1';
-
-$route['sys/users/details/concern/customer_req_ship_setup/(:any)'] = 'UsersTraccReq_controller/customer_request_form_ss_details/$1';
-
-$route['sys/users/details/concern/customer_req_item_req/(:any)'] = 'UsersTraccReq_controller/customer_request_form_ir_details/$1';
-
-$route['sys/users/details/concern/customer_req_employee_req/(:any)'] = 'UsersTraccReq_controller/customer_request_form_er_details/$1';
-
-$route['sys/users/details/concern/customer_req_supplier_req/(:any)'] = 'UsersTraccReq_controller/customer_request_form_sr_details/$1';
 
 
 //--- System LOGOUT

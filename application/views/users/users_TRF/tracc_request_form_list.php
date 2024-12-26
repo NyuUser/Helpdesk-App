@@ -1,29 +1,29 @@
 <style>
 
-.alert {
-    margin-bottom: -20px;
-}
+    .alert {
+        margin-bottom: -20px;
+    }
 
-.alert-content {
-    background: #9a1b1e;
-    color: white;
-    padding: 5px;
-    padding-top: 0.5px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-radius: 4px;
-    animation: animation 0.7s forwards;
-}
+    .alert-content {
+        background: #9a1b1e;
+        color: white;
+        padding: 5px;
+        padding-top: 0.5px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 4px;
+        animation: animation 0.7s forwards;
+    }
 
-@keyframes animation {
-    20% {box-shadow: 0px 0px 2px 5px #9a1b1e}
-    80% {box-shadow: 0px 0px 2px 5px #9a1b1e}
-    100% {box-shadow: 0px 0px 0px 0px #9a1b1e}
-}
+    @keyframes animation {
+        20% {box-shadow: 0px 0px 2px 5px #9a1b1e}
+        80% {box-shadow: 0px 0px 2px 5px #9a1b1e}
+        100% {box-shadow: 0px 0px 0px 0px #9a1b1e}
+    }
 
-.alert-content li {
-    font-size: 18px;
-}
+    .alert-content li {
+        font-size: 18px;
+    }
 
 </style>
 
