@@ -123,7 +123,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/user_creation_tickets_tracc_request'); ?>" method="POST" enctype="multipart/form-data">
+                                        <form action="<?= site_url('UsersTraccReq_controller/user_creation_tickets_tracc_request'); ?>" method="POST" enctype="multipart/form-data">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
                                                     <!-- -->

@@ -58,7 +58,7 @@
                             <div class="tab-pane active" id="tracc_concern">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/acknowledge_as_resolved'); ?>" method="POST">
+                                        <form action="<?= site_url('UsersTraccCon_controller/acknowledge_as_resolved'); ?>" method="POST">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>Control Number</label>

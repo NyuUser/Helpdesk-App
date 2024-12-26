@@ -160,7 +160,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('Main/update_status_tracc_request'); ?>" method="POST">
+                                        <form action="<?= site_url('UsersTraccReq_controller/update_status_tracc_request'); ?>" method="POST">
                                             <div class="col-md-12">
 			                    				<div class="form-group">
 			                    					<label>TRF#</label>

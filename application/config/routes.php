@@ -14,39 +14,38 @@ $route['sys/users/dashboard'] = 'main/users_dashboard';
 
 
 //--- USER ROUTES ---//
+//--- DATATABLE of USER in MSRF
+$route['sys/users/list/tickets/msrf'] = 'UsersMSRF_controller/service_form_msrf_list';
+//--- TICKET CREATION of USER for MSRF
+$route['sys/users/create/tickets/msrf'] = 'UsersMSRF_controller/users_creation_tickets_msrf';
 //clickable link to the details page, msrf
-$route['sys/users/details/concern/msrf/(:any)'] = 'main/service_form_msrf_details/$1';
-//clickable link to the details page, tracc concern
-$route['sys/users/details/concern/tracc_concern/(:any)'] = 'main/tracc_concern_form_details/$1';
-//clickable link to the details page, tracc request
-$route['sys/users/details/concern/tracc_request/(:any)'] = 'main/tracc_request_form_details/$1';
-
-$route['sys/users/details/concern/customer_req/(:any)'] = 'main/customer_request_form_details/$1';
+$route['sys/users/details/concern/msrf/(:any)'] = 'UsersMSRF_controller/service_form_msrf_details/$1';
 
 //--- DATATABLE of USER in TRACC CONCERN
-$route['sys/users/list/tickets/tracc_concern'] = 'main/service_form_tracc_concern_list';
+$route['sys/users/list/tickets/tracc_concern'] = 'UsersTraccCon_controller/service_form_tracc_concern_list';
 //--- TICKET CREATION of USER for TRACC CONCERN
-$route['sys/users/create/tickets/tracc_concern'] = 'main/user_creation_tickets_tracc_concern';
-//--- DATATABLE of USER in MSRF
-$route['sys/users/list/tickets/msrf'] = 'main/service_form_msrf_list';
-//--- TICKET CREATION of USER for MSRF
-$route['sys/users/create/tickets/msrf'] = 'main/users_creation_tickets_msrf';
+$route['sys/users/create/tickets/tracc_concern'] = 'UsersTraccCon_controller/user_creation_tickets_tracc_concern';
+//clickable link to the details page, tracc concern
+$route['sys/users/details/concern/tracc_concern/(:any)'] = 'UsersTraccCon_controller/tracc_concern_form_details/$1';
+
 //--- DATATABLE of USER in TRACC REQUEST FORM
-$route['sys/users/list/tickets/tracc_request'] = 'main/service_form_tracc_request_list';
+$route['sys/users/list/tickets/tracc_request'] = 'UsersTraccReq_controller/service_form_tracc_request_list';
 //--- TICKET CREATION of USER for TRACC REQUEST
-$route['sys/users/create/tickets/tracc_request'] = 'main/user_creation_tickets_tracc_request';
+$route['sys/users/create/tickets/tracc_request'] = 'UsersTraccReq_controller/user_creation_tickets_tracc_request';
+//clickable link to the details page, tracc request
+$route['sys/users/details/concern/tracc_request/(:any)'] = 'UsersTraccReq_controller/tracc_request_form_details/$1';
 
 
 //--- FORM CREATION of USER for TRACC REQUEST FORM PDF
-$route['sys/users/create/tickets/trf_customer_request_form_tms'] = 'main/user_creation_tickets_customer_request_forms_tms';
+$route['sys/users/create/tickets/trf_customer_request_form_tms'] = 'UsersTraccReq_controller/user_creation_tickets_customer_request_forms_tms';
 //--- 
-$route['sys/users/create/tickets/trf_customer_shipping_setup'] = 'main/user_creation_tickets_customer_shipping_setup';
+$route['sys/users/create/tickets/trf_customer_shipping_setup'] = 'UsersTraccReq_controller/user_creation_tickets_customer_shipping_setup';
 //--- 
-$route['sys/users/create/tickets/trf_employee_request_form'] = 'main/user_creation_tickets_employee_request_form';
+$route['sys/users/create/tickets/trf_employee_request_form'] = 'UsersTraccReq_controller/user_creation_tickets_employee_request_form';
 //---
-$route['sys/users/create/tickets/trf_item_request_form'] = 'main/user_creation_tickets_item_request_form';
+$route['sys/users/create/tickets/trf_item_request_form'] = 'UsersTraccReq_controller/user_creation_tickets_item_request_form';
 //---
-$route['sys/users/create/tickets/trf_supplier_request_form_tms'] = 'main/user_creation_tickets_supplier_request_form_tms';
+$route['sys/users/create/tickets/trf_supplier_request_form_tms'] = 'UsersTraccReq_controller/user_creation_tickets_supplier_request_form_tms';
 
 
 //--- ADMIN ROUTES ---//
@@ -66,7 +65,7 @@ $route['sys/admin/team'] = 'AdminDept_controller/admin_team';
 $route['sys/admin/print'] = 'AdminGenerateReport_controller/admin_print_report';
 
 
-//--- PDF REPORTS VIEWING ---//
+//--- PDF REPORTS VIEWING ADMIN ---//
 $route['sys/admin/customer_request_form_pdf'] = 'main/customer_request_form_pdf_view';
 $route['sys/admin/customer_shipping_setup_pdf'] = 'main/customer_shipping_setup_pdf_view';
 $route['sys/admin/employee_request_form_pdf'] = 'main/employee_request_form_pdf_view';
@@ -100,6 +99,8 @@ $route['Main/download_file/(:any)'] = 'Main/download_file/$1';
 //--- System LOGOUT
 $route['sys/logout'] = 'main/logout';
 
+
+$route['sys/users/details/concern/customer_req/(:any)'] = 'main/customer_request_form_details/$1';
 
 $route['default_controller'] = 'main/login';
 $route['404_override'] = '';
