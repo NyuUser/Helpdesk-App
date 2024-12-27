@@ -295,38 +295,6 @@ class Main extends CI_Controller {
 		}
 	}
 
-	// Users Dashboard
-	public function users_dashboard() {
-		if($this->session->userdata('login_data')) {
-			$user_details = $this->Main_model->user_details();
-			$getdepartment = $this->Main_model->GetDepartmentID();
-			$msrfTickets = $this->Main_model->get_msrf($user_details[1]['recid']);
-			$traccConcerns = $this->Main_model->get_tracc_concerns($user_details[1]['recid']);
-			$traccRequests = $this->Main_model->get_tracc_requests($user_details[1]['recid']);
-			$name = $user_details[1]['fname'] . ' ' . $user_details[1]['mname'] . ' ' . $user_details[1]['lname'];
-
-			if ($user_details[0] == "ok") {
-				$sid = $this->session->session_id;
-				$data['user_details'] = $user_details[1];
-				$data['getdept'] = $getdepartment[1];
-				$data['msrf'] = $msrfTickets;
-				$data['concerns'] = $traccConcerns;
-				$data['requests'] = $traccRequests;
-
-				$this->load->view('users/header', $data);
-				$this->load->view('users/dashboard', $data);
-				$this->load->view('users/footer', $data);
-			} else {
-				$this->session->set_flashdata('error', 'Error fetching user information.');
-				redirect("sys/authentication");
-			}
-		} else {
-			$this->session->sess_destroy();
-        	$this->session->set_flashdata('error', 'Session expired. Please login again.');
-			redirect("sys/authentication");
-		}
-	}
-
 	public function SendEmail() {
 		// function email
 	}
@@ -1009,36 +977,36 @@ class Main extends CI_Controller {
 		}
 	}
 
-	public function customer_request_form_rf_details($id) {
-		if($this->session->userdata('login_data')) {
-			$user_details = $this->Main_model->user_details();
-			$getdepartment = $this->Main_model->GetDepartmentID();
-			$customerReqForm = $this->Main_model->get_customer_req_form_rf_details($id);
-			$ticket_numbers = $this->UsersTraccReq_model->get_customer_from_tracc_req_details();
-			$form_del_days = $this->Main_model->get_ticket_checkbox_customer_req($id);
+	// public function customer_request_form_rf_details($id) {
+	// 	if($this->session->userdata('login_data')) {
+	// 		$user_details = $this->Main_model->user_details();
+	// 		$getdepartment = $this->Main_model->GetDepartmentID();
+	// 		$customerReqForm = $this->Main_model->get_customer_req_form_rf_details($id);
+	// 		$ticket_numbers = $this->UsersTraccReq_model->get_customer_from_tracc_req_details();
+	// 		$form_del_days = $this->Main_model->get_ticket_checkbox_customer_req($id);
 			
-			if ($user_details[0] == "ok") {
-				$sid = $this->session->session_id;
-				$data['user_details'] = $user_details[1];
-				$data['getdept'] = $getdepartment[1];
-				$data['reqForm'] = $customerReqForm[0];
-				$data['ticket_numbers'] = $ticket_numbers[0];
-				$data['companies'] = explode(',', $customerReqForm[0]['company']);
-				$data['del_days'] = $form_del_days;
+	// 		if ($user_details[0] == "ok") {
+	// 			$sid = $this->session->session_id;
+	// 			$data['user_details'] = $user_details[1];
+	// 			$data['getdept'] = $getdepartment[1];
+	// 			$data['reqForm'] = $customerReqForm[0];
+	// 			$data['ticket_numbers'] = $ticket_numbers[0];
+	// 			$data['companies'] = explode(',', $customerReqForm[0]['company']);
+	// 			$data['del_days'] = $form_del_days;
 
-				$this->load->view('users/header', $data);
-				$this->load->view('users/trf_customer_request_form_details', $data);
-				$this->load->view('users/footer', $data);
-			} else {
-				$this->session->set_flashdata('error', 'Error fetching user information.');
-				redirect("sys/authentication");
-			}
-		} else {
-			$this->session->sess_destroy();
-			$this->session->set_flashdata('error', 'Session expired. Please login again.');
-			redirect("sys/authentication");
-		}
-	}
+	// 			$this->load->view('users/header', $data);
+	// 			$this->load->view('users/trf_customer_request_form_details', $data);
+	// 			$this->load->view('users/footer', $data);
+	// 		} else {
+	// 			$this->session->set_flashdata('error', 'Error fetching user information.');
+	// 			redirect("sys/authentication");
+	// 		}
+	// 	} else {
+	// 		$this->session->sess_destroy();
+	// 		$this->session->set_flashdata('error', 'Session expired. Please login again.');
+	// 		redirect("sys/authentication");
+	// 	}
+	// }
 
 	public function customer_request_form_ss_details($id) {
 		if($this->session->userdata('login_data')) {
@@ -1295,29 +1263,4 @@ class Main extends CI_Controller {
 		}
 	}
 
-	// Edit function (with Bug)
-	public function user_edit_customer_request_form_pdf($id) {
-		$trf_comp_checkbox_value = isset($_POST['trf_comp_checkbox_value']) ? $_POST['trf_comp_checkbox_value'] : [];
-		$imploded_values = implode(',', $trf_comp_checkbox_value);
-
-	// 	$checkbox_cus_req_form_del = [
-	// 		'checkbox_outright' => isset($_POST['checkbox_outright']) ? 1 : 0,
-	// 		'checkbox_consignment' => isset($_POST['checkbox_consignment']) ? 1 : 0,
-	// 		'checkbox_cus_a_supplier' => isset($_POST['checkbox_cus_a_supplier']) ? 1 : 0,
-	// 		'checkbox_online' => isset($_POST['checkbox_online']) ? 1 : 0,
-	// 		'checkbox_walkIn' => isset($_POST['checkbox_walkIn']) ? 1 : 0,
-	// 		'checkbox_monday' => isset($_POST['checkbox_monday']) ? 1 : 0,
-	// 		'checkbox_tuesday' => isset($_POST['checkbox_tuesday']) ? 1 : 0,
-	// 		'checkbox_wednesday' => isset($_POST['checkbox_wednesday']) ? 1 : 0,
-	// 		'checkbox_thursday' => isset($_POST['checkbox_thursday']) ? 1 : 0,
-	// 		'checkbox_friday' => isset($_POST['checkbox_friday']) ? 1 : 0,
-	// 		'checkbox_saturday' => isset($_POST['checkbox_saturday']) ? 1 : 0,
-	// 		'checkbox_sunday' => isset($_POST['checkbox_sunday']) ? 1 : 0,
-	// 	];
-
-		$process = $this->Main_model->edit_customer_request_form_pdf($imploded_values, $checkbox_cus_req_form_del, $id);
-
-		$this->session->set_flashdata('editTR', $process[1]);
-		redirect(base_url() . 'sys/users/dashboard');
-	}
 }

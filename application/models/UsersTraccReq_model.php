@@ -612,5 +612,142 @@ class UsersTraccReq_model extends CI_Model {
 		$query = $this->db->get('tracc_req_supplier_req_form');
 		return $query->result_array();
 	}
+
+	// Edit function for customer request form
+	// public function edit_customer_request_form_pdf($id, $selected_companies, $date, $customer_code, $tin_no, $customer_name, $terms, $customer_address, $contact_person, $pricelist, $office_tel_no, $payment_group, $contact_no, $territory, $salesman, $business_style, $email, $shipping_code, $route_code, $customer_shipping_address, $landmark, $window_time_start, $window_time_end, $special_instruction) {
+	// 	$qry = $this->db->query('SELECT * FROM tracc_req_customer_req_form WHERE recid = ?', [$id]);
+
+	// 	if ($qry->num_rows() > 0){
+	// 		$row = $qry->row();
+
+	// 		$this->db->set('date', $date);
+	// 		$this->db->set('customer_code', $customer_code);
+	// 		$this->db->set('tin_no', $tin_no);
+	// 		$this->db->set('terms', $terms);
+	// 		$this->db->set('customer_address', $customer_address);
+	// 		$this->db->set('contact_person', $contact_person);
+	// 		$this->db->set('office_tel_no', $office_tel_no);
+	// 		$this->db->set('pricelist', $pricelist);
+	// 		$this->db->set('payment_group', $payment_group);
+	// 		$this->db->set('contact_no', $contact_no);
+	// 		$this->db->set('territory', $territory);
+	// 		$this->db->set('salesman', $salesman);
+	// 		$this->db->set('business_style', $business_style);
+	// 		$this->db->set('email', $email);
+	// 		$this->db->set('shipping_code', $shipping_code);
+	// 		$this->db->set('route_code', $route_code);
+	// 		$this->db->set('customer_shipping_address', $customer_shipping_address);
+	// 		$this->db->set('landmark', $landmark);
+	// 		$this->db->set('window_time_start', $window_time_start);
+	// 		$this->db->set('window_time_end', $window_time_end);
+	// 		$this->db->set('special_instruction', $special_instruction);
+
+	// 		if (!empty($selected_companies)) {
+	// 			$this->db->set('company', implode(',', $selected_companies));
+	// 		} else {
+	// 			$this->db->set('company', null); // Clear the value if no checkbox is selected
+	// 		}
+
+	// 		$this->db->where('recid', $id);
+	// 		$this->db->update('tracc_req_customer_req_form');
+
+	// 		if ($this->db->affected_rows() > 0) {
+	// 			$this->db->trans_commit();
+	// 			return array(1, "Successfully Updating Tickets: " . $id);
+	// 		} else {
+	// 			$this->db->trans_rollback();
+	// 			return array(0, "Successfully Updating Tickets: " . $id);
+	// 		}
+	// 	} else {
+	// 		return array(0, "Service request not found for ticket: " . $id);
+	// 	}
+	// }
+
+	// public function edit_customer_request_form_pdf_del_days($id, $del_days){
+	// 	$qry = $this->db->get_where('tracc_req_customer_req_form_del_days', ['recid' => $id]);
+
+	// 	if ($qry->num_rows() > 0) {
+	// 		$this->db->where('recid', $id);
+	// 		$this->db->update('tracc_req_customer_req_form_del_days', $del_days);
+
+	// 		if ($this->db->affected_rows() > 0) {
+	// 			$this->db->trans_commit();
+	// 			return array(1, "Successfully Updating Tickets: " . $id);
+	// 		} else {
+	// 			$this->db->trans_rollback();
+	// 			return array(0, "Successfully Updating Tickets: " . $id);
+	// 		}
+	// 	} else {
+	// 		return [0, "No existing 'New/Add' data found for ticket: " . $trf_number];
+	// 	}
+	// }
+
+	public function edit_customer_request_form_pdf($id, $selected_companies, $date, $customer_code, $tin_no, $customer_name, $terms, $customer_address, $contact_person, $pricelist, $office_tel_no, $payment_group, $contact_no, $territory, $salesman, $business_style, $email, $shipping_code, $route_code, $customer_shipping_address, $landmark, $window_time_start, $window_time_end, $special_instruction, $del_days) {
+		// Start transaction
+		$this->db->trans_start();
+	
+		// Update customer request form
+		$qry = $this->db->get_where('tracc_req_customer_req_form', ['recid' => $id]);
+		
+		if ($qry->num_rows() > 0) {
+			$this->db->set('date', $date);
+			$this->db->set('customer_code', $customer_code);
+			$this->db->set('tin_no', $tin_no);
+			$this->db->set('terms', $terms);
+			$this->db->set('customer_address', $customer_address);
+			$this->db->set('contact_person', $contact_person);
+			$this->db->set('office_tel_no', $office_tel_no);
+			$this->db->set('pricelist', $pricelist);
+			$this->db->set('payment_group', $payment_group);
+			$this->db->set('contact_no', $contact_no);
+			$this->db->set('territory', $territory);
+			$this->db->set('salesman', $salesman);
+			$this->db->set('business_style', $business_style);
+			$this->db->set('email', $email);
+			$this->db->set('shipping_code', $shipping_code);
+			$this->db->set('route_code', $route_code);
+			$this->db->set('customer_shipping_address', $customer_shipping_address);
+			$this->db->set('landmark', $landmark);
+			$this->db->set('window_time_start', $window_time_start);
+			$this->db->set('window_time_end', $window_time_end);
+			$this->db->set('special_instruction', $special_instruction);
+	
+			// Handle selected companies
+			if (!empty($selected_companies)) {
+				$this->db->set('company', implode(',', $selected_companies));
+			} else {
+				$this->db->set('company', null); // Clear the value if no checkbox is selected
+			}
+	
+			$this->db->where('recid', $id);
+			$this->db->update('tracc_req_customer_req_form');
+		} else {
+			// If no record found for the customer request form
+			$this->db->trans_rollback();
+			return array(0, "Service request not found for ticket: " . $id);
+		}
+	
+		// Update delivery days
+		$qry_del_days = $this->db->get_where('tracc_req_customer_req_form_del_days', ['recid' => $id]);
+		
+		if ($qry_del_days->num_rows() > 0) {
+			$this->db->where('recid', $id);
+			$this->db->update('tracc_req_customer_req_form_del_days', $del_days);
+		} else {
+			// If no record found for the delivery days
+			$this->db->trans_rollback();
+			return array(0, "No existing 'New/Add' data found for ticket: " . $id);
+		}
+	
+		// Commit the transaction if both updates are successful
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			return array(0, "Error updating ticket: " . $id);
+		} else {
+			$this->db->trans_commit();
+			return array(1, "Successfully updated ticket: " . $id);
+		}
+	}
+	
 }
 ?>
