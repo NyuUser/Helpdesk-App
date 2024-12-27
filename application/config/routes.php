@@ -119,6 +119,8 @@ $route['sys/users/details/concern/customer_req_employee_req/update/(:any)'] = 'U
 
 $route['sys/users/details/concern/customer_req_supplier_req/update/(:any)'] = 'UsersTraccReq_controller/update_supplier_request/$1';
 
+$route['sys/users/details/concern/customer_req_shipping_setup/update/(:any)'] = 'UsersTraccReq_controller/update_shipping_setup/$1';
+
 //--- System LOGOUT
 $route['sys/logout'] = 'main/logout';
 

@@ -546,6 +546,47 @@ class UsersTraccReq_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function update_ss($id, $css_comp_checkbox_values = null, $checkbox_cus_ship_setup) {
+		$trf_number = $this->input->post('trf_number', true);
+	
+		$data = array(
+			'ticket_id'                                 => $trf_number,
+			'requested_by'                              => $this->input->post('requested_by', true),
+			'shipping_code'                             => $this->input->post('shipping_code', true),
+			'route_code'                                => $this->input->post('route_code', true),
+			'customer_address'                          => $this->input->post('customer_address', true),
+			'landmark'                                  => $this->input->post('landmark', true),
+			'window_time_start'                         => $this->input->post('window_time_start', true),
+			'window_time_end'                           => $this->input->post('window_time_end', true),
+			'special_instruction'                       => $this->input->post('special_instruction', true),
+			'created_at'                                => date("Y-m-d H:i:s"),
+		);
+
+		if ($css_comp_checkbox_values !== null) {
+			$data['company'] = $css_comp_checkbox_values;
+		}
+	
+		$data['monday'] = isset($checkbox_cus_ship_setup['checkbox_monday']) ? $checkbox_cus_ship_setup['checkbox_monday'] : 0;
+		$data['tuesday'] = isset($checkbox_cus_ship_setup['checkbox_tuesday']) ? $checkbox_cus_ship_setup['checkbox_tuesday'] : 0;
+		$data['wednesday'] = isset($checkbox_cus_ship_setup['checkbox_wednesday']) ? $checkbox_cus_ship_setup['checkbox_wednesday'] : 0;
+		$data['thursday'] = isset($checkbox_cus_ship_setup['checkbox_thursday']) ? $checkbox_cus_ship_setup['checkbox_thursday'] : 0;
+		$data['friday'] = isset($checkbox_cus_ship_setup['checkbox_friday']) ? $checkbox_cus_ship_setup['checkbox_friday'] : 0;
+		$data['saturday'] = isset($checkbox_cus_ship_setup['checkbox_saturday']) ? $checkbox_cus_ship_setup['checkbox_saturday'] : 0;
+		$data['sunday'] = isset($checkbox_cus_ship_setup['checkbox_sunday']) ? $checkbox_cus_ship_setup['checkbox_sunday'] : 0;
+	
+		$this->db->trans_begin();
+	
+		$this->db->update('tracc_req_customer_ship_setup', $data, ['recid' => $id]);
+	
+		if ($this->db->affected_rows() > 0) {
+			$this->db->trans_commit();
+			return array(1, "Successfully Edited Customer Shipping Setup for: " . $data['ticket_id']);
+		} else {
+			$this->db->trans_rollback();
+			return array(0, "Error: Could not edit data.");
+		}
+	}
+
 	// Kevin: Query item request details by ID
 	public function get_customer_req_form_ir_details($id) {
 		$this->db->select('*');
