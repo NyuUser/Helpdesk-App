@@ -71,11 +71,11 @@ $route['sys/admin/list/ticket/tracc_request'] = 'AdminTraccReq_controller/admin_
 $route['sys/admin/users'] = 'AdminUsers_controller/admin_users';
 //--- DATATABLE of ADMIN for DEPARTMENTS
 $route['sys/admin/team'] = 'AdminDept_controller/admin_team';
-
+//--- DATATABLE of ADMIN for MSRF Closed Ticket
 $route['sys/admin/list/ticket/msrf_closed'] = 'AdminMSRF_controller/admin_closed_tickets';
-
+//--- DATATABLE of ADMIN for Tracc Concern Closed Ticket
 $route['sys/admin/list/ticket/tracc_concerns_closed'] = 'AdminTraccCon_controller/admin_closed_tickets';
-
+//--- DATATABLE of ADMIN for Tracc Request Closed Ticket
 $route['sys/admin/list/ticket/tracc_request_closed'] = 'AdminTraccReq_controller/admin_closed_tickets';
 
 //--- ADMIN for PRINT REPORTS

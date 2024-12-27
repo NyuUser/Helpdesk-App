@@ -26,7 +26,6 @@
                                     <th>Subject</th>
                                     <th>Priority</th>
                                     <th>Status</th>
-                                    <th>Dept. Head Approval Status</th>
                                     <th>ICT Approval Status</th>
                                 </tr>
                             </thead>
@@ -56,7 +55,6 @@ $(document).ready(function() {
             { "data": "subject" },
             { "data": "priority" },
             { "data": "status" },
-            { "data": "approval_status" },
             { "data": "it_approval_status" }
         ],
         "responsive": true,

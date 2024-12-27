@@ -26,7 +26,6 @@
                                     <th>Subject</th>
                                     <th>Priority</th>
                                     <th>Status</th>
-                                    <th>Dept. Head Approval Status</th>
                                     <th>ICT Approval Status</th>
                                     <th>Resolved Date</th>
                                 </tr>
@@ -57,7 +56,6 @@ $(document).ready(function() {
             { "data": "subject" },
             { "data": "priority" },
             { "data": "status" },
-            { "data": "approval_status" },
             { "data": "it_approval_status" },
             { "data": "resolved_date",
                 "render": function(data, type, row) {

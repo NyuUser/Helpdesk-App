@@ -1895,7 +1895,6 @@ class DataTables extends CI_Controller {
                     $label_class = 'label-primary';
                     break;
                 case 'In Progress':
-                case 'On going':
                     $label_class = 'label-warning';
                     break;
                 case 'Resolved':
@@ -1906,9 +1905,6 @@ class DataTables extends CI_Controller {
                     break;
                 case 'Rejected':
                     $label_class = 'label-danger';
-                    break;
-                case 'On Going':
-                    $label_class = 'label-success';
                     break;
                 case 'Approved':
                     $label_class = 'label-success';
@@ -2132,7 +2128,7 @@ class DataTables extends CI_Controller {
         if (!empty($search)) {
             $this->db->group_start();
             $this->db->like('ticket_id', $search);
-            $this->db->or_like('requested_id', $search);
+            $this->db->or_like('requested_by', $search);
             $this->db->or_like('priority', $search);
             $this->db->or_like('approval_status', $search);
             $this->db->group_end();
@@ -2152,7 +2148,6 @@ class DataTables extends CI_Controller {
                     $label_class = 'label-primary';
                     break;
                 case 'In Progress':
-                case 'On going':
                     $label_class = 'label-warning';
                     break;
                 case 'Resolved':
