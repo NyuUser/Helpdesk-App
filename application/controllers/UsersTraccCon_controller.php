@@ -46,7 +46,7 @@ class UsersTraccCon_controller extends CI_Controller {
 
 			$data['control_number'] = $control_number; 
 			$this->load->view('users/header', $data); 
-			$this->load->view('users/tracc_concern_form_list', $data);
+			$this->load->view('users/users_TRC/tracc_concern_form_list', $data);
 			$this->load->view('users/footer', $data);
 	
 		} else {
