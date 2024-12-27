@@ -645,6 +645,8 @@ class UsersTraccReq_controller extends CI_Controller {
 			$customerReqForm = $this->UsersTraccReq_model->get_customer_req_form_rf_details($id);
 			$ticket_numbers = $this->UsersTraccReq_model->get_customer_from_tracc_req_details();
 			$form_del_days = $this->Main_model->get_ticket_checkbox_customer_req($id);
+			// print_r($ticket_numbers);
+			// die();
 			
 			if ($user_details[0] == "ok") {
 				$sid = $this->session->session_id;
@@ -652,8 +654,13 @@ class UsersTraccReq_controller extends CI_Controller {
 				$data['getdept'] = $getdepartment[1];
 				$data['reqForm'] = $customerReqForm[0];
 				$data['ticket_numbers'] = $ticket_numbers[0];
-				$data['companies'] = explode(',', $customerReqForm[0]['company']);
+				// $data['companies'] = explode(',', $customerReqForm[0]['company']);
 				$data['del_days'] = $form_del_days;
+
+				$selected_companies = isset($data['reqForm']['company']) ? explode(',', $data['reqForm']['company']) : [];
+				$data['selected_companies'] = $selected_companies;
+				// print_r($selected_companies);
+				// die();
 
 				$this->load->view('users/header', $data);
 				$this->load->view('users/users_TRF/trf_customer_request_form_details', $data);

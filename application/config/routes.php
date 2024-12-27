@@ -10,7 +10,7 @@ $route['sys/registration'] = 'main/registration';
 //ADMIN Dashboard
 $route['sys/admin/dashboard'] = 'AdminDashboard_controller/admin_dashboard';
 //USER Dashboard
-$route['sys/users/dashboard'] = 'main/users_dashboard';
+$route['sys/users/dashboard'] = 'UsersDashboard_controller/users_dashboard';
 
 
 //--- USER ROUTES ---//
