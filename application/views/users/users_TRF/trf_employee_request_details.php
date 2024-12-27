@@ -87,7 +87,7 @@
                                         <?= $this->session->flashdata('message') ?>
                                     <?php endif; ?>
                                     <div class="row">
-                                        <form action="<?= site_url('sys/users/details/concern/customer_req_employee_req/5/update/' . $reqForm['recid']); ?>" method="POST">
+                                        <form action="<?= site_url('sys/users/details/concern/customer_req_employee_req/update/' . $reqForm['recid']); ?>" method="POST">
                                             <div class="col-md-12">
                                                 <input type="text" name="trf_number" id="trf_number" class="form-control" value="<?= $reqForm['ticket_id']; ?>" readonly>
                                             </div>

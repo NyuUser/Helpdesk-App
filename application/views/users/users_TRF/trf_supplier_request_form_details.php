@@ -96,8 +96,11 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
+                                    <?php if($this->session->flashdata('message')) : ?>
+                                        <?= $this->session->flashdata('message') ?>
+                                    <?php endif; ?>
                                     <div class="row">
-                                        <form action="<?= site_url('Main/user_creation_supplier_request_form_pdf'); ?>" method="POST">
+                                        <form action="<?= site_url('sys/users/details/concern/customer_req_supplier_req/update/' . $reqForm['recid']); ?>" method="POST">
                                             <div class="col-md-12">
                                                 <input type="text" name="trf_number" id="trf_number" class="form-control" value="<?= $reqForm['ticket_id']; ?>" readonly>
                                             </div>
@@ -539,7 +542,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Payee 3</label>
-                                                    <input type="text" name="payee3" id="payee3" value="<? $reqForm['payee_3']; ?>" class="form-control select2"> 
+                                                    <input type="text" name="payee3" id="payee3" value="<?= $reqForm['payee_3']; ?>" class="form-control select2"> 
                                                 </div>
                                             </div>
 
