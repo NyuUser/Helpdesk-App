@@ -130,5 +130,44 @@ class AdminTraccReq_model extends CI_Model {
 		return $this->db->update('tracc_req_employee_req_form');
 	}
 
+	// IRF 
+	public function get_ticket_counts_item_req_form() {
+		$this->db->select('*, COUNT(ticket_id) as count');
+		$this->db->from('tracc_req_item_request_form');
+		$this->db->where('remarks !=', 'Done');
+		$this->db->group_by('recid');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	// IRF 
+	public function update_irf_ticket_remarks($recid, $remarks){
+		$this->db->set('remarks', $remarks);
+		$this->db->where('recid', $recid);
+		return $this->db->update('tracc_req_item_request_form');
+	}
+
+	// IRF 
+	public function get_ticket_checkbox1_item_req_form($recid) {
+		$query = $this->db->get_where('tracc_req_item_request_form_checkboxes', ['recid' => $recid]);
+		return $query->row_array(); 
+	}
+
+	// IRF 
+	public function get_ticket_checkbox2_item_req_form($ticket_id) {
+		$this->db->select('*');
+		$this->db->where('ticket_id', $ticket_id); 
+		$query = $this->db->get('tracc_req_item_req_form_gl_setup');
+		return $query->result_array(); 
+	}
+
+	// IRF 
+	public function get_ticket_checkbox3_item_req_form($ticket_id) {
+		$this->db->select('*');
+		$this->db->where('ticket_id', $ticket_id);
+		$query = $this->db->get('tracc_req_item_req_form_whs_setup');
+		return $query->result_array();
+	}
+
 }
 ?>
