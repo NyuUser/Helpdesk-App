@@ -594,5 +594,83 @@ class AdminTraccReq_controller extends CI_Controller {
 		}
 	}
 
+
+	// ----------------------------------- Approving of Form ----------------------------------- //
+
+	// Approve Customer Request Form
+	public function approve_crf(){			
+		$approved_by = $this->input->post('approved_by');
+		$recid = $this->input->post('recid');
+
+		$process = $this->AdminTraccReq_model->approve_crf($approved_by, $recid);
+		
+		if (isset($process[0]) && $process[0] == 1) {
+			$this->session->set_flashdata('success', "It's Approved");
+		} else {
+			$this->session->set_flashdata('error', 'Update failed.');
+		}
+		redirect(base_url()."sys/admin/customer_request_form_pdf");
+	}
+
+	// Approve Customer Shipping Setup
+	public function approve_css(){
+		$approved_by = $this->input->post('approved_by');
+		$recid = $this->input->post('recid');
+
+		$process = $this->AdminTraccReq_model->approve_css($approved_by, $recid);
+
+		if (isset($process[0]) && $process[0] == 1) {
+			$this->session->set_flashdata('success', "It's Approved");
+		} else {
+			$this->session->set_flashdata('error', 'Update failed.');
+		}
+		redirect(base_url()."sys/admin/customer_shipping_setup_pdf");
+	}
+
+	// Approve Employee Request Form
+	public function approve_erf(){
+		$approved_by = $this->input->post('approved_by');
+		$recid = $this->input->post('recid');
+
+		$process = $this->AdminTraccReq_model->approve_erf($approved_by, $recid);
+
+		if (isset($process[0]) && $process[0] == 1) {
+			$this->session->set_flashdata('success', "It's Approved");
+		} else {
+			$this->session->set_flashdata('error', 'Update failed.');
+		}
+		redirect(base_url()."sys/admin/employee_request_form_pdf");
+	}
+
+	// Approve Item Request Form
+	public function approve_irf(){
+		$approved_by = $this->input->post('approved_by');
+		$recid = $this->input->post('recid');
+
+		$process = $this->AdminTraccReq_model->approve_irf($approved_by, $recid);
+
+		if (isset($process[0]) && $process[0] == 1) {
+			$this->session->set_flashdata('success', "It's Approved");
+		} else {
+			$this->session->set_flashdata('error', 'Update failed.');
+		}
+		redirect(base_url()."sys/admin/item_request_form_pdf");
+	}
+
+	// Approve Supplier Request Form
+	public function approve_srf(){
+		$approved_by = $this->input->post('approved_by');
+		$recid = $this->input->post('recid');
+
+		$process = $this->AdminTraccReq_model->approve_srf($approved_by, $recid);
+
+		if (isset($process[0]) && $process[0] == 1) {
+			$this->session->set_flashdata('success', "It's Approved");
+		} else {
+			$this->session->set_flashdata('error', 'Update failed.');
+		}
+		redirect(base_url()."sys/admin/supplier_request_form_pdf");
+	}
+
 }
 ?>

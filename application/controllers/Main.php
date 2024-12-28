@@ -964,18 +964,18 @@ class Main extends CI_Controller {
 	// 	}
 	// }
 
-	public function update_srf_ticket_remarks() {
-		$recid = $this->input->post('recid'); 
+	// public function update_srf_ticket_remarks() {
+	// 	$recid = $this->input->post('recid'); 
 
-		$this->load->model('Main_model');
-		$result = $this->Main_model->update_srf_ticket_remarks($recid, 'Done'); 
+	// 	$this->load->model('Main_model');
+	// 	$result = $this->Main_model->update_srf_ticket_remarks($recid, 'Done'); 
 	
-		if ($result) {
-			echo json_encode(['message' => 'success']);
-		} else {
-			echo json_encode(['message' => 'error', 'error' => 'Database update failed.']);
-		}
-	}
+	// 	if ($result) {
+	// 		echo json_encode(['message' => 'success']);
+	// 	} else {
+	// 		echo json_encode(['message' => 'error', 'error' => 'Database update failed.']);
+	// 	}
+	// }
 
 	// public function customer_request_form_rf_details($id) {
 	// 	if($this->session->userdata('login_data')) {
@@ -1128,75 +1128,75 @@ class Main extends CI_Controller {
 		}
 	}
 
-	public function approve_crf(){			
-		$approved_by = $this->input->post('approved_by');
-		$recid = $this->input->post('recid');
+	// public function approve_crf(){			
+	// 	$approved_by = $this->input->post('approved_by');
+	// 	$recid = $this->input->post('recid');
 
-		$process = $this->Main_model->approve_crf($approved_by, $recid);
+	// 	$process = $this->Main_model->approve_crf($approved_by, $recid);
 		
-		if (isset($process[0]) && $process[0] == 1) {
-			$this->session->set_flashdata('success', "It's Approved");
-		} else {
-			$this->session->set_flashdata('error', 'Update failed.');
-		}
-		redirect(base_url()."sys/admin/customer_request_form_pdf");
-	}
+	// 	if (isset($process[0]) && $process[0] == 1) {
+	// 		$this->session->set_flashdata('success', "It's Approved");
+	// 	} else {
+	// 		$this->session->set_flashdata('error', 'Update failed.');
+	// 	}
+	// 	redirect(base_url()."sys/admin/customer_request_form_pdf");
+	// }
 
-	public function approve_css(){
-		$approved_by = $this->input->post('approved_by');
-		$recid = $this->input->post('recid');
+	// public function approve_css(){
+	// 	$approved_by = $this->input->post('approved_by');
+	// 	$recid = $this->input->post('recid');
 
-		$process = $this->Main_model->approve_css($approved_by, $recid);
+	// 	$process = $this->Main_model->approve_css($approved_by, $recid);
 
-		if (isset($process[0]) && $process[0] == 1) {
-			$this->session->set_flashdata('success', "It's Approved");
-		} else {
-			$this->session->set_flashdata('error', 'Update failed.');
-		}
-		redirect(base_url()."sys/admin/customer_shipping_setup_pdf");
-	}
+	// 	if (isset($process[0]) && $process[0] == 1) {
+	// 		$this->session->set_flashdata('success', "It's Approved");
+	// 	} else {
+	// 		$this->session->set_flashdata('error', 'Update failed.');
+	// 	}
+	// 	redirect(base_url()."sys/admin/customer_shipping_setup_pdf");
+	// }
 
-	public function approve_erf(){
-		$approved_by = $this->input->post('approved_by');
-		$recid = $this->input->post('recid');
+	// public function approve_erf(){
+	// 	$approved_by = $this->input->post('approved_by');
+	// 	$recid = $this->input->post('recid');
 
-		$process = $this->Main_model->approve_erf($approved_by, $recid);
+	// 	$process = $this->Main_model->approve_erf($approved_by, $recid);
 
-		if (isset($process[0]) && $process[0] == 1) {
-			$this->session->set_flashdata('success', "It's Approved");
-		} else {
-			$this->session->set_flashdata('error', 'Update failed.');
-		}
-		redirect(base_url()."sys/admin/employee_request_form_pdf");
-	}
+	// 	if (isset($process[0]) && $process[0] == 1) {
+	// 		$this->session->set_flashdata('success', "It's Approved");
+	// 	} else {
+	// 		$this->session->set_flashdata('error', 'Update failed.');
+	// 	}
+	// 	redirect(base_url()."sys/admin/employee_request_form_pdf");
+	// }
 
-	public function approve_irf(){
-		$approved_by = $this->input->post('approved_by');
-		$recid = $this->input->post('recid');
+	// public function approve_irf(){
+	// 	$approved_by = $this->input->post('approved_by');
+	// 	$recid = $this->input->post('recid');
 
-		$process = $this->Main_model->approve_irf($approved_by, $recid);
+	// 	$process = $this->Main_model->approve_irf($approved_by, $recid);
 
-		if (isset($process[0]) && $process[0] == 1) {
-			$this->session->set_flashdata('success', "It's Approved");
-		} else {
-			$this->session->set_flashdata('error', 'Update failed.');
-		}
-		redirect(base_url()."sys/admin/item_request_form_pdf");
-	}
+	// 	if (isset($process[0]) && $process[0] == 1) {
+	// 		$this->session->set_flashdata('success', "It's Approved");
+	// 	} else {
+	// 		$this->session->set_flashdata('error', 'Update failed.');
+	// 	}
+	// 	redirect(base_url()."sys/admin/item_request_form_pdf");
+	// }
 
-	public function approve_srf(){
-		$approved_by = $this->input->post('approved_by');
-		$recid = $this->input->post('recid');
+	// public function approve_srf(){
+	// 	$approved_by = $this->input->post('approved_by');
+	// 	$recid = $this->input->post('recid');
 
-		$process = $this->Main_model->approve_srf($approved_by, $recid);
+	// 	$process = $this->Main_model->approve_srf($approved_by, $recid);
 
-		if (isset($process[0]) && $process[0] == 1) {
-			$this->session->set_flashdata('success', "It's Approved");
-		} else {
-			$this->session->set_flashdata('error', 'Update failed.');
-		}
-		redirect(base_url()."sys/admin/supplier_request_form_pdf");
-	}
+	// 	if (isset($process[0]) && $process[0] == 1) {
+	// 		$this->session->set_flashdata('success', "It's Approved");
+	// 	} else {
+	// 		$this->session->set_flashdata('error', 'Update failed.');
+	// 	}
+	// 	redirect(base_url()."sys/admin/supplier_request_form_pdf");
+	// }
 
 	public function get_closed_tickets ($subject, $id) {
 		if($this->session->userdata('login_data')) {

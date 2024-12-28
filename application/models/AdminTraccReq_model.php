@@ -201,5 +201,83 @@ class AdminTraccReq_model extends CI_Model {
 		return $this->db->update('tracc_req_supplier_req_form');
 	}
 
+
+	// ----------------------------------- Approving of Form ----------------------------------- //
+
+	// Approve Customer Request Form
+	public function approve_crf($approved_by, $recid){
+		$data = [
+			'approved_by' 		=> $approved_by,
+			'approved_date' 	=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_customer_req_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	// Approve Customer Shipping Setup
+	public function approve_css($approved_by, $recid){
+		$data = [
+			'approved_by' 		=> $approved_by,
+			'approved_date' 	=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_customer_ship_setup', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	// Approve Employee Request Form
+	public function approve_erf($approved_by, $recid){
+		$data = [
+			'approved_by'		=> $approved_by,
+			'approved_date'		=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_employee_req_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	// Approve Item Request Form
+	public function approve_irf($approved_by, $recid){
+		$data = [
+			'approved_by'		=> $approved_by,
+			'approved_date'		=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_item_request_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
+	// Approve Supplier Request Form
+	public function approve_srf($approved_by, $recid){
+		$data = [
+			'approved_by'		=> $approved_by,
+			'approved_date'		=> date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('recid', $recid);
+		if ($this->db->update('tracc_req_supplier_req_form', $data)) {
+			return [1]; 
+		} else {
+			return [0];
+		}
+	}
+
 }
 ?>
