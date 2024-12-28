@@ -669,28 +669,28 @@ class Main_model extends CI_Model {
 		return $this->db->update('tracc_req_employee_req_form');
 	}
 
-	// CRF
-	public function get_ticket_counts_customer_req() {
-		$this->db->select('*, COUNT(ticket_id) as count');
-		$this->db->from('tracc_req_customer_req_form');
-		$this->db->where('remarks !=', 'Done');
-		$this->db->group_by('recid'); 
-		$query = $this->db->get();
-		return $query->result_array();
-	}
+	// // CRF
+	// public function get_ticket_counts_customer_req() {
+	// 	$this->db->select('*, COUNT(ticket_id) as count');
+	// 	$this->db->from('tracc_req_customer_req_form');
+	// 	$this->db->where('remarks !=', 'Done');
+	// 	$this->db->group_by('recid'); 
+	// 	$query = $this->db->get();
+	// 	return $query->result_array();
+	// }
 
-	// CRF
-	public function get_ticket_checkbox_customer_req($recid){
-		$query = $this->db->get_where('tracc_req_customer_req_form_del_days', ['recid' => $recid]);
-		return $query->row_array();
-	}
+	// // CRF
+	// public function get_ticket_checkbox_customer_req($recid){
+	// 	$query = $this->db->get_where('tracc_req_customer_req_form_del_days', ['recid' => $recid]);
+	// 	return $query->row_array();
+	// }
 
-	// CRF
-	public function update_crf_ticket_remarks($recid, $remarks){
-		$this->db->set('remarks', $remarks); 
-		$this->db->where('recid', $recid); 
-		return $this->db->update('tracc_req_customer_req_form');
-	}
+	// // CRF
+	// public function update_crf_ticket_remarks($recid, $remarks){
+	// 	$this->db->set('remarks', $remarks); 
+	// 	$this->db->where('recid', $recid); 
+	// 	return $this->db->update('tracc_req_customer_req_form');
+	// }
 
 	// CSS
 	public function get_ticket_counts_customer_ship_setup() {

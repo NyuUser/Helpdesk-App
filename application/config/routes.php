@@ -83,7 +83,7 @@ $route['sys/admin/print'] = 'AdminGenerateReport_controller/admin_print_report';
 
 
 //--- PDF REPORTS VIEWING ADMIN ---//
-$route['sys/admin/customer_request_form_pdf'] = 'main/customer_request_form_pdf_view';
+$route['sys/admin/customer_request_form_pdf'] = 'AdminTraccReq_controller/customer_request_form_pdf_view';
 $route['sys/admin/customer_shipping_setup_pdf'] = 'main/customer_shipping_setup_pdf_view';
 $route['sys/admin/employee_request_form_pdf'] = 'main/employee_request_form_pdf_view';
 $route['sys/admin/item_request_form_pdf'] = 'main/item_request_form_pdf_view';
