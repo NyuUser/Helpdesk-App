@@ -626,7 +626,7 @@ class UsersTraccReq_controller extends CI_Controller {
 			'major_grp_utilities'               => isset($_POST['major_grp_utilities']) ? 1 : 0,
 		];
 	
-		$process = $this->UsersTraccReq_model->add_supplier_request_form_pdf($imploded_values, $checkbox_non_vat,$checkbox_supplier_req_form);
+		$process = $this->UsersTraccReq_model->add_supplier_request_form_pdf($imploded_values, $checkbox_non_vat, $checkbox_supplier_req_form);
 
 		if ($process[0] == 1) {
 			$this->session->set_flashdata('success', $process[1]);
@@ -699,6 +699,37 @@ class UsersTraccReq_controller extends CI_Controller {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");
 			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	public function update_shipping_setup($id) {
+		if($this->session->userdata('login_data')) {
+			$css_comp_checkbox_value = isset($_POST['css_comp_checkbox_value']) ? $_POST['css_comp_checkbox_value'] : [];
+			$imploded_values = implode(',', $css_comp_checkbox_value);
+
+			$checkbox_cus_ship_setup = [
+				'checkbox_monday'           => isset($_POST['checkbox_monday']) ? 1 : 0,
+				'checkbox_tuesday'          => isset($_POST['checkbox_tuesday']) ? 1 : 0,
+				'checkbox_wednesday'        => isset($_POST['checkbox_wednesday']) ? 1 : 0,
+				'checkbox_thursday'         => isset($_POST['checkbox_thursday']) ? 1 : 0,
+				'checkbox_friday'           => isset($_POST['checkbox_friday']) ? 1 : 0,
+				'checkbox_saturday'         => isset($_POST['checkbox_saturday']) ? 1 : 0,
+				'checkbox_sunday'           => isset($_POST['checkbox_sunday']) ? 1 : 0,
+			];
+
+			$process = $this->UsersTraccReq_model->update_ss($id, $imploded_values, $checkbox_cus_ship_setup);
+
+			if ($process[0] == 1) {
+				$this->session->set_flashdata('success', $process[1]);
+				redirect(base_url().'sys/users/details/concern/customer_req_ship_setup/' . $id);  
+			} else {
+				$this->session->set_flashdata('error', $process[1]);
+				redirect(base_url().'sys/users/details/concern/customer_req_ship_setup/' . $id);  
+			} 
 		} else {
 			$this->session->sess_destroy();
 			$this->session->set_flashdata('error', 'Session expired. Please login again.');
@@ -786,9 +817,14 @@ class UsersTraccReq_controller extends CI_Controller {
 				$data['reqForm'] = $customerReqForm[0];
 				$data['departments'] = $departments;
 				
-				$this->session->set_flashdata('message', $process[1]);
+				if ($process[0] == 1) {
+					$this->session->set_flashdata('success', $process[1]);
+					redirect("sys/users/details/concern/customer_req_employee_req/" . $id);
+				} else {
+					$this->session->set_flashdata('error', $process[1]);
+					redirect("sys/users/details/concern/customer_req_employee_req/" . $id);
+				}
 
-				redirect("sys/users/details/concern/customer_req_employee_req/" . $id);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");
@@ -822,6 +858,52 @@ class UsersTraccReq_controller extends CI_Controller {
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
 				redirect("sys/authentication");
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect("sys/authentication");
+		}
+	}
+
+	public function update_supplier_request($id) {
+		if ($this->session->userdata('login_data')) {
+			$trf_comp_checkbox_value = isset($_POST['trf_comp_checkbox_value']) ? $_POST['trf_comp_checkbox_value'] : [];
+			$imploded_values = implode(',', $trf_comp_checkbox_value);
+
+			$checkbox_non_vat = isset($_POST['checkbox_non_vat']) ? 1 : 0;
+
+			$checkbox_supplier_req_form = [
+				'local_supplier_grp'                => isset($_POST['local_supplier_grp']) ? 1 : 0,
+				'foreign_supplier_grp'              => isset($_POST['foreign_supplier_grp']) ? 1 : 0,
+				'supplier_trade'                    => isset($_POST['supplier_trade']) ? 1 : 0,
+				'supplier_non_trade'                => isset($_POST['supplier_non_trade']) ? 1 : 0,
+				'trade_type_goods'                  => isset($_POST['trade_type_goods']) ? 1 : 0,
+				'trade_type_services'               => isset($_POST['trade_type_services']) ? 1 : 0,
+				'trade_type_GoodsServices'          => isset($_POST['trade_type_GoodsServices']) ? 1 : 0,
+				'major_grp_local_trade_ven'         => isset($_POST['major_grp_local_trade_ven']) ? 1 : 0,
+				'major_grp_local_nontrade_ven'      => isset($_POST['major_grp_local_nontrade_ven']) ? 1 : 0,
+				'major_grp_foreign_trade_ven'       => isset($_POST['major_grp_foreign_trade_ven']) ? 1 : 0,
+				'major_grp_foreign_nontrade_ven'    => isset($_POST['major_grp_foreign_nontrade_ven']) ? 1 : 0,
+				'major_grp_local_broker_forwarder'  => isset($_POST['major_grp_local_broker_forwarder']) ? 1 : 0,
+				'major_grp_rental'                  => isset($_POST['major_grp_rental']) ? 1 : 0,
+				'major_grp_bank'                    => isset($_POST['major_grp_bank']) ? 1 : 0,
+				'major_grp_one_time_supplier'       => isset($_POST['major_grp_one_time_supplier']) ? 1 : 0,
+				'major_grp_government_offices'      => isset($_POST['major_grp_government_offices']) ? 1 : 0,
+				'major_grp_insurance'               => isset($_POST['major_grp_insurance']) ? 1 : 0,
+				'major_grp_employees'               => isset($_POST['major_grp_employees']) ? 1 : 0,
+				'major_grp_subs_affiliates'         => isset($_POST['major_grp_subs_affiliates']) ? 1 : 0,
+				'major_grp_utilities'               => isset($_POST['major_grp_utilities']) ? 1 : 0,
+			];
+
+			$process = $this->UsersTraccReq_model->update_sr($id, $imploded_values, $checkbox_non_vat, $checkbox_supplier_req_form);
+
+			if($process[0] == 1) {
+				$this->session->set_flashdata('success', $process[1]);
+				redirect(base_url().'sys/users/details/concern/customer_req_supplier_req/' . $id);
+			} else {
+				$this->session->set_flashdata('error', $process[1]);
+				redirect(base_url().'sys/users/details/concern/customer_req_supplier_req/' . $id);
 			}
 		} else {
 			$this->session->sess_destroy();
