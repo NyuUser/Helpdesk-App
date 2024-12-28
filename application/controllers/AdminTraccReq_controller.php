@@ -275,5 +275,94 @@ class AdminTraccReq_controller extends CI_Controller {
 			echo json_encode(['message' => 'error', 'error' => 'Database update failed.']);
 		}
 	}
+
+	// ADMIN FORM for Employee Request form (PDF ni mam hanna)
+	public function employee_request_form_pdf_view($active_menu = 'employee_request_form_pdf') {
+		if($this->session->userdata('login_data')) {
+			$user_details = $this->Main_model->user_details();
+
+			if($user_details[0] == "ok"){
+				$sid = $this->session->session_id;
+				$data['user_details'] = $user_details[1];
+
+				$allowed_menus = ['employee_request_form_pdf', 'system_administration', 'other_menus'];
+				if(!in_array($active_menu, $allowed_menus)) {
+					$active_menu = 'dashboard';
+				}
+				$data['active_menu'] = $active_menu;
+
+				$this->load->view('admin/header', $data);
+				$this->load->view('admin/sidebar', $data);
+				$this->load->view('admin/admin_TRF_pdf/pdf_employee_request_form', $data);
+				$this->load->view('admin/footer');
+			} else {
+				$this->session->setflashdata('error', 'Error fetching user information.');
+				redirect('sys/authentication');
+			}
+		} else {
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('error', 'Session expired. Please login again.');
+			redirect('sys/authentication');
+		}
+	}
+
+	// JQuery TABS for Employee Request Form
+	public function emp_req_form_JTabs(){
+		$user_role = $this->session->userdata('login_data')['role'];
+		$tickets = $this->AdminTraccReq_model->get_ticket_counts_employee_req();
+
+		if ($tickets) {
+			$data = [];
+
+			foreach ($tickets as $ticket) {
+				
+				$formData = [
+					'recid' 					=> $ticket['recid'],
+					'ticket_id' 				=> $ticket['ticket_id'],
+					'requested_by' 				=> $ticket['requested_by'],
+					'name' 						=> $ticket['name'],
+					'department' 				=> $ticket['department'],
+					'department_desc' 			=> $ticket['department_desc'],
+					'position' 					=> $ticket['position'],
+					'address' 					=> $ticket['address'],
+					'tel_no_mob_no' 			=> $ticket['tel_no_mob_no'],
+					'tin_no' 					=> $ticket['tin_no'],
+					'contact_person' 			=> $ticket['contact_person'],
+					'created_at' 				=> $ticket['created_at'],
+					'approved_by' 				=> $ticket['approved_by'],
+					'approved_date' 			=> $ticket['approved_date'],
+				];
+				
+				$formHtml = $this->load->view('admin/admin_TRF_pdf/trf_employee_request_form_admin', $formData, TRUE);
+				// print_r($formData);
+				// die();
+			
+
+				$data[] = [
+					'tab_id' 					=> "tabs-" . $ticket['ticket_id'],
+					'ticket_id' 				=> $ticket['ticket_id'],
+					'count' 					=> $ticket['count'],
+					'recid' 					=> $ticket['recid'],
+					'form_html' 				=> $formHtml,
+				];
+			}
+
+			echo json_encode(['message' => 'success', 'data' => $data, 'user_role' => $user_role]);
+		} else {
+			echo json_encode(['message' => 'failed', 'data' => [], 'user_role' => $user_role]);
+		}
+	}
+
+	public function update_erf_ticket_remarks() {
+		$recid = $this->input->post('recid'); 
+
+		$result = $this->AdminTraccReq_model->update_erf_ticket_remarks($recid, 'Done'); 
+	
+		if ($result) {
+			echo json_encode(['message' => 'success']);
+		} else {
+			echo json_encode(['message' => 'error', 'error' => 'Database update failed.']);
+		}
+	}
 }
 ?>
