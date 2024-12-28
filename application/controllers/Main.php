@@ -453,104 +453,104 @@ class Main extends CI_Controller {
 		}
 	}
 
-	// ADMIN FORM for Supplier Request form (PDF ni mam hanna)
-	public function supplier_request_form_pdf_view($active_menu = 'supplier_request_form_pdf') {
-		if($this->session->userdata('login_data')) {
-			$user_details = $this->Main_model->user_details();
+	// // ADMIN FORM for Supplier Request form (PDF ni mam hanna)
+	// public function supplier_request_form_pdf_view($active_menu = 'supplier_request_form_pdf') {
+	// 	if($this->session->userdata('login_data')) {
+	// 		$user_details = $this->Main_model->user_details();
 
-			if($user_details[0] == "ok"){
-				$sid = $this->session->session_id;
-				$data['user_details'] = $user_details[1];
+	// 		if($user_details[0] == "ok"){
+	// 			$sid = $this->session->session_id;
+	// 			$data['user_details'] = $user_details[1];
 
-				$allowed_menus = ['supplier_request_form_pdf', 'system_administration', 'other_menus'];
-				if(!in_array($active_menu, $allowed_menus)) {
-					$active_menu = 'dashboard';
-				}
-				$data['active_menu'] = $active_menu;
+	// 			$allowed_menus = ['supplier_request_form_pdf', 'system_administration', 'other_menus'];
+	// 			if(!in_array($active_menu, $allowed_menus)) {
+	// 				$active_menu = 'dashboard';
+	// 			}
+	// 			$data['active_menu'] = $active_menu;
 
-				$this->load->view('admin/header', $data);
-				$this->load->view('admin/sidebar', $data);
-				$this->load->view('admin/admin_TRF_pdf/pdf_supplier_request_form', $data);
-				$this->load->view('admin/footer');
-			} else {
-				$this->session->setflashdata('error', 'Error fetching user information.');
-				redirect('sys/authentication');
-			}
-		} else {
-			$this->session->sess_destroy();
-			$this->session->set_flashdata('error', 'Session expired. Please login again.');
-			redirect('sys/authentication');
-		}
-	}
+	// 			$this->load->view('admin/header', $data);
+	// 			$this->load->view('admin/sidebar', $data);
+	// 			$this->load->view('admin/admin_TRF_pdf/pdf_supplier_request_form', $data);
+	// 			$this->load->view('admin/footer');
+	// 		} else {
+	// 			$this->session->setflashdata('error', 'Error fetching user information.');
+	// 			redirect('sys/authentication');
+	// 		}
+	// 	} else {
+	// 		$this->session->sess_destroy();
+	// 		$this->session->set_flashdata('error', 'Session expired. Please login again.');
+	// 		redirect('sys/authentication');
+	// 	}
+	// }
 
-	// JQuery TABS for Supplier Request Form
-	public function sup_req_form_JTabs(){
-		$user_role = $this->session->userdata('login_data')['role'];
-		$this->load->model('Main_model');
-		$tickets = $this->Main_model->get_ticket_counts_supplier_req();
+	// // JQuery TABS for Supplier Request Form
+	// public function sup_req_form_JTabs(){
+	// 	$user_role = $this->session->userdata('login_data')['role'];
+	// 	$this->load->model('Main_model');
+	// 	$tickets = $this->Main_model->get_ticket_counts_supplier_req();
 
-		if ($tickets) {
-			$data = [];
+	// 	if ($tickets) {
+	// 		$data = [];
 
-			foreach ($tickets as $ticket) {
+	// 		foreach ($tickets as $ticket) {
 
-				$companies = explode(',', $ticket['company']);
+	// 			$companies = explode(',', $ticket['company']);
 
-				$checkbox_data = $this->Main_model->get_ticket_checkbox_supplier_req($ticket['recid']); 
+	// 			$checkbox_data = $this->Main_model->get_ticket_checkbox_supplier_req($ticket['recid']); 
 				
-				$formData = [
-					'recid' 						=> $ticket['recid'],
-					'ticket_id' 					=> $ticket['ticket_id'],
-					'requested_by' 					=> $ticket['requested_by'],
-					'companies' 					=> $companies,
-					'date' 							=> $ticket['date'],
-					'supplier_code' 				=> $ticket['supplier_code'],
-					'supplier_account_group' 		=> $ticket['supplier_account_group'],
-					'supplier_name' 				=> $ticket['supplier_name'],
-					'country_origin' 				=> $ticket['country_origin'],
-					'supplier_address' 				=> $ticket['supplier_address'],
-					'office_tel'	 				=> $ticket['office_tel'],
-					'zip_code' 						=> $ticket['zip_code'],
-					'contact_person' 				=> $ticket['contact_person'],
-					'terms' 						=> $ticket['terms'],
-					'tin_no' 						=> $ticket['tin_no'],
-					'pricelist' 					=> $ticket['pricelist'],
-					'ap_account' 					=> $ticket['ap_account'],
-					'ewt' 							=> $ticket['ewt'],
-					'advance_account' 				=> $ticket['advance_account'],
-					'vat' 							=> $ticket['vat'],
-					'non_vat' 						=> $ticket['non_vat'],
-					'payee_1' 						=> $ticket['payee_1'],
-					'payee_2' 						=> $ticket['payee_2'],
-					'payee_3' 						=> $ticket['payee_3'],
-					'driver_name' 					=> $ticket['driver_name'],
-					'driver_contact_no' 			=> $ticket['driver_contact_no'],
-					'driver_fleet' 					=> $ticket['driver_fleet'],
-					'driver_plate_no' 				=> $ticket['driver_plate_no'],
-					'helper_name' 					=> $ticket['helper_name'],
-					'helper_contact_no' 			=> $ticket['helper_contact_no'],
-					'helper_rate_card'		 		=> $ticket['helper_rate_card'],
-					'approved_by'					=> $ticket['approved_by'],
-					'approved_date'  				=> $ticket['approved_date'],
-					'checkbox_data' 				=> $checkbox_data,
-				];
+	// 			$formData = [
+	// 				'recid' 						=> $ticket['recid'],
+	// 				'ticket_id' 					=> $ticket['ticket_id'],
+	// 				'requested_by' 					=> $ticket['requested_by'],
+	// 				'companies' 					=> $companies,
+	// 				'date' 							=> $ticket['date'],
+	// 				'supplier_code' 				=> $ticket['supplier_code'],
+	// 				'supplier_account_group' 		=> $ticket['supplier_account_group'],
+	// 				'supplier_name' 				=> $ticket['supplier_name'],
+	// 				'country_origin' 				=> $ticket['country_origin'],
+	// 				'supplier_address' 				=> $ticket['supplier_address'],
+	// 				'office_tel'	 				=> $ticket['office_tel'],
+	// 				'zip_code' 						=> $ticket['zip_code'],
+	// 				'contact_person' 				=> $ticket['contact_person'],
+	// 				'terms' 						=> $ticket['terms'],
+	// 				'tin_no' 						=> $ticket['tin_no'],
+	// 				'pricelist' 					=> $ticket['pricelist'],
+	// 				'ap_account' 					=> $ticket['ap_account'],
+	// 				'ewt' 							=> $ticket['ewt'],
+	// 				'advance_account' 				=> $ticket['advance_account'],
+	// 				'vat' 							=> $ticket['vat'],
+	// 				'non_vat' 						=> $ticket['non_vat'],
+	// 				'payee_1' 						=> $ticket['payee_1'],
+	// 				'payee_2' 						=> $ticket['payee_2'],
+	// 				'payee_3' 						=> $ticket['payee_3'],
+	// 				'driver_name' 					=> $ticket['driver_name'],
+	// 				'driver_contact_no' 			=> $ticket['driver_contact_no'],
+	// 				'driver_fleet' 					=> $ticket['driver_fleet'],
+	// 				'driver_plate_no' 				=> $ticket['driver_plate_no'],
+	// 				'helper_name' 					=> $ticket['helper_name'],
+	// 				'helper_contact_no' 			=> $ticket['helper_contact_no'],
+	// 				'helper_rate_card'		 		=> $ticket['helper_rate_card'],
+	// 				'approved_by'					=> $ticket['approved_by'],
+	// 				'approved_date'  				=> $ticket['approved_date'],
+	// 				'checkbox_data' 				=> $checkbox_data,
+	// 			];
 				
-				$formHtml = $this->load->view('admin/admin_TRF_pdf/trf_supplier_request_form_admin', $formData, TRUE);
+	// 			$formHtml = $this->load->view('admin/admin_TRF_pdf/trf_supplier_request_form_admin', $formData, TRUE);
 
-				$data[] = [
-					'tab_id' 						=> "tabs-" . $ticket['ticket_id'],
-					'ticket_id' 					=> $ticket['ticket_id'],
-					'count' 						=> $ticket['count'],
-					'recid' 						=> $ticket['recid'],
-					'form_html' 					=> $formHtml,
-				];
-			}
+	// 			$data[] = [
+	// 				'tab_id' 						=> "tabs-" . $ticket['ticket_id'],
+	// 				'ticket_id' 					=> $ticket['ticket_id'],
+	// 				'count' 						=> $ticket['count'],
+	// 				'recid' 						=> $ticket['recid'],
+	// 				'form_html' 					=> $formHtml,
+	// 			];
+	// 		}
 
-			echo json_encode(['message' => 'success', 'data' => $data, 'user_role' => $user_role]);
-		} else {
-			echo json_encode(['message' => 'failed', 'data' => [], 'user_role' => $user_role]);
-		}
-	}
+	// 		echo json_encode(['message' => 'success', 'data' => $data, 'user_role' => $user_role]);
+	// 	} else {
+	// 		echo json_encode(['message' => 'failed', 'data' => [], 'user_role' => $user_role]);
+	// 	}
+	// }
 
 	// ADMIN FORM for Employee Request form (PDF ni mam hanna)
 	// public function employee_request_form_pdf_view($active_menu = 'employee_request_form_pdf') {

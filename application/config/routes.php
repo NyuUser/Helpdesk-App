@@ -87,7 +87,7 @@ $route['sys/admin/customer_request_form_pdf'] = 'AdminTraccReq_controller/custom
 $route['sys/admin/customer_shipping_setup_pdf'] = 'AdminTraccReq_controller/customer_shipping_setup_pdf_view';
 $route['sys/admin/employee_request_form_pdf'] = 'AdminTraccReq_controller/employee_request_form_pdf_view';
 $route['sys/admin/item_request_form_pdf'] = 'AdminTraccReq_controller/item_request_form_pdf_view';
-$route['sys/admin/supplier_request_form_pdf'] = 'main/supplier_request_form_pdf_view';
+$route['sys/admin/supplier_request_form_pdf'] = 'AdminTraccReq_controller/supplier_request_form_pdf_view';
 
 
 //--- TICKET APPROVAL for MSRF and TRACC CONCERN and TRACC REQUEST

@@ -620,37 +620,37 @@ class Main_model extends CI_Model {
 			endif;
 	}
 
-	// SRF
-	public function get_ticket_counts_supplier_req() {
-		$this->db->select('*, COUNT(ticket_id) as count');
-		$this->db->from('tracc_req_supplier_req_form');
-		$this->db->where('remarks !=', 'Done');
-		$this->db->group_by('recid');
-		$query = $this->db->get();
-		return $query->result_array();
-	}
+	// // SRF
+	// public function get_ticket_counts_supplier_req() {
+	// 	$this->db->select('*, COUNT(ticket_id) as count');
+	// 	$this->db->from('tracc_req_supplier_req_form');
+	// 	$this->db->where('remarks !=', 'Done');
+	// 	$this->db->group_by('recid');
+	// 	$query = $this->db->get();
+	// 	return $query->result_array();
+	// }
 
-	// SRF
-	public function get_ticket_checkbox_supplier_req_by_ticket_id($ticket_id) {
-		$this->db->select('*, COUNT(ticket_id) as count');
-		$this->db->from('tracc_req_supplier_req_form_checkboxes');
-		$this->db->where('ticket_id', $ticket_id);
-		$query = $this->db->get();
-		return $query->result_array();
-	}
+	// // SRF
+	// public function get_ticket_checkbox_supplier_req_by_ticket_id($ticket_id) {
+	// 	$this->db->select('*, COUNT(ticket_id) as count');
+	// 	$this->db->from('tracc_req_supplier_req_form_checkboxes');
+	// 	$this->db->where('ticket_id', $ticket_id);
+	// 	$query = $this->db->get();
+	// 	return $query->result_array();
+	// }
 
-	// SRF
-	public function get_ticket_checkbox_supplier_req($recid) {
-		$query = $this->db->get_where('tracc_req_supplier_req_form_checkboxes', ['recid' => $recid]);
-		return $query->row_array(); 
-	}
+	// // SRF
+	// public function get_ticket_checkbox_supplier_req($recid) {
+	// 	$query = $this->db->get_where('tracc_req_supplier_req_form_checkboxes', ['recid' => $recid]);
+	// 	return $query->row_array(); 
+	// }
 
-	// SRF
-	public function update_srf_ticket_remarks($recid, $remarks){
-		$this->db->set('remarks', $remarks); 
-		$this->db->where('recid', $recid); 
-		return $this->db->update('tracc_req_supplier_req_form');
-	}
+	// // SRF
+	// public function update_srf_ticket_remarks($recid, $remarks){
+	// 	$this->db->set('remarks', $remarks); 
+	// 	$this->db->where('recid', $recid); 
+	// 	return $this->db->update('tracc_req_supplier_req_form');
+	// }
 
 	// // ERF
 	// public function get_ticket_counts_employee_req() {
