@@ -11,7 +11,7 @@
     }
 
     .login-page {
-        height: 120vh;               /* Full viewport height */
+        height: 100vh;               /* Full viewport height */
         display: flex;
         align-items: center;         /* Center vertically */
         justify-content: center;     /* Center horizontally */
