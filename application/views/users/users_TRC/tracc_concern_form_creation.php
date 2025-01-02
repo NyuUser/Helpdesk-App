@@ -69,6 +69,16 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-md-6" style = "display: none;">
+                                                <div class="form-group">
+                                                    <label>Department</label>
+                                                        <input type="text" name="department_description" id="department_description" value="<?php echo isset($get_department[1]['dept_desc']) ? htmlspecialchars($get_department[1]['dept_desc']) : ''; ?>" class="form-control select2" style="width: 100%;" readonly>
+                                                        <input type="hidden" name="dept_id" value="<?php echo $users_det['dept_id']; ?>">
+                                                        <!-- If supervisor_id is also needed -->
+                                                        <input type="hidden" name="sup_id" value="<?php echo htmlspecialchars($users_det['sup_id']); ?>">
+                                                </div>    
+                                            </div>   
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Date Reported</label>

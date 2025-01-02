@@ -138,6 +138,9 @@
 			</ol>
         </section>
 		<section class="content">
+			<?php
+			echo "HELLO WORLD";
+			?>
 			<div class="row">
 				<div class="col-lg-6 col-xs-12">
 					<div class="summary-data" style="height: 200px; text-align: center;">

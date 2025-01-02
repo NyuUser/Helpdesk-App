@@ -56,7 +56,7 @@
                                                 </div>
 			                                    <div class="form-group">
 			                                        <label>Date Needed</label>
-			                                        <input type="date" name="date_need" id="date_need" class="form-control select2" style="width: 100%;" required>
+			                                        <input type="date" name="date_need" id="date_need" class="form-control select2" style="width: 100%;" min="<?= date('Y-m-d'); ?>" required>
 			                                    </div>
 			                                </div>
                                             <div class="col-md-12">
