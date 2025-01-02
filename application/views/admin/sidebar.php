@@ -15,11 +15,11 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="<?= ($active_menu == 'admin_list_msrf') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/list/ticket/msrf"><i class="fa fa-circle-o"></i> MSRF Form List</a></li>
+                    <li class="<?= ($active_menu == 'admin_list_msrf') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/list/ticket/msrf"><i class="fa fa-circle-o"></i> MSRF Form List <?= $unopenedMSRF > 0 ? "<span class='badge'>" . $unopenedMSRF . "</span>" : "" ?></a></li>
                     
-                    <li class="<?= ($active_menu == 'admin_list_tracc_concern') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/list/ticket/tracc_concern"><i class="fa fa-circle-o"></i> TRACC Concern List</a></li>
+                    <li class="<?= ($active_menu == 'admin_list_tracc_concern') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/list/ticket/tracc_concern"><i class="fa fa-circle-o"></i> TRACC Concern List <?= $unopenedTraccConcern > 0 ? "<span class='badge'>" . $unopenedTraccConcern . "</span>" : "" ?></a></li>
                     
-                    <li class="<?= ($active_menu == 'admin_list_tracc_request') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/list/ticket/tracc_request"><i class="fa fa-circle-o"></i> TRACC Request List</a></li>
+                    <li class="<?= ($active_menu == 'admin_list_tracc_request') ? 'active' : ''; ?>"><a href="<?= base_url(); ?>sys/admin/list/ticket/tracc_request"><i class="fa fa-circle-o"></i> TRACC Request List <?= $unopenedTraccRequest > 0 ? "<span class='badge'>" . $unopenedTraccRequest . "</span>" : "" ?></a></li>
                 </ul>
             </li>
 

@@ -722,7 +722,44 @@ class Main_model extends CI_Model {
 		return $query->result_array();
 	}
 
-	
+	public function get_unopened_msrf_tickets() {
+		$this->db->select('COUNT(*)');
+		$this->db->where('opened', 0);
+		$this->db->where('status !=', 'Closed');
+		return $this->db->get('service_request_msrf')->result_array();
+	}
+
+	public function open_msrf_ticket($recid) {
+		$this->db->where('ticket_id', $recid);
+		$this->db->set('opened', 1);
+		$this->db->update('service_request_msrf');
+	}
+
+	public function get_unopened_tracc_concerns() {
+		$this->db->select('COUNT(*)');
+		$this->db->where('opened', 0);
+		$this->db->where('status !=', 'Closed');
+		return $this->db->get('service_request_tracc_concern')->result_array();
+	}
+
+	public function open_tracc_concern($recid) {
+		$this->db->where('control_number', $recid);
+		$this->db->set('opened', 1);
+		$this->db->update('service_request_tracc_concern');
+	}
+
+	public function get_unopened_tracc_request() {
+		$this->db->select('COUNT(*)');
+		$this->db->where('opened', 0);
+		$this->db->where('status !=', 'Closed');
+		return $this->db->get('service_request_tracc_request')->result_array();
+	}
+
+	public function open_tracc_request($recid) {
+		$this->db->where('ticket_id', $recid);
+		$this->db->set('opened', 1);
+		$this->db->update('service_request_tracc_request');
+	}
 
 }
 ?>

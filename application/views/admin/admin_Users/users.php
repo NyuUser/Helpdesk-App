@@ -14,19 +14,21 @@
 			<div class="col-xs-12">
 				<div class="box">
 					<div class="box-body">
-						<table id="tblUsers" class="table table-bordered table-striped">
-							<thead>
-								<tr>
-									<th>Employee ID</th>
-                                    <th>Employee Name</th>
-                                    <th>Email</th>
-                                    <th>Position</th>
-                                    <th>Username</th>
-									<th>Role</th>
-                                    <th>Action</th>
-								</tr>
-							</thead>
-						</table>
+						<div class="table-responsive">
+							<table id="tblUsers" class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>Employee ID</th>
+										<th>Employee Name</th>
+										<th>Email</th>
+										<th>Position</th>
+										<th>Username</th>
+										<th>Role</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>

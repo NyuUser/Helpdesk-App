@@ -194,7 +194,7 @@
                                             <hr class="divider"> 
                                             
                                             <div class="row">
-                                                <div class="col-md-6 text-left">
+                                                <div class="col-md-4 text-left">
                                                     <div class="form-group d-flex flex-column align-items-center" style="margin-left: 80px;">
                                                         <label for="" style="font-size: 21px;">New/Add</label>
                                                         <div class="circle-checkbox mb-2">
@@ -234,8 +234,8 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6 text-left" style="margin-left: -150px;">
-                                                    <div class="form-group d-flex flex-column align-items-center">
+                                                <div class="col-md-4 text-left"">
+                                                    <div class="form-group d-flex flex-column align-items-center" style="margin-left: 80px;">
                                                         <label for="" style="font-size: 21px;">Update</label>
                                                         <div class="circle-checkbox mb-2">
                                                             <input type="checkbox" name="checkbox_system_date_lock" id="checkbox_system_date_lock" value="1">
@@ -270,8 +270,8 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4 text-left" style="margin-left: -250px;">
-                                                    <div class="form-group d-flex flex-column align-items-start">
+                                                <div class="col-md-4 text-left">
+                                                    <div class="form-group d-flex flex-column align-items-start" style="margin-left: 80px;">
                                                         <div class="circle-checkbox mb-2">
                                                             <input type="checkbox" name="checkbox_tracc_orien" id="checkbox_tracc_orien" value="1">
                                                             <label for="checkbox_tracc_orien">Tracc Orientation</label>
