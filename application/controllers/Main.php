@@ -69,28 +69,61 @@ class Main extends CI_Controller {
 	public function registration() {
 		$this->load->helper('form');
 		$this->load->library('session');
-	
-		$page_data['get_departments'] = $this->Main_model->get_departments();
-	
+		$this->load->library('form_validation');
+		
+		// Fetch departments from the model
+		$page_data['get_departments'] = $this->Main_model->get_departments() ?: [];
+		
 		if ($this->input->server('REQUEST_METHOD') == 'POST') {
-			$process = $this->Main_model->user_registration();
+			// Form validation rules
+			$this->form_validation->set_rules('employee_id', 'Employee ID', 'required');
+			$this->form_validation->set_rules('username', 'Username', 'required|min_length[6]');
+			$this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
+			$this->form_validation->set_rules('conpassword', 'Confirm Password', 'required|matches[password]');
 	
-			if ($process[0] == 1) {
+			if ($this->form_validation->run() == FALSE) {
+				$response = array(
+					'status' => 'error',
+					'message' => validation_errors()
+				);
+				echo json_encode($response);
+				exit;
+			}
+	
+			// Sanitize input using htmlentities to prevent XSS
+			$employee_id = htmlentities($this->input->post('employee_id', TRUE));
+			$username = htmlentities($this->input->post('username', TRUE));
+			$password = $this->input->post('password');
+			$conpassword = $this->input->post('conpassword');
+			$dept_id = $this->input->post('dept_name');
+			$firstname = htmlentities($this->input->post('firstname', TRUE));
+			$middlename = htmlentities($this->input->post('middlename', TRUE));
+			$lastname = htmlentities($this->input->post('lastname', TRUE));
+			$email = htmlentities($this->input->post('email', TRUE));
+			$position = htmlentities($this->input->post('position', TRUE));
+	
+			// Process the registration through the model
+			$process = $this->Main_model->user_registration($employee_id, $username, $password, $conpassword, $dept_id, $firstname, $middlename, $lastname, $email, $position);
+	
+			if ($process['status'] === 'success') {
 				$response = array(
 					'status' => 'success',
-					'message' => $process[1]
+					'message' => $process['message']
 				);
 			} else {
 				$response = array(
 					'status' => 'error',
-					'message' => $process[1]
+					'message' => $process['message']
 				);
 			}
+	
 			echo json_encode($response);
-			exit; 
+			exit;
 		}
+	
 		$this->load->view('registration', $page_data);
 	}
+	
 
 	// Locking of Users
 	public function lock_users() {

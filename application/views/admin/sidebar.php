@@ -23,7 +23,7 @@
                 </ul>
             </li>
 
-            <li class="treeview <?= ($active_menu == 'closed_tickets_list' || $active_menu == 'open_tickets' || $active_menu == 'other_menu' || $active_menu == 'admin_list_tickets' || $active_menu == 'admin_list_tracc_concern' || $active_menu == 'admin_list_tracc_request' || $active_menu == 'approved_tickets') ? 'active' : ''; ?>">
+            <li class="treeview <?= ($active_menu == 'closed_tickets_list') ? 'active' : ''; ?>">
                 <a href="#">
                     <i class="fa fa-ticket"></i> <span>Closed Tickets</span>
                     <span class="pull-right-container">

@@ -29,15 +29,35 @@ class Main_model extends CI_Model {
 				$department_description = '';
 			}
 
-			$employee_id = $this->input->post('employee_id');
+			$employee_id = $this->input->post('employee_id', TRUE);
+			$username = $this->input->post('username', TRUE);
 
 			$this->db->where('emp_id', $employee_id);
+			$this->db->or_where('username', $username);
 			$existing_user = $this->db->get('users')->row();
 
+			// if ($existing_user) {
+			// 	$response = array (
+			// 		'status' => 'error',
+			// 		'message' => 'Employee ID is already taken!'
+			// 	);
+			// 	echo json_encode($response);
+			// 	exit;
+			// }
+
 			if ($existing_user) {
-				$response = array (
+				$message = '';
+				if ($existing_user->emp_id === $employee_id) {
+					$message .= 'Employee ID is already taken! ';
+				}
+				if ($existing_user->username === $username) {
+					$message .= 'Username is already taken!';
+				}
+			
+				// Send response
+				$response = array(
 					'status' => 'error',
-					'message' => 'Employee ID is already taken!'
+					'message' => trim($message)
 				);
 				echo json_encode($response);
 				exit;
