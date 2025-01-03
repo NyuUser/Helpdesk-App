@@ -1,28 +1,3 @@
-<style>
-	/* Custom CSS for nested dropdown */
-	.dropdown-submenu {
-		position: relative;
-	}
-
-	.dropdown-submenu .dropdown-menu {
-		display: none; /* Hidden by default */
-		position: absolute;
-		top: 0;
-		left: 100%;
-		margin-top: -1px;
-	}
-
-	.dropdown-submenu:hover .dropdown-menu {
-		display: block; /* Show submenu on hover */
-	}
-
-	.right-caret {
-		transform: rotate(270deg); /* Rotate the caret to point left */
-		display: inline-block;
-	}
-
-</style>
-
 <nav class="navbar navbar-static-top">
 	<div class="container">
 		<div class="navbar-header">
