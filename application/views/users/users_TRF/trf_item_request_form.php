@@ -12,6 +12,11 @@
     } else {
         $disabled = "";
     }
+
+    $sess_login_data = $this->session->userdata('login_data');
+    $role = $sess_login_data['role'];
+
+    // print_r($sess_login_data); die();
 ?>
 
 <style>
@@ -214,7 +219,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>LMI Item Code</label>
-                                                    <input type="text" name="lmi_item_code" id="lmi_item_code" value="" class="form-control select2" required pattern=".*-.*" title="Control number must contain a hyphen (-)" oninput="this.value = this.value.toUpperCase();"> 
+                                                    <input type="text" name="lmi_item_code" id="lmi_item_code" value="" class="form-control select2" oninput="this.value = this.value.toUpperCase();"> 
                                                 </div>
                                             </div>
 

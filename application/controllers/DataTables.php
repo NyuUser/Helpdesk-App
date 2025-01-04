@@ -231,7 +231,7 @@ class DataTables extends CI_Controller {
             WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Approved') AND assigned_it_staff = " . $string_emp . ") 
             OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Approved') AND requester_id = " . $user_id . ") " 
             . $search_query . 
-            " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
+            " ORDER BY recid DESC LIMIT " . $start . ", " . $length
         );
 
         if ($strQry->num_rows() > 0) {
@@ -586,7 +586,7 @@ class DataTables extends CI_Controller {
         $strQry = $this->db->query("
             SELECT * FROM service_request_tracc_concern
             WHERE status IN ('Open', 'In Progress', 'Resolved', 'Rejected', 'Done', 'Approved', 'Returned')
-            AND reported_by_id = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length);
+            AND reported_by_id = " . $user_id . " " . $search_query . " ORDER BY recid DESC LIMIT " . $start . ", " . $length);
 
 
         if ($strQry->num_rows() > 0) {
@@ -778,7 +778,7 @@ class DataTables extends CI_Controller {
             WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Approved', 'Returned') AND reported_by = " . $user_id . ") 
             OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Done', 'Approved', 'Returned')) 
             " . $search_query . " 
-            ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
+            ORDER BY recid DESC LIMIT " . $start . ", " . $length
         );
 
 
@@ -995,7 +995,7 @@ class DataTables extends CI_Controller {
         $strQry = $this->db->query("
             SELECT * FROM service_request_tracc_request
             WHERE status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Approved', 'Returned')
-            AND requested_by_id = " . $user_id . " " . $search_query . " ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length);
+            AND requested_by_id = " . $user_id . " " . $search_query . " ORDER BY recid DESC LIMIT " . $start . ", " . $length);
 
 
         if ($strQry->num_rows() > 0) {
@@ -1167,7 +1167,7 @@ class DataTables extends CI_Controller {
             WHERE (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Returned', 'Approved') AND requested_by = " . $user_id . ") 
             OR (status IN ('Open', 'In Progress', 'On going', 'Resolved', 'Rejected', 'Returned', 'Approved')) 
             " . $search_query . " 
-            ORDER BY recid " . $dir . " LIMIT " . $start . ", " . $length
+            ORDER BY recid DESC LIMIT " . $start . ", " . $length
         );
 
         if ($strQry->num_rows() > 0){
