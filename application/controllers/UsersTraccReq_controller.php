@@ -303,7 +303,7 @@ class UsersTraccReq_controller extends CI_Controller {
 			$data['get_department'] = $get_department;
 	
 			$this->load->view('users/header', $data);
-			$this->load->view('users/users_TRF/trf_customer_request_form_creation', $data);
+			$this->load->view('users/users_TRF_pdf/trf_customer_request_form_creation', $data);
 			$this->load->view('users/footer');
 		} else {
 			return;
@@ -363,7 +363,7 @@ class UsersTraccReq_controller extends CI_Controller {
 			$data['get_department'] = $get_department;
 	
 			$this->load->view('users/header', $data);
-			$this->load->view('users/users_TRF/trf_customer_shipping_setup', $data);
+			$this->load->view('users/users_TRF_pdf/trf_customer_shipping_setup_creation', $data);
 			$this->load->view('users/footer');
 		} else {
 			return;
@@ -424,7 +424,7 @@ class UsersTraccReq_controller extends CI_Controller {
 			$data['selected_department'] = $users_department;
 	
 			$this->load->view('users/header', $data);
-			$this->load->view('users/users_TRF/trf_employee_request_form', $data);
+			$this->load->view('users/users_TRF_pdf/trf_employee_request_form_creation', $data);
 			$this->load->view('users/footer');
 		} else {
 			return;
@@ -471,7 +471,7 @@ class UsersTraccReq_controller extends CI_Controller {
 			$data['selected_department'] = $users_department;
 	
 			$this->load->view('users/header', $data);
-			$this->load->view('users/users_TRF/trf_item_request_form', $data);
+			$this->load->view('users/users_TRF_pdf/trf_item_request_form_creation', $data);
 			$this->load->view('users/footer');
 		} else {
 			return;
@@ -590,7 +590,7 @@ class UsersTraccReq_controller extends CI_Controller {
 			$data['selected_department'] = $users_department;
 	
 			$this->load->view('users/header', $data);
-			$this->load->view('users/users_TRF/trf_supplier_request_form', $data);
+			$this->load->view('users/users_TRF_pdf/trf_supplier_request_form_creation', $data);
 			$this->load->view('users/footer');
 		} else {
 			return;
@@ -664,7 +664,7 @@ class UsersTraccReq_controller extends CI_Controller {
 				// die();
 
 				$this->load->view('users/header', $data);
-				$this->load->view('users/users_TRF/trf_customer_request_form_details', $data);
+				$this->load->view('users/users_TRF_pdf/trf_customer_request_form_details', $data);
 				$this->load->view('users/footer', $data);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -694,7 +694,7 @@ class UsersTraccReq_controller extends CI_Controller {
 				$data['companies'] = explode(',', $customerReqForm[0]['company']);
 
 				$this->load->view('users/header', $data);
-				$this->load->view('users/users_TRF/trf_customer_shipping_setup_details', $data);
+				$this->load->view('users/users_TRF_pdf/trf_customer_shipping_setup_details', $data);
 				$this->load->view('users/footer', $data);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -759,7 +759,7 @@ class UsersTraccReq_controller extends CI_Controller {
 				$data['checkboxes3'] = $checkboxes3;	
 
 				$this->load->view('users/header', $data);
-				$this->load->view('users/users_TRF/trf_item_request_details', $data);
+				$this->load->view('users/users_TRF_pdf/trf_item_request_details', $data);
 				$this->load->view('users/footer', $data);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -789,7 +789,7 @@ class UsersTraccReq_controller extends CI_Controller {
 				$data['departments'] = $departments;
 
 				$this->load->view('users/header', $data);
-				$this->load->view('users/users_TRF/trf_employee_request_details', $data);
+				$this->load->view('users/users_TRF_pdf/trf_employee_request_details', $data);
 				$this->load->view('users/footer', $data);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
@@ -854,7 +854,7 @@ class UsersTraccReq_controller extends CI_Controller {
 				$data['checkboxes'] = $checkboxes[0];
 
 				$this->load->view('users/header', $data);
-				$this->load->view('users/users_TRF/trf_supplier_request_form_details', $data);
+				$this->load->view('users/users_TRF_pdf/trf_supplier_request_form_details', $data);
 				$this->load->view('users/footer', $data);
 			} else {
 				$this->session->set_flashdata('error', 'Error fetching user information.');
