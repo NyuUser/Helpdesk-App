@@ -342,10 +342,8 @@ class UsersTraccReq_model extends CI_Model {
 				'other_accounts'                        => isset($checkbox_item_req_form['checkbox_other_accounts']) ? $checkbox_item_req_form['checkbox_other_accounts'] : 0,
 				'online'                                => isset($checkbox_item_req_form['checkbox_online']) ? $checkbox_item_req_form['checkbox_online'] : 0,
 				'all_accounts'                          => isset($checkbox_item_req_form['checkbox_all_accounts']) ? $checkbox_item_req_form['checkbox_all_accounts'] : 0,
-				'trade'                                 => isset($checkbox_item_req_form['checkbox_trade']) ? $checkbox_item_req_form['checkbox_trade'] : 0,
-				'non_trade'                             => isset($checkbox_item_req_form['checkbox_non_trade']) ? $checkbox_item_req_form['checkbox_non_trade'] : 0,
-				'yes'                                   => isset($checkbox_item_req_form['checkbox_batch_required_yes']) ? $checkbox_item_req_form['checkbox_batch_required_yes'] : 0,
-				'no'                                    => isset($checkbox_item_req_form['checkbox_batch_required_no']) ? $checkbox_item_req_form['checkbox_batch_required_no'] : 0,
+				'trade'                                 => isset($checkbox_item_req_form['radio_trade_type']) && $checkbox_item_req_form['radio_trade_type'] === 'trade' ? 1 : 0,  					
+				'yes'                                   => isset($checkbox_item_req_form['radio_batch_required']) && $checkbox_item_req_form['radio_batch_required'] === 'yes' ? 1 : 0,
 			];
 			$this->db->insert('tracc_req_item_request_form_checkboxes', $checkboxes_item_req_form);
 

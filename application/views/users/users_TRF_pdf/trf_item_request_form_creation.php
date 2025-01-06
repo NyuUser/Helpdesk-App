@@ -299,7 +299,7 @@
                                             <div class="container mt-4">
                                                 <div class="row">
                                                     <!-- Trade and Non-Trade Checkboxes -->
-                                                    <div class="col-md-6 d-flex align-items-center" style="margin-top: 5px;">
+                                                    <!-- <div class="col-md-6 d-flex align-items-center" style="margin-top: 5px;">
                                                         <div class="form-group d-flex flex-wrap align-items-center custom-checkbox-group">
                                                             <div class="checkbox-container">
                                                                 <input type="checkbox" name="checkbox_trade" id="checkbox_trade" value="1">
@@ -310,10 +310,24 @@
                                                                 <label for="checkbox_non_trade">Non-Trade</label>
                                                             </div>
                                                         </div>
+                                                    </div> -->
+                                                    <!-- Trade and Non-Trade Radios -->
+                                                    <div class="col-md-6 d-flex align-items-center" style="margin-top: 5px;">
+                                                        <div class="form-group d-flex flex-wrap align-items-center custom-checkbox-group">
+                                                            <label class="custom-label">Type:</label>
+                                                            <div class="checkbox-container">
+                                                                <input type="radio" name="radio_trade_type" id="radio_trade" value="trade">
+                                                                <label for="radio_trade">Trade</label>
+                                                            </div>
+                                                            <div class="checkbox-container">
+                                                                <input type="radio" name="radio_trade_type" id="radio_non_trade" value="non_trade">
+                                                                <label for="radio_non_trade">Non-Trade</label>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                     <!-- Batch Required Checkboxes -->
-                                                    <div class="col-md-6 d-flex align-items-center" style="margin-top: 5px;">
+                                                    <!-- <div class="col-md-6 d-flex align-items-center" style="margin-top: 5px;">
                                                         <div class="form-group d-flex flex-wrap align-items-center custom-checkbox-group">
                                                             <label for="" class="custom-label">Batch Required?</label>
                                                             <div class="checkbox-container">
@@ -325,7 +339,22 @@
                                                                 <label for="checkbox_batch_required_no">NO</label>
                                                             </div>
                                                         </div>
+                                                    </div> -->
+                                                    <!-- Batch Required Radios -->
+                                                    <div class="col-md-6 d-flex align-items-center" style="margin-top: 5px;">
+                                                        <div class="form-group d-flex flex-wrap align-items-center custom-checkbox-group">
+                                                            <label class="custom-label">Batch Required?</label>
+                                                            <div class="checkbox-container">
+                                                                <input type="radio" name="radio_batch_required" id="radio_batch_required_yes" value="yes">
+                                                                <label for="radio_batch_required_yes">YES</label>
+                                                            </div>
+                                                            <div class="checkbox-container">
+                                                                <input type="radio" name="radio_batch_required" id="radio_batch_required_no" value="no">
+                                                                <label for="radio_batch_required_no">NO</label>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
                                                 </div>
                                             </div>
 

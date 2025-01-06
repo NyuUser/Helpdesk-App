@@ -493,10 +493,8 @@ class UsersTraccReq_controller extends CI_Controller {
 			'checkbox_other_accounts'       => isset($_POST['checkbox_other_accounts']) ? 1 : 0,
 			'checkbox_online'               => isset($_POST['checkbox_online']) ? 1 : 0,
 			'checkbox_all_accounts'         => isset($_POST['checkbox_all_accounts']) ? 1 : 0,
-			'checkbox_trade'                => isset($_POST['checkbox_trade']) ? 1 : 0,
-			'checkbox_non_trade'            => isset($_POST['checkbox_non_trade']) ? 1 : 0,
-			'checkbox_batch_required_yes'   => isset($_POST['checkbox_batch_required_yes']) ? 1 : 0,
-			'checkbox_batch_required_no'    => isset($_POST['checkbox_batch_required_no']) ? 1 : 0,
+			'radio_trade_type'              => isset($_POST['radio_trade_type']) ? $_POST['radio_trade_type'] : '',
+			'radio_batch_required'          => isset($_POST['radio_batch_required']) ? $_POST['radio_batch_required'] : '',
  
 		];
 
