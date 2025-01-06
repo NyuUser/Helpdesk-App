@@ -100,7 +100,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('UsersTraccReq_controller/user_creation_customer_request_form_pdf'); ?>" method="POST">
+                                        <form id="trf_crf_form" action="<?= site_url('UsersTraccReq_controller/user_creation_customer_request_form_pdf'); ?>" method="POST">
                                             <div class="col-md-12">
                                                 <select name="trf_number" id="trf_number" class="form-control" required>
                                                     <option value="" disabled selected>Select Ticket Number</option>
@@ -306,33 +306,6 @@
                                                 </table>
                                             </div>
 
-
-                                            <!-- <div class="col-md-6">
-                                                <div class="d-flex flex-wrap">
-                                                    <div class="form-check me-3">  
-                                                        <input class="form-check-input" type="checkbox" id="checkbox_outright" name="checkbox_outright" value="1">
-                                                        <label class="form-check-label" for="checkbox_outright">Outright</label>
-                                                    </div>
-                                                    <div class="form-check me-3">  
-                                                        <input class="form-check-input" type="checkbox" id="checkbox_consignment" name="checkbox_consignment" value="1">
-                                                        <label class="form-check-label" for="checkbox_consignment">Consignment</label>
-                                                    </div>
-                                                    <div class="form-check me-3">  
-                                                        <input class="form-check-input" type="checkbox" id="checkbox_cus_a_supplier" name="checkbox_cus_a_supplier" value="1">
-                                                        <label class="form-check-label" for="checkbox_cus_a_supplier">Customer is also a Supplier</label>
-                                                    </div>
-                                                    <div class="form-check me-3"> 
-                                                        <input class="form-check-input" type="checkbox" id="checkbox_online" name="checkbox_online" value="1">
-                                                        <label class="form-check-label" for="checkbox_online">ONLINE</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="checkbox_walkIn" name="checkbox_walkIn" value="1">
-                                                        <label class="form-check-label" for="checkbox_walkIn">WALK-IN</label>
-                                                    </div>
-                                                </div>
-                                            </div> -->
-
-
                                             <hr class="divider"> 
 
                                             <div class="design-text text-center">
@@ -401,67 +374,6 @@
                                                     <input type="text" name="special_instruction" id="special_instruction" value="" class="form-control select2">
                                                 </div>
                                             </div>
-                                            
-                                            <!-- <div class="col-md-12">
-                                                <table class="table table-dark table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                            <td colspan="" class="text-center" style="width: 100px"></td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td td colspan="2" class="text-start">Monday</td>
-                                                            <td td colspan="2" class="text-start">
-                                                                <input class="form-check-input" type="checkbox" id="checkbox_monday" name="checkbox_monday" value="1"> 
-                                                            </td>
-
-                                                            <td td colspan="2" class="text-start">Tuesday</td>
-                                                            <td td colspan="2" class="text-start">
-                                                                <input class="form-check-input" type="checkbox" id="checkbox_tuesday" name="checkbox_tuesday" value="1"> 
-                                                            </td>
-                                                            
-                                                            <td td colspan="2" class="text-start">Wednesday</td>
-                                                            <td td colspan="2" class="text-start">
-                                                                <input class="form-check-input" type="checkbox" id="checkbox_wednesday" name="checkbox_wednesday" value="1"> 
-                                                            </td>
-
-                                                            <td td colspan="2" class="text-start">Thursday</td>
-                                                            <td td colspan="2" class="text-start">
-                                                                <input class="form-check-input" type="checkbox" id="checkbox_thursday" name="checkbox_thursday" value="1"> 
-                                                            </td>
-
-                                                            <td td colspan="2" class="text-start">Friday</td>
-                                                            <td td colspan="2" class="text-start">
-                                                                <input class="form-check-input" type="checkbox" id="checkbox_friday" name="checkbox_friday" value="1"> 
-                                                            </td>
-                                                            
-                                                            <td td colspan="2" class="text-start">Saturday</td>
-                                                            <td td colspan="2" class="text-start">
-                                                                <input class="form-check-input" type="checkbox" id="checkbox_saturday" name="checkbox_saturday" value="1"> 
-                                                            </td>
-                                                          
-                                                            <td td colspan="2" class="text-start">Sunday</td>
-                                                            <td td colspan="2" class="text-start">
-                                                                <input class="form-check-input" type="checkbox" id="checkbox_sunday" name="checkbox_sunday" value="1"> 
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div> -->
 
                                             <div class="col-md-12 text-center"> 
                                                 <label style="font-size:20px;">Delivery Days</label> 
@@ -502,31 +414,10 @@
                                                 </div>
                                             </div>
                                             
-                                            <!-- <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Encoded By</label>
-                                                    <input type="text" name="encoded_by" id="encoded_by" value="" class="form-control select2"> 
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Approved By</label>
-                                                    <input type="text" name="approved_by" id="approved_by" value="" class="form-control select2"> 
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Checked By</label>
-                                                    <input type="text" name="checked_by" id="checked_by" value="" class="form-control select2"> 
-                                                </div>
-                                            </div> -->
-                                            
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">
-                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?=$disabled?>>Submit Tickets</button>
+                                                        <button id="submitBtn" type="submit" class="btn btn-primary" <?=$disabled?>>Submit Tickets</button>
                                                         <!-- <button id="add-form-button" type="button" class="btn btn-primary">Create Another Form</button> -->
                                                     </div>
                                                 </div>
@@ -543,13 +434,47 @@
     </div>
 </div>
 
+
+<style>
+    .swal-wide {
+        width: 400px !important;
+        font-size: 1.4rem; 
+    }
+</style>
+
 <script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
 <script>
-
     $(document).ready(function() {
         // Set the current date in YYYY-MM-DD format
         var today = new Date().toISOString().split('T')[0];
         $('#date').val(today);
+
+        $('#submitBtn').click(function (e) {
+            e.preventDefault();
+
+            var form = document.getElementById('trf_crf_form');
+            if (!form.checkValidity()) {
+                form.reportValidity(); 
+                return;
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!',
+                customClass: {
+                    popup: 'swal-wide' 
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#trf_crf_form').submit(); 
+                }
+            });
+        });
     });
 
 </script>

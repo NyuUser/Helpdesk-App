@@ -169,7 +169,7 @@
                             <div class="tab-pane active" id="msrf">
                                 <section id="new">
                                     <div class="row">
-                                        <form action="<?= site_url('UsersTraccReq_controller/user_creation_item_request_form_pdf'); ?>" method="POST">
+                                        <form id="trf_irf_form" action="<?= site_url('UsersTraccReq_controller/user_creation_item_request_form_pdf'); ?>" method="POST">
                                             <div class="col-md-12">
                                                 <select name="trf_number" id="trf_number" class="form-control" required>
                                                     <option value="" disabled selected>Select Ticket Number</option>
@@ -623,7 +623,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="box-body pad">
-                                                        <button id="form-add-submit-button" type="submit" class="btn btn-primary" <?=$disabled?>>Submit Tickets</button>
+                                                        <button id="submitBtn" type="submit" class="btn btn-primary" <?=$disabled?>>Submit Tickets</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -639,6 +639,13 @@
     </div>
 </div>
 
+<style>
+    .swal-wide {
+        width: 400px !important;
+        font-size: 1.4rem; 
+    }
+</style>
+
 <script src="<?= base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
 <script>
     $(document).ready(function(){ 
@@ -653,6 +660,38 @@
         // Attach the input event to both fields
         $('#unit_cost, #selling_price').on('input', function () {
             validateNumberInput($(this));
+        });
+  
+
+        var today = new Date().toISOString().split('T')[0];
+        $('#date').val(today);
+        console.log(today);
+
+        $('#submitBtn').click(function (e) {
+            e.preventDefault();
+
+            var form = document.getElementById('trf_irf_form');
+            if (!form.checkValidity()) {
+                form.reportValidity(); 
+                return;
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!',
+                customClass: {
+                    popup: 'swal-wide' 
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#trf_irf_form').submit(); 
+                }
+            });
         });
     });
 </script>
