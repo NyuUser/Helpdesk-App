@@ -387,7 +387,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-12">
+                                            <!-- <div class="col-md-12">
                                                 <div class="form-group">
 			                    					<label>Priority</label>
                                                     <select class="form-control select2" name="priority" id="priority">
@@ -397,7 +397,7 @@
                                                         <option value="High"<?php if ($trf['priority'] == 'High') echo ' selected'; ?>>High</option>
                                                     </select>                    
 			                    				</div>                                              
-			                                </div>
+			                                </div> -->
 
                                             <div class="col-md-6">
                                                 <div class="form-group">

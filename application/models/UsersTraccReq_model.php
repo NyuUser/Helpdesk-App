@@ -25,6 +25,30 @@ class UsersTraccReq_model extends CI_Model {
 		if($query->num_rows() > 0) {
 			return array(0, "Data is Existing");
 		} else {
+			$priority = 'Low';
+			if (
+				!empty($checkbox_data_newadd['checkbox_item']) ||
+				!empty($checkbox_data_newadd['checkbox_customer']) ||
+				!empty($checkbox_data_newadd['checkbox_supplier']) ||
+				!empty($checkbox_data_newadd['checkbox_whs']) ||
+				!empty($checkbox_data_newadd['checkbox_bin']) ||
+				!empty($checkbox_data_newadd['checkbox_cus_ship_setup']) ||
+				!empty($checkbox_data_newadd['checkbox_employee_req_form']) ||
+				!empty($checkbox_data_newadd['checkbox_others_newadd'])
+			) {
+				$priority = 'High';
+			}
+			else if (
+				!empty($checkbox_data_update['checkbox_system_date_lock']) ||
+				!empty($checkbox_data_update['checkbox_user_file_access']) ||
+				!empty($checkbox_data_update['checkbox_item_dets']) ||
+				!empty($checkbox_data_update['checkbox_customer_dets']) ||
+				!empty($checkbox_data_update['checkbox_supplier_dets']) ||
+				!empty($checkbox_data_update['checkbox_employee_dets']) ||
+				!empty($checkbox_data_update['checkbox_others_update'])
+			) {
+				$priority = "Medium";
+			}
 			$data = array(
 				'ticket_id' 				            => $trf_number,
 				'subject' 					            => 'TRACC_REQUEST',
@@ -35,6 +59,7 @@ class UsersTraccReq_model extends CI_Model {
 				'date_needed' 				            => $date_needed,
 				'requested_by_id' 			            => $user_id,
 				'complete_details' 			            => $complete_details,
+				'priority' 					            => $priority,
 				'acknowledge_by' 			            => $acknowledge_by,
 				'acknowledge_by_date'		            => $acknowledge_by_date,
 				'status' 					            => 'Open',

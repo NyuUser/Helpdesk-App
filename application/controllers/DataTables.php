@@ -390,7 +390,7 @@ class DataTables extends CI_Controller {
         $count_array = $this->db->query($count_query);
         $length_count = $count_array->num_rows();
     
-        $strQry = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'Resolved', 'Rejected', 'Approved', 'Returned') AND (sup_id = " . $user_id . " OR it_sup_id = '23-0001' OR assigned_it_staff = '" . $emp_id . "') " . $search_query . " ORDER BY created_at DESC LIMIT " . $start . ", " . $length;
+        $strQry = "SELECT * FROM service_request_msrf WHERE status IN ('Open', 'In Progress', 'Resolved', 'Rejected', 'Approved', 'Returned') AND (sup_id = " . $user_id . " OR it_sup_id = '23-0001' OR assigned_it_staff = '" . $emp_id . "') " . $search_query . " ORDER BY recid DESC LIMIT " . $start . ", " . $length;
         $data_query = $this->db->query($strQry);
         $data = array();
 

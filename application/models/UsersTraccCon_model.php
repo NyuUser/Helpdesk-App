@@ -40,7 +40,8 @@ class UsersTraccCon_model extends CI_Model {
 			'reported_by_id' 			=> $user_id,
 			'department' 				=> $department_description,
 			'dept_id' 					=> $department_id,
-			'created_at' 				=> date("Y-m-d H:i:s")
+			'created_at' 				=> date("Y-m-d H:i:s"),
+			'priority'					=> 'Medium'
 		);
 
 		if ($file_path !== null) {
